@@ -1,0 +1,472 @@
+---
+title: "TBTrends"
+author: 'Devon Allies'
+bibliography: references.bib
+csl: harvard-anglia-ruskin-university.csl
+---
+
+## Introduction:
+
+Tuberculosis (TB) remains a significant global health challenge, affecting millions of people worldwide, particularly in Africa, Asia, and Latin America. The World Health Organization (WHO) adopted a blueprint in 2014, the `End TB Strategy`, which aims to reduce incidence by 80% by the year 2030, using the year 2015 as a baseline.
+
+This project conducts an exploratory data analysis (EDA) of the `Tuberculosis_Trends.csv` [@Kyada2024TB] dataset available on `Kaggle`, which captures comprehensive country-level public health data from `2000 - 2024`. The primary objective is to uncover patterns and relationships between TB indicators (cases, mortality, treatment success) and various socio-economic and health infrastructure metrics to identify key drivers of disease prevalence. Specifically, this analysis aims to answer:
+
+-   How have TB cases and deaths trended in South Africa compared to other regions?
+
+-   What socio-economic or health infrastructure factors show the strongest correlation with reduced TB burden?
+
+-   Does the current trajectory indicate South Africa will meet the 2030 reduction targets?
+
+## Import modules:
+
+Analysis was conducted primarily using Python, leveraging key libraries from the scientific Python ecosystem: **pandas** [@reback2020pandas] for data manipulation, **Numpy** [@harris2020array] for numerical operations, **Seaborn** [@Waskom2021], **Matplotlib** [@Hunter:2007] for visualization, and **SciPy** [@2020SciPy-NMeth] for scientific computing.
+
+The following script outlines the necessary modules imported to facilitate the project's data processing and exploratory visualization stages:
+
+```{r}
+#| label: r-setup
+#| echo: false
+#| message: false
+#| warning: false
+#| results: 'hide'
+
+# load reticulate package
+library(reticulate)
+
+```
+
+```{python}
+#| label: import_modules
+#| warnings: false
+#| message: false
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import math
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+sns.set()
+
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error
+from statsmodels.tsa.holtwinters import ExponentialSmoothing
+```
+
+## Load dataset:
+
+This step involves loading the raw `Tuberculosis_Trends.csv` file into a structured data format using the `pandas` module. The `pd.read_csv()` function is used to read the data from the local file path into a DataFrame named `data` for subsequent analysis. This action transforms the raw comma-separated values into a manipulable table.
+
+```{python}
+#| label: import_data
+#| warning: false
+#| message: false
+
+data = pd.read_csv('Tuberculosis_Trends.csv')
+```
+
+## Data Scope and Key Variables:
+
+```{python}
+#| label: tbl-data-info 
+#| echo: false
+#| tbl-cap: 'Dataset feature descriptions, data types, and non-null counts.'
+#| tbl-pos: 'H'
+
+data.info()
+```
+
+An initial overview of the column information confirms a robust dataset, providing ample scope for exploring complex relationships. For this project, key variables of interest include `TB_Incidence_Rate`, `TB_Mortality_Rate`, `GDP_Per_Capita`, `Health_Expenditure_Per_Capita`, and `BCG_Vaccination_Coverage`, as these directly relate to potential drivers of disease prevaence outlined in the problem statement.
+
+### Data quality Assessment:
+
+```{python}
+#| label: tbl-missing-values
+#| echo: false
+#| warning: false
+#| message: false
+#| tbl-cap: 'Confirmation of zero missing values across all 22 features, ensuring high data reliability.'
+#| tbl-pos: 'H'
+#| output: axis
+
+data.isnull().sum()
+```
+
+This high quality is a significant advantage, as real-world health data is often messy. The completeness of the data for this analysis minimizes potential biases from imputation methods and strengthens the reliability of all subsequent findings and the predictive model's accuracy.
+
+```{python}
+#| echo: false
+#| label: fig-region-cases
+#| fig-cap: 'TB cases over time (2000 - 2024), illustrating persistent disparities between Asia / Africa (high) and North America / Europe (low).'
+#| fig-pos: 'H'
+
+# Set style to whitespace
+sns.set_style('white')
+
+plt.figure(figsize=(14,8))
+ax = sns.lineplot(data = data, x = 'Year', y = 'TB_Cases', hue = 'Region')
+plt.title('TB Cases Over Time, Grouped by Region', fontsize = 16, fontweight = 'bold')
+plt.xlabel('') # Empty x-label
+plt.ylabel('TB Cases', fontsize = 13)
+ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}'))
+plt.legend(title = 'Region', bbox_to_anchor=(1.05, 1 ), loc = 'upper left', fontsize = 13)
+sns.despine()
+plt.tight_layout()
+plt.show()
+```
+
+The persistent disparity between high-burden regions (Asia, Africa) and low-burden regions (North America, Europe) underscores the critical need for targeted, context-specific interventions. This initial observation justifies a deeper dive into country-level socio-economic factors (e.g., GDP, health expenditure) to understand the drivers behind these regional differences, rather than just observing them.
+
+```{python}
+#| echo: false
+#| label: fig-south-africa-cases
+#| fig-cap: 'Annual TB cases in South Africa (2000 - 2024), showing fluctuation with a slight downward trend.'
+#| fig-pos: 'H'
+
+sns.set_style('white')
+
+south_africa = data[data['Country'] == 'South Africa']
+
+plt.figure(figsize=(12,6))
+ax = sns.lineplot(data = south_africa, x = 'Year', y = 'TB_Cases')
+plt.title('South Africa TB Cases', fontsize = 16, fontweight = 'bold')
+plt.xlabel('')
+plt.ylabel('TB Cases', fontsize=13)
+ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}'))
+sns.despine()
+plt.tight_layout()
+plt.show()
+```
+
+```{python}
+#| label: fig-deaths
+#| echo: false
+#| fig-cap: 'Annual TB deaths in South Africa (2000 - 2024).'
+#| fig-pos: 'H'
+
+plt.figure(figsize=(12,6))
+ax = sns.lineplot(data = south_africa, x = 'Year', y = 'TB_Deaths')
+plt.title('South Africa TB_Deaths', fontsize = 16, fontweight = 'bold')
+plt.xlabel('')
+plt.ylabel('TB Deaths', fontsize=13)
+ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}'))
+sns.despine()
+plt.tight_layout()
+plt.show()
+```
+
+@fig-south-africa-cases and @fig-deaths provide a granular view of South Africa. While TB cases have fluctuated, there is a general trend of decreasing TB deaths since the early 2000s, indicating potential improvements in treatment efficacy or access to care.
+
+The official death counts can be complex due to reporting issues (e.g., HIV and TB are often under-reported on death certificates).
+
+```{python}
+#| label: fig-drug-res
+#| echo: false
+#| fig-cap: ' Drug Resistant TB Cases observed in South Africa.'
+#| fig-pos: 'H'
+
+plt.figure(figsize=(12,6))
+ax = sns.lineplot(data = south_africa, x = 'Year', y = 'Drug_Resistant_TB_Cases')
+plt.title('South Africa Drug Resistant TB Cases', fontsize = 16, fontweight = 'bold')
+plt.xlabel('')
+plt.ylabel('Drug Resistant TB Cases', fontsize=13)
+ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}'))
+sns.despine()
+plt.tight_layout()
+plt.show()
+```
+
+```{python}
+#| label: fig-hiv-tb
+#| echo: false
+#| fig-cap: 'HIV Co-Infected TB Cases observed in South Africa.'
+#| fig-pos: 'H'
+
+plt.figure(figsize=(12,6))
+ax = sns.lineplot(data = south_africa, x = 'Year', y = 'HIV_CoInfected_TB_Cases')
+plt.title('South Africa HIV Co-infected TB Cases', fontsize = 16, fontweight = 'bold')
+plt.xlabel('')
+plt.ylabel('HIV Co-Infected TB Cases', fontsize=13)
+ax.yaxis.set_major_formatter(ticker.StrMethodFormatter('{x:,.0f}'))
+sns.despine()
+plt.tight_layout()
+plt.show()
+```
+
+@fig-drug-res and @fig-hiv-tb highlights the persistent challenges of drug-resistant TB and HIV co-infection within South Africa. The trends for HIV co-infected cases show considerable variability, with peaks around 2005 and 2015, suggesting a need for targeted interventions.
+
+## Determining Correlation:
+
+```{python}
+#| label: fig-cor-heatmap
+#| echo: false
+#| fig-pos: 'H'
+#| fig-cap: "Pearson correlation matrix for South Africa's health metrics; Access to Health Services shows the strongest negative correlation with TB Deaths."
+
+# Select only numeric columns
+num_south_africa = south_africa.select_dtypes(include=['number'])
+
+correlation_matrix = num_south_africa.corr(method='pearson')
+
+# Plot the heatmap
+plt.figure(figsize=(12,8))
+sns.heatmap(correlation_matrix, annot = True, cmap = 'coolwarm', fmt = '.2f', linewidth = 0.5)
+plt.title('Correlation Heatmap of South Africa')
+plt.tight_layout()
+plt.show()
+```
+
+@fig-cor-heatmap presents a correlation heatmap generated from the Pearson correlation coefficients calculated for South Africa's data.
+
+The observed weak correlations for most variables are typical of complex, multifactorial public health issues, highlighting that no single factor operates in isolation.
+
+The strongest correlation observed in South Africa is the negative relationship between `Access_To_Health_Services` and `TB_Deaths`. This insight is a key takeaway: increasing access to care is potentially the single most impactful structural intervention for reducing TB mortality, which can directly inform policy and resource allocation.
+
+## Predictive Modeling:
+
+```{python}
+#| label: tbl-hypertuning
+#| echo: false
+#| tbl-pos: 'H'
+#| tab-cap: 'Feature Selection and Split size.'
+#| output: asis
+
+# Define target variable
+y = south_africa['TB_Cases']
+
+# Define features by dropping the target column
+X = south_africa.drop('TB_Cases', axis = 1)
+
+# Ensure X only contains numeric data for the model
+X = X.select_dtypes(include=['number'])
+features_table = pd.DataFrame(X.columns, columns=['Features Used in Model (X)'])
+print(features_table.to_markdown(index=False))
+
+# Split data into training and test
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = .30, random_state = 12345)
+
+```
+
+To move beyond exploratory analysis and assess the potential for forecasting disease burden, a Random Forest Regressor model was trained to predict `TB_Cases` in South Africa. The dataset was split into training and testing sets.
+
+```{python}
+#| label: tbl-gridsearch
+#| echo: false
+#| tbl-pos: 'H'
+#| tbl-cap: 'Hypertuning Results using GridSearchCV'
+
+# Define the parameter grid
+param_grid = {
+  'n_estimators': [50, 100, 150, 200],
+  'max_depth': [None, 10, 20, 30],
+  'min_samples_split': [2, 5, 10]
+}
+
+# Initialize the base Random Forest Regressor model
+rf = RandomForestRegressor(random_state = 12345)
+
+# Initialize GridSearchCV
+grid_search = GridSearchCV(
+  estimator = rf,
+  param_grid=param_grid,
+  cv = 5,
+  scoring = 'neg_mean_squared_error'
+)
+
+# Perform the tuning
+grid_search.fit(X_train, y_train)
+
+# Get the dictionary of the best parameters
+best_params_dict = grid_search.best_params_
+
+# Convert dictionary into a pandas dataframe
+params_df = pd.DataFrame([best_params_dict]).T # Transpose
+
+# Rname the column for clarity
+params_df.columns = ['Optimal Value']
+params_df.index.name = 'Hyperparameter'
+
+# Display Optimal Paramters and Final Evaluation
+print(params_df.to_markdown(index=True))
+```
+
+`GridSearchCV` was employed to systematically identify the optimal model configuration, balancing predictive accuracy with the risk of overfitting. The finalized hyperparameters (max depth 10, min samples split 10, n_estimators 50) ensure the model provides robust, generalized predictions.
+
+```{python}
+#| label: prediction
+#| echo: false
+
+# Retrieved the best model found by the grid search
+best_rf_model = grid_search.best_estimator_
+
+# Evaluate the best model on the unseen test set
+predictions = best_rf_model.predict(X_test)
+final_mse = mean_squared_error(y_test, predictions)
+final_rmse = np.sqrt(final_mse)
+```
+
+```{python}
+#| echo: false
+#| label: fig-feature-selection
+#| fig-cap: 'Feature importance for predicting TB cases; Population, Treatment Success Rate, and GDP per Capita are identified as key drivers.'
+#| fig-pos: 'H'
+
+# Initialize the base random forest regressor with the hypertuning parameter
+random_forest = RandomForestRegressor(
+  n_estimators = 50,
+  max_depth = 10,
+  min_samples_split = 10,
+  random_state = 12345
+  )
+  
+random_forest.fit(X_train, y_train)
+
+importances = random_forest.feature_importances_
+sorted_idx = importances.argsort()
+
+feature_names = X_train.columns
+
+plt.figure(figsize=(12,8))
+plt.barh(feature_names[sorted_idx], importances[sorted_idx])
+plt.xlabel('Feature Importance')
+plt.title('Random Forest Feature Importance for TB Cases', fontsize = 16, fontweight = 'bold')
+plt.tight_layout()
+plt.show()
+```
+
+@fig-feature-selection illustrates the derived feature importance from the Random Forest model. It highlights that while demographic factors like `Population` are a major driver (naturally, more people mean more cases), actionable health metrics such as `TB_Treatment_Success_Rate`, `GDP_Per_Capita`, and `TB_Deaths` also play roles. These findings may guide resource allocation towards improving treatment outcomes and economic conditions as key strategies for reducing disease prevalence.
+
+## WHO End TB Initiative:
+
+The WHO End TB Strategy is a global health framework and provides a blueprint for countries to reduce TB incidence and deaths, with a vision of world free of TB.
+
+The goal is to end the global TB epidemic by achieving specific milestones, including a 90% reduction in TB deaths and a 80% reduction in TB incidence by 2030, compared to 2015 levels.
+
+```{python}
+#| label: end-tb
+#| echo: false
+
+def forecast_incidence_2030(south_africa_df):
+  INCIDENCE_COL = 'TB_Incidence_Rate'
+  YEAR_COL = 'Year'
+
+  df = south_africa_df.copy()
+  
+  df[YEAR_COL] = pd.to_datetime(df[YEAR_COL], format='%Y')
+  
+  # CRITICAL FIX: Handle duplicate years by averaging the incidence rate
+  df = df.groupby(YEAR_COL)[INCIDENCE_COL].mean().reset_index()
+  
+  # Now set the unique years as the index
+  df.set_index(YEAR_COL, inplace=True)
+  df = df.asfreq('YS')
+  
+  ts = df[INCIDENCE_COL]
+  
+  model = ExponentialSmoothing(ts, trend='add', seasonal=None, initialization_method='estimated')
+  model_fit = model.fit()
+  
+  last_year = ts.index.max().year
+  years_to_forecast = 2030 - last_year
+  
+  forecast_2030_series = model_fit.forecast(steps=years_to_forecast)
+  forecast_2030 = forecast_2030_series.iloc[-1]
+
+  # Return the time series data as a DataFrame using .to_frame() on the Series
+  return forecast_2030, model_fit, forecast_2030_series, ts.to_frame()
+
+def classify_2030_target_achievement(baseline_rate_2015, predicted_rate_2030):
+  required_reduction_rate = 0.80
+  actual_reduction = (baseline_rate_2015 - predicted_rate_2030) / baseline_rate_2015
+  target_achieved_label = int(actual_reduction >= required_reduction_rate)
+  return target_achieved_label, actual_reduction
+
+# Graphing Function
+def plot_forecast(ts_data, model_fit, forecast_series, baseline_2015, predicted_2030):
+    plt.figure(figsize=(12, 6))
+    plt.plot(ts_data.index, ts_data['TB_Incidence_Rate'], label='Historical Data', marker='o', color='blue')
+    fitted_dates = model_fit.fittedvalues.index
+    plt.plot(fitted_dates, model_fit.fittedvalues, label='Fitted (In-sample)', linestyle='--', color='green')
+    forecast_dates = forecast_series.index
+    plt.plot(forecast_dates, forecast_series, label='Forecast (Out-of-sample)', linestyle='-', marker='s', color='red')
+    plt.scatter(pd.to_datetime('2015-01-01'), baseline_2015, color='purple', zorder=5, label=f'2015 Baseline ({baseline_2015:.2f})')
+    plt.scatter(pd.to_datetime('2030-01-01'), predicted_2030, color='orange', zorder=5, label=f'2030 Prediction ({predicted_2030:.2f})')
+    target_rate = baseline_2015 * (1 - 0.80)
+    plt.axhline(y=target_rate, color='gray', linestyle=':', label=f'80% Reduction Target ({target_rate:.2f})')
+    plt.title('TB Incidence Rate Forecast for South Africa', fontsize = 16, fontweight = 'bold')
+    plt.xlabel('')
+    plt.ylabel('Cases per 100k Population')
+    plt.legend()
+    plt.grid(True)
+    sns.despine()
+    plt.tight_layout()
+    plt.show()
+
+
+# --- Execution Block ---
+
+# Pass your 'south_africa' DataFrame here.
+# This should now execute without errors if your DataFrame has the 'Year' column
+# and multiple years of data (even with duplicates which are handled above).
+predicted_incidence_2030_sa, model_fit_sa, forecast_series_sa, sa_data_ts = forecast_incidence_2030(south_africa)
+
+# Get the 2015 baseline from the time series data
+baseline_sa_2015 = sa_data_ts.loc['2015-01-01']['TB_Incidence_Rate']
+
+final_status_label, reduction_pct = classify_2030_target_achievement(baseline_sa_2015, predicted_incidence_2030_sa)
+```
+
+```{python}
+#| label: inc_predictions
+#| echo: false
+
+print(f"Predicted incidence for 2030: {predicted_incidence_2030_sa:.2f}")
+print(f"2015 Baseline: {baseline_sa_2015:.2f}")
+print(f"Achieved Reduction Percentage: {reduction_pct*100:.2f}%")
+print(f"Target Achieved Status (1 = Achieved, 0 = Not Achieved): {final_status_label}")
+```
+
+```{python}
+#| label: fig-forecasting
+#| echo: false
+#| fig-pos: 'H'
+#| fig-cap: 'Time Series Forecase determining whether South Africa would reach the 80% reduction.'
+
+# Display the graph
+plot_forecast(sa_data_ts, model_fit_sa, forecast_series_sa, baseline_sa_2015, predicted_incidence_2030_sa)
+```
+
+## Conclusion and Actionable Recommendations:
+
+This exploratory data analysis and predictive modeling project successfully identified key drivers of tuberculosis prevalence in South Africa and forecasted potential future trends. The analysis highlights that South Africa, under its current trajectory, is not projected to meet the ambitious 80% TB incidence reduction target by 2030.
+
+**Key Takeaways and Insights:**
+
+-   The strongest negative correlation was found between `Access_To_Health_Services` and `TB_Deaths`.
+
+-   `GDP_Per_Capita` and `TB_Treatment_Success_Rate` were significant features in predicting TB cases, along with general population density.
+
+-   The high variability of HIV co-infected cases highlights a need for better integrated screening and treatment programs.
+
+**Next Steps:**
+
+Future work will involve validating the insights found here by analyzing the official WHO Global TB Report dataset, as the current analysis utilizes a similar but separate dataset obtained via Kaggle. Additionally, future analysis could incorporate more granular geographic data to identify specific TB hotspots, perform cost-effectiveness analysis for the recommended interventions, or explore more advanced time-series models to refine long-term forecasting.
+
+**Limitations:**
+
+-   The analysis utilized a dataset obtained via Kaggle, which is similar to but separate from the official WHO Global TB Report dataset. Future work would involve validating these insights against the official WHO data.
+
+-   The correlation analysis and predictive modeling were specifically conducted using data only for South Africa, limiting the immediate generalizability of these specific findings to other countries or regions.
+
+-   Official death counts can be complex due to reporting issues (e.g., HIV and TB are often under-reported on death certificates), which may introduce some bias into the historical data.
+
+-   While a Random Forest Regressor was used, future analysis could explore more advanced time-series models to refine long-term forecasting accuracy.
+
+### License and Data Usage Terms:
+
+The underlying data used in this analysis, *Tuberculosis Trends - Global & Regional Insights by Khushi Kyada* is provided under the [**Creative Commons Attribution 4.0 International License (CC BY 4.0)**](https://creativecommons.org/licenses/by/4.0/)**.**
+
+All original source code and analytical work presented in this project is released under the **MIT License**. A copy of this license is available in the root directory of the project repository (`License.txt` file). This license grants permission for commercial and non-commercial use, modification, and distribution of the project's software, provided appropriate credit is given.
+
+## References:
