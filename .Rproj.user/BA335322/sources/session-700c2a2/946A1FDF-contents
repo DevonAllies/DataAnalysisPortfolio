@@ -1,5 +1,5 @@
 ---
-title: "TBTrends:"
+title: "TBTrends"
 author: 'Devon Allies'
 bibliography: references.bib
 csl: harvard-anglia-ruskin-university.csl
@@ -230,6 +230,7 @@ The strongest correlation observed in South Africa is the negative relationship 
 #| echo: false
 #| tbl-pos: 'H'
 #| tab-cap: 'Feature Selection and Split size.'
+#| cache: true
 #| output: asis
 
 # Define target variable
@@ -255,6 +256,7 @@ To move beyond exploratory analysis and assess the potential for forecasting dis
 #| echo: false
 #| tbl-pos: 'H'
 #| tbl-cap: 'Hypertuning Results using GridSearchCV'
+#| cache: true
 
 # Define the parameter grid
 param_grid = {
@@ -296,6 +298,7 @@ print(params_df.to_markdown(index=True))
 ```{python}
 #| label: prediction
 #| echo: false
+#| cache: true
 
 # Retrieved the best model found by the grid search
 best_rf_model = grid_search.best_estimator_
@@ -311,6 +314,7 @@ final_rmse = np.sqrt(final_mse)
 #| label: fig-feature-selection
 #| fig-cap: 'Feature importance for predicting TB cases; Population, Treatment Success Rate, and GDP per Capita are identified as key drivers.'
 #| fig-pos: 'H'
+#| cache: true
 
 # Initialize the base random forest regressor with the hypertuning parameter
 random_forest = RandomForestRegressor(
@@ -346,6 +350,7 @@ The goal is to end the global TB epidemic by achieving specific milestones, incl
 ```{python}
 #| label: end-tb
 #| echo: false
+#| cache: true
 
 def forecast_incidence_2030(south_africa_df):
   INCIDENCE_COL = 'TB_Incidence_Rate'
