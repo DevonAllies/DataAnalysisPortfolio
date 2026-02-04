@@ -1,0 +1,641 @@
+{
+    "sources": [
+        {
+            "URL": "www.kaggle.com",
+            "author": [
+                {
+                    "family": "Rahman",
+                    "given": "Tawsifur"
+                },
+                {
+                    "family": "Khandakar",
+                    "given": "Amith"
+                },
+                {
+                    "family": "Hoque",
+                    "given": "Md Enamul"
+                },
+                {
+                    "family": "Ibtehaz",
+                    "given": "Nabil"
+                },
+                {
+                    "family": "Kashem",
+                    "given": "Saad Bin"
+                },
+                {
+                    "family": "Masud",
+                    "given": "Reehum"
+                },
+                {
+                    "family": "Shampa",
+                    "given": "Lutfunnahar"
+                },
+                {
+                    "family": "Hasan",
+                    "given": "Mohammad Mehedi"
+                },
+                {
+                    "family": "Islam",
+                    "given": "Mohammad T."
+                },
+                {
+                    "family": "Al-Madeed",
+                    "given": "Somaya"
+                },
+                {
+                    "family": "Zughaier",
+                    "given": "Susu M."
+                },
+                {
+                    "family": "Badran",
+                    "given": "Saif"
+                },
+                {
+                    "family": "Doi",
+                    "given": "Suhail A. R."
+                },
+                {
+                    "family": "Chowdhury",
+                    "given": "Muhammad E. H."
+                }
+            ],
+            "id": "Rahman2020COVID",
+            "issued": {
+                "date-parts": [
+                    [
+                        2020
+                    ]
+                ]
+            },
+            "note": "Data collected between 12 April and 31 August 2020 at Dhaka Medical College Hospital, Bangladesh; Accessed: [Insert the Date You Accessed the Data, e.g., 2025-12-05]",
+            "publisher": "Kaggle Dataset; Kaggle",
+            "title": "COVID-19 Complete Blood Count (CBC) Database",
+            "type": "",
+            "version": "1"
+        },
+        {
+            "DOI": "10.1038/s41586-020-2649-2",
+            "URL": "https://doi.org/10.1038/s41586-020-2649-2",
+            "author": [
+                {
+                    "family": "Harris",
+                    "given": "Charles R."
+                },
+                {
+                    "family": "Millman",
+                    "given": "K. Jarrod"
+                },
+                {
+                    "dropping-particle": "van der",
+                    "family": "Walt",
+                    "given": "Stéfan J."
+                },
+                {
+                    "family": "Gommers",
+                    "given": "Ralf"
+                },
+                {
+                    "family": "Virtanen",
+                    "given": "Pauli"
+                },
+                {
+                    "family": "Cournapeau",
+                    "given": "David"
+                },
+                {
+                    "family": "Wieser",
+                    "given": "Eric"
+                },
+                {
+                    "family": "Taylor",
+                    "given": "Julian"
+                },
+                {
+                    "family": "Berg",
+                    "given": "Sebastian"
+                },
+                {
+                    "family": "Smith",
+                    "given": "Nathaniel J."
+                },
+                {
+                    "family": "Kern",
+                    "given": "Robert"
+                },
+                {
+                    "family": "Picus",
+                    "given": "Matti"
+                },
+                {
+                    "family": "Hoyer",
+                    "given": "Stephan"
+                },
+                {
+                    "dropping-particle": "van",
+                    "family": "Kerkwijk",
+                    "given": "Marten H."
+                },
+                {
+                    "family": "Brett",
+                    "given": "Matthew"
+                },
+                {
+                    "family": "Haldane",
+                    "given": "Allan"
+                },
+                {
+                    "dropping-particle": "del",
+                    "family": "Río",
+                    "given": "Jaime Fernández"
+                },
+                {
+                    "family": "Wiebe",
+                    "given": "Mark"
+                },
+                {
+                    "family": "Peterson",
+                    "given": "Pearu"
+                },
+                {
+                    "family": "Gérard-Marchant",
+                    "given": "Pierre"
+                },
+                {
+                    "family": "Sheppard",
+                    "given": "Kevin"
+                },
+                {
+                    "family": "Reddy",
+                    "given": "Tyler"
+                },
+                {
+                    "family": "Weckesser",
+                    "given": "Warren"
+                },
+                {
+                    "family": "Abbasi",
+                    "given": "Hameer"
+                },
+                {
+                    "family": "Gohlke",
+                    "given": "Christoph"
+                },
+                {
+                    "family": "Oliphant",
+                    "given": "Travis E."
+                }
+            ],
+            "container-title": "Nature",
+            "id": "harris2020array",
+            "issue": "7825",
+            "issued": {
+                "date-parts": [
+                    [
+                        2020,
+                        9
+                    ]
+                ]
+            },
+            "page": "357-362",
+            "publisher": "Springer Science; Business Media LLC",
+            "title": "Array programming with NumPy",
+            "type": "article-journal",
+            "volume": "585"
+        },
+        {
+            "DOI": "10.5281/zenodo.3509134",
+            "URL": "https://doi.org/10.5281/zenodo.3509134",
+            "author": [
+                {
+                    "dropping-particle": "pandas development",
+                    "family": "team",
+                    "given": "The"
+                }
+            ],
+            "id": "reback2020pandas",
+            "issued": {
+                "date-parts": [
+                    [
+                        2020,
+                        2
+                    ]
+                ]
+            },
+            "publisher": "Zenodo",
+            "title": "Pandas-dev/pandas: pandas",
+            "title-short": "Pandas-dev/pandas",
+            "type": "software",
+            "version": "latest"
+        },
+        {
+            "DOI": "10.1109/MCSE.2007.55",
+            "abstract": "Matplotlib is a 2D graphics package used for Python for application development, interactive scripting, and publication-quality image generation across user interfaces and operating systems.",
+            "author": [
+                {
+                    "family": "Hunter",
+                    "given": "J. D."
+                }
+            ],
+            "container-title": "Computing in Science & Engineering",
+            "id": "Hunter:2007",
+            "issue": "3",
+            "issued": {
+                "date-parts": [
+                    [
+                        2007
+                    ]
+                ]
+            },
+            "page": "90-95",
+            "publisher": "IEEE COMPUTER SOC",
+            "title": "Matplotlib: A 2D graphics environment",
+            "title-short": "Matplotlib",
+            "type": "article-journal",
+            "volume": "9"
+        },
+        {
+            "DOI": "10.21105/joss.03021",
+            "URL": "https://doi.org/10.21105/joss.03021",
+            "author": [
+                {
+                    "family": "Waskom",
+                    "given": "Michael L."
+                }
+            ],
+            "container-title": "Journal of Open Source Software",
+            "id": "Waskom2021",
+            "issue": "60",
+            "issued": {
+                "date-parts": [
+                    [
+                        2021
+                    ]
+                ]
+            },
+            "page": "3021",
+            "publisher": "The Open Journal",
+            "title": "Seaborn: Statistical data visualization",
+            "title-short": "Seaborn",
+            "type": "article-journal",
+            "volume": "6"
+        },
+        {
+            "DOI": "10.21105/joss.01686",
+            "author": [
+                {
+                    "family": "Wickham",
+                    "given": "Hadley"
+                },
+                {
+                    "family": "Averick",
+                    "given": "Mara"
+                },
+                {
+                    "family": "Bryan",
+                    "given": "Jennifer"
+                },
+                {
+                    "family": "Chang",
+                    "given": "Winston"
+                },
+                {
+                    "family": "McGowan",
+                    "given": "Lucy D’Agostino"
+                },
+                {
+                    "family": "François",
+                    "given": "Romain"
+                },
+                {
+                    "family": "Grolemund",
+                    "given": "Garrett"
+                },
+                {
+                    "family": "Hayes",
+                    "given": "Alex"
+                },
+                {
+                    "family": "Henry",
+                    "given": "Lionel"
+                },
+                {
+                    "family": "Hester",
+                    "given": "Jim"
+                },
+                {
+                    "family": "Kuhn",
+                    "given": "Max"
+                },
+                {
+                    "family": "Pedersen",
+                    "given": "Thomas Lin"
+                },
+                {
+                    "family": "Miller",
+                    "given": "Evan"
+                },
+                {
+                    "family": "Bache",
+                    "given": "Stephan Milton"
+                },
+                {
+                    "family": "Müller",
+                    "given": "Kirill"
+                },
+                {
+                    "family": "Ooms",
+                    "given": "Jeroen"
+                },
+                {
+                    "family": "Robinson",
+                    "given": "David"
+                },
+                {
+                    "family": "Seidel",
+                    "given": "Dana Paige"
+                },
+                {
+                    "family": "Spinu",
+                    "given": "Vitalie"
+                },
+                {
+                    "family": "Takahashi",
+                    "given": "Kohske"
+                },
+                {
+                    "family": "Vaughan",
+                    "given": "Davis"
+                },
+                {
+                    "family": "Wilke",
+                    "given": "Claus"
+                },
+                {
+                    "family": "Woo",
+                    "given": "Kara"
+                },
+                {
+                    "family": "Yutani",
+                    "given": "Hiroaki"
+                }
+            ],
+            "container-title": "Journal of Open Source Software",
+            "id": "Wickham2019",
+            "issue": "43",
+            "issued": {
+                "date-parts": [
+                    [
+                        2019
+                    ]
+                ]
+            },
+            "page": "1686",
+            "title": "Welcome to the tidyverse",
+            "type": "article-journal",
+            "volume": "4"
+        },
+        {
+            "author": [
+                {
+                    "family": "Pedregosa",
+                    "given": "F."
+                },
+                {
+                    "family": "Varoquaux",
+                    "given": "G."
+                },
+                {
+                    "family": "Gramfort",
+                    "given": "A."
+                },
+                {
+                    "family": "Michel",
+                    "given": "V."
+                },
+                {
+                    "family": "Thirion",
+                    "given": "B."
+                },
+                {
+                    "family": "Grisel",
+                    "given": "O."
+                },
+                {
+                    "family": "Blondel",
+                    "given": "M."
+                },
+                {
+                    "family": "Prettenhofer",
+                    "given": "P."
+                },
+                {
+                    "family": "Weiss",
+                    "given": "R."
+                },
+                {
+                    "family": "Dubourg",
+                    "given": "V."
+                },
+                {
+                    "family": "Vanderplas",
+                    "given": "J."
+                },
+                {
+                    "family": "Passos",
+                    "given": "A."
+                },
+                {
+                    "family": "Cournapeau",
+                    "given": "D."
+                },
+                {
+                    "family": "Brucher",
+                    "given": "M."
+                },
+                {
+                    "family": "Perrot",
+                    "given": "M."
+                },
+                {
+                    "family": "Duchesnay",
+                    "given": "E."
+                }
+            ],
+            "container-title": "Journal of Machine Learning Research",
+            "id": "scikit-learn",
+            "issued": {
+                "date-parts": [
+                    [
+                        2011
+                    ]
+                ]
+            },
+            "page": "2825-2830",
+            "title": "Scikit-learn: Machine learning in Python",
+            "title-short": "Scikit-learn",
+            "type": "article-journal",
+            "volume": "12"
+        },
+        {
+            "DOI": "10.1038/s41592-019-0686-2",
+            "author": [
+                {
+                    "family": "Virtanen",
+                    "given": "Pauli"
+                },
+                {
+                    "family": "Gommers",
+                    "given": "Ralf"
+                },
+                {
+                    "family": "Oliphant",
+                    "given": "Travis E."
+                },
+                {
+                    "family": "Haberland",
+                    "given": "Matt"
+                },
+                {
+                    "family": "Reddy",
+                    "given": "Tyler"
+                },
+                {
+                    "family": "Cournapeau",
+                    "given": "David"
+                },
+                {
+                    "family": "Burovski",
+                    "given": "Evgeni"
+                },
+                {
+                    "family": "Peterson",
+                    "given": "Pearu"
+                },
+                {
+                    "family": "Weckesser",
+                    "given": "Warren"
+                },
+                {
+                    "family": "Bright",
+                    "given": "Jonathan"
+                },
+                {
+                    "family": "Walt",
+                    "given": "Stéfan J.",
+                    "non-dropping-particle": "van der"
+                },
+                {
+                    "family": "Brett",
+                    "given": "Matthew"
+                },
+                {
+                    "family": "Wilson",
+                    "given": "Joshua"
+                },
+                {
+                    "family": "Millman",
+                    "given": "K. Jarrod"
+                },
+                {
+                    "family": "Mayorov",
+                    "given": "Nikolay"
+                },
+                {
+                    "family": "Nelson",
+                    "given": "Andrew R. J."
+                },
+                {
+                    "family": "Jones",
+                    "given": "Eric"
+                },
+                {
+                    "family": "Kern",
+                    "given": "Robert"
+                },
+                {
+                    "family": "Larson",
+                    "given": "Eric"
+                },
+                {
+                    "family": "Carey",
+                    "given": "C J"
+                },
+                {
+                    "family": "Polat",
+                    "given": "İlhan"
+                },
+                {
+                    "family": "Feng",
+                    "given": "Yu"
+                },
+                {
+                    "family": "Moore",
+                    "given": "Eric W."
+                },
+                {
+                    "family": "VanderPlas",
+                    "given": "Jake"
+                },
+                {
+                    "family": "Laxalde",
+                    "given": "Denis"
+                },
+                {
+                    "family": "Perktold",
+                    "given": "Josef"
+                },
+                {
+                    "family": "Cimrman",
+                    "given": "Robert"
+                },
+                {
+                    "family": "Henriksen",
+                    "given": "Ian"
+                },
+                {
+                    "family": "Quintero",
+                    "given": "E. A."
+                },
+                {
+                    "family": "Harris",
+                    "given": "Charles R."
+                },
+                {
+                    "family": "Archibald",
+                    "given": "Anne M."
+                },
+                {
+                    "family": "Ribeiro",
+                    "given": "Antônio H."
+                },
+                {
+                    "family": "Pedregosa",
+                    "given": "Fabian"
+                },
+                {
+                    "family": "Mulbregt",
+                    "given": "Paul",
+                    "non-dropping-particle": "van"
+                },
+                {
+                    "literal": "SciPy 1.0 Contributors"
+                }
+            ],
+            "container-title": "Nature Methods",
+            "id": "2020SciPy-NMeth",
+            "issued": {
+                "date-parts": [
+                    [
+                        2020
+                    ]
+                ]
+            },
+            "page": "261-272",
+            "title": "SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python",
+            "type": "article-journal",
+            "volume": "17"
+        }
+    ],
+    "project_biblios": []
+}

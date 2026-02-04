@@ -1,5 +1,82 @@
 [
   {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Data Science Projects",
+    "section": "",
+    "text": "Covid 19 Dataset\n\n\n\n\n\n\nDevon Allies, BSc. Honours: Bioinformatics & Computational Biology\n\n\n\n\n\n\n\n\n\n\n\nTBTrends\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "projects/covid/covid19_eda.html",
+    "href": "projects/covid/covid19_eda.html",
+    "title": "Covid 19 Dataset",
+    "section": "",
+    "text": "Coronavirus Disease 2019 (Covid-19) is a highly contagious infectious disease caused by the SARS-CoV-2 virus, which emerged as a global pandemic in early 2020. It primarily spreads through respiratory particles and has impacted global health, economics and societies worldwide.\n\n\nThis Quarto document serves as a exercise in Exploratory Data Analysis (EDA), focusing on a critical public health data-set related to the Covid-19 pandemic. The data, sourced from a collaborative research effort, provides clinical insights into patient outcomes based on complete blood count (CBC) metrics (Rahman et al., 2020) .\n\n\n\nThe data-set was compiled by a team of researches and medical professionals from Qatar University and Dhaka Medical College Hospital, Bangladesh. Data collection occurred between April 12 and August 31, 2020, at the Dhaka Medical College Hospital, following approval from the local Hospital Ethical Committee. This specific time frame places the data collection during a significant early phase of the pandemic (Rahman et al., 2020)."
+  },
+  {
+    "objectID": "projects/covid/covid19_eda.html#introduction",
+    "href": "projects/covid/covid19_eda.html#introduction",
+    "title": "Covid 19 Dataset",
+    "section": "",
+    "text": "Coronavirus Disease 2019 (Covid-19) is a highly contagious infectious disease caused by the SARS-CoV-2 virus, which emerged as a global pandemic in early 2020. It primarily spreads through respiratory particles and has impacted global health, economics and societies worldwide.\n\n\nThis Quarto document serves as a exercise in Exploratory Data Analysis (EDA), focusing on a critical public health data-set related to the Covid-19 pandemic. The data, sourced from a collaborative research effort, provides clinical insights into patient outcomes based on complete blood count (CBC) metrics (Rahman et al., 2020) .\n\n\n\nThe data-set was compiled by a team of researches and medical professionals from Qatar University and Dhaka Medical College Hospital, Bangladesh. Data collection occurred between April 12 and August 31, 2020, at the Dhaka Medical College Hospital, following approval from the local Hospital Ethical Committee. This specific time frame places the data collection during a significant early phase of the pandemic (Rahman et al., 2020)."
+  },
+  {
+    "objectID": "projects/covid/covid19_eda.html#import-modules-packages",
+    "href": "projects/covid/covid19_eda.html#import-modules-packages",
+    "title": "Covid 19 Dataset",
+    "section": "Import modules & packages:",
+    "text": "Import modules & packages:\nAnalysis was conducted primarily using Python, leveraging key libraries from the scientific Python ecosystem: pandas (team, 2020), Numpy (Harris et al., 2020), Seaborn (Waskom, 2021), Matplotlib (Hunter, 2007), and SciPy (Virtanen et al., 2020).\nFor alternative R analysis, the comprehensive tidyverse package was loaded (Wickham et al., 2019).\n\nimport pandas as pd\nimport numpy as np\nimport seaborn as sns\nsns.set()\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nfrom scipy.stats import chi2_contingency, ttest_ind\n\n\nlibrary(tidyverse)"
+  },
+  {
+    "objectID": "projects/covid/covid19_eda.html#load-data-set",
+    "href": "projects/covid/covid19_eda.html#load-data-set",
+    "title": "Covid 19 Dataset",
+    "section": "Load data set:",
+    "text": "Load data set:\nThis step involves loading the raw COVID-19_CBC_Data.csv file into a data structure using the pandas module. The pd.read_csv() function is used to read the data from the local file path into a DataFrame named data for subsequent analysis.\n\ndata = pd.read_csv('COVID-19_CBC_Data.csv')"
+  },
+  {
+    "objectID": "projects/covid/covid19_eda.html#data-scope-and-key-variables",
+    "href": "projects/covid/covid19_eda.html#data-scope-and-key-variables",
+    "title": "Covid 19 Dataset",
+    "section": "Data Scope and Key Variables:",
+    "text": "Data Scope and Key Variables:\nThe data-set captures clinical parameters, demographic data, and patient outcomes for a cohort of 103 patients.\nKey information includes standard CBC metrics, as well as critical outcomes variables: hospital admission status and final results, Recovered or Not Recovered. The data-set is relatively balanced regarding outcomes, with 61 patients surviving and 42 resulting in death.\nThe data.head() function is a standard initial step in EDA. It provides a quick, concise view of the top rows of the DataFrame, allowing us to inspect the data-set’s structure, identify data types, and confirm the initial loading was successful.\n\n\n\nTable 1: Preview Data\n\n\n\n| Gender   |   White blood cell count |   Platelet Count |   Lymphocyte Count |\n|:---------|-------------------------:|-----------------:|-------------------:|\n| Male     |                    21    |           462    |               0.44 |\n| Female   |                     8.79 |           180.66 |               4.39 |\n| Male     |                     9.9  |           336    |               3.47 |\n| Female   |                     9.95 |           240.1  |               0.8  |\n| Male     |                    14.15 |           236.58 |               7.93 |\n| Male     |                    13.3  |           249    |               4.12 |\n| Male     |                     6.7  |           323    |               1.92 |\n| Male     |                    13.33 |           250.01 |               6.53 |\n| Male     |                     5    |           184    |               0.34 |\n| Female   |                    10.32 |           239.25 |               2    |\n\n\n\n\nThis initial inspection confirms that the data has been loaded correctly and provides the foundational understanding required to proceed with more in-depth statistical analysis and visualization."
+  },
+  {
+    "objectID": "projects/covid/covid19_eda.html#data-quality-assessment",
+    "href": "projects/covid/covid19_eda.html#data-quality-assessment",
+    "title": "Covid 19 Dataset",
+    "section": "Data Quality Assessment:",
+    "text": "Data Quality Assessment:\n\n\n\nTable 2: Summary of Missing Values per Column\n\n\n\n| Column Name                       |   Missing Count |\n|:----------------------------------|----------------:|\n| Admission_DATE                    |               0 |\n| Discharge_DATE or date of Death   |               0 |\n| Outcome                           |               0 |\n| Patient Age                       |               0 |\n| Gender                            |               0 |\n| Sample Collection Date            |               0 |\n| What kind of Treatment provided   |               0 |\n| Ventilated (Y/N)                  |               0 |\n| Red blood cell distribution width |               0 |\n| Monocytes(%)                      |               0 |\n| White blood cell count            |               0 |\n| Platelet Count                    |               0 |\n| Lymphocyte Count                  |               0 |\n| Neutrophils Count                 |               0 |\n\n\n\n\nThe data-set demonstrates exceptional quality with zero missing values across all 18 features, including demographics, clinical metrics, and outcomes. This completeness eliminates pre-processing needs and enhances analysis reliability. Table 2 confirms full data availability for 103-patient cohort."
+  },
+  {
+    "objectID": "projects/covid/covid19_eda.html#demographic-distributions",
+    "href": "projects/covid/covid19_eda.html#demographic-distributions",
+    "title": "Covid 19 Dataset",
+    "section": "Demographic Distributions:",
+    "text": "Demographic Distributions:\n\nPatient Age Distribution:\n\n\n\n\n\n\n\n\nFigure 1: Histogram showing the distribution of patient ages within the dataset.\n\n\n\n\n\nFigure 1 reveals a multimodal age distribution with peaks around 30-40, 50-60, and 60-70 years, spanning 17, 77 years overall. This middle-aged concentration reflects hospital admission patterns during early pandemic waves. Central tendency centers around 46 years with moderate spread (SD \\(\\pm\\) 16)\n\n\nGender Composition:\n\n\n\n\n\n\n\n\nFigure 2: Gender Distribution\n\n\n\n\n\nNearly balanced gender representation, 55 males, 48 females) minimizes sampling bias, as shown in Figure 2. This equilibrium supports gender-stratified analyses without confounding by disproportionate representation.\n\n\nSurvival Pattern Analysis:\n\nAge-Survival Relationship:\n\n\n\n\n\n\n\n\nFigure 3: Age Survival Relationship\n\n\n\n\n\nViolin plots, Figure 3, demonstrates clear age-outcome divergences: recovered patients peak at 30-50 years while non-recovered concentrate above 60 years. Survival rates decline sharply: 87%, &lt; 40 years, 57%, 40-60 years, and 24%, &gt; 60 years.\n\n\n\nTable 3: Survival percentages per Age Group\n\n\n\n| Age Group   |   Recovered % |   Not Recovered % |   n |\n|:------------|--------------:|------------------:|----:|\n| &lt;40         |          87.2 |              12.8 |  39 |\n| 40-60       |          57.1 |              42.9 |  35 |\n| &gt;60         |          24.1 |              75.9 |  29 |\n\n\n\n\n\n\n\nClinical Outcomes by Gender:\n\nGender-Survival Association:\n\n\n\n\n\n\n\n\nFigure 4: Survival by Gender\n\n\n\n\n\nFigure 4 shows proportional recovery rates (\\(\\pm\\) 59% overall) identical across genders despite higher raw non-recovery counts among males.\n\n\n\nClinical Trajectory Metics:\n\nHospital Length Stay:\nLength of Stay (LOS), Figure 5, reveal shorter median stays for recovered patients versus prolonged stays for non-recovered cases, reflecting disease severity.\n\n\n\n\n\n\n\n\nFigure 5: Length of Stay\n\n\n\n\n\n\n\nVentilation and Treatment Analysis:\n\n\n\nTable 4: Ventilation and treatment analysis\n\n\n\n| Ventilated (Y/N)   |   Not Recovered |   Recovered |\n|:-------------------|----------------:|------------:|\n| No                 |             0   |       100   |\n| Yes                |            87.5 |        12.5 |\n| All                |            40.8 |        59.2 |\n\n\n\n\nVentilated patients showed a 70% mortality rate vs 35% mortality rate for the non-ventilated patients.\n\n\nClinical Variable Intercorrelations:\n\n\n\n\n\n\n\n\nFigure 6: Correlation Heatmap\n\n\n\n\n\nThe expanded heatmap, Figure 6, highlights strongest relationships: neutrophils - lymphocytes. Notable absent: age-outcome correlation due to categorical target encoding. Weak age associations with blood metrics suggest independent demographic effects.\n\n\n\nStatistical Hypothesis Testing:\n\n\nGender-Survival Chi-square: χ²=2.68, p=0.1016\n\n\nAge by Outcome T-test: t=-6.90, p=0.0000\n\n\n\nChi-square test for gender-survival association:\nA Chi-square test of independence was performed to examine the relationship between patient gender and survival outcome.\nThe analysis produced \\(x^2\\) statistic of 2.68 with a corresponding p-value of 0.1016. Since the p-value is greater than the standard significance level of 0.05, we fail to reject the null hyporhesis, that gender and survival are independent.\nThe statistical evidence suggests there is no significant association between a patient’s gender and their likelyhood of recovery within this specific data-set. This supports the visual observation from Figure 2 , indicating similar proportional outcomes for both males and females.\n\n\nT-Test for age difference by outcome:\nAn independent samples T-test was conducted to compare the mean age of patients who recovered versus those who did not recover.\nThe T-test yielded a T-statistic of -6.90 and an extremely low p-value. As the p-value is well below the 0.05 significance threshold, we reject the null hypothesis.\nThe negative T-statistic indicates that patients who recovered were, on average, younger than those who did not recover. This provides support for Figure 3 , highlighting age as a critical predictor of outcome in this cohort."
+  },
+  {
+    "objectID": "projects/covid/covid19_eda.html#key-takeaways",
+    "href": "projects/covid/covid19_eda.html#key-takeaways",
+    "title": "Covid 19 Dataset",
+    "section": "Key Takeaways:",
+    "text": "Key Takeaways:\n\n\n1. Age &gt;60 years: 76% mortality risk (t=-6.90, p&lt;0.0001, d=1.4)\n\n\n2. No missing data - excellent quality\n\n\n3. Multimodal age distribution (peaks: 30-40, 50-60, 60-70)\n\n\n4. Gender not significant predictor\n\n\n5. Ventilation: 70% case fatality rate vs 35% non-ventilated\n\n\n\n=== LIMITATIONS ===\n\n\n1. Small sample (n=103)\n\n\n2. Single hospital, early pandemic (Apr-Aug 2020)\n\n\n3. No treatment effect analysis\n\n\n4. Limited geographic representation\n\n\n\nLicense and Data Usage Terms:\nThe data used in this analysis is provided under the Creative Commons Attribution 4.0 International License (CC BY 4.0)."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Devon Allies - Portfolio of Data Science Projects",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
     "objectID": "projects/tbTrends/TBTrendsEDA.html",
     "href": "projects/tbTrends/TBTrendsEDA.html",
     "title": "TBTrends",
@@ -61,19 +138,5 @@
     "title": "TBTrends",
     "section": "Conclusion and Actionable Recommendations:",
     "text": "Conclusion and Actionable Recommendations:\nThis exploratory data analysis and predictive modeling project successfully identified key drivers of tuberculosis prevalence in South Africa and forecasted potential future trends. The analysis highlights that South Africa, under its current trajectory, is not projected to meet the ambitious 80% TB incidence reduction target by 2030.\nKey Takeaways and Insights:\n\nThe strongest negative correlation was found between Access_To_Health_Services and TB_Deaths.\nGDP_Per_Capita and TB_Treatment_Success_Rate were significant features in predicting TB cases, along with general population density.\nThe high variability of HIV co-infected cases highlights a need for better integrated screening and treatment programs.\n\nNext Steps:\nFuture work will involve validating the insights found here by analyzing the official WHO Global TB Report dataset, as the current analysis utilizes a similar but separate dataset obtained via Kaggle. Additionally, future analysis could incorporate more granular geographic data to identify specific TB hotspots, perform cost-effectiveness analysis for the recommended interventions, or explore more advanced time-series models to refine long-term forecasting.\nLimitations:\n\nThe analysis utilized a dataset obtained via Kaggle, which is similar to but separate from the official WHO Global TB Report dataset. Future work would involve validating these insights against the official WHO data.\nThe correlation analysis and predictive modeling were specifically conducted using data only for South Africa, limiting the immediate generalizability of these specific findings to other countries or regions.\nOfficial death counts can be complex due to reporting issues (e.g., HIV and TB are often under-reported on death certificates), which may introduce some bias into the historical data.\nWhile a Random Forest Regressor was used, future analysis could explore more advanced time-series models to refine long-term forecasting accuracy.\n\n\nLicense and Data Usage Terms:\nThe underlying data used in this analysis, Tuberculosis Trends - Global & Regional Insights by Khushi Kyada is provided under the Creative Commons Attribution 4.0 International License (CC BY 4.0).\nAll original source code and analytical work presented in this project is released under the MIT License. A copy of this license is available in the root directory of the project repository (License.txt file). This license grants permission for commercial and non-commercial use, modification, and distribution of the project’s software, provided appropriate credit is given."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Devon Allies - Portfolio of Data Science Projects",
-    "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
   }
 ]

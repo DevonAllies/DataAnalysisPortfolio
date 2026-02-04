@@ -1,26 +1,26 @@
 {
-    "id": "19CF76B2",
+    "id": "CD15B2B1",
     "path": "/mnt/069ABB979ABB822B/learning/portfolio/myPortfolio/_quarto.yml",
     "project_path": "_quarto.yml",
     "type": "yaml",
-    "hash": "0",
+    "hash": "1420257594",
     "contents": "",
     "dirty": false,
-    "created": 1770211128155.0,
+    "created": 1770212434026.0,
     "source_on_save": false,
     "relative_order": 2,
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "2,18",
+        "cursorPosition": "5,10",
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1770211193,
+    "lastKnownWriteTime": 1770212740,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1770211193864,
+    "last_content_update": 1770212740144,
     "read_only": false,
     "read_only_alternatives": []
 }

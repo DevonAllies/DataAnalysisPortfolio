@@ -7,5 +7,11 @@
   },
   "projects/tbTrends/TBTrendsEDA.qmd": {
     "TBTrendsEDA.html": "2c8a1c3b"
+  },
+  "projects.qmd": {
+    "projects.html": "1806a92a"
+  },
+  "projects/covid/covid19_eda.qmd": {
+    "covid19_eda.html": "6f514f16"
   }
 }
