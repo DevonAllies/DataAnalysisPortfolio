@@ -11,7 +11,10 @@ about:
       url: https://www.linkedin.com/in/devonallies/
     - icon: github
       text: GitHub
-      url: https://devonallies.github.io/DataAnalysisPortfolio/
+      href: https://github.com/DevonAllies
+    - icon: envelope
+      text: Email
+      href: mailto:alliesdl@gmail.com
 ---
 
 With over 10 years of experience in immunology, bioinformatics, and computational biology, I specialise in tuberculosis research, clinical study coordination, and data-driven bioinformatics solutions.

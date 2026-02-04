@@ -3,7 +3,7 @@
     "path": "/mnt/069ABB979ABB822B/learning/portfolio/myPortfolio/about.qmd",
     "project_path": "about.qmd",
     "type": "quarto_markdown",
-    "hash": "490017340",
+    "hash": "3649585349",
     "contents": "",
     "dirty": false,
     "created": 1770218194117.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "13,6",
+        "cursorPosition": "17,0",
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1770219866,
+    "lastKnownWriteTime": 1770221419,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1770219866814,
+    "last_content_update": 1770221419491,
     "read_only": false,
     "read_only_alternatives": []
 }
