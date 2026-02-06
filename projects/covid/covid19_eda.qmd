@@ -9,6 +9,7 @@ author:
         url: 'https://www.linkedin.com/in/devonallies/'
 bibliography: references.bib
 csl: harvard-anglia-ruskin-university.csl
+image: 'image_ccf77676.png'
 license: 'CC BY 4.0'
 ---
 

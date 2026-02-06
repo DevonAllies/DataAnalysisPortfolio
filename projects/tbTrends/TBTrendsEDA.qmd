@@ -3,6 +3,7 @@ title: "TBTrends:"
 author: 'Devon Allies'
 bibliography: references.bib
 csl: harvard-anglia-ruskin-university.csl
+image: 'tb.png'
 ---
 
 ## Introduction:

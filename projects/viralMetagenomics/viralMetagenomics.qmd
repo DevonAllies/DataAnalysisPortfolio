@@ -1,0 +1,259 @@
+---
+title: "Pathogen Identification from Clinical Metagenomics Data"
+author: "Devon Allies"
+bibliography: reference.bib
+csl: harvard-anglia-ruskin-university.csl
+image: 'image_3baf4af7.png'
+engine: knitr
+abstract: |
+  This analysis focuses on identifying a potential pathogen from clinical metagenomics data. The workflow includes quality control of sequencing reads, host depletion, de novo assembly, and classification using BLAST. The results highlight the presence of clinically relevant pathogens in the sample.
+---
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: r-packages
+
+library(reticulate)
+library(tidyverse)
+```
+
+```{python}
+#| echo: false
+#| warning: false
+#| message: false
+#| label: py-modules
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import statsmodels.api as sm
+import scienceplots
+plt.style.use(['science', 'nature'])
+from tabulate import tabulate
+import os
+```
+
+## Aim:
+
+The objective of this project was to develop and execute a bioinformatics workflow to identify potential pathogens from clinical metagenomics data. The workflow encompassed several key steps, including quality control of raw sequencing reads, host depletion to remove human DNA, de novo assembly of unmapped reads, and classification using BLAST. The ultimate goal was to determine the presence of clinically relevant pathogens in the sample. By performing host depletation and classification, I was able to demonstrate the ability to isolate the microbial signal from a Bronchoalveolar lavage (BAL) sample.
+
+## Data Acquisition:
+
+The raw sequencing data for this project was accessed from the NCBI SRA (BioProject: PRJNA1327646), originating from a published study on COPD microbiomes [@Chen2025]. The authors of the study specified that the data deposited in the SRA had already undergone in silico human host DNA removal prior to submission.
+
+To ensure data integrity and quantify any residual human reads, a Quality Control (QC) step was performed. Raw reads were aligned against the human reference genome (hg38) using BWA [@bwa].
+
+## Quality Control of Samples:
+
+### Fastq Statistics:
+
+The `seqkit stats` [@seqkit] output describes the raw sequencing data before alignment. The command is used to generate a tabular statistical summary of `FASTA/Q` files. By default, it automatically detects the sequence type of the files.
+
+```{bash}
+#| code-fold: true
+#| code-summary: "Show code"
+#| label: tbl-fq-stats
+#| tbl-cap: 'Statistics of fastq files'
+
+envDir="/home/devonallies/micromamba/envs/bioinfo/bin"
+dataDir="../../../../data"
+
+${envDir}/seqkit stats ${dataDir}/reads/SRR35359600_*.fastq
+
+```
+
+## BAM Flagstat Statistics:
+
+The `BAM flagstat` statistic summarizes the results after the raw reads have been aligned / mapped to a reference genome.
+
+```{bash}
+#| code-fold: true
+#| code-summary: "Show code"
+#| label: tbl-bam-flagstat
+#| tbl-cap: 'Statistics of BAM files'
+
+envDir="/home/devonallies/micromamba/envs/bioinfo/bin"
+dataDir="../../../../data"
+sample=$(basename "${dataDir}/sort/SRR35359600.sorted.bam" .sorted.bam)
+
+echo "------------------------------"
+echo "Processing sample: $sample"
+echo "-------------------------------"
+${envDir}/samtools flagstat ${dataDir}/sort/SRR35359600.sorted.bam
+
+```
+
+-   `total`: The total number of reads processed, separated into those passing Quality Control (QC) and those failing.
+
+-   `mapped`: The percentage of reads that successfully aligned to the reference genome. This is critical for assessing the efficiency of the alignment process and the relevance of the reference genome.
+
+-   `paired in sequencing`: Confirms all reads were generated from paired-end sequencing, which is important for downstream analyses that rely on paired-end data.
+
+-   `properly paired`: Reads that aligned to the reference genome in the expected orientation and distance. A high percentage indicates good library preparation and alignment quality.
+
+-   `singletons`: Reads that did not have a properly paired mate.
+
+## Host Depletion:
+
+Host depletion is a critical step in viral metagenomics to enrich for viral sequences by removing host-derived reads. This process can be achieved through various methods, including computational approaches that filter out host sequences based on alignment to a reference genome or using specialized tools designed for host depletion.
+
+```{bash}
+#| code-fold: true
+#| code-summary: "Show code"
+#| label: tbl-host-depletion
+#| tbl-cap: 'Removing unmapped reads'
+
+# Set the paths for files and environment
+envDir="/home/devonallies/micromamba/envs/bioinfo/bin"
+dataDir="../../../../data"
+
+sample=$(basename "${dataDir}/sort/SRR35359600.sorted.bam" .sorted.bam)
+
+echo "------------------------------"
+echo "Processing sample: $sample"
+echo "-------------------------------"
+
+${envDir}/samtools collate -u -O ${dataDir}/sort/SRR35359600.sorted.bam | \
+${envDir}/samtools fastq -f4 -1 "${dataDir}/unmapped/${sample}_R1.fq" -2 "${dataDir}/unmapped/${sample}_R2.fq" -s "${dataDir}/unmapped/${sample}_singleton.fq"
+
+```
+
+Host depletion is a critical step in clinical metagenomics because clinical samples (like blood, tissue, or respirator fluid) are typically dominated by human DNA, which can constitute 90% - 99% of the sequencing data. By removing the host background, sensitivity is increased, it enables accurate De Novo Assembly, and improves downstream analysis. The singletons are placed in a `singleton.fq` file.
+
+While a notable percentage indicated in @tbl-bam-flagstat, 62.33%, of the reads still aligned to the human genome, the remaining non-host reads are sufficient for downstream classification.
+
+## De Nova Assembly:
+
+Megahit [@megahit] is a fast and memory-efficient de novo assembler for large and complex metagenomics data sets. It uses succinct de Bruijn graphs to represent the input data, which significantly reduces memory usage compared to traditional de Bruijn graph representations. Megahit is designed to handle large-scale metagenomic datasets, making it suitable for assembling genomes from environmental samples with high diversity and complexity.
+
+```{bash}
+#| code-fold: true
+#| code-summary: "Show code"
+#| label: tbl-denova
+#| tbl-cap: 'De Nova Assembly uisng Megahits'
+#| cache: true
+
+# Set the paths for files and environment
+envDir="/home/devonallies/micromamba/envs/bioinfo/bin"
+dataDir="../../../../data"
+
+sample=$(basename "${dataDir}/unmapped/SRR35359600" _R1.fq)
+r1=${dataDir}/unmapped/${sample}_R1.fq
+r2=${dataDir}/unmapped/${sample}_R2.fq
+singleton=${dataDir}/unmapped/${sample}_singleton.fq
+
+echo "------------------------------"
+echo "Processing sample: $sample"
+echo "-------------------------------"
+
+${envDir}/megahit -1 $r1 -2 $r2 -r $singleton -o "${dataDir}/megahit/${sample}" --out-prefix $sample -f
+
+```
+
+```{bash}
+#| code-fold: true
+#| code-summary: "Show code"
+#| label: tbl-megahit-stats
+#| tbl-cap: 'Statistics of Megahit Assembly'
+ 
+# Set the paths for files and environment
+envDir="/home/devonallies/micromamba/envs/bioinfo/bin"
+dataDir="../../../../data"
+sample=$(basename "${dataDir}/unmapped/SRR35359600" _R1.fq)
+
+${envDir}/seqkit stats ${dataDir}/megahit/${sample}/${sample}.contigs.fa
+```
+
+## Basic Local Alignment Search Tool:
+
+Blast is the gold standard for comparing a query sequence (DNA, RNA, or Protein) against a massive database of known sequences to find regions of similarity
+
+```{bash}
+#| code-fold: true
+#| code-summary: "Show code"
+#|label: tbl-blast
+#|tbl-cap: "Output of blast result"
+
+envDir="/home/devonallies/micromamba/envs/bioinfo/bin"
+dataDir="../../../../data"
+sample=$(basename "${dataDir}/unmapped/SRR35359600" _R1.fq)
+
+${envDir}/makeblastdb -out ${dataDir}/megahit/${sample}/${sample} -in ${dataDir}/megahit/${sample}/${sample}.contigs.fa -dbtype nucl -parse_seqids
+
+${envDir}/blastdbcmd -db ${dataDir}/megahit/${sample}/${sample} -entry all -outfmt "%l %a" > "${dataDir}/megahit/${sample}/${sample}_blast.txt"
+
+cat ${dataDir}/megahit/${sample}/${sample}_blast.txt | sort -rn | head
+
+```
+
+## Sample Identification:
+
+```{bash}
+#| code-fold: true
+#| code-summary: "Show code"
+#| label: tbl-idsample
+#| tbl-cap: 'Top BLAST Hits for Sample'
+#| cache: true
+
+envDir="/home/devonallies/micromamba/envs/bioinfo/bin"
+dataDir="../../../../data"
+sample=$(basename "${dataDir}/unmapped/SRR35359600" _R1.fq)
+
+${envDir}/blastdbcmd -db ${dataDir}/megahit/${sample}/${sample} -entry k141_9107 > "${dataDir}/megahit/${sample}/k141_9107.fa"
+${envDir}/blastdbcmd -db ${dataDir}/megahit/${sample}/${sample} -entry k141_6789 > "${dataDir}/megahit/${sample}/k141_6789.fa"
+${envDir}/blastdbcmd -db ${dataDir}/megahit/${sample}/${sample} -entry k141_7744 > "${dataDir}/megahit/${sample}/k141_7744.fa"
+
+# Blast k141_9107
+echo "------------------------------"
+echo "Processing contig: k141_9107"
+echo "-------------------------------"
+${envDir}/blastn -db ${dataDir}/databases/ref_prok_rep_genomes -query ${dataDir}/megahit/${sample}/k141_9107.fa -outfmt "6 qseqid pident evalue length stitle" | awk '$2 >= 99.0 && $4 >= 1000'
+
+# Blast k141_6789
+echo "------------------------------"
+echo "Processing contig: k141_6789"
+echo "-------------------------------"
+${envDir}/blastn -db ${dataDir}/databases/ref_prok_rep_genomes -query ${dataDir}/megahit/${sample}/k141_6789.fa -outfmt "6 qseqid pident evalue length stitle" | awk '$2 >= 99.0 && $4 >= 1000'
+
+# Blast k141_7744
+echo "------------------------------"
+echo "Processing contig: k141_7744"
+echo "-------------------------------"
+${envDir}/blastn -db ${dataDir}/databases/ref_prok_rep_genomes -query ${dataDir}/megahit/${sample}/k141_7744.fa -outfmt "6 qseqid pident evalue length stitle" | awk '$2 >= 99.0 && $4 >= 1000'
+
+```
+
+The `BLAST` results indicate a statistically definitive match between the query sequence and the subject database. The alignment parameters - specifically the 99.409% percent identity, the 5757 basepair alignmnent length, and the E-value of 0.0 - provides evidence of high-confidence sequence homology.
+
+-   `Percent Identity`: The high degree of nucleotide conservation suggests that the query and subject sequences are nearly identical. This level of similarity is characteristic of sequences derived from the same species or highly conserved orthologous rehions within closely related strains.
+
+-   `Alignment Length`: The substantial length of the aligned region bolsters the validity of the match.
+
+-   `Expect Value`: An E-value of 0.0 represents a probability that is indistinguishable from zero. It signifies that the likelyhood of observing such a high-scoring alignment by random chance within the search space is non-existent.
+
+The verified non-host reads were assembled into contigs using `megahit` [@megahit] and subsequently classified via `BLAST` [@blast]. The analysis yielded a high-confidence identification based on the alignment of contig `k141_9107`
+
+```{bash}
+#| code-fold: true
+#| code-summary: "Show code"
+#| label: tbl-amrfinder
+#| tbl-cap: 'AMRFinder Results for Sample'
+#| cache: true
+
+envDir="/home/devonallies/micromamba/envs/bioinfo/bin"
+dataDir="../../../../data"
+sample=$(basename "${dataDir}/unmapped/SRR35359600" _R1.fq)
+
+${envDir}/amrfinder -n ${dataDir}/megahit/${sample}/${sample}.contigs.fa --database ${dataDir}/databases/armfinder/amr_db/2026-01-21.1/ --plus
+```
+
+`AMRFINDER` identified the gene `blaTEM-116`, which is a broad-spectrum class A beta-lactamase. This enzyme breaks down beta-lactam antibiotics.
+
+## Conclusion:
+
+The identification of *Acinetobacter parvus*, is a gram-negative aerobic bacterium notable for forming small colonies in cultures, with the metrics displayed in @tbl-idsample, indicates a strong result.
+
+## Reference:

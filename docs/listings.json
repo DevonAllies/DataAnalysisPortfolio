@@ -3,7 +3,8 @@
     "listing": "/projects.html",
     "items": [
       "/projects/covid/covid19_eda.html",
-      "/projects/tbTrends/TBTrendsEDA.html"
+      "/projects/tbTrends/TBTrendsEDA.html",
+      "/projects/viralMetagenomics/viralMetagenomics.html"
     ]
   }
 ]

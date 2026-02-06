@@ -1,78 +1,37 @@
 {
     "sources": [
         {
-            "URL": "www.kaggle.com",
+            "DOI": "10.1002/imt2.191",
+            "URL": "https://doi.org/10.1002/imt2.191",
             "author": [
                 {
-                    "family": "Rahman",
-                    "given": "Tawsifur"
+                    "family": "Shen",
+                    "given": "Wei"
                 },
                 {
-                    "family": "Khandakar",
-                    "given": "Amith"
+                    "family": "Sipos",
+                    "given": "Botond"
                 },
                 {
-                    "family": "Hoque",
-                    "given": "Md Enamul"
-                },
-                {
-                    "family": "Ibtehaz",
-                    "given": "Nabil"
-                },
-                {
-                    "family": "Kashem",
-                    "given": "Saad Bin"
-                },
-                {
-                    "family": "Masud",
-                    "given": "Reehum"
-                },
-                {
-                    "family": "Shampa",
-                    "given": "Lutfunnahar"
-                },
-                {
-                    "family": "Hasan",
-                    "given": "Mohammad Mehedi"
-                },
-                {
-                    "family": "Islam",
-                    "given": "Mohammad T."
-                },
-                {
-                    "family": "Al-Madeed",
-                    "given": "Somaya"
-                },
-                {
-                    "family": "Zughaier",
-                    "given": "Susu M."
-                },
-                {
-                    "family": "Badran",
-                    "given": "Saif"
-                },
-                {
-                    "family": "Doi",
-                    "given": "Suhail A. R."
-                },
-                {
-                    "family": "Chowdhury",
-                    "given": "Muhammad E. H."
+                    "family": "Zhao",
+                    "given": "Liuyang"
                 }
             ],
-            "id": "Rahman2020COVID",
+            "container-title": "iMeta",
+            "id": "seqkit",
+            "issue": "3",
             "issued": {
                 "date-parts": [
                     [
-                        2020
+                        2024
                     ]
                 ]
             },
-            "note": "Data collected between 12 April and 31 August 2020 at Dhaka Medical College Hospital, Bangladesh; Accessed: [Insert the Date You Accessed the Data, e.g., 2025-12-05]",
-            "publisher": "Kaggle Dataset; Kaggle",
-            "title": "COVID-19 Complete Blood Count (CBC) Database",
-            "type": "",
-            "version": "1"
+            "page": "e191",
+            "title": "SeqKit2: A swiss army knife for sequence and alignment processing",
+            "title-short": "SeqKit2",
+            "type": "article-journal",
+            "volume": "3"
         },
         {
             "DOI": "10.1038/s41586-020-2649-2",
@@ -635,6 +594,242 @@
             "title": "SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python",
             "type": "article-journal",
             "volume": "17"
+        },
+        {
+            "DOI": "10.1016/j.ymeth.2016.02.020",
+            "author": [
+                {
+                    "family": "Li",
+                    "given": "Dinghua"
+                },
+                {
+                    "family": "Luo",
+                    "given": "Ruibang"
+                },
+                {
+                    "family": "Liu",
+                    "given": "Chi-Man"
+                },
+                {
+                    "family": "Leung",
+                    "given": "Chi-Man"
+                },
+                {
+                    "family": "Ting",
+                    "given": "Hing-Fung"
+                },
+                {
+                    "family": "Sadakane",
+                    "given": "Kunihiko"
+                },
+                {
+                    "family": "Yamashita",
+                    "given": "Hiroshi"
+                },
+                {
+                    "family": "Lam",
+                    "given": "Tak-Wah"
+                }
+            ],
+            "container-title": "Methods",
+            "id": "megahit",
+            "issued": {
+                "date-parts": [
+                    [
+                        2016
+                    ]
+                ]
+            },
+            "page": "3-11",
+            "title": "MEGAHIT v1.0: A fast and scalable metagenome assembler driven by advanced methodologies and community practices",
+            "title-short": "MEGAHIT v1.0",
+            "type": "article-journal",
+            "volume": "102"
+        },
+        {
+            "DOI": "https://doi.org/10.1016/j.jmii.2025.07.010",
+            "ISSN": "1684-1182",
+            "URL": "https://www.sciencedirect.com/science/article/pii/S1684118225001458",
+            "abstract": "Research background Traditionally seen as an environmental bacterium, Acinetobacter parvus has rarely been studied in clinical settings. Its role in human infections remains unclear, particularly in vulnerable populations. This study explores its biological traits, antibiotic resistance, and genomic features through the first systematic analysis of strain ZDL0830, isolated from an immunocompromised patient with an abscess. Research methods The strain was identified using MALDI-TOF MS and 16S rRNA sequencing. Its growth characteristics, Gram staining, and biochemical properties were analyzed with API 20NE and VITEK 2. Antibiotic susceptibility was tested across multiple drug classes using disk diffusion, Etest, and AutoMic i600. Whole-genome sequencing provided insights into its genetic makeup, with resistance and virulence genes identified through the CARD and VFDB databases. Phylogenetic relationships were assessed using 16S rRNA sequencing and ANI/DDH analysis. Key findings The strain exhibited slow growth (visible colonies after 72 h) and limited metabolic activity but shared core pathways with other Acinetobacter species. It was susceptible to β-lactams (e.g., cefoperazone/sulbactam, meropenem) and aminoglycosides (amikacin), but resistant to ciprofloxacin and intermediately resistant to levofloxacin. Genomic analysis revealed only one resistance gene (APH_3-VIa) and virulence factors associated with biofilm formation (lpxC, bfmR) and motility (pilT, gspE1). Conclusion This study sheds light on the clinical potential of Acinetobacter parvus, particularly in immunocompromised patients. While its low resistance profile allows for effective treatment, its ability to cause infections warrants further attention.",
+            "author": [
+                {
+                    "family": "Tang",
+                    "given": "Qin"
+                },
+                {
+                    "family": "Zhou",
+                    "given": "Daili"
+                },
+                {
+                    "family": "Yan",
+                    "given": "Fei"
+                },
+                {
+                    "family": "Lin",
+                    "given": "Lu"
+                },
+                {
+                    "family": "Fang",
+                    "given": "Juan"
+                },
+                {
+                    "family": "Bao",
+                    "given": "Xingchen"
+                }
+            ],
+            "container-title": "Journal of Microbiology, Immunology and Infection",
+            "id": "TANG202698",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        2026
+                    ]
+                ]
+            },
+            "keyword": "Acinetobacter parvus, Antimicrobial resistance, Whole-genome sequencing, Infection, Opportunistic pathogen",
+            "page": "98-106",
+            "title": "Clinical and genomic insights into acinetobacter parvus: A rare pathogen with low antibiotic resistance and potential clinical implications",
+            "title-short": "Clinical and genomic insights into acinetobacter parvus",
+            "type": "article-journal",
+            "volume": "59"
+        },
+        {
+            "DOI": "10.3389/fmicb.2025.1636322",
+            "author": [
+                {
+                    "family": "Chen",
+                    "given": "G."
+                },
+                {
+                    "family": "Wiegand",
+                    "given": "C."
+                },
+                {
+                    "family": "Willett",
+                    "given": "A."
+                },
+                {
+                    "family": "Herr",
+                    "given": "C."
+                },
+                {
+                    "family": "Müller",
+                    "given": "R."
+                },
+                {
+                    "family": "Bals",
+                    "given": "R."
+                },
+                {
+                    "family": "Kalinina",
+                    "given": "O. V."
+                }
+            ],
+            "container-title": "Frontiers in Microbiology",
+            "id": "Chen2025",
+            "issued": {
+                "date-parts": [
+                    [
+                        2025,
+                        11,
+                        26
+                    ]
+                ]
+            },
+            "note": "PMID: 41383738; PMCID: PMC12689518",
+            "page": "1636322",
+            "title": "Comparative metagenomic analysis on COPD and health control samples reveals taxonomic and functional motifs",
+            "type": "article-journal",
+            "volume": "16"
+        },
+        {
+            "URL": "https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=software",
+            "author": [
+                {
+                    "literal": "SRA Toolkit Development Team"
+                }
+            ],
+            "id": "sratool",
+            "note": "Accessed: 2025-02-06",
+            "title": "SRA toolkit",
+            "type": "book"
+        },
+        {
+            "DOI": "10.1093/bioinformatics/btp324",
+            "author": [
+                {
+                    "family": "Li",
+                    "given": "Heng"
+                },
+                {
+                    "family": "Durbin",
+                    "given": "Richard"
+                }
+            ],
+            "container-title": "Bioinformatics",
+            "id": "bwa",
+            "issue": "14",
+            "issued": {
+                "date-parts": [
+                    [
+                        2009
+                    ]
+                ]
+            },
+            "page": "1754-1760",
+            "title": "Fast and accurate short read alignment with burrows-wheeler transform",
+            "type": "article-journal",
+            "volume": "25"
+        },
+        {
+            "DOI": "10.1186/1471-2105-10-421",
+            "PMID": "20003500",
+            "author": [
+                {
+                    "family": "Camacho",
+                    "given": "Christiam"
+                },
+                {
+                    "family": "Coulouris",
+                    "given": "George"
+                },
+                {
+                    "family": "Avagyan",
+                    "given": "Vahram"
+                },
+                {
+                    "family": "Ma",
+                    "given": "Ning"
+                },
+                {
+                    "family": "Papadopoulos",
+                    "given": "Jason"
+                },
+                {
+                    "family": "Bealer",
+                    "given": "Kevin"
+                },
+                {
+                    "family": "Madden",
+                    "given": "Thomas L."
+                }
+            ],
+            "container-title": "BMC Bioinformatics",
+            "id": "blast",
+            "issue": "1",
+            "issued": {
+                "date-parts": [
+                    [
+                        2009
+                    ]
+                ]
+            },
+            "page": "421",
+            "title": "BLAST+: Architecture and applications",
+            "title-short": "BLAST+",
+            "type": "article-journal",
+            "volume": "10"
         }
     ],
     "project_biblios": []

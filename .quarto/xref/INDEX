@@ -13,5 +13,8 @@
   },
   "projects/covid/covid19_eda.qmd": {
     "covid19_eda.html": "6f514f16"
+  },
+  "projects/viralMetagenomics/viralMetagenomics.qmd": {
+    "viralMetagenomics.html": "cf52c314"
   }
 }
