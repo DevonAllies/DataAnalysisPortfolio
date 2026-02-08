@@ -5,6 +5,7 @@ author: "Devon Allies"
 date: last-modified
 bibliography: references.bib
 csl: harvard-anglia-ruskin-university.csl
+image: 'r.png'
 engine: knitr
 subtitle: "A Cross-Language Workflow using R, Python, and Scikit-Learn"
 citation: true
