@@ -1,0 +1,206 @@
+---
+title: "The use of R & Python in data science"
+format: html
+author: "Devon Allies"
+date: last-modified
+bibliography: references.bib
+csl: harvard-anglia-ruskin-university.csl
+engine: knitr
+subtitle: "A Cross-Language Workflow using R, Python, and Scikit-Learn"
+citation: true
+license: 
+  text: "CC BY-NC-SA 4.0"
+  url: https://creativecommons.org/licenses/by-nc-sa/4.0/
+---
+
+## Introduction:
+
+The age old debate, which is better, R or Python? The answer is, it depends. Both languages have their strengths and weaknesses, and the best choice for a data scientist will depend on their specific needs and preferences. In this tutorial, we will explore the use of R and Python in data science.
+
+In bioinformatics, we frequently encounter the 'Curse of Dimensionality' (the \(p\gg n\) problem). Here, our dataset contains over 22,000 gene features but only 64 biological samples. Navigating this requires a bilingual approach: using Python’s `scikit-learn` [@sklearn] for efficient dimensionality reduction and R’s `gtsummary` [@gtsummary] for rigorous statistical validation.
+
+### Importing libraries, Modules and data:
+
+The first library that needs to be imported, `reticulate` [@reticulate], is an R package that provides an interface to Python. It allows you to run Python code from R and to use Python libraries in R. The second library, `tidyverse` [@tidyverse], is a collection of R packages that are designed for data science. It includes packages for data manipulation, visualization, and modeling.
+
+The python modules that need to be imported are `pandas` [@pandas], `numpy`[@numpy], `matplotlib.pyplot`[@matplotlib], and `seaborn` [@seaborn]. `Pandas` [@pandas] is a library for data manipulation and analysis. It provides data structures and functions for working with structured data. `Numpy` [@numpy] is a library for numerical computing. It provides functions for working with arrays and matrices. `Matplotlib.pyplot` [@matplotlib] is a library for creating static, animated, and interactive visualizations in Python. `Seaborn` [@seaborn] is a library for making statistical graphics in Python. It is built on top of `matplotlib` [@matplotlib] and provides a high-level interface for drawing attractive and informative statistical graphics.
+
+```{r}
+#| label: r_imports
+#| warning: false
+#| message: false
+
+# Importing libraries
+library(reticulate)
+library(tidyverse)
+library(ivo.table)
+library(gtsummary)
+```
+
+```{python}
+#| label: py_imports
+
+# Importing modules
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import kagglehub
+import os
+from kagglehub import KaggleDatasetAdapter
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+```
+
+### Import data from kaggle:
+
+Data can be imported from Kaggle using the `kagglehub` library. The `dataset_load()` function is used to load a specific file from a Kaggle dataset. The handle of the dataset and the path to the specific file need to be provided as arguments to the function. This method avoids the `DeprecationWarning` that occurs when using the `kaggle` library directly.
+
+The 'magic' of this workflow lies in the `reticulate` package [@reticulate]. When we load data in a Python chunk, it is stored in the Python memory space. We can then access that exact same data in an R chunk using the `py$` prefix (e.g., py$df). This allows for a seamless handover from data processing to statistical reporting without the need to export and re-import CSV files.
+
+#### Data Availability & Attribution:
+
+This analysis utilizes the Leukemia gene expression dataset from the Curated Microarray Database (CuMiDa). The data was accessed via Kaggle. This dataset is provided under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International license.
+
+```{python}
+#| label: py_kaggle
+#| code-fold: true
+#| code-summary: "Python Kaggle Data Loading Code"
+#| warning: false
+#| message: false
+
+# 1. Handle name: "user/dataset-slug"
+handle = "brunogrisci/leukemia-gene-expression-cumida"
+# 2. Specific file: ensure it matches the dataset's content
+file_path = "Leukemia_GSE9476.csv"
+
+# Use dataset_load() to avoid the DeprecationWarning
+df = kagglehub.dataset_load(
+    KaggleDatasetAdapter.PANDAS,
+    handle=handle,
+    path=file_path
+)
+
+rows = len(df)
+columns = f'{len(df.columns):,}'
+
+print(f"Data loaded successfully! Shape: {df.shape}")
+
+```
+
+The dataset contains `{r} py$rows` samples and `{r} py$columns` columns, with the second column being the `type` of leukemia and the remaining columns representing gene expression levels. The dataset can be explored using the `head()` function to view the first few rows of the data.
+
+```{python}
+#| label: feature_selection
+#| echo: false
+#| warning: false
+#| message: false
+#| tbl-cap: 'Types of leukemia in the dataset'
+
+X = df.drop('type', axis = 1)
+y = df['type']
+
+# Initialize the StandardScaler
+scaler = StandardScaler()
+
+X_scaled = scaler.fit_transform(X)
+X_scaled_df = pd.DataFrame(X_scaled, columns=X.columns)
+```
+
+### Principal Component Analysis (PCA):
+
+Before building a predictive model, we use Principal Component Analysis (PCA) to project these 22,000+ dimensions into 2D space. This helps us visualize whether the leukemia subtypes—such as AML versus Bone Marrow samples—naturally cluster together. If we see clear separation in the PCA plot, it provides biological confidence that a machine learning classifier will be successful.
+
+```{python}
+#| label: pca_analysis
+#| echo: false
+#| warning: false
+#| message: false
+
+pca = PCA(n_components=2)
+components = pca.fit_transform(X_scaled)
+
+pca_df = pd.DataFrame(data = components, columns = ['PC1', 'PC2'])
+pca_df['Target'] = y.values
+print(f'Variance explained by top 2 components: {pca.explained_variance_ratio_.sum():.2%}')
+```
+
+```{r}
+#| label: pca_plot
+#| code-fold: true
+#| code-summary: "PCA Plot"
+#| warning: false
+#| message: false
+
+pca_data <- py$pca_df
+
+ggplot(pca_data, aes(x = PC1, y = PC2, color = Target)) +
+  geom_point(size = 3, alpha =  0.7) +
+  labs(title = "PCA of Leukemia Gene Expression Data",
+       x = "Principal Component 1",
+       y = "Principal Component 2") +
+  theme_minimal() +
+  scale_color_brewer(palette = 'Set1')
+```
+The PCA plot shows the distribution of samples based on the first two principal components. Different colors represent different types of leukemia, allowing for visual assessment of how well the types are separated in the reduced dimensional space. I used reticulate to leverage Python's robust data manipulation and machine learning libraries while utilizing R's powerful visualization capabilities to create the PCA plot. This combination allows for efficient data processing and insightful visual representation of the results.
+
+### Train-Test Split and Random Forest Classifier:
+
+```{python}
+#| label: py_test
+#| code-fold: true
+#| code-summary: "Python Train-Test Split Code"
+
+
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.3, random_state=42, stratify=y)
+rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+rf_model.fit(X_train, y_train)
+y_pred = rf_model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print(f'Random Forest Accuracy: {accuracy:.2%}')
+```
+
+In the code above, we use the stratify=y parameter during our split. In clinical datasets, class labels are often unbalanced. Stratification ensures that our training and testing sets maintain the same proportion of leukemia subtypes as the original dataset, preventing the model from becoming biased toward the most common class.
+
+```{r}
+#| label: tbl-r_classification_report
+#| code-fold: true
+#| code-summary: "Classification Report Table"
+#| tbl-cap: 'Types of leukemia in the dataset.'
+#| warning: false
+#| message: false
+
+py$df %>%
+  select(type) %>%
+  ivo_table()
+```
+
+```{r}
+#| label: tbl-r_summary
+#| code-fold: true
+#| code-summary: "Summary Code"
+#| warning: false
+#| message: false
+#| tbl-cap: 'Summary Table'
+
+py$df %>%
+  select(type, 1:5) %>%
+  tbl_summary(by = type) %>%
+  add_p() %>%
+  bold_labels()
+```
+
+@tbl-r_summary utilizes R's gtsummary to perform a Kruskal-Wallis rank sum test across the different groups. While our Random Forest model focuses on prediction, this table provides the statistical evidence for individual gene significance. For instance, genes with a p-value < 0.001 are likely key drivers in the differentiation of these leukemia subtypes.
+
+# Conclusion:
+
+By combining R and Python within a single Quarto document, we’ve created a reproducible research pipeline. This workflow leverages Python’s speed for heavy-duty computation (PCA, Random Forest) and R’s superior ecosystem for publication-quality tables and bio-statistical testing. This 'bilingual' proficiency is a critical skill for modern bioinformaticians working with complex, high-dimensional genomic data.
+
+# License & Reuse
+
+This tutorial and the accompanying code are licensed under a Creative Commons Attribution 4.0 International License (CC BY 4.0). You are free to share and adapt this material for any purpose, even commercially, as long as appropriate credit is given.
+
+# References:

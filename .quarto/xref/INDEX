@@ -15,6 +15,10 @@
     "covid19_eda.html": "6f514f16"
   },
   "projects/viralMetagenomics/viralMetagenomics.qmd": {
-    "viralMetagenomics.html": "cf52c314"
+    "viralMetagenomics.html": "cf52c314",
+    "viralMetagenomics.tex": "6a4955c5"
+  },
+  "projects/R & Python/R & Python.qmd": {
+    "R & Python.html": "4dcff924"
   }
 }

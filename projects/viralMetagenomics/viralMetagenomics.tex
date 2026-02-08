@@ -1,0 +1,773 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Pathogen Identification from Clinical Metagenomics Data},
+  pdfauthor={Devon Allies},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Pathogen Identification from Clinical Metagenomics Data}
+\author{Devon Allies}
+\date{}
+\begin{document}
+\maketitle
+\begin{abstract}
+This analysis focuses on identifying a potential pathogen from clinical
+metagenomics data. The workflow includes quality control of sequencing
+reads, host depletion, de novo assembly, and classification using BLAST.
+The results highlight the presence of clinically relevant pathogens in
+the sample.
+\end{abstract}
+
+
+\subsection{Aim:}\label{aim}
+
+The objective of this project was to develop and execute a
+bioinformatics workflow to identify potential pathogens from clinical
+metagenomics data. The workflow encompassed several key steps, including
+quality control of raw sequencing reads, host depletion to remove human
+DNA, de novo assembly of unmapped reads, and classification using BLAST.
+The ultimate goal was to determine the presence of clinically relevant
+pathogens in the sample. By performing host depletation and
+classification, I was able to demonstrate the ability to isolate the
+microbial signal from a Bronchoalveolar lavage (BAL) sample.
+
+\subsection{Data Acquisition:}\label{data-acquisition}
+
+The raw sequencing data for this project was accessed from the NCBI SRA
+(BioProject: PRJNA1327646), originating from a published study on COPD
+microbiomes (Chen et al., 2025). The authors of the study specified that
+the data deposited in the SRA had already undergone in silico human host
+DNA removal prior to submission.
+
+To ensure data integrity and quantify any residual human reads, a
+Quality Control (QC) step was performed. Raw reads were aligned against
+the human reference genome (hg38) using BWA (Li and Durbin, 2009).
+
+\subsection{Quality Control of
+Samples:}\label{quality-control-of-samples}
+
+\subsubsection{Fastq Statistics:}\label{fastq-statistics}
+
+The \texttt{seqkit\ stats} (Shen, Sipos and Zhao, 2024) output describes
+the raw sequencing data before alignment. The command is used to
+generate a tabular statistical summary of \texttt{FASTA/Q} files. By
+default, it automatically detects the sequence type of the files.
+
+\begin{table}
+
+\caption{\label{tbl-fq-stats}Statistics of fastq files}
+
+\centering{
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{envDir}\OperatorTok{=}\StringTok{"/home/devonallies/micromamba/envs/bioinfo/bin"}
+\VariableTok{dataDir}\OperatorTok{=}\StringTok{"../../../../data"}
+
+\VariableTok{$\{envDir\}}\ExtensionTok{/seqkit}\NormalTok{ stats }\VariableTok{$\{dataDir\}}\NormalTok{/reads/SRR35359600\_}\PreprocessorTok{*}\NormalTok{.fastq}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+processed files:  0 / 2 [------] ETA: 0s
+[1A[Jprocessed files:  2 / 2 [======] ETA: 0s
+[1A[Jprocessed files:  2 / 2 [] ETA: 0s. done
+[1A[Jprocessed files:  2 / 2 [] ETA: 0s. done
+file                                        format  type   num_seqs      sum_len  min_len  avg_len  max_len
+../../../../data/reads/SRR35359600_1.fastq  FASTQ   DNA   1,246,647  182,039,361       15      146      150
+../../../../data/reads/SRR35359600_2.fastq  FASTQ   DNA   1,246,647  181,919,031       15    145.9      150
+\end{verbatim}
+
+}
+
+\end{table}%
+
+\subsection{BAM Flagstat Statistics:}\label{bam-flagstat-statistics}
+
+The \texttt{BAM\ flagstat} statistic summarizes the results after the
+raw reads have been aligned / mapped to a reference genome.
+
+\begin{table}
+
+\caption{\label{tbl-bam-flagstat}Statistics of BAM files}
+
+\centering{
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{envDir}\OperatorTok{=}\StringTok{"/home/devonallies/micromamba/envs/bioinfo/bin"}
+\VariableTok{dataDir}\OperatorTok{=}\StringTok{"../../../../data"}
+\VariableTok{sample}\OperatorTok{=}\VariableTok{$(}\FunctionTok{basename} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/sort/SRR35359600.sorted.bam"}\NormalTok{ .sorted.bam}\VariableTok{)}
+
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+\BuiltInTok{echo} \StringTok{"Processing sample: }\VariableTok{$sample}\StringTok{"}
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+\VariableTok{$\{envDir\}}\ExtensionTok{/samtools}\NormalTok{ flagstat }\VariableTok{$\{dataDir\}}\NormalTok{/sort/SRR35359600.sorted.bam}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+------------------------------
+Processing sample: SRR35359600
+-------------------------------
+2627660 + 0 in total (QC-passed reads + QC-failed reads)
+2493294 + 0 primary
+0 + 0 secondary
+134366 + 0 supplementary
+0 + 0 duplicates
+0 + 0 primary duplicates
+1637803 + 0 mapped (62.33% : N/A)
+1503437 + 0 primary mapped (60.30% : N/A)
+2493294 + 0 paired in sequencing
+1246647 + 0 read1
+1246647 + 0 read2
+1169744 + 0 properly paired (46.92% : N/A)
+1496222 + 0 with itself and mate mapped
+7215 + 0 singletons (0.29% : N/A)
+241104 + 0 with mate mapped to a different chr
+113350 + 0 with mate mapped to a different chr (mapQ>=5)
+\end{verbatim}
+
+}
+
+\end{table}%
+
+\begin{itemize}
+\item
+  \texttt{total}: The total number of reads processed, separated into
+  those passing Quality Control (QC) and those failing.
+\item
+  \texttt{mapped}: The percentage of reads that successfully aligned to
+  the reference genome. This is critical for assessing the efficiency of
+  the alignment process and the relevance of the reference genome.
+\item
+  \texttt{paired\ in\ sequencing}: Confirms all reads were generated
+  from paired-end sequencing, which is important for downstream analyses
+  that rely on paired-end data.
+\item
+  \texttt{properly\ paired}: Reads that aligned to the reference genome
+  in the expected orientation and distance. A high percentage indicates
+  good library preparation and alignment quality.
+\item
+  \texttt{singletons}: Reads that did not have a properly paired mate.
+\end{itemize}
+
+\subsection{Host Depletion:}\label{host-depletion}
+
+Host depletion is a critical step in viral metagenomics to enrich for
+viral sequences by removing host-derived reads. This process can be
+achieved through various methods, including computational approaches
+that filter out host sequences based on alignment to a reference genome
+or using specialized tools designed for host depletion.
+
+\begin{table}
+
+\caption{\label{tbl-host-depletion}Removing unmapped reads}
+
+\centering{
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Set the paths for files and environment}
+\VariableTok{envDir}\OperatorTok{=}\StringTok{"/home/devonallies/micromamba/envs/bioinfo/bin"}
+\VariableTok{dataDir}\OperatorTok{=}\StringTok{"../../../../data"}
+
+\VariableTok{sample}\OperatorTok{=}\VariableTok{$(}\FunctionTok{basename} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/sort/SRR35359600.sorted.bam"}\NormalTok{ .sorted.bam}\VariableTok{)}
+
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+\BuiltInTok{echo} \StringTok{"Processing sample: }\VariableTok{$sample}\StringTok{"}
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+
+\VariableTok{$\{envDir\}}\ExtensionTok{/samtools}\NormalTok{ collate }\AttributeTok{{-}u} \AttributeTok{{-}O} \VariableTok{$\{dataDir\}}\NormalTok{/sort/SRR35359600.sorted.bam }\KeywordTok{|} \DataTypeTok{\textbackslash{}}
+\VariableTok{$\{envDir\}}\ExtensionTok{/samtools}\NormalTok{ fastq }\AttributeTok{{-}f4} \AttributeTok{{-}1} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/unmapped/}\VariableTok{$\{sample\}}\StringTok{\_R1.fq"} \AttributeTok{{-}2} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/unmapped/}\VariableTok{$\{sample\}}\StringTok{\_R2.fq"} \AttributeTok{{-}s} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/unmapped/}\VariableTok{$\{sample\}}\StringTok{\_singleton.fq"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+------------------------------
+Processing sample: SRR35359600
+-------------------------------
+[M::bam2fq_mainloop] discarded 7215 singletons
+[M::bam2fq_mainloop] processed 989857 reads
+\end{verbatim}
+
+}
+
+\end{table}%
+
+Host depletion is a critical step in clinical metagenomics because
+clinical samples (like blood, tissue, or respirator fluid) are typically
+dominated by human DNA, which can constitute 90\% - 99\% of the
+sequencing data. By removing the host background, sensitivity is
+increased, it enables accurate De Novo Assembly, and improves downstream
+analysis. The singletons are placed in a \texttt{singleton.fq} file.
+
+While a notable percentage indicated in Table~\ref{tbl-bam-flagstat},
+62.33\%, of the reads still aligned to the human genome, the remaining
+non-host reads are sufficient for downstream classification.
+
+\subsection{De Nova Assembly:}\label{de-nova-assembly}
+
+Megahit (Li et al., 2016) is a fast and memory-efficient de novo
+assembler for large and complex metagenomics data sets. It uses succinct
+de Bruijn graphs to represent the input data, which significantly
+reduces memory usage compared to traditional de Bruijn graph
+representations. Megahit is designed to handle large-scale metagenomic
+datasets, making it suitable for assembling genomes from environmental
+samples with high diversity and complexity.
+
+\begin{table}
+
+\caption{\label{tbl-denova}De Nova Assembly uisng Megahits}
+
+\centering{
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Set the paths for files and environment}
+\VariableTok{envDir}\OperatorTok{=}\StringTok{"/home/devonallies/micromamba/envs/bioinfo/bin"}
+\VariableTok{dataDir}\OperatorTok{=}\StringTok{"../../../../data"}
+
+\VariableTok{sample}\OperatorTok{=}\VariableTok{$(}\FunctionTok{basename} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/unmapped/SRR35359600"}\NormalTok{ \_R1.fq}\VariableTok{)}
+\VariableTok{r1}\OperatorTok{=}\VariableTok{$\{dataDir\}}\NormalTok{/unmapped/}\VariableTok{$\{sample\}}\NormalTok{\_R1.fq}
+\VariableTok{r2}\OperatorTok{=}\VariableTok{$\{dataDir\}}\NormalTok{/unmapped/}\VariableTok{$\{sample\}}\NormalTok{\_R2.fq}
+\VariableTok{singleton}\OperatorTok{=}\VariableTok{$\{dataDir\}}\NormalTok{/unmapped/}\VariableTok{$\{sample\}}\NormalTok{\_singleton.fq}
+
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+\BuiltInTok{echo} \StringTok{"Processing sample: }\VariableTok{$sample}\StringTok{"}
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+
+\VariableTok{$\{envDir\}}\ExtensionTok{/megahit} \AttributeTok{{-}1} \VariableTok{$r1} \AttributeTok{{-}2} \VariableTok{$r2} \AttributeTok{{-}r} \VariableTok{$singleton} \AttributeTok{{-}o} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/megahit/}\VariableTok{$\{sample\}}\StringTok{"} \AttributeTok{{-}{-}out{-}prefix} \VariableTok{$sample} \AttributeTok{{-}f}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+------------------------------
+Processing sample: SRR35359600
+-------------------------------
+2026-02-06 13:14:03 - MEGAHIT v1.2.9
+2026-02-06 13:14:03 - Using megahit_core with POPCNT and BMI2 support
+2026-02-06 13:14:03 - Convert reads to binary library
+2026-02-06 13:14:04 - b'INFO  sequence/io/sequence_lib.cpp  :   75 - Lib 0 (/mnt/069ABB979ABB822B/learning/data/unmapped/SRR35359600_R1.fq,/mnt/069ABB979ABB822B/learning/data/unmapped/SRR35359600_R2.fq): pe, 982642 reads, 150 max length'
+2026-02-06 13:14:04 - b'INFO  sequence/io/sequence_lib.cpp  :   75 - Lib 1 (/mnt/069ABB979ABB822B/learning/data/unmapped/SRR35359600_singleton.fq): se, 7215 reads, 150 max length'
+2026-02-06 13:14:04 - b'INFO  utils/utils.h                 :  152 - Real: 1.0586\tuser: 0.6510\tsys: 0.1466\tmaxrss: 85140'
+2026-02-06 13:14:04 - k-max reset to: 141 
+2026-02-06 13:14:04 - Start assembly. Number of CPU threads 8 
+2026-02-06 13:14:04 - k list: 21,29,39,59,79,99,119,141 
+2026-02-06 13:14:04 - Memory used: 45253907251
+2026-02-06 13:14:04 - Extract solid (k+1)-mers for k = 21 
+2026-02-06 13:14:13 - Build graph for k = 21 
+2026-02-06 13:14:16 - Assemble contigs from SdBG for k = 21
+2026-02-06 13:14:24 - Local assembly for k = 21
+2026-02-06 13:14:30 - Extract iterative edges from k = 21 to 29 
+2026-02-06 13:14:31 - Build graph for k = 29 
+2026-02-06 13:14:33 - Assemble contigs from SdBG for k = 29
+2026-02-06 13:14:40 - Local assembly for k = 29
+2026-02-06 13:14:46 - Extract iterative edges from k = 29 to 39 
+2026-02-06 13:14:46 - Build graph for k = 39 
+2026-02-06 13:14:48 - Assemble contigs from SdBG for k = 39
+2026-02-06 13:14:57 - Local assembly for k = 39
+2026-02-06 13:15:05 - Extract iterative edges from k = 39 to 59 
+2026-02-06 13:15:06 - Build graph for k = 59 
+2026-02-06 13:15:07 - Assemble contigs from SdBG for k = 59
+2026-02-06 13:15:13 - Local assembly for k = 59
+2026-02-06 13:15:21 - Extract iterative edges from k = 59 to 79 
+2026-02-06 13:15:22 - Build graph for k = 79 
+2026-02-06 13:15:22 - Assemble contigs from SdBG for k = 79
+2026-02-06 13:15:27 - Local assembly for k = 79
+2026-02-06 13:15:34 - Extract iterative edges from k = 79 to 99 
+2026-02-06 13:15:35 - Build graph for k = 99 
+2026-02-06 13:15:35 - Assemble contigs from SdBG for k = 99
+2026-02-06 13:15:39 - Local assembly for k = 99
+2026-02-06 13:15:46 - Extract iterative edges from k = 99 to 119 
+2026-02-06 13:15:46 - Build graph for k = 119 
+2026-02-06 13:15:47 - Assemble contigs from SdBG for k = 119
+2026-02-06 13:15:50 - Local assembly for k = 119
+2026-02-06 13:15:57 - Extract iterative edges from k = 119 to 141 
+2026-02-06 13:15:57 - Build graph for k = 141 
+2026-02-06 13:15:58 - Assemble contigs from SdBG for k = 141
+2026-02-06 13:16:01 - Merging to output final contigs 
+2026-02-06 13:16:01 - 9116 contigs, total 7205375 bp, min 210 bp, max 16159 bp, avg 790 bp, N50 908 bp
+2026-02-06 13:16:01 - ALL DONE. Time elapsed: 117.557580 seconds 
+\end{verbatim}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-megahit-stats}Statistics of Megahit Assembly}
+
+\centering{
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Set the paths for files and environment}
+\VariableTok{envDir}\OperatorTok{=}\StringTok{"/home/devonallies/micromamba/envs/bioinfo/bin"}
+\VariableTok{dataDir}\OperatorTok{=}\StringTok{"../../../../data"}
+\VariableTok{sample}\OperatorTok{=}\VariableTok{$(}\FunctionTok{basename} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/unmapped/SRR35359600"}\NormalTok{ \_R1.fq}\VariableTok{)}
+
+\VariableTok{$\{envDir\}}\ExtensionTok{/seqkit}\NormalTok{ stats }\VariableTok{$\{dataDir\}}\NormalTok{/megahit/}\VariableTok{$\{sample\}}\NormalTok{/}\VariableTok{$\{sample\}}\NormalTok{.contigs.fa}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+file                                                         format  type  num_seqs    sum_len  min_len  avg_len  max_len
+../../../../data/megahit/SRR35359600/SRR35359600.contigs.fa  FASTA   DNA      9,116  7,205,375      210    790.4   16,159
+\end{verbatim}
+
+}
+
+\end{table}%
+
+\subsection{Basic Local Alignment Search
+Tool:}\label{basic-local-alignment-search-tool}
+
+Blast is the gold standard for comparing a query sequence (DNA, RNA, or
+Protein) against a massive database of known sequences to find regions
+of similarity
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#|label: tbl{-}blast}
+\CommentTok{\#|tbl{-}cap: "Output of blast result"}
+
+\VariableTok{envDir}\OperatorTok{=}\StringTok{"/home/devonallies/micromamba/envs/bioinfo/bin"}
+\VariableTok{dataDir}\OperatorTok{=}\StringTok{"../../../../data"}
+\VariableTok{sample}\OperatorTok{=}\VariableTok{$(}\FunctionTok{basename} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/unmapped/SRR35359600"}\NormalTok{ \_R1.fq}\VariableTok{)}
+
+\VariableTok{$\{envDir\}}\ExtensionTok{/makeblastdb} \AttributeTok{{-}out} \VariableTok{$\{dataDir\}}\NormalTok{/megahit/}\VariableTok{$\{sample\}}\NormalTok{/}\VariableTok{$\{sample\}} \AttributeTok{{-}in} \VariableTok{$\{dataDir\}}\NormalTok{/megahit/}\VariableTok{$\{sample\}}\NormalTok{/}\VariableTok{$\{sample\}}\NormalTok{.contigs.fa }\AttributeTok{{-}dbtype}\NormalTok{ nucl }\AttributeTok{{-}parse\_seqids}
+
+\VariableTok{$\{envDir\}}\ExtensionTok{/blastdbcmd} \AttributeTok{{-}db} \VariableTok{$\{dataDir\}}\NormalTok{/megahit/}\VariableTok{$\{sample\}}\NormalTok{/}\VariableTok{$\{sample\}} \AttributeTok{{-}entry}\NormalTok{ all }\AttributeTok{{-}outfmt} \StringTok{"\%l \%a"} \OperatorTok{\textgreater{}} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/megahit/}\VariableTok{$\{sample\}}\StringTok{/}\VariableTok{$\{sample\}}\StringTok{\_blast.txt"}
+
+\FunctionTok{cat} \VariableTok{$\{dataDir\}}\NormalTok{/megahit/}\VariableTok{$\{sample\}}\NormalTok{/}\VariableTok{$\{sample\}}\NormalTok{\_blast.txt }\KeywordTok{|} \FunctionTok{sort} \AttributeTok{{-}rn} \KeywordTok{|} \FunctionTok{head}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+
+
+Building a new DB, current time: 02/06/2026 13:16:01
+New DB name:   /mnt/069ABB979ABB822B/learning/data/megahit/SRR35359600/SRR35359600
+New DB title:  ../../../../data/megahit/SRR35359600/SRR35359600.contigs.fa
+Sequence type: Nucleotide
+Deleted existing Nucleotide BLAST database named /mnt/069ABB979ABB822B/learning/data/megahit/SRR35359600/SRR35359600
+Keep MBits: T
+Maximum file size: 3000000000B
+Adding sequences from FASTA; added 9116 sequences in 0.687214 seconds.
+
+
+16159 k141_9106
+15399 k141_6088
+15193 k141_7641
+9747 k141_173
+8971 k141_6816
+8401 k141_4799
+8326 k141_91
+8324 k141_2364
+7369 k141_8249
+6914 k141_3132
+\end{verbatim}
+
+\subsection{Sample Identification:}\label{sample-identification}
+
+\begin{table}
+
+\caption{\label{tbl-idsample}Top BLAST Hits for Sample}
+
+\centering{
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{envDir}\OperatorTok{=}\StringTok{"/home/devonallies/micromamba/envs/bioinfo/bin"}
+\VariableTok{dataDir}\OperatorTok{=}\StringTok{"../../../../data"}
+\VariableTok{sample}\OperatorTok{=}\VariableTok{$(}\FunctionTok{basename} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/unmapped/SRR35359600"}\NormalTok{ \_R1.fq}\VariableTok{)}
+
+\VariableTok{$\{envDir\}}\ExtensionTok{/blastdbcmd} \AttributeTok{{-}db} \VariableTok{$\{dataDir\}}\NormalTok{/megahit/}\VariableTok{$\{sample\}}\NormalTok{/}\VariableTok{$\{sample\}} \AttributeTok{{-}entry}\NormalTok{ k141\_9107 }\OperatorTok{\textgreater{}} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/megahit/}\VariableTok{$\{sample\}}\StringTok{/k141\_9107.fa"}
+\VariableTok{$\{envDir\}}\ExtensionTok{/blastdbcmd} \AttributeTok{{-}db} \VariableTok{$\{dataDir\}}\NormalTok{/megahit/}\VariableTok{$\{sample\}}\NormalTok{/}\VariableTok{$\{sample\}} \AttributeTok{{-}entry}\NormalTok{ k141\_6789 }\OperatorTok{\textgreater{}} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/megahit/}\VariableTok{$\{sample\}}\StringTok{/k141\_6789.fa"}
+\VariableTok{$\{envDir\}}\ExtensionTok{/blastdbcmd} \AttributeTok{{-}db} \VariableTok{$\{dataDir\}}\NormalTok{/megahit/}\VariableTok{$\{sample\}}\NormalTok{/}\VariableTok{$\{sample\}} \AttributeTok{{-}entry}\NormalTok{ k141\_7744 }\OperatorTok{\textgreater{}} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/megahit/}\VariableTok{$\{sample\}}\StringTok{/k141\_7744.fa"}
+
+\CommentTok{\# Blast k141\_9107}
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+\BuiltInTok{echo} \StringTok{"Processing contig: k141\_9107"}
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+\VariableTok{$\{envDir\}}\ExtensionTok{/blastn} \AttributeTok{{-}db} \VariableTok{$\{dataDir\}}\NormalTok{/databases/ref\_prok\_rep\_genomes }\AttributeTok{{-}query} \VariableTok{$\{dataDir\}}\NormalTok{/megahit/}\VariableTok{$\{sample\}}\NormalTok{/k141\_9107.fa }\AttributeTok{{-}outfmt} \StringTok{"6 qseqid pident evalue length stitle"} \KeywordTok{|} \FunctionTok{awk} \StringTok{\textquotesingle{}$2 \textgreater{}= 99.0 \&\& $4 \textgreater{}= 1000\textquotesingle{}}
+
+\CommentTok{\# Blast k141\_6789}
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+\BuiltInTok{echo} \StringTok{"Processing contig: k141\_6789"}
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+\VariableTok{$\{envDir\}}\ExtensionTok{/blastn} \AttributeTok{{-}db} \VariableTok{$\{dataDir\}}\NormalTok{/databases/ref\_prok\_rep\_genomes }\AttributeTok{{-}query} \VariableTok{$\{dataDir\}}\NormalTok{/megahit/}\VariableTok{$\{sample\}}\NormalTok{/k141\_6789.fa }\AttributeTok{{-}outfmt} \StringTok{"6 qseqid pident evalue length stitle"} \KeywordTok{|} \FunctionTok{awk} \StringTok{\textquotesingle{}$2 \textgreater{}= 99.0 \&\& $4 \textgreater{}= 1000\textquotesingle{}}
+
+\CommentTok{\# Blast k141\_7744}
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+\BuiltInTok{echo} \StringTok{"Processing contig: k141\_7744"}
+\BuiltInTok{echo} \StringTok{"{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}"}
+\VariableTok{$\{envDir\}}\ExtensionTok{/blastn} \AttributeTok{{-}db} \VariableTok{$\{dataDir\}}\NormalTok{/databases/ref\_prok\_rep\_genomes }\AttributeTok{{-}query} \VariableTok{$\{dataDir\}}\NormalTok{/megahit/}\VariableTok{$\{sample\}}\NormalTok{/k141\_7744.fa }\AttributeTok{{-}outfmt} \StringTok{"6 qseqid pident evalue length stitle"} \KeywordTok{|} \FunctionTok{awk} \StringTok{\textquotesingle{}$2 \textgreater{}= 99.0 \&\& $4 \textgreater{}= 1000\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+------------------------------
+Processing contig: k141_9107
+-------------------------------
+------------------------------
+Processing contig: k141_6789
+-------------------------------
+------------------------------
+Processing contig: k141_7744
+-------------------------------
+\end{verbatim}
+
+}
+
+\end{table}%
+
+The \texttt{BLAST} results indicate a statistically definitive match
+between the query sequence and the subject database. The alignment
+parameters - specifically the 99.409\% percent identity, the 5757
+basepair alignmnent length, and the E-value of 0.0 - provides evidence
+of high-confidence sequence homology.
+
+\begin{itemize}
+\item
+  \texttt{Percent\ Identity}: The high degree of nucleotide conservation
+  suggests that the query and subject sequences are nearly identical.
+  This level of similarity is characteristic of sequences derived from
+  the same species or highly conserved orthologous rehions within
+  closely related strains.
+\item
+  \texttt{Alignment\ Length}: The substantial length of the aligned
+  region bolsters the validity of the match.
+\item
+  \texttt{Expect\ Value}: An E-value of 0.0 represents a probability
+  that is indistinguishable from zero. It signifies that the likelyhood
+  of observing such a high-scoring alignment by random chance within the
+  search space is non-existent.
+\end{itemize}
+
+The verified non-host reads were assembled into contigs using
+\texttt{megahit} (Li et al., 2016) and subsequently classified via
+\texttt{BLAST} (Camacho et al., 2009). The analysis yielded a
+high-confidence identification based on the alignment of contig
+\texttt{k141\_9107}
+
+\begin{table}
+
+\caption{\label{tbl-amrfinder}AMRFinder Results for Sample}
+
+\centering{
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{envDir}\OperatorTok{=}\StringTok{"/home/devonallies/micromamba/envs/bioinfo/bin"}
+\VariableTok{dataDir}\OperatorTok{=}\StringTok{"../../../../data"}
+\VariableTok{sample}\OperatorTok{=}\VariableTok{$(}\FunctionTok{basename} \StringTok{"}\VariableTok{$\{dataDir\}}\StringTok{/unmapped/SRR35359600"}\NormalTok{ \_R1.fq}\VariableTok{)}
+
+\VariableTok{$\{envDir\}}\ExtensionTok{/amrfinder} \AttributeTok{{-}n} \VariableTok{$\{dataDir\}}\NormalTok{/megahit/}\VariableTok{$\{sample\}}\NormalTok{/}\VariableTok{$\{sample\}}\NormalTok{.contigs.fa }\AttributeTok{{-}{-}database} \VariableTok{$\{dataDir\}}\NormalTok{/databases/armfinder/amr\_db/2026{-}01{-}21.1/ }\AttributeTok{{-}{-}plus}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Running: /home/devonallies/micromamba/envs/bioinfo/bin/amrfinder -n ../../../../data/megahit/SRR35359600/SRR35359600.contigs.fa --database ../../../../data/databases/armfinder/amr_db/2026-01-21.1/ --plus
+Software directory: /home/devonallies/micromamba/envs/bioinfo/bin/
+Software version: 4.2.5
+Database directory: /mnt/069ABB979ABB822B/learning/data/databases/armfinder/amr_db/2026-01-21.1
+Database version: 2026-01-21.1
+AMRFinder translated nucleotide search
+  - include -O ORGANISM, --organism ORGANISM option to add mutation searches and suppress common proteins
+Running blastx
+Making report
+Protein id  Contig id   Start   Stop    Strand  Element symbol  Element name    Scope   Type    Subtype Class   Subclass    Method  Target length   Reference sequence length   % Coverage of reference % Identity to reference Alignment length    Closest reference accession Closest reference name  HMM accession   HMM description
+NA  k141_2874   760 1617    +   blaTEM-116  broad-spectrum class A beta-lactamase TEM-116   core    AMR AMR BETA-LACTAM BETA-LACTAM ALLELEX 286 286 100.00  100.00  286 WP_000027050.1  broad-spectrum class A beta-lactamase TEM-116   NA  NA
+amrfinder took 45 seconds to complete
+\end{verbatim}
+
+}
+
+\end{table}%
+
+\texttt{AMRFINDER} identified the gene \texttt{blaTEM-116}, which is a
+broad-spectrum class A beta-lactamase. This enzyme breaks down
+beta-lactam antibiotics.
+
+\subsection{Conclusion:}\label{conclusion}
+
+The identification of \emph{Acinetobacter parvus}, is a gram-negative
+aerobic bacterium notable for forming small colonies in cultures, with
+the metrics displayed in Table~\ref{tbl-idsample}, indicates a strong
+result.
+
+\subsection*{Reference:}\label{reference}
+\addcontentsline{toc}{subsection}{Reference:}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{0}{1}
+\bibitem[\citeproctext]{ref-blast}
+Camacho, C., Coulouris, G., Avagyan, V., Ma, N., Papadopoulos, J.,
+Bealer, K. and Madden, T.L., 2009. BLAST+: Architecture and
+applications. \emph{BMC Bioinformatics}, 10(1), p.421.
+https://doi.org/\href{https://doi.org/10.1186/1471-2105-10-421}{10.1186/1471-2105-10-421}.
+
+\bibitem[\citeproctext]{ref-Chen2025}
+Chen, G., Wiegand, C., Willett, A., Herr, C., Müller, R., Bals, R. and
+Kalinina, O.V., 2025. Comparative metagenomic analysis on {COPD} and
+health control samples reveals taxonomic and functional motifs.
+\emph{Frontiers in Microbiology}, 16, p.1636322.
+https://doi.org/\href{https://doi.org/10.3389/fmicb.2025.1636322}{10.3389/fmicb.2025.1636322}.
+
+\bibitem[\citeproctext]{ref-megahit}
+Li, D., Luo, R., Liu, C.-M., Leung, C.-M., Ting, H.-F., Sadakane, K.,
+Yamashita, H. and Lam, T.-W., 2016. {MEGAHIT} v1.0: A fast and scalable
+metagenome assembler driven by advanced methodologies and community
+practices. \emph{Methods}, 102, pp.3--11.
+https://doi.org/\href{https://doi.org/10.1016/j.ymeth.2016.02.020}{10.1016/j.ymeth.2016.02.020}.
+
+\bibitem[\citeproctext]{ref-bwa}
+Li, H. and Durbin, R., 2009. Fast and accurate short read alignment with
+burrows-wheeler transform. \emph{Bioinformatics}, 25(14), pp.1754--1760.
+https://doi.org/\href{https://doi.org/10.1093/bioinformatics/btp324}{10.1093/bioinformatics/btp324}.
+
+\bibitem[\citeproctext]{ref-seqkit}
+Shen, W., Sipos, B. and Zhao, L., 2024. SeqKit2: A swiss army knife for
+sequence and alignment processing. \emph{iMeta}, {[}online{]} 3(3),
+p.e191.
+https://doi.org/\href{https://doi.org/10.1002/imt2.191}{10.1002/imt2.191}.
+
+\end{CSLReferences}
+
+
+
+
+\end{document}
