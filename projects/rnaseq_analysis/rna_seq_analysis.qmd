@@ -1,0 +1,451 @@
+---
+title: "Differential Expression Analysis of Chromosome X RNA-seq Data"
+author:
+  - name: "Devon Allies"
+    email: "alliesdl@gmail.com"
+    degrees: "BSc Hons. Bioinformatics & Computational Biology"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: "Contents"
+    toc-location: left
+    theme: flatly
+    self-contained: true
+  pdf:
+    toc: true
+    toc-depth: 3
+    lof: true
+    lot: true
+    number-sections: false
+    colorlinks: true
+    include-in-header:
+      text: |
+        \usepackage{afterpage}
+    include-before-body:
+      text: |
+        \newpage
+    geometry:
+      - top=25mm
+      - left=25mm
+      - right=25mm
+      - bottom=25mm
+    fontsize: 11pt
+    papersize: a4
+    
+execute:
+  warning: false
+  message: false
+  echo: false
+  
+bibliography: references.bib
+csl: harvard-anglia-ruskin-university.csl
+citation: true
+
+license:
+  text: "CC BY-NC-SA 4.0"
+  url: https://creativecommons.org/licenses/by-nc-sa/4.0/
+  
+engine: knitr
+
+image: 'rnaseq.jpeg"
+---
+
+::: {.content-visible when-format="pdf"}
+\newpage
+:::
+
+## Overview
+
+This analysis evaluates transcriptional variations on {{< acr chrX >}} between male and female individuals to uncover sex-specific dynamics. This study utilizes a cohort of 12 paired-end {{< acr RNAseq >}} samples obtained from distinct geographical populations. By adjusting for population structure, this analysis isolates robust sex-linked genetic expression underlying chromosome-wide regulation mechanisms.
+
+## Methods
+
+### Data Processing
+
+Raw paired-end sequencing reads were processed using a reproducible, custom Nextflow DSL2 pipeline hosted at [github.com/DevonAllies/rnaseq-pipeline](https://github.com/DevonAllies/rnaseq_pipeline/tree/main). The computational workflow was systemically executed using the following steps:
+
+| Step | Tool | Purpose |
+|---|---|---|
+| {{< acr QC >}} | FastQC | Assess raw read quality |
+| Adapter trimming | Trim Galore | Remove sequencing adapters |
+| Alignment | HISAT2 | Splice-aware alignment to {{< acr chrX >}} |
+| Assembly | StringTie | Per-sample transcript quantification |
+| Merging | StringTie merge | Consensus transcriptome across samples |
+| Re-estimation | StringTie | Re-quantify against merged {{< acr GTF >}} |
+| {{< acr QC >}} report | MultiQC | Aggregate quality metrics |
+
+The pipeline execution was controlled via the baseline terminal command:
+
+```bash
+nextflow run rnaseq.nf -profile local --hisat2_prefix indexes/chrX_tran
+```
+### Differential Expression
+
+Downstream {{< acr DE >}} modeling was performed at the gene level using the [Ballgown](https://bioconductor.org/packages/release/bioc/html/ballgown.html) R package. To isolate sexual differences, phenotypic sex was treated as the primary covariate. Population origin was strictly embedded as a confounding adjustment variable to account for ancestry-driven batch effects. Statistical significance was controlled using {{< acr FDR >}} threshold of $q-value < 0.05$.
+
+## Setup and Sample Phenotypes
+
+### Sample Population Metrics
+
+```{r}
+#| label: libraries
+#| results: hide
+
+packages <- c("tidyverse", "dplyr", "ggplot2", "ballgown", "genefilter", "ggrepel")
+lapply(packages, library, character.only = TRUE)
+```
+
+::: {.content-visble when-format="pdf"}
+\newpage
+:::
+
+```{r}
+#| label: tbl-phenodata
+#| tbl-cap: "Sample phenotype information"
+
+# load sample metadata
+pheno_data <- read.csv("data/geuvadis_phenodata.csv")
+
+# Match sample IDs to directory names
+pheno_data$ids <- paste0(pheno_data$ids, "_chrX")
+
+pheno_data |>
+  knitr::kable(booktabs = TRUE) |> 
+  kableExtra::kable_styling(
+    latex_option = c("hold_position", "striped"),
+    font_size = 9
+  )
+```
+
+```{r}
+#| label: sample-summary
+
+yri_male <- pheno_data$ids[pheno_data$population == "YRI" & pheno_data$sex == "male"]
+yri_female <- pheno_data$ids[pheno_data$population == "YRI" & pheno_data$sex == "female"]
+gbr_male <- pheno_data$ids[pheno_data$population == "GBR" & pheno_data$sex == "male"]
+gbr_female <- pheno_data$ids[pheno_data$population == "GBR" & pheno_data$sex == "female"]
+
+n_total <- nrow(pheno_data)
+```
+
+The sample group balances phenotypic sex and regional cohorts across `r n_total` distinct repository entries. The baseline experimental structure is detailed below: 
+
+- **YRI Cohort:** Comprises `r length(yri_male)` male samples (`r paste(yri_male, collapse = ", ")`) and `r length(yri_female)` female samples (`r paste(yri_female, collapse = ", ")`).
+
+- **GBR Cohort:** Comprises `r length(gbr_male)` male samples (`r paste(gbr_male, collapse = ", ")`) and `r length(gbr_female)` female samples (`r paste(gbr_female, collapse = ", ")`).
+
+```{r}
+#| label: load-ballgown
+#| results: hide
+
+# Load Ballgown object from StringTie ctab files
+bg <- ballgown(
+  dataDir = "data/stringtie_final",
+  samplePattern = "ERR",
+  pData = pheno_data
+)
+
+# Filter low-abundance transcripts
+bg_filtered <- subset(bg, "rowVars(texpr(bg)) > 1", genomesubset = TRUE)
+```
+
+## Exploratory Analysis
+
+```{r}
+#| label: fig-pca
+#| fig-cap: "PCA of transcript-level FPKM expression across all chrX samples"
+
+# Extract FPKM matrix and remove zero-variance rows
+fpkm_mat <- texpr(bg, "FPKM")
+fpkm_log <- log(fpkm_mat + 1)
+fpkm_var <- fpkm_log[rowVars(fpkm_log) > 0, ]
+
+# PCA
+pca <- prcomp(t(fpkm_var), scale. = TRUE)
+
+pca_df <- as.data.frame(pca$x) |>
+  mutate(
+    sex        = pData(bg)$sex,
+    population = pData(bg)$population,
+    sample     = sampleNames(bg)
+  )
+
+# Variance explained
+var_exp <- round(summary(pca)$importance[2, 1:2] * 100, 1)
+
+ggplot(pca_df, aes(x = PC1, y = PC2,
+                   colour = sex, shape = population,
+                   label = sample)) +
+  geom_point(size = 4) +
+  geom_text_repel(size = 3, max.overlaps = 20) +
+  scale_colour_manual(
+    values = c("female" = "#E91E8C", "male" = "#1E90E9"),
+    guide  = guide_legend(override.aes = list(size = 4, alpha = 1))
+  ) +
+  scale_shape_manual(values = c("GBR" = 15, "YRI" = 17)) +
+  labs(
+    title  = "PCA of RNA-seq Expression (chrX)",
+    x      = paste0("PC1 (", var_exp[1], "% variance)"),
+    y      = paste0("PC2 (", var_exp[2], "% variance)"),
+    colour = "Sex",
+    shape  = "Population"
+  ) +
+  theme_bw(base_size = 13) +
+  theme(legend.position = "right")
+```
+
+```{r}
+#| label: de-analysis
+#| results: hide
+
+# Transcript-level DE by sex, adjusting for population
+results_transcripts <- stattest(
+  bg_filtered,
+  feature = "transcript",
+  covariate = "sex",
+  adjustvars = "population",
+  getFC = TRUE,
+  meas = "FPKM"
+)
+
+# Gene-level DE
+results_genes <- stattest(
+  bg_filtered,
+  feature = "gene",
+  covariate = "sex",
+  adjustvars = "population",
+  getFC = TRUE,
+  meas = "FPKM"
+)
+```
+
+```{r}
+#| label: significant-genes
+
+# Add gene names to results
+results_transcripts <- data.frame(
+  geneNames = geneNames(bg_filtered),
+  geneIDs = geneIDs(bg_filtered),
+  results_transcripts
+)
+
+# Filter significant genes at q < 0.05
+sig_genes <- results_genes |> 
+  filter(qval < 0.05) |> 
+  arrange(qval)
+
+# Filter significant transcript at q < 0.05
+sig_transcripts <- results_transcripts |> 
+  filter(qval < 0.05) |> 
+  arrange(qval)
+```
+
+```{r}
+#| label: fig-volcano
+#| fig-cap: "Volcano plots of differential gene expression on chrX. Fold change is calculated male relative to female, adjusted for population (YRI and GBR). Dashed horizontal line indicates q = 0.05 significance threshold."
+
+results_genes |>
+  mutate(
+    log2fc    = log2(fc),
+    neg_log10 = -log10(qval),
+    sig       = qval < 0.05,
+    label     = case_when(
+      id == "MSTRG.332" ~ "XIST",
+      id == "MSTRG.331" ~ "TSIX",
+      id == "MSTRG.233" ~ "KDM6A",
+      TRUE ~ NA_character_
+    )
+  ) |>
+  ggplot(aes(x = log2fc, y = neg_log10, colour = sig)) +
+  geom_point(size = 1.8) +
+  geom_hline(yintercept = -log10(0.05), linetype = "dashed", colour = "grey40") +
+  geom_vline(xintercept = c(-1, 1),     linetype = "dashed", colour = "grey40") +
+  geom_text_repel(aes(label = label), size = 3.5, na.rm = TRUE, fontface = "italic") +
+  scale_colour_manual(
+    values = c("FALSE" = "grey60", "TRUE" = "#d73027"),
+    labels = c("FALSE" = "No", "TRUE" = "Yes"),
+    guide  = guide_legend(override.aes = list(size = 4, alpha = 1))
+  ) +
+  annotate("text", x = max(log2(results_genes$fc), na.rm = TRUE),
+           y = -log10(0.05) + 0.1, label = "q = 0.05",
+           hjust = 1, size = 3, colour = "grey40") +
+  labs(
+    x        = expression(log[2]~"Fold Change"),
+    y        = expression(-log[10]~"(q-value)"),
+    title    = "Differential Expression on Chromosome X",
+    subtitle = "Male vs Female | Adjusted for population",
+    colour   = "Significant"
+  ) +
+  theme_classic() +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+#| label: fig-boxplots
+#| fig-cap: "Expression of significant Chromosome X genes by sex (FPKM)"
+
+# Extract FPKM expression matrix
+fpkm <- texpr(bg_filtered, meas = "FPKM")
+
+# Extract before piping
+fpkm_t <- as.data.frame(t(fpkm))
+
+fpkm_df <- fpkm_t |>
+  mutate(
+    sample = rownames(fpkm_t),
+    sex    = pheno_data$sex
+  ) |>
+  pivot_longer(
+    cols      = -c(sample, sex),
+    names_to  = "transcript_id",
+    values_to = "fpkm"
+  ) |>
+  mutate(
+    transcript_num = as.integer(transcript_id),
+    gene = case_when(
+      transcript_num == 1059 ~ "XIST",
+      transcript_num == 1058 ~ "TSIX",
+      transcript_num == 435  ~ "KDM6A",
+      TRUE ~ NA_character_
+    )
+  ) |>
+  filter(!is.na(gene))
+
+ggplot(fpkm_df, aes(x = sex, y = log2(fpkm + 1), fill = sex)) +
+  geom_boxplot(alpha = 1, outlier.shape = NA) +
+  geom_jitter(width = 0.15, size = 1.5, alpha = 0.6) +
+  facet_wrap(~ gene, scales = "free_y") +
+  scale_fill_manual(values = c("female" = "#d73027", "male" = "#4575b4")) +
+  labs(
+    x     = "Sex",
+    y     = expression(log[2]~"(FPKM + 1)"),
+    title = "Expression of Significant Chromosome X Genes by Sex"
+  ) +
+  theme_classic() +
+  theme(legend.position = "none")
+```
+
+## Results
+
+### Transcript Filtering
+
+An initial set of `r format(nrow(texpr(bg)), big.mark = ",")` transcripts was extracted from the StringTie quantification step. To eliminate uninformative background noise and improve statistical power, transcripts with low variance across samples were pruned. Applying a filtration cutoff threshold of $rowVar > 1$ successfully yielded `r format(nrow(texpr(bg_filtered)), big.mark = ",")` high-confidence transcripts retained for exploratory and differential expression processing.
+
+### Exploratory Variance Analysis
+
+To understand global relationship structures within the filtered datasets, a {{< acr PCA >}} was calculated on transcript-level {{< acr FPKM >}} expression data.
+
+As plotted in @fig-pca, the first two principal components explained `r var_exp[1] + var_exp[2]`% of total variance (PC1: `r var_exp[1]`%, PC2: `r var_exp[2]`%). The distribution patterns reveal a modest separation based on biological sex along the axis trajectories. Concurrently, clear macro-clusters demonstrate underlying population structure, showing distinct spatial partitioning between European (GBR) and African (YRI) cohorts. This population grouping confirms the necessity of utilizing nested model adjustments within the F-test framework to avoid ancestry-driven false-positive discoveries.
+
+### Differential Expression
+
+```{r}
+#| label: tbl-sig-transcripts
+#| tbl-cap: "Significant differentially expressed transcripts (q < 0.05)"
+
+sig_transcripts |> 
+  mutate(
+    fc   = round(fc, 3),
+    pval = format(pval, scientific = TRUE, digits = 2),
+    qval = format(qval, scientific = TRUE, digits = 2)
+  ) |>
+  knitr::kable(booktabs = TRUE) |> 
+  kableExtra::kable_styling(
+    latex_option = c("hold_position", "striped"),
+    font_size = 9
+  )
+```
+
+```{r}
+#| label: tbl-sig-genes
+#| tbl-cap: "Significant differentially expressed genes (q < 0.05)"
+
+sig_genes |>  
+  mutate(
+    fc   = round(fc, 3),
+    pval = format(pval, scientific = TRUE, digits = 2),
+    qval = format(qval, scientific = TRUE, digits = 2)
+  ) |>
+  knitr::kable(booktabs = TRUE) |> 
+  kableExtra::kable_styling(
+    latex_option = c("hold_position", "striped"),
+    font_size = 9
+  )
+```
+
+Statistical testing on the curated genomic features revealed a highly localized set of differentially expressed targets. As mapped out in @fig-volcano, only three specific genes crossed the designated horizontal significance threshold of $q = 0.05$. Fold-change computations reflect expression levels of males relative to females; consequently, negative log~2~ fold-change parameters pinpoint strong female-biased gene expression patterns.
+
+The three significant genes identified are:
+
+```{r}
+#| label: sig_gen-values
+
+xist <- sig_genes[sig_genes$id == "MSTRG.332", ]
+tsix <- sig_genes[sig_genes$id == "MSTRG.331", ]
+kdm6a <- sig_genes[sig_genes$id == "MSTRG.233", ]
+
+# Format q-values as proper scientific notations for inline use
+fmt_q <- function(q) {
+  s <- format(q, scientific = TRUE, digits = 2)
+  parts <- strsplit(s, "e")[[1]]
+  paste0(parts[1], " \\times 10^{", as.integer(parts[2]), "}")
+}
+```
+
+- **XIST (MSTRG.332):** Shows an extreme female bias with a fold change value of `r round(xist$fc, 5)` and a significance score ($q = `r fmt_q(xist$qval)`$).
+
+- **TSIX (MSTRG.331):** Displays an aligned female bias with an intermediate fold change metric of `r round(tsix$fc, 5)` ($q = `r fmt_q(tsix$qval)`$).
+
+- **KDM6A (MSTRG.233):** Reaches significant separation parameters with an adjusted fold change value of `r round(kdm6a$fc, 5)` ($q = `r fmt_q(kdm6a$qval)`$).
+
+### Gene Abundance Quantification
+
+To validate individual candidate patterns, expression profiles were plotted using log~2~ ({{< acr FPKM >}} + 1) metrics. The resulting boxplots (@fig-boxplots) illustrate clear group distributions:
+
+- **XIST and TSIX Expression:** Both features exhibit definitive binary regulation profiles. Abundance levels are highly elevated in females (with median log~2~ values resting between 6.0 and 9.0) but drop down to zero baseline noise across all male samples. This is consistent with their known roles: _XIST_ drives female-specific {{< acr XCI >}}, while _TSIX_ acts as its antisense regulator partner.
+
+- **KDM6A Expression:** Unlike the regulatory {{< acr RNA >}},  _KDM6A_ is actively transcribed in both sexes. However, female samples present a statistically elevated expression ceiling compared to male profiles. This matches its classification as an {{< acr XCI >}}-escape gene that regularly maintains dual-dosage activity in female tissue.
+
+## Discussion and Conclusion
+
+### Biological Implications of Female-Biased Expression
+
+The differential expression analysis of human Chromosome X transcripts revealed a highly localized regulatory signature. Only three genes - _XIST_, _TSIX_, and _KDM6A_ - exhibited statistically  significant expression differences between sexes ($q < 0.05$). All three candidates demonstrated explicit female-biased abundance. This tight localization underscores the stringent evolutionary conservation governing sex-chromosome dosage mechanisms in humans.
+
+### Mechanistic Synergy of XIST and TSIX
+
+The identification of XIST (MSTRG.332) and TSIX (MSTRG.331) as the most statistically significant differentially expressed features aligns with established models of
+{{< acr XCI >}} [@Lyon1961; @Galupa2018]. In female mammals, dosage compensation between XX and XY individuals is achieved by transcriptionally silencing one of the two female X chromosomes.
+
+- **XIST Function:** This {{< acr lncRNA >}} is transcribed exclusively from the future inactive X chromosome ($X_i$). It physically coats the chromosome in cis, recruiting repressive chromatin-modifying complexes to initiate heterochromatin silencing.
+
+- **TSIX Function:** Operating as an antisense {{< acr lncRNA >}} partner, TSIX is transcribed from the opposite strand [@Lee1999] and overlaps the XIST locus. It acts as a negative regulator of XIST. Prior to inactivation, TSIX expression on the future active X chromosome ($X_a$) represses XIST accumulation, preserving transcription.
+
+The binary expression profiles captured in the FPKM boxplots (@fig-boxplots) — where both {{< acr lncRNA >}}s show near-zero baseline expression across all male samples — reflect this strict functional biology. Because males possess only a single, active X chromosome, the XIST/TSIX inactivation locus is never activated.
+
+### Dosage Escape by KDM6A
+
+The significant female bias observed in KDM6A (MSTRG.233) highlights a distinct biological phenomenon: {{< acr XCI >}} escape. KDM6A encodes a histone demethylase responsible for removing repressive H3K27me3 marks, thereby promoting transcriptionally active chromatin states.
+
+Unlike XIST and TSIX, KDM6A maintains active transcription in male individuals. However, its elevated expression in females confirms that it escapes complete epigenetic silencing [@Balaton2015] on the inactive X chromosome. Because KDM6A is transcribed from both the active and inactive X chromosomes in females, it avoids single-dosage constraint, resulting in a higher steady-state {{< acr mRNA >}} abundance relative to males. This dual-dosage profile may contribute to sex-specific differences in immune responses and oncogenic susceptibility, as KDM6A plays a key role in chromatin remodeling.
+
+### Conclusion
+
+By controlling for confounding population structures via Ballgown's nested F-test framework, this study isolated true sex-linked transcriptional signals from geographic background noise. The identification of XIST, TSIX, and KDM6A validates the {{< acr RNAseq >}} processing pipeline, as these targets represent the canonical core of human X-chromosome regulation. The clear separation of population cohorts in the exploratory {{< acr PCA >}} highlights the necessity of accounting for genetic ancestry in multi-population expression studies to prevent false-positive discoveries.
+
+::: {.content-visible when-format="pdf"}
+\newpage
+:::
+
+\printacronyms
+
+::: {.content-visble when-format="pdf"}
+\newpage
+:::
+
+## Reference
+
+::: {#refs}
+:::

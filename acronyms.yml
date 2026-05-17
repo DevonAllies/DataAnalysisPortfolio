@@ -1,0 +1,30 @@
+---
+acronyms:
+  keys:
+    - shortname: RNAseq
+      longname: RNA Sequencing
+    - shortname: DE
+      longname: Differential Expression
+    - shortname: chrX
+      longname: Chromosome X
+    - shortname: QC
+      longname: Quality Control
+    - shortname: GTF
+      longname: Gene Transfer Format
+    - shortname: FDR
+      longname: False Discovery Rate
+    - shortname: PCA
+      longname: Principal Component Analysis
+    - shortname: FPKM
+      longname: Fragments Per Kilobase of transcript per Million mapped reads
+    - shortname: TPM
+      longname: Transcripts Per Million
+    - shortname: RNA
+      longname: Ribonucleic acid
+    - shortname: XCI
+      longname: X-Chromosome Inactivation
+    - shortname: lncRNA
+      longname: long non-coding RNA
+    - shortname: mRNA
+      longname: messenger RNA
+---

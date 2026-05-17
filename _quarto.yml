@@ -21,3 +21,15 @@ format:
       - brand
     css: styles.css
     toc: true
+    
+filters:
+  - acronyms
+  
+acronyms:
+  fromfile: ./acronyms.yml
+  loa_title: "List of Acronyms"
+  insert_loa: false
+  insert_links: true
+  include_unused: true
+  sorting: alphabetical
+  style: "long-short"

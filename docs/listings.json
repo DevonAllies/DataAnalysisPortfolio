@@ -3,8 +3,10 @@
     "listing": "/projects.html",
     "items": [
       "/projects/covid/covid19_eda.html",
+      "/projects/retractions/retraction.html",
       "/projects/tbTrends/TBTrendsEDA.html",
       "/projects/viralMetagenomics/viralMetagenomics.html",
+      "/projects/rnaseq_analysis/rna_seq_analysis.html",
       "/projects/R & Python/R & Python.html"
     ]
   }
