@@ -19,6 +19,44 @@
     "viralMetagenomics.tex": "6a4955c5"
   },
   "projects/R & Python/R & Python.qmd": {
-    "R & Python.html": "4dcff924"
+    "R & Python.html": "4dcff924",
+    "R---Python.tex": "ced4b854"
+  },
+  "projects/Gene Expression/geneExpression.qmd": {
+    "geneExpression.html": "f1044e76"
+  },
+  "projects/Gene-Expression/geneExpression.qmd": {
+    "geneExpression.html": "240ca54b"
+  },
+  "projects/geneExpression/geneExpression.qmd": {
+    "geneExpression.html": "d81d627f"
+  },
+  "projects/retractions/retraction.qmd": {
+    "retraction.html": "08b6e23c"
+  },
+  "projects/cancerVariant/cancer_variants.qmd": {
+    "cancer_variants.html": "648a967c"
+  },
+  "projects/rnaseq_analysis/rna_seq_analysis.qmd": {
+    "rna_seq_analysis.html": "f7613a7f",
+    "rna_seq_analysis.tex": "bc748922"
+  },
+  "tutorials/bal/tutorials/tutorial1_cleaning_importing.qmd": {
+    "tutorial1_cleaning_importing.html": "96571655"
+  },
+  "projects/scrnaseq_analysis/scrna_analysis.qmd": {
+    "scrna_analysis.html": "006c7ad1"
+  },
+  "tutorials.qmd": {
+    "tutorials.html": "b4c59987"
+  },
+  "projects/tb_diagnosis/tb_diagnostics.qmd": {
+    "tb_diagnostics.html": "d361c070"
+  },
+  "projects/cytokines/Differential Evaluation of TB Biomarker Profiles.qmd": {
+    "Differential Evaluation of TB Biomarker Profiles.html": "1dde1930"
+  },
+  "projects/databricks_mlflow/bal_pipeline.qmd": {
+    "bal_pipeline.html": "6242dba2"
   }
 }

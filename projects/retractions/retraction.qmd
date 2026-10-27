@@ -1,0 +1,117 @@
+---
+title: " Global Retractions of Scientific Publications"
+author:
+  - name: "Devon Allies"
+    email: "alliesdl@gmail.com"
+    degrees: "BSc Hons. Bioinformatics"
+    
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    toc-title: "Contents"
+    toc-location: left
+    theme: flatly
+    code-fold: true
+    code-tools: true
+    
+engine: knitr
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| label: r-librabies
+
+# Load necessary libraries
+library(tidyverse)
+library(ggplot2)
+library(readr)
+library(knitr)
+library(kableExtra)
+library(reticulate)
+library(gtsummary)
+library(DBI)
+library(RMySQL)
+library(skimr)
+library(janitor)
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| label: r-mysql-import
+
+# Import data from MySQL database
+con <- dbConnect(RMySQL:: MySQL(),
+                 host = '127.0.0.1',
+                 user = 'root',
+                 password = 'Delta5echo)(',
+                 dbname = 'kaggle',
+                 port = 3306)
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| label: r-mysql-query
+
+# Load data from the database
+df <- dbGetQuery(con, "SELECT * FROM globalRetractions")
+```
+
+# Introduction:
+
+In the world of scientific research, the integrity and reliability of published work are paramount. However, there are instances where published research is found to be flawed, leading to retractions. Retractions can occur for various reasons, including errors in data, ethical issues, or even misconduct. This project aims to analyze global retractions of scientific publications to understand trends, causes, and implications.
+
+# Data Analysis:
+
+To analyze these retractions, we will explore a dataset sourced from Kaggle and managed within a MySQL database. This analysis will examine the distribution of retractions across various scientific fields, identify the most common triggers for withdrawal, and track how these occurrences have evolved over time.
+
+```{r}
+#| echo: false
+#| label: r-skim-data
+#| message: false
+#| warning: false
+
+# Clean column names using the janitor package
+df <- df %>%
+  clean_names()
+
+# Convert characters
+df <-  df %>%
+  mutate(across(where(is.character), ~iconv(., to = "UTF-8", sub = "")))
+
+dfDateRange <- df %>%
+  filter(retraction_year >= 2020 & retraction_year <=  2025)
+
+# Total number of Retractions
+retract <- dfDateRange %>%
+  summarise(Total = n()) %>%
+  pull(Total)
+```
+
+Although this dataset includes records dating back to 1928, this project specifically focuses on the period from 2020 to 2025. During this time frame, a total of `{r} format(retract, big.mark = ",")` retractions were recorded. @fig-retractions-over-time illustrates the annual distribution of these retractions over the specified period.
+
+```{r}
+#| echo: false
+#| label: fig-retractions-over-time
+#| fig-cap: "Number of Retractions Over Time"
+
+ggplot(dfDateRange, aes(retraction_year)) + 
+  geom_bar(fill = "#1D9E75") +
+  theme_minimal() + 
+  labs(
+    title = "Number of Retractions",
+    subtitle = "From 2020 to 2025",
+    x = "Year of Retraction",
+    y = "Count of Retrations"
+  ) +
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.background = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())
+```

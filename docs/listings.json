@@ -1,11 +1,18 @@
 [
   {
+    "listing": "/tutorials.html",
+    "items": []
+  },
+  {
     "listing": "/projects.html",
     "items": [
       "/projects/covid/covid19_eda.html",
+      "/projects/cytokines/Differential Evaluation of TB Biomarker Profiles.html",
       "/projects/retractions/retraction.html",
+      "/projects/scrnaseq_analysis/scrna_analysis.html",
       "/projects/tbTrends/TBTrendsEDA.html",
-      "/projects/viralMetagenomics/viralMetagenomics.html",
+      "/projects/tb_diagnosis/tb_diagnostics.html",
+      "/projects/databricks_mlflow/bal_pipeline.html",
       "/projects/rnaseq_analysis/rna_seq_analysis.html",
       "/projects/R & Python/R & Python.html"
     ]

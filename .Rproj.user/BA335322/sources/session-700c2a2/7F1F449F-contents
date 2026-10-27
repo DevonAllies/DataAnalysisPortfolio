@@ -1,7 +1,0 @@
----
-title: "Data Science Projects"
-listing:
-  contents: projects # This looks inside your 'projects' folder
-  type: grid         # Creates a professional card layout
-  sort: "date desc"
----

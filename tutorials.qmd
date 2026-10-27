@@ -1,0 +1,7 @@
+---
+title: "Data Science Tutorials"
+listing:
+  contents: tutorials # This looks inside your 'projects' folder
+  type: grid         # Creates a professional card layout
+  sort: "date desc"
+---

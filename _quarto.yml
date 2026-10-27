@@ -10,10 +10,11 @@ website:
         text: Home
       - href: projects.qmd
         text: Projects
+      - href: tutorials.qmd
+        text: Tutorials
       - href: about.qmd
         text: About Me
       
-
 format:
   html:
     theme:

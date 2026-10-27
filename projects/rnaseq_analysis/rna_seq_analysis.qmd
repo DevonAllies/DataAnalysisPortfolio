@@ -49,7 +49,7 @@ license:
   
 engine: knitr
 
-image: 'rnaseq.jpeg"
+image: 'rnaseq.jpeg'
 ---
 
 ::: {.content-visible when-format="pdf"}

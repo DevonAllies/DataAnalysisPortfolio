@@ -1,0 +1,325 @@
+---
+title: "Compartmental TB Diagnostics: A Simulated BAL Cytokine cohort"
+author:
+  - name: "Devon Allies"
+    email: "alliesdl@gmail.com"
+    affiliations: "BSc. Hons: Bioinformatics & Computational Biology"
+
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    toc-title: "Contents"
+    toc-location: left
+
+bibliography: src/references.bib
+csl: src/harvard-anglia-ruskin-university.csl
+image: 'src/tb.jpeg'
+engine: knitr
+subtitle: ""
+citation: true
+license: 
+  text: "CC BY-NC-SA 4.0"
+  url: https://creativecommons.org/licenses/by-nc-sa/4.0/
+  
+execute:
+  echo: false
+  message: false
+  warning: false
+  
+filters:
+  - acronyms
+  
+acronyms:
+  loa_title: "Glossary"
+  insert_loa: false
+  insert_links: false
+  keys:
+    - shortname: TB
+      longname: Tuberculosis
+    - shortname: BAL
+      longname: Bronchoalveolar lavage
+    - shortname: Th1
+      longname: Type 1 helper T cells
+    - shortname: WHO
+      longname: World Health Organization
+    - shortname: TPP
+      longname: Target Product Profile
+    - shortname: LTBI
+      longname: Latent Tuberculosis Infection
+    - shortname: csv
+      longname: comma-separated-value
+---
+
+:::{.callout-note}
+All patient records in the accompanying {{< acr csv >}} are entirely simulated. No real patient data, real assay measurements, or identifiable information were used at any stage. Concentrations, correlation structure, and group effects were generated computationally to be broadly consistent with published patterns in the TB immunology literature (cited below), not copied or fitted from any specific dataset. This project is intended purely as a methods/skills demonstration.
+:::
+
+# Introduction
+
+This dataset represents a computationally simulated cohort designed to model compartmental immune responses in human pulmonary {{< acr TB >}}. Most host-biomarker {{< acr TB >}} research relies on peripheral blood samples, which are minimally invasive but primarily reflect systemic immunity rather than local site-of-infection responses. In contrast, {{< acr BAL >}} samples the lung compartment directly, offering a distinct and less thoroughly mined immune signature characterized by heightened local {{< acr Th1 >}} activity.
+
+## Analytical and Clinical Objective
+
+The primary objective of this project is to build and evaluate a 3-class machine learning classifier (Active {{< acr TB >}} vs. {{< acr LTBI >}} vs. Uninfected) using the multiplex cytokine panel. Model performance will be bench-marked directly against the {{< acr WHO >}} {{< acr TPP >}} for a {{< acr TB >}} triage test, which requires a minimum acceptable performance threshold of $≥90%$ sensitivity and $≥70\%$ specificity.
+
+## Library import
+
+This project implements a multilingual data science workflow, utilizing R for data engineering and statistical analysis, and Python for predictive modeling. Data ingestion, programmatic cleaning, and parsing are executed using the R tidyverse core ecosystem, specifically **dplyr** [@dplyr], **tidyr** [@tidyr], **stringr** [@stringr], and **janitor** [@janitor]. Descriptive clinical tables and baseline group statistics are compiled using the R packages **gtsummary** [@gtsummary] and **broom** [@broom], while exploratory data visualization and dimensional reduction are conducted via **ggplot2** [@ggplot] and **factoextra** [@factoextra].
+
+If the analytical scope expands to predictive modeling, the workflow transitions to Python via the **reticulate** [@reticulate] interface. This pipeline leverages Python's machine learning libraries, including **scikit-learn** for cross-validation and evaluation metrics, **xgboost** for gradient-boosted decision tree architecture, and **shap** for model feature attribution.
+
+```{r}
+#| label: load-libraries
+#| code-fold: true
+#| code-summary: "Click to reveal code"
+
+packages <- c(
+  "ggplot2",
+  "dplyr",
+  "reticulate",
+  "tidyr",
+  "gtsummary",
+  "broom",
+  "purrr",
+  "stringr",
+  "factoextra",
+  "janitor",
+  "corrplot",
+  "knitr"
+)
+
+invisible(lapply(packages, library, character.only = TRUE))
+```
+
+## Data Ingestion & Setup
+
+The analytical workflow begins by establishing a reproducible environment and importing the simulated clinical dataset. The cohort data, stored in a flat-file {{< acr csv >}} format (`bal_cytokine_tb_cohort.csv`), is read into the R session using the optimized `read_csv()` parsing engine from the readr package. This approach automatically detects column types and guarantees consistent data frame structures for downstream operations.
+
+```{r}
+#| label: data-import
+
+# Import raw data
+raw_data <- read.csv("data/raw/bal_cytokine_tb_cohort.csv")
+
+# Clean column names
+df <- raw_data |> 
+  clean_names()
+```
+
+```{r}
+#| label: tbl-column-names
+#| tbl-cap: "Variables and column names present within the simulated BAL cytokine cohort dataset."
+
+# Extract column names
+column_names <- data.frame(
+  Index = 1:ncol(df),
+  `Column Name` = names(df),
+  check.names = FALSE
+)
+
+# Display column names in table format
+column_names |> 
+  gt::gt() |> 
+  gt::tab_header(
+    title = "Dataset Column Index Reference"
+  ) |> 
+  gt::cols_align(
+    align = "left",
+    columns = c(`Column Name`)
+  ) |> 
+  gt::cols_align(
+    align = "center",
+    columns = c(Index)
+  ) |> 
+  gt::tab_options(
+    table.width = gt::pct(100),
+    column_labels.font.weight = "bold"
+  )
+```
+
+The dataset comprises 12 columns containing demographic covariates, clinical statuses, and {{< acr BAL >}} biomarker measurements.
+
+```{r}
+#| label: tbl-summary-statistics
+#| tbl-cap: "Baseline patient demographics and compartmental bronchoalveolar lavage fluid cytokine levels stratified by diagnostic cohort subgroup."
+
+df |> 
+  select(
+    group,
+    age_years,
+    sex,
+    ip10_bal_pg_ml,
+    il6_bal_pg_ml,
+    il1b_bal_pg_ml,
+    ifng_bal_pg_ml,
+    tnfa_bal_pg_ml,
+    il8_bal_pg_ml
+  ) |> 
+  tbl_summary(
+    by = group,
+    missing = "no",
+    label = list(
+      age_years ~ "Age (Years)",
+      sex ~ "Biological Sex",
+      ip10_bal_pg_ml ~ "IP-10",
+      il6_bal_pg_ml ~ "IL-6",
+      il1b_bal_pg_ml ~ "IL-1β",
+      tnfa_bal_pg_ml ~ "TNF-α",
+      ifng_bal_pg_ml ~ "INF-γ",
+      il8_bal_pg_ml ~ "IL-8"
+    ),
+    statistic = list(
+      all_continuous() ~ "{median} ({p25}, {p75})",
+      all_categorical() ~ "{n} ({p}%)"
+    )
+  ) |>
+  add_overall(last = FALSE, col_label = "Total Cohort") |>
+  bold_labels() |> 
+  italicize_levels() |> 
+  as_gt() |>
+  gt::tab_options(
+    data_row.padding = gt::px(8), 
+    row_group.border.bottom.width = gt::px(1),
+    table.width = gt::pct(100),
+    column_labels.font.weight = "bold"
+  ) |>
+  gt::tab_style(
+    style = gt::cell_text(weight = "bold"),
+    locations = gt::cells_body(columns = label, rows = is.na(row_type))
+  )
+```
+
+A baseline summary of the cohort across clinical groups demonstrates balanced demographic distributions alongside distinctly elevated local immune profiles in the active disease state. Pro-inflammatory cytokines and chemokines—specifically IP-10, IL-6, and IL-8—show marked concentrations within the {{< acr BAL >}} fluid of the Active {{< acr TB >}} group compared to both the {{< acr LTBI >}} and Uninfected control cohorts.
+
+```{r}
+#| label: data-cleaning
+
+cytokines = c(
+  "ip10_bal_pg_ml",
+  "il6_bal_pg_ml",
+  "il1b_bal_pg_ml",
+  "ifng_bal_pg_ml",
+  "tnfa_bal_pg_ml",
+  "il8_bal_pg_ml"
+)
+
+df_cleaned <- df |> 
+  pivot_longer(
+    cols = all_of(cytokines),
+    names_to = "cytokine",
+    values_to = "concentration"
+  ) |> 
+  mutate(
+    cytokine = case_when(
+      cytokine == "ip10_bal_pg_ml" ~ "IP-10",
+      cytokine == "il6_bal_pg_ml" ~ "IL-6",
+      cytokine == "il1b_bal_pg_ml" ~ "IL-1β",
+      cytokine == "ifng_bal_pg_ml" ~ "IFN-γ",
+      cytokine == "tnfa_bal_pg_ml" ~ "TNF-α",
+      cytokine == "il8_bal_pg_ml" ~ "IL-8"
+    )
+  )
+
+df_cleaned <- df_cleaned |> 
+  mutate(
+    group = as.factor(group),
+    sex = as.factor(sex),
+    cytokine = as.factor(cytokine)
+  )
+
+df <- df |> 
+  rename_with(~ str_remove(., "_bal_pg_ml$|_ml$"))
+```
+
+```{r}
+#| label: tbl-missing-values
+#| tbl-cap: "Analysis of missingness patterns across the dataset"
+
+# Calculate NA counts
+na_counts <- sapply(df_cleaned, function(x) sum(is.na(x)))
+
+# Convert to a structured dataframe
+na_table <- data.frame(
+  Variable = names(na_counts),
+  `Missing Values (Counts)` = as.numeric(na_counts),
+  `Missing Values (%)` = 0,
+  check.names = FALSE
+)
+
+# Print table
+kable(na_table)
+```
+
+@tbl-missing-values displays an analysis of missingness patterns across the dataset, demonstrating that the data is completely integrated with no omissions. For every listed variable—including identifiers like `subject_id`, clinical or demographic factors like `group`, `age_years`, `sex`, and `hiv_status`, as well as laboratory measures like `bal_volume_ml`, cytokine, and concentration—both the missing value counts and their corresponding percentages are exactly zero. This confirms a fully populated dataset, ensuring maximum statistical reliability for subsequent analytics without requiring imputation techniques.
+
+```{r}
+#| label: fig-cytokine-boxplots
+#| fig-cap: "Compartmental BAL fluid cytokine concentrations across diagnostic cohorts. Data are displayed on a log10 scale to accommodate wide distribution variances."
+
+ggplot(df_cleaned, aes(group, concentration, fill = group)) +
+  geom_boxplot(outliner.shape = NA) + 
+  facet_wrap(~cytokine, scales = "free_y") + 
+  scale_y_log10() + 
+  theme_minimal() + 
+  labs(
+    x = "Diagnostic Cohort Group",
+    y = "Concentration (log10)"
+  ) + 
+    theme(
+    legend.position = "none",
+    strip.text = element_text(face = "bold", size = 11)
+  )
+```
+
+To visualize the variations in biomarker concentrations across the diagnostic groups, we plot the log10-transformed concentrations of the six {{< acr BAL >}} cytokines (@fig-cytokine-boxplots). Active {{< acr TB >}} patients display distinct up-regulation across all measured markers—particularly IFN-γ, IL-1β, and IP-10, separating them from both the latent infection and uninfected control groups.
+
+```{r}
+
+# Create function to transform cytokines to log10
+log_transformation <- function(data, column) {
+  for (col in column) {
+    data[[col]] <- log10(data[[col]])
+  }
+  return(data)
+}
+
+# Create function to transform chr to factors
+factor_transformation <- function(data, column) {
+  for (col in column) {
+    data[[col]] <- as.factor(data[[col]])
+  }
+  return(data)
+}
+
+# Select the columns that are to be transformed
+selected_cytokines <- c(
+  "ip10",
+  "il6",
+  "il1b",
+  "ifng",
+  "tnfa",
+  "il8"
+)
+
+# Select the columns that are to be transformed to factors
+selected_factors <- c(
+  "group",
+  "sex",
+  "hiv_status"
+)
+
+# Transform the columns to log10
+df_log <- log_transformation(df, selected_cytokines)
+
+# Transform the columns to factor
+df_log <- factor_transformation(df_log, selected_factors)
+```
+
+\printacronyms
+
+\listoftables
+
+# References
+:::{#refs}
+:::

@@ -1,0 +1,30 @@
+---
+title: "Databricks data pipeline: simulated BAL study"
+author: "Devon Allies"
+description: "Bronze, silver and gold Delta tables, tested cleaning functions, MLflow model tracking and a Streamlit demo, built on simulated clinical data."
+image: bal-pipeline.png
+categories: [Databricks, PySpark, MLflow, Python]
+date: 2026-10-27
+---
+
+**All data in this project are simulated.**
+
+An end-to-end pipeline on Databricks Free Edition: messy Excel files in, clean Delta tables and tracked models out.
+
+## Pipeline
+
+Excel files, then bronze (raw strings with lineage columns), silver (typed, cleaned, no identifiers), gold (one row per participant), then a scikit-learn model tracked in MLflow.
+
+## Results
+
+| Model | CV AUC | Test AUC |
+|---|---|---|
+| Baseline | 0.500 | 0.500 |
+| Logistic regression | 0.686 | 0.645 |
+| Random forest | 0.702 | 0.665 |
+
+A modest result on simulated data. Most of the signal comes from one built-in effect, so this is a workflow demonstration, not a finding.
+
+## Code
+
+[View the repository on GitHub](https://github.com/DevonAllies/MLops_bal_pipeline)

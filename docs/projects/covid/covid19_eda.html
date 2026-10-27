@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.27">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,6 +10,9 @@
 
 <title>Covid 19 Dataset – Data Science Projects</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -87,15 +90,14 @@ div.csl-indent {
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5dace33b8eeff415c0721a143d25f203.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-839d7b478c557d19ff65a2daea224a03.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -125,7 +127,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -181,6 +183,10 @@ window.Quarto = {
   <li class="nav-item">
     <a class="nav-link" href="../../projects.html"> 
 <span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../tutorials.html"> 
+<span class="menu-text">Tutorials</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
@@ -284,7 +290,7 @@ window.Quarto = {
 </section>
 <section id="import-modules-packages" class="level2">
 <h2 class="anchored" data-anchor-id="import-modules-packages">Import modules &amp; packages:</h2>
-<p>Analysis was conducted primarily using Python, leveraging key libraries from the scientific Python ecosystem: <strong>pandas</strong> <span class="citation" data-cites="reback2020pandas">(<a href="#ref-reback2020pandas" role="doc-biblioref">team, 2020</a>)</span>, <strong>Numpy</strong> <span class="citation" data-cites="harris2020array">(<a href="#ref-harris2020array" role="doc-biblioref">Harris et al., 2020</a>)</span>, <strong>Seaborn</strong> <span class="citation" data-cites="Waskom2021">(<a href="#ref-Waskom2021" role="doc-biblioref">Waskom, 2021</a>)</span>, <strong>Matplotlib</strong> <span class="citation" data-cites="Hunter:2007">(<a href="#ref-Hunter:2007" role="doc-biblioref">Hunter, 2007</a>)</span>, and <strong>SciPy</strong> <span class="citation" data-cites="2020SciPy-NMeth">(<a href="#ref-2020SciPy-NMeth" role="doc-biblioref">Virtanen et al., 2020</a>)</span>.</p>
+<p>Analysis was conducted primarily using Python, leveraging key libraries from the scientific Python ecosystem: <strong>pandas</strong> <span class="citation" data-cites="reback2020pandas">(<a href="#ref-reback2020pandas" role="doc-biblioref"><span class="nocase">team</span>, 2020</a>)</span>, <strong>Numpy</strong> <span class="citation" data-cites="harris2020array">(<a href="#ref-harris2020array" role="doc-biblioref">Harris et al., 2020</a>)</span>, <strong>Seaborn</strong> <span class="citation" data-cites="Waskom2021">(<a href="#ref-Waskom2021" role="doc-biblioref">Waskom, 2021</a>)</span>, <strong>Matplotlib</strong> <span class="citation" data-cites="Hunter:2007">(<a href="#ref-Hunter:2007" role="doc-biblioref">Hunter, 2007</a>)</span>, and <strong>SciPy</strong> <span class="citation" data-cites="2020SciPy-NMeth">(<a href="#ref-2020SciPy-NMeth" role="doc-biblioref"><span class="nocase">Virtanen et al.</span>, 2020</a>)</span>.</p>
 <p>For alternative R analysis, the comprehensive <strong>tidyverse</strong> package was loaded <span class="citation" data-cites="Wickham2019">(<a href="#ref-Wickham2019" role="doc-biblioref">Wickham et al., 2019</a>)</span>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -604,10 +610,10 @@ Hunter, J.D., 2007. Matplotlib: A 2D graphics environment. <em>Computing in Scie
 Rahman, T., Khandakar, A., Hoque, M.E., Ibtehaz, N., Kashem, S.B., Masud, R., Shampa, L., Hasan, M.M., Islam, M.T., Al-Madeed, S., Zughaier, S.M., Badran, S., Doi, S.A.R. and Chowdhury, M.E.H., 2020. <em><span>COVID-19 Complete Blood Count (CBC) Database</span></em>. Available at: &lt;<a href="https://www.kaggle.com">www.kaggle.com</a>&gt;.
 </div>
 <div id="ref-reback2020pandas" class="csl-entry" role="listitem">
-team, T. pandas development, 2020. <em>Pandas-dev/pandas: pandas</em>. https://doi.org/<a href="https://doi.org/10.5281/zenodo.3509134">10.5281/zenodo.3509134</a>.
+<span class="nocase">team, T. pandas development</span>, 2020. <em>Pandas-dev/pandas: pandas</em>. https://doi.org/<a href="https://doi.org/10.5281/zenodo.3509134">10.5281/zenodo.3509134</a>.
 </div>
 <div id="ref-2020SciPy-NMeth" class="csl-entry" role="listitem">
-Virtanen, P., Gommers, R., Oliphant, T.E., Haberland, M., Reddy, T., Cournapeau, D., Burovski, E., Peterson, P., Weckesser, W., Bright, J., van der Walt, S.J., Brett, M., Wilson, J., Millman, K.J., Mayorov, N., Nelson, A.R.J., Jones, E., Kern, R., Larson, E., Carey, C.J., Polat, İ., Feng, Y., Moore, E.W., VanderPlas, J., Laxalde, D., Perktold, J., Cimrman, R., Henriksen, I., Quintero, E.A., Harris, C.R., Archibald, A.M., Ribeiro, A.H., Pedregosa, F., van Mulbregt, P. and SciPy 1.0 Contributors, 2020. <span class="nocase"><span>SciPy</span> 1.0: Fundamental Algorithms for Scientific Computing in Python</span>. <em>Nature Methods</em>, 17, pp.261–272. https://doi.org/<a href="https://doi.org/10.1038/s41592-019-0686-2">10.1038/s41592-019-0686-2</a>.
+<span class="nocase">Virtanen, P., Gommers, R., Oliphant, T.E., Haberland, M., Reddy, T., Cournapeau, D., Burovski, E., Peterson, P., Weckesser, W., Bright, J., van der Walt, S.J., Brett, M., Wilson, J., Millman, K.J., Mayorov, N., Nelson, A.R.J., Jones, E., Kern, R., Larson, E., Carey, C.J., Polat, İ., Feng, Y., Moore, E.W., VanderPlas, J., Laxalde, D., Perktold, J., Cimrman, R., Henriksen, I., Quintero, E.A., Harris, C.R., Archibald, A.M., Ribeiro, A.H., Pedregosa, F., van Mulbregt, P. and SciPy 1.0 Contributors</span>, 2020. <span class="nocase"><span>SciPy</span> 1.0: Fundamental Algorithms for Scientific Computing in Python</span>. <em>Nature Methods</em>, 17, pp.261–272. https://doi.org/<a href="https://doi.org/10.1038/s41592-019-0686-2">10.1038/s41592-019-0686-2</a>.
 </div>
 <div id="ref-Waskom2021" class="csl-entry" role="listitem">
 Waskom, M.L., 2021. Seaborn: Statistical data visualization. <em>Journal of Open Source Software</em>, [online] 6(60), p.3021. https://doi.org/<a href="https://doi.org/10.21105/joss.03021">10.21105/joss.03021</a>.

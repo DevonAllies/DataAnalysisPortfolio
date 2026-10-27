@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.27">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,6 +11,9 @@
 
 <title>The use of R &amp; Python in data science – Data Science Projects</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -88,15 +91,14 @@ div.csl-indent {
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5dace33b8eeff415c0721a143d25f203.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-839d7b478c557d19ff65a2daea224a03.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -155,6 +157,10 @@ div.csl-indent {
   <li class="nav-item">
     <a class="nav-link" href="../../projects.html"> 
 <span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../tutorials.html"> 
+<span class="menu-text">Tutorials</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
@@ -231,7 +237,7 @@ div.csl-indent {
 <section id="importing-libraries-modules-and-data" class="level3">
 <h3 class="anchored" data-anchor-id="importing-libraries-modules-and-data">Importing libraries, Modules and data:</h3>
 <p>The first library that needs to be imported, <code>reticulate</code> <span class="citation" data-cites="reticulate">(<a href="#ref-reticulate" role="doc-biblioref">Ushey, Allaire and Tang, 2025</a>)</span>, is an R package that provides an interface to Python. It allows you to run Python code from R and to use Python libraries in R. The second library, <code>tidyverse</code> <span class="citation" data-cites="tidyverse">(<a href="#ref-tidyverse" role="doc-biblioref">Wickham et al., 2019</a>)</span>, is a collection of R packages that are designed for data science. It includes packages for data manipulation, visualization, and modeling.</p>
-<p>The python modules that need to be imported are <code>pandas</code> <span class="citation" data-cites="pandas">(<a href="#ref-pandas" role="doc-biblioref">team, 2020</a>)</span>, <code>numpy</code><span class="citation" data-cites="numpy">(<a href="#ref-numpy" role="doc-biblioref">Harris et al., 2020</a>)</span>, <code>matplotlib.pyplot</code><span class="citation" data-cites="matplotlib">(<a href="#ref-matplotlib" role="doc-biblioref">Hunter, 2007</a>)</span>, and <code>seaborn</code> <span class="citation" data-cites="seaborn">(<a href="#ref-seaborn" role="doc-biblioref">Waskom, 2021</a>)</span>. <code>Pandas</code> <span class="citation" data-cites="pandas">(<a href="#ref-pandas" role="doc-biblioref">team, 2020</a>)</span> is a library for data manipulation and analysis. It provides data structures and functions for working with structured data. <code>Numpy</code> <span class="citation" data-cites="numpy">(<a href="#ref-numpy" role="doc-biblioref">Harris et al., 2020</a>)</span> is a library for numerical computing. It provides functions for working with arrays and matrices. <code>Matplotlib.pyplot</code> <span class="citation" data-cites="matplotlib">(<a href="#ref-matplotlib" role="doc-biblioref">Hunter, 2007</a>)</span> is a library for creating static, animated, and interactive visualizations in Python. <code>Seaborn</code> <span class="citation" data-cites="seaborn">(<a href="#ref-seaborn" role="doc-biblioref">Waskom, 2021</a>)</span> is a library for making statistical graphics in Python. It is built on top of <code>matplotlib</code> <span class="citation" data-cites="matplotlib">(<a href="#ref-matplotlib" role="doc-biblioref">Hunter, 2007</a>)</span> and provides a high-level interface for drawing attractive and informative statistical graphics.</p>
+<p>The python modules that need to be imported are <code>pandas</code> <span class="citation" data-cites="pandas">(<a href="#ref-pandas" role="doc-biblioref"><span class="nocase">team</span>, 2020</a>)</span>, <code>numpy</code><span class="citation" data-cites="numpy">(<a href="#ref-numpy" role="doc-biblioref">Harris et al., 2020</a>)</span>, <code>matplotlib.pyplot</code><span class="citation" data-cites="matplotlib">(<a href="#ref-matplotlib" role="doc-biblioref">Hunter, 2007</a>)</span>, and <code>seaborn</code> <span class="citation" data-cites="seaborn">(<a href="#ref-seaborn" role="doc-biblioref">Waskom, 2021</a>)</span>. <code>Pandas</code> <span class="citation" data-cites="pandas">(<a href="#ref-pandas" role="doc-biblioref"><span class="nocase">team</span>, 2020</a>)</span> is a library for data manipulation and analysis. It provides data structures and functions for working with structured data. <code>Numpy</code> <span class="citation" data-cites="numpy">(<a href="#ref-numpy" role="doc-biblioref">Harris et al., 2020</a>)</span> is a library for numerical computing. It provides functions for working with arrays and matrices. <code>Matplotlib.pyplot</code> <span class="citation" data-cites="matplotlib">(<a href="#ref-matplotlib" role="doc-biblioref">Hunter, 2007</a>)</span> is a library for creating static, animated, and interactive visualizations in Python. <code>Seaborn</code> <span class="citation" data-cites="seaborn">(<a href="#ref-seaborn" role="doc-biblioref">Waskom, 2021</a>)</span> is a library for making statistical graphics in Python. It is built on top of <code>matplotlib</code> <span class="citation" data-cites="matplotlib">(<a href="#ref-matplotlib" role="doc-biblioref">Hunter, 2007</a>)</span> and provides a high-level interface for drawing attractive and informative statistical graphics.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing libraries</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
@@ -275,12 +281,17 @@ div.csl-indent {
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    KaggleDatasetAdapter.PANDAS,</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    handle<span class="op">=</span>handle,</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    path<span class="op">=</span>file_path</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> <span class="bu">len</span>(df)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>columns <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span><span class="bu">len</span>(df.columns)<span class="sc">:,}</span><span class="ss">'</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Data loaded successfully! Shape: </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warning: Looks like you're using an outdated `kagglehub` version (installed: 0.4.3), please consider upgrading to the latest version (1.0.3)</code></pre>
+</div>
+<details class="code-fold">
+<summary>Python Kaggle Data Loading Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> <span class="bu">len</span>(df)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>columns <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span><span class="bu">len</span>(df.columns)<span class="sc">:,}</span><span class="ss">'</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Data loaded successfully! Shape: </span><span class="sc">{</span>df<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Data loaded successfully! Shape: (64, 22285)</code></pre>
@@ -300,15 +311,15 @@ div.csl-indent {
 <div class="cell">
 <details class="code-fold">
 <summary>PCA Plot</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pca_data <span class="ot">&lt;-</span> py<span class="sc">$</span>pca_df</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pca_data, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> Target)) <span class="sc">+</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span>  <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"PCA of Leukemia Gene Expression Data"</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Principal Component 1"</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Principal Component 2"</span>) <span class="sc">+</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">'Set1'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pca_data <span class="ot">&lt;-</span> py<span class="sc">$</span>pca_df</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pca_data, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> Target)) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">alpha =</span>  <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"PCA of Leukemia Gene Expression Data"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Principal Component 1"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Principal Component 2"</span>) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">'Set1'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -325,9 +336,9 @@ div.csl-indent {
 <div class="cell">
 <details class="code-fold">
 <summary>Python Train-Test Split Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X_scaled, y, test_size<span class="op">=</span><span class="fl">0.3</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>rf_model <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>rf_model.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X_scaled, y, test_size<span class="op">=</span><span class="fl">0.3</span>, random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>rf_model <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span><span class="dv">100</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>rf_model.fit(X_train, y_train)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <style>#sk-container-id-1 {
@@ -960,9 +971,9 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 </div>
 <details class="code-fold">
 <summary>Python Train-Test Split Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> rf_model.predict(X_test)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Random Forest Accuracy: </span><span class="sc">{</span>accuracy<span class="sc">:.2%}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> rf_model.predict(X_test)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Random Forest Accuracy: </span><span class="sc">{</span>accuracy<span class="sc">:.2%}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Random Forest Accuracy: 95.00%</code></pre>
@@ -972,9 +983,9 @@ document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
 <div class="cell">
 <details class="code-fold">
 <summary>Classification Report Table</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>py<span class="sc">$</span>df <span class="sc">%&gt;%</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(type) <span class="sc">%&gt;%</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ivo_table</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>py<span class="sc">$</span>df <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(type) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ivo_table</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-r_classification_report" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -983,7 +994,7 @@ Table&nbsp;1: Types of leukemia in the dataset.
 </figcaption>
 <div aria-describedby="tbl-r_classification_report-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div class="tabwid"><style>.cl-2e6ecb76{}.cl-2e68201e{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2e682032{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-2e6aed26{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2e6aed30{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-2e6b0b1c{width:0.607in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 3pt solid rgba(0, 100, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6b0b26{width:1.32in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 3pt solid rgba(0, 100, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6b0b27{width:1.815in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 3pt solid rgba(0, 100, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6b0b30{width:0.482in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 3pt solid rgba(0, 100, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6b0b31{width:1.181in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 3pt solid rgba(0, 100, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6b0b32{width:0.607in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 2pt solid rgba(153, 193, 153, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6b0b3a{width:1.32in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 2pt solid rgba(153, 193, 153, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6b0b3b{width:1.815in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 2pt solid rgba(153, 193, 153, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6b0b3c{width:0.482in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 2pt solid rgba(153, 193, 153, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6b0b44{width:1.181in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 2pt solid rgba(153, 193, 153, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6b0b45{width:0.607in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6b0b4e{width:1.32in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6b0b4f{width:1.815in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6b0b50{width:0.482in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-2e6b0b51{width:1.181in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-2e6ecb76"><thead><tr style="overflow-wrap:break-word;"><th colspan="5" class="cl-2e6b0b1c"><p class="cl-2e6aed26"><span class="cl-2e68201e">type</span></p></th></tr><tr style="overflow-wrap:break-word;"><th class="cl-2e6b0b32"><p class="cl-2e6aed30"><span class="cl-2e68201e">AML</span></p></th><th class="cl-2e6b0b3a"><p class="cl-2e6aed30"><span class="cl-2e68201e">Bone_Marrow</span></p></th><th class="cl-2e6b0b3b"><p class="cl-2e6aed30"><span class="cl-2e68201e">Bone_Marrow_CD34</span></p></th><th class="cl-2e6b0b3c"><p class="cl-2e6aed30"><span class="cl-2e68201e">PB</span></p></th><th class="cl-2e6b0b44"><p class="cl-2e6aed30"><span class="cl-2e68201e">PBSC_CD34</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-2e6b0b45"><p class="cl-2e6aed30"><span class="cl-2e682032">26</span></p></td><td class="cl-2e6b0b4e"><p class="cl-2e6aed30"><span class="cl-2e682032">10</span></p></td><td class="cl-2e6b0b4f"><p class="cl-2e6aed30"><span class="cl-2e682032">8</span></p></td><td class="cl-2e6b0b50"><p class="cl-2e6aed30"><span class="cl-2e682032">10</span></p></td><td class="cl-2e6b0b51"><p class="cl-2e6aed30"><span class="cl-2e682032">10</span></p></td></tr></tbody></table></div>
+<div class="tabwid"><style>.cl-d8bad469{}.cl-31e46462{font-family:'Arial';font-size:11pt;font-weight:bold;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-9f1c1ce9{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-a87b1e2d{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-a1958ec5{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-9420cecd{width:0.611in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 3pt solid rgba(0, 100, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-6a3c1bf2{width:1.135in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 3pt solid rgba(0, 100, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-f62d6dcf{width:1.583in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 3pt solid rgba(0, 100, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-702d8ad6{width:0.45in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 3pt solid rgba(0, 100, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-bb2e018a{width:1.072in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 3pt solid rgba(0, 100, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4d3fe851{width:0.611in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 2pt solid rgba(153, 193, 153, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c3f01bcd{width:1.135in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 2pt solid rgba(153, 193, 153, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-5ddb496d{width:1.583in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 2pt solid rgba(153, 193, 153, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fc3bd0ce{width:0.45in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 2pt solid rgba(153, 193, 153, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-9ce251cf{width:1.072in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 2pt solid rgba(153, 193, 153, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-fa3f75ab{width:0.611in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-7df3c4a1{width:1.135in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-c7a8632b{width:1.583in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-e140752e{width:0.45in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-63cad772{width:1.072in;background-color:transparent;vertical-align: middle;border-bottom: 2pt solid rgba(153, 193, 153, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-d8bad469"><thead><tr style="overflow-wrap:break-word;"><th colspan="5" class="cl-9420cecd"><p class="cl-a87b1e2d"><span class="cl-31e46462">type</span></p></th></tr><tr style="overflow-wrap:break-word;"><th class="cl-4d3fe851"><p class="cl-a1958ec5"><span class="cl-31e46462">AML</span></p></th><th class="cl-c3f01bcd"><p class="cl-a1958ec5"><span class="cl-31e46462">Bone_Marrow</span></p></th><th class="cl-5ddb496d"><p class="cl-a1958ec5"><span class="cl-31e46462">Bone_Marrow_CD34</span></p></th><th class="cl-fc3bd0ce"><p class="cl-a1958ec5"><span class="cl-31e46462">PB</span></p></th><th class="cl-9ce251cf"><p class="cl-a1958ec5"><span class="cl-31e46462">PBSC_CD34</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-fa3f75ab"><p class="cl-a1958ec5"><span class="cl-9f1c1ce9">26</span></p></td><td class="cl-7df3c4a1"><p class="cl-a1958ec5"><span class="cl-9f1c1ce9">10</span></p></td><td class="cl-c7a8632b"><p class="cl-a1958ec5"><span class="cl-9f1c1ce9">8</span></p></td><td class="cl-e140752e"><p class="cl-a1958ec5"><span class="cl-9f1c1ce9">10</span></p></td><td class="cl-63cad772"><p class="cl-a1958ec5"><span class="cl-9f1c1ce9">10</span></p></td></tr></tbody></table></div>
 </div>
 </div>
 </figure>
@@ -992,11 +1003,11 @@ Table&nbsp;1: Types of leukemia in the dataset.
 <div class="cell">
 <details class="code-fold">
 <summary>Summary Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>py<span class="sc">$</span>df <span class="sc">%&gt;%</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(type, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_summary</span>(<span class="at">by =</span> type) <span class="sc">%&gt;%</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_p</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bold_labels</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>py<span class="sc">$</span>df <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(type, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_summary</span>(<span class="at">by =</span> type) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_p</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bold_labels</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-r_summary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1005,23 +1016,23 @@ Table&nbsp;2: Summary Table
 </figcaption>
 <div aria-describedby="tbl-r_summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="ipcllkzdsl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ipcllkzdsl table {
+<div id="jahwijkwqy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jahwijkwqy table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ipcllkzdsl thead, #ipcllkzdsl tbody, #ipcllkzdsl tfoot, #ipcllkzdsl tr, #ipcllkzdsl td, #ipcllkzdsl th {
+#jahwijkwqy thead, #jahwijkwqy tbody, #jahwijkwqy tfoot, #jahwijkwqy tr, #jahwijkwqy td, #jahwijkwqy th {
   border-style: none;
 }
 
-#ipcllkzdsl p {
+#jahwijkwqy p {
   margin: 0;
   padding: 0;
 }
 
-#ipcllkzdsl .gt_table {
+#jahwijkwqy .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1047,12 +1058,12 @@ Table&nbsp;2: Summary Table
   border-left-color: #D3D3D3;
 }
 
-#ipcllkzdsl .gt_caption {
+#jahwijkwqy .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ipcllkzdsl .gt_title {
+#jahwijkwqy .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1064,7 +1075,7 @@ Table&nbsp;2: Summary Table
   border-bottom-width: 0;
 }
 
-#ipcllkzdsl .gt_subtitle {
+#jahwijkwqy .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1076,7 +1087,7 @@ Table&nbsp;2: Summary Table
   border-top-width: 0;
 }
 
-#ipcllkzdsl .gt_heading {
+#jahwijkwqy .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1088,13 +1099,13 @@ Table&nbsp;2: Summary Table
   border-right-color: #D3D3D3;
 }
 
-#ipcllkzdsl .gt_bottom_border {
+#jahwijkwqy .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ipcllkzdsl .gt_col_headings {
+#jahwijkwqy .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1109,7 +1120,7 @@ Table&nbsp;2: Summary Table
   border-right-color: #D3D3D3;
 }
 
-#ipcllkzdsl .gt_col_heading {
+#jahwijkwqy .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1129,7 +1140,7 @@ Table&nbsp;2: Summary Table
   overflow-x: hidden;
 }
 
-#ipcllkzdsl .gt_column_spanner_outer {
+#jahwijkwqy .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1141,15 +1152,15 @@ Table&nbsp;2: Summary Table
   padding-right: 4px;
 }
 
-#ipcllkzdsl .gt_column_spanner_outer:first-child {
+#jahwijkwqy .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ipcllkzdsl .gt_column_spanner_outer:last-child {
+#jahwijkwqy .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ipcllkzdsl .gt_column_spanner {
+#jahwijkwqy .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1161,11 +1172,11 @@ Table&nbsp;2: Summary Table
   width: 100%;
 }
 
-#ipcllkzdsl .gt_spanner_row {
+#jahwijkwqy .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ipcllkzdsl .gt_group_heading {
+#jahwijkwqy .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1191,7 +1202,7 @@ Table&nbsp;2: Summary Table
   text-align: left;
 }
 
-#ipcllkzdsl .gt_empty_group_heading {
+#jahwijkwqy .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1206,15 +1217,15 @@ Table&nbsp;2: Summary Table
   vertical-align: middle;
 }
 
-#ipcllkzdsl .gt_from_md > :first-child {
+#jahwijkwqy .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ipcllkzdsl .gt_from_md > :last-child {
+#jahwijkwqy .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ipcllkzdsl .gt_row {
+#jahwijkwqy .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1233,7 +1244,7 @@ Table&nbsp;2: Summary Table
   overflow-x: hidden;
 }
 
-#ipcllkzdsl .gt_stub {
+#jahwijkwqy .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1246,7 +1257,7 @@ Table&nbsp;2: Summary Table
   padding-right: 5px;
 }
 
-#ipcllkzdsl .gt_stub_row_group {
+#jahwijkwqy .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1260,15 +1271,15 @@ Table&nbsp;2: Summary Table
   vertical-align: top;
 }
 
-#ipcllkzdsl .gt_row_group_first td {
+#jahwijkwqy .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ipcllkzdsl .gt_row_group_first th {
+#jahwijkwqy .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ipcllkzdsl .gt_summary_row {
+#jahwijkwqy .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1278,16 +1289,16 @@ Table&nbsp;2: Summary Table
   padding-right: 5px;
 }
 
-#ipcllkzdsl .gt_first_summary_row {
+#jahwijkwqy .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ipcllkzdsl .gt_first_summary_row.thick {
+#jahwijkwqy .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ipcllkzdsl .gt_last_summary_row {
+#jahwijkwqy .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1297,7 +1308,7 @@ Table&nbsp;2: Summary Table
   border-bottom-color: #D3D3D3;
 }
 
-#ipcllkzdsl .gt_grand_summary_row {
+#jahwijkwqy .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1307,7 +1318,7 @@ Table&nbsp;2: Summary Table
   padding-right: 5px;
 }
 
-#ipcllkzdsl .gt_first_grand_summary_row {
+#jahwijkwqy .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1317,7 +1328,7 @@ Table&nbsp;2: Summary Table
   border-top-color: #D3D3D3;
 }
 
-#ipcllkzdsl .gt_last_grand_summary_row_top {
+#jahwijkwqy .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1327,11 +1338,11 @@ Table&nbsp;2: Summary Table
   border-bottom-color: #D3D3D3;
 }
 
-#ipcllkzdsl .gt_striped {
+#jahwijkwqy .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ipcllkzdsl .gt_table_body {
+#jahwijkwqy .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1340,7 +1351,7 @@ Table&nbsp;2: Summary Table
   border-bottom-color: #D3D3D3;
 }
 
-#ipcllkzdsl .gt_footnotes {
+#jahwijkwqy .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1354,7 +1365,7 @@ Table&nbsp;2: Summary Table
   border-right-color: #D3D3D3;
 }
 
-#ipcllkzdsl .gt_footnote {
+#jahwijkwqy .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1363,7 +1374,7 @@ Table&nbsp;2: Summary Table
   padding-right: 5px;
 }
 
-#ipcllkzdsl .gt_sourcenotes {
+#jahwijkwqy .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1377,7 +1388,7 @@ Table&nbsp;2: Summary Table
   border-right-color: #D3D3D3;
 }
 
-#ipcllkzdsl .gt_sourcenote {
+#jahwijkwqy .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1385,77 +1396,77 @@ Table&nbsp;2: Summary Table
   padding-right: 5px;
 }
 
-#ipcllkzdsl .gt_left {
+#jahwijkwqy .gt_left {
   text-align: left;
 }
 
-#ipcllkzdsl .gt_center {
+#jahwijkwqy .gt_center {
   text-align: center;
 }
 
-#ipcllkzdsl .gt_right {
+#jahwijkwqy .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ipcllkzdsl .gt_font_normal {
+#jahwijkwqy .gt_font_normal {
   font-weight: normal;
 }
 
-#ipcllkzdsl .gt_font_bold {
+#jahwijkwqy .gt_font_bold {
   font-weight: bold;
 }
 
-#ipcllkzdsl .gt_font_italic {
+#jahwijkwqy .gt_font_italic {
   font-style: italic;
 }
 
-#ipcllkzdsl .gt_super {
+#jahwijkwqy .gt_super {
   font-size: 65%;
 }
 
-#ipcllkzdsl .gt_footnote_marks {
+#jahwijkwqy .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ipcllkzdsl .gt_asterisk {
+#jahwijkwqy .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ipcllkzdsl .gt_indent_1 {
+#jahwijkwqy .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ipcllkzdsl .gt_indent_2 {
+#jahwijkwqy .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ipcllkzdsl .gt_indent_3 {
+#jahwijkwqy .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ipcllkzdsl .gt_indent_4 {
+#jahwijkwqy .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ipcllkzdsl .gt_indent_5 {
+#jahwijkwqy .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ipcllkzdsl .katex-display {
+#jahwijkwqy .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ipcllkzdsl div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#jahwijkwqy div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
 
-<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<table class="gt_table cell caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width: 14%">
 <col style="width: 14%">
@@ -1567,7 +1578,7 @@ Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O.,
 Sjoberg, D.D., Whiting, K., Curry, M., Lavery, J.A. and Larmarange, J., 2021. Reproducible summary tables with the gtsummary package. <em><span>The R Journal</span></em>, [online] 13, pp.570–580. https://doi.org/<a href="https://doi.org/10.32614/RJ-2021-053">10.32614/RJ-2021-053</a>.
 </div>
 <div id="ref-pandas" class="csl-entry" role="listitem">
-team, T. pandas development, 2020. <em>Pandas-dev/pandas: pandas</em>. https://doi.org/<a href="https://doi.org/10.5281/zenodo.3509134">10.5281/zenodo.3509134</a>.
+<span class="nocase">team, T. pandas development</span>, 2020. <em>Pandas-dev/pandas: pandas</em>. https://doi.org/<a href="https://doi.org/10.5281/zenodo.3509134">10.5281/zenodo.3509134</a>.
 </div>
 <div id="ref-reticulate" class="csl-entry" role="listitem">
 Ushey, K., Allaire, J. and Tang, Y., 2025. <em>Reticulate: Interface to ’python’</em>. [online] Available at: &lt;<a href="https://rstudio.github.io/reticulate/">https://rstudio.github.io/reticulate/</a>&gt;.

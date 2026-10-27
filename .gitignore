@@ -1,3 +1,18 @@
 /.quarto/
 **/*.quarto_ipynb
 .Rproj.user
+.positai
+# RStudio
+.RData
+.Rhistory
+.Rproj.user/
+
+# Quarto cache
+.quarto/
+
+# Data files
+data/
+*.csv
+*.bam
+*.fastq
+*.gz

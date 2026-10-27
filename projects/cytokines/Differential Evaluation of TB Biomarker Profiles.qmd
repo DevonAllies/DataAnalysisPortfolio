@@ -1,0 +1,54 @@
+---
+title: "Differential Evaluation of TB Biomarker Profiles"
+author: "Devon Allies"
+
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: show
+    code-tools: true
+    theme: cosmo
+    
+execute:
+  warning: false
+  message: false
+  echo: false
+---
+
+```{r}
+#| label: library-import
+
+# Load libraries
+packages <- c(
+  "dplyr",
+  "ggplot2",
+  "janitor",
+  "gtsummary",
+  "stringr",
+  "tidyr"
+)
+invisible(lapply(packages, library, character.only = TRUE))
+```
+
+```{r}
+#| label: import-data
+
+# Import data
+tb_file <- "data/raw/tb_cytokine_synthetic_dataset.csv"
+raw_data <- read.csv(tb_file, na = c("", "NA", "N/A", "Unknown", "Not tested"))
+
+# Standardise column names
+df <- raw_data |> 
+  clean_names() |>
+  mutate(
+    tb_group = str_to_lower(str_trim(tb_group)),
+    tb_group = str_replace_all(tb_group, "[ .]", "_"),
+    tb_group = case_when(
+      tb_group %in% c("control", "ctrl") ~ "Control",
+      tb_group %in% c("active_tb", "active_tb", "atb") ~ "Active_TB",
+      tb_group %in% c("ltbi", "l_t_b_i") ~ "LTBI",
+      TRUE ~ tb_group
+    )
+  )
+```
