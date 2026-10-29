@@ -70,6 +70,83 @@
     "text": "Code\nView the repository on GitHub"
   },
   {
+    "objectID": "projects/credit-lending-pipeline/credit-risk-pipeline.html",
+    "href": "projects/credit-lending-pipeline/credit-risk-pipeline.html",
+    "title": "Credit Risk Pipeline on Databricks",
+    "section": "",
+    "text": "NoteAt a glance\n\n\n\n\nData: 9,564 loans across six simulated source tables (customers, applications, loans, repayments, partners, campaigns)\nPipeline: bronze → silver → gold Delta tables on Databricks, with automated data quality checks\nModel: logistic regression, AUC 0.668 / Gini 0.336 on a time-based holdout of 1,256 loans\nTools: Databricks, PySpark, Delta Lake, SQL, scikit-learn, MLflow, Databricks AI/BI\n\nView the code on GitHub Open the live dashboard"
+  },
+  {
+    "objectID": "projects/credit-lending-pipeline/credit-risk-pipeline.html#why-i-built-this",
+    "href": "projects/credit-lending-pipeline/credit-risk-pipeline.html#why-i-built-this",
+    "title": "Credit Risk Pipeline on Databricks",
+    "section": "Why I built this",
+    "text": "Why I built this\nMost of my work so far has been in clinical genomics and tuberculosis research. I wanted a project that showed the same skills (messy data, careful pipelines, honest modelling) applied to a business problem, and credit risk is one of the most common uses of data science in South African banking and insurance.\nThe lender in this project needs to answer three questions:\n\nWhich applicants are likely to default? A model that ranks new applicants by risk at the point of application.\nWhere is the portfolio risk concentrated? Default rates by province, channel and time.\nWhich marketing campaigns are worth the money? Cost per application and cost per approved loan."
+  },
+  {
+    "objectID": "projects/credit-lending-pipeline/credit-risk-pipeline.html#architecture",
+    "href": "projects/credit-lending-pipeline/credit-risk-pipeline.html#architecture",
+    "title": "Credit Risk Pipeline on Databricks",
+    "section": "Architecture",
+    "text": "Architecture\n\n\n\n\n\nflowchart LR\n    A[Source files] --&gt; B[Bronze&lt;br/&gt;raw + lineage]\n    B --&gt; C[Silver&lt;br/&gt;cleaned and validated]\n    C --&gt; D[Gold&lt;br/&gt;model-ready tables]\n    D --&gt; E[Models&lt;br/&gt;MLflow]\n    D --&gt; F[Dashboard and&lt;br/&gt;risk report]\n    E --&gt; F\n\n\n\n\n\n\n\n\n\n\n\n\n\nLayer\nWhat happens\n\n\n\n\nBronze\nSource files loaded as-is, with lineage columns recording the source file, sheet and ingestion time\n\n\nSilver\nIDs standardised, money, numbers and dates parsed, categories mapped, out-of-range values nulled, duplicates removed, quality checks enforced\n\n\nGold\nOne row per loan with application-time features and a default label, plus campaign attribution and efficiency tables\n\n\nModel\nTime-based train/test split, two models compared, metrics and models logged to MLflow\n\n\n\nOne notebook, 00_run_all, runs every stage in order and prints a summary of the gold table and the latest model results."
+  },
+  {
+    "objectID": "projects/credit-lending-pipeline/credit-risk-pipeline.html#cleaning-messy-data",
+    "href": "projects/credit-lending-pipeline/credit-risk-pipeline.html#cleaning-messy-data",
+    "title": "Credit Risk Pipeline on Databricks",
+    "section": "Cleaning messy data",
+    "text": "Cleaning messy data\nThe source data has the kinds of problems real lending data has. Rather than fixing them ad hoc, I wrote shared functions in src/cleaning.py that every notebook uses.\n\n\n\n\n\n\n\nProblem in the source\nHow the pipeline handles it\n\n\n\n\nIDs written as c00042, C 0042, 42\nStandardised to C00042\n\n\nMoney as R 7350, R7,350, 7350.00\nCurrency symbols, spaces and commas stripped\n\n\nDates in seven formats, some with two-digit years\nEach format tried in turn; dates outside a valid range rejected\n\n\nNull markers such as N/A, ND, unknown, -\nRecognised by one shared pattern and treated as missing\n\n\nFree-text categories (gau, Gauteng, GAUTENG)\nMapped to standard values; ambiguous ones (Nor) reported and left blank rather than guessed\n\n\nCampaigns with swapped dates or negative spend\nCorrected and flagged\n\n\n\nFor example, a single function handles every money format:\ndef parse_money(df, c):\n    \"\"\"'R 7350', 'R7,350', '7350.00' -&gt; 7350.0\"\"\"\n    t = F.regexp_replace(F.trim(F.col(c)), r\"[Rr,\\s]\", \"\")\n    return df.withColumn(\n        c,\n        F.when(F.col(c).rlike(NULL_TOKENS), F.lit(None).cast(\"double\"))\n         .otherwise(t.try_cast(\"double\")),\n    )\nEvery silver table must also pass checks before it is written: unique keys, no unparsed dates, and no orphaned records (for example, repayments for a loan that does not exist). If a check fails, the pipeline stops, so bad data never reaches the gold layer."
+  },
+  {
+    "objectID": "projects/credit-lending-pipeline/credit-risk-pipeline.html#building-a-leakage-free-loan-table",
+    "href": "projects/credit-lending-pipeline/credit-risk-pipeline.html#building-a-leakage-free-loan-table",
+    "title": "Credit Risk Pipeline on Databricks",
+    "section": "Building a leakage-free loan table",
+    "text": "Building a leakage-free loan table\nThe gold layer is where most of the modelling decisions live. Three of them matter most.\n1. Only use what was known at application time. For example, the number of previous applications counts only those made before the current one:\nw = (Window.partitionBy(\"customer_id\")\n     .orderBy(\"application_date\", \"application_id\")\n     .rowsBetween(Window.unboundedPreceding, -1))\napps = apps.withColumn(\"n_prior_applications\", F.count(\"*\").over(w))\n2. A clear definition of default. A loan counts as defaulted if it reaches 90+ days past due within its first 6 instalments, or within the full term for shorter loans.\n3. Only label loans that have been watched long enough. A loan that has defaulted after three months is easy to label, but a loan that is three months old and still paying might default next month. Labelling it “no default” too early would make recent loans look safer than they are. So loans that have not been observed for the full window get no label:\ndefaulted = F.col(\"max_dpd\") &gt;= 90\nmatured = F.col(\"n_observed\") &gt;= window_len\n\ng = (g.withColumn(\"matured\", F.coalesce(matured, F.lit(False)))\n      .withColumn(\"default_flag\", F.when(F.col(\"matured\"), defaulted.cast(\"int\"))))\nThis leaves 6,276 matured loans with a 19.7% default rate for modelling, out of 9,564 in total."
+  },
+  {
+    "objectID": "projects/credit-lending-pipeline/credit-risk-pipeline.html#modelling",
+    "href": "projects/credit-lending-pipeline/credit-risk-pipeline.html#modelling",
+    "title": "Credit Risk Pipeline on Databricks",
+    "section": "Modelling",
+    "text": "Modelling\nI split the data by time: the model trains on the oldest 80% of loans and is tested on the newest 20%. That is how a lender would actually use it, trained on past customers and applied to future ones. A random split would let the model learn from loans that came after the ones it is tested on.\nI compared two models inside the same scikit-learn pipeline (median imputation, scaling and one-hot encoding), with every run logged to MLflow:\n\n\n\nModel\nTest AUC\nTest Gini\n\n\n\n\nLogistic regression\n0.668\n0.336\n\n\nGradient boosting\n0.626\n0.253\n\n\n\nLogistic regression won. With around 5,000 training loans, gradient boosting overfits slightly, while the simpler model generalises better to new loans. Lenders also tend to prefer logistic regression, because each feature’s effect can be explained to regulators and credit committees.\nFeatures used: loan terms (principal, term, interest rate), affordability (income, debt-to-income, loan-to-income), credit history (bureau score, no-bureau-hit flag, prior applications), applicant details (age, employment duration, employer type, province) and channel type.\n\n\n\n\n\n\nTipA deliberate exclusion\n\n\n\nSex is in the data but not in the model. South Africa’s National Credit Act prohibits unfair discrimination in credit decisions, and a production scorecard would not use it."
+  },
+  {
+    "objectID": "projects/credit-lending-pipeline/credit-risk-pipeline.html#dashboard",
+    "href": "projects/credit-lending-pipeline/credit-risk-pipeline.html#dashboard",
+    "title": "Credit Risk Pipeline on Databricks",
+    "section": "Dashboard",
+    "text": "Dashboard\nThe dashboard is built in Databricks AI/BI on the gold tables and gives a credit manager a one-page view of the portfolio.\n\n\n\nPortfolio overview: applications, loans disbursed, principal lent, default rate, approval decisions and the monthly disbursement trend.\n\n\n\n\n\nLoans brought in by each marketing campaign, and default rate by province.\n\n\n\n\n\nBorrower profile by province (bureau score, income, debt-to-income, default rate) and loan volume by partner channel."
+  },
+  {
+    "objectID": "projects/credit-lending-pipeline/credit-risk-pipeline.html#what-i-learned",
+    "href": "projects/credit-lending-pipeline/credit-risk-pipeline.html#what-i-learned",
+    "title": "Credit Risk Pipeline on Databricks",
+    "section": "What I learned",
+    "text": "What I learned\n\nMost of the work is in the data, not the model. Cleaning six messy tables and getting the label right took far longer than training, and mattered more for the result.\nData leakage hides in ordinary-looking choices. Using a random split, or labelling recent loans as non-defaulters, would both have produced a better-looking score that would not hold up in practice.\nSimpler can be better. The more complex model scored lower on future loans.\nShared, tested functions pay off. Writing the cleaning and quality checks once and reusing them made the pipeline easier to debug and rerun."
+  },
+  {
+    "objectID": "projects/credit-lending-pipeline/credit-risk-pipeline.html#next-steps",
+    "href": "projects/credit-lending-pipeline/credit-risk-pipeline.html#next-steps",
+    "title": "Credit Risk Pipeline on Databricks",
+    "section": "Next steps",
+    "text": "Next steps\n\nImprove the features, compare a binned (weight-of-evidence) scorecard, and tune hyperparameters\nCheck calibration, so predicted default probabilities match observed default rates\nSchedule the pipeline as a Databricks job, with monitoring for data drift and model performance"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Devon Allies - Portfolio of Data Science Projects",
+    "section": "",
+    "text": "Page under construction"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About Me",
+    "section": "",
+    "text": "With over 10 years of experience in immunology, bioinformatics, and computational biology, I specialise in tuberculosis research, clinical study coordination, and data-driven bioinformatics solutions.\nAs a Project Coordinator at the Division of Molecular Biology and Human Genetics, I manage clinical research projects, streamline operations, and enhance data integrity while ensuring seamless stakeholder collaboration.\nKey Highlights: - Contributed to peer-reviewed research published in PubMed, BMC Infectious Diseases, with 62+ citations in the past five years. - Developed an automated dashboard to improve data logging and retrieval for clinical studies. - Expertise in flow cytometry, PBMC isolation, and immunological assay development in ISO-accredited labs. - Skilled in Python, R, Power BI, SQL, Nextflow, and clinical data management.\nI’m passionate about integrating bioinformatics and computational biology to drive scientific innovation and improve healthcare outcomes. Let’s connect!"
+  },
+  {
     "objectID": "projects/covid/covid19_eda.html",
     "href": "projects/covid/covid19_eda.html",
     "title": "Covid 19 Dataset",
@@ -124,20 +201,6 @@
     "title": "Covid 19 Dataset",
     "section": "Key Takeaways:",
     "text": "Key Takeaways:\n\n\n1. Age &gt;60 years: 76% mortality risk (t=-6.90, p&lt;0.0001, d=1.4)\n\n\n2. No missing data - excellent quality\n\n\n3. Multimodal age distribution (peaks: 30-40, 50-60, 60-70)\n\n\n4. Gender not significant predictor\n\n\n5. Ventilation: 70% case fatality rate vs 35% non-ventilated\n\n\n\n=== LIMITATIONS ===\n\n\n1. Small sample (n=103)\n\n\n2. Single hospital, early pandemic (Apr-Aug 2020)\n\n\n3. No treatment effect analysis\n\n\n4. Limited geographic representation\n\n\n\nLicense and Data Usage Terms:\nThe data used in this analysis is provided under the Creative Commons Attribution 4.0 International License (CC BY 4.0)."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About Me",
-    "section": "",
-    "text": "With over 10 years of experience in immunology, bioinformatics, and computational biology, I specialise in tuberculosis research, clinical study coordination, and data-driven bioinformatics solutions.\nAs a Project Coordinator at the Division of Molecular Biology and Human Genetics, I manage clinical research projects, streamline operations, and enhance data integrity while ensuring seamless stakeholder collaboration.\nKey Highlights: - Contributed to peer-reviewed research published in PubMed, BMC Infectious Diseases, with 62+ citations in the past five years. - Developed an automated dashboard to improve data logging and retrieval for clinical studies. - Expertise in flow cytometry, PBMC isolation, and immunological assay development in ISO-accredited labs. - Skilled in Python, R, Power BI, SQL, Nextflow, and clinical data management.\nI’m passionate about integrating bioinformatics and computational biology to drive scientific innovation and improve healthcare outcomes. Let’s connect!"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Devon Allies - Portfolio of Data Science Projects",
-    "section": "",
-    "text": "Page under construction"
   },
   {
     "objectID": "projects/R & Python/R & Python.html",
@@ -277,6 +340,6 @@
     "href": "projects.html",
     "title": "Data Science Projects",
     "section": "",
-    "text": "Covid 19 Dataset\n\n\n\n\n\n\nDevon Allies, BSc. Honours: Bioinformatics & Computational Biology\n\n\n\n\n\n\n\n\n\n\n\nDifferential Evaluation of TB Biomarker Profiles\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\nGlobal Retractions of Scientific Publications\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTBTrends:\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nCompartmental TB Diagnostics: A Simulated BAL Cytokine cohort\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nDatabricks data pipeline: simulated BAL study\n\n\nBronze, silver and gold Delta tables, tested cleaning functions, MLflow model tracking and a Streamlit demo, built on simulated clinical data.\n\n\n\nDevon Allies\n\n\nOct 27, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nDifferential Expression Analysis of Chromosome X RNA-seq Data\n\n\n\n\n\n\nDevon Allies\n\n\nOct 27, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe use of R & Python in data science\n\n\n\n\n\n\nDevon Allies\n\n\nFeb 8, 2026\n\n\n\n\n\n\nNo matching items"
+    "text": "Covid 19 Dataset\n\n\n\n\n\n\nDevon Allies, BSc. Honours: Bioinformatics & Computational Biology\n\n\n\n\n\n\n\n\n\n\n\nDifferential Evaluation of TB Biomarker Profiles\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\nGlobal Retractions of Scientific Publications\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTBTrends:\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nCompartmental TB Diagnostics: A Simulated BAL Cytokine cohort\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nCredit Risk Pipeline on Databricks\n\n\nA bronze/silver/gold lakehouse pipeline on Databricks that cleans messy lending data, builds a leakage-free loan table and trains MLflow-tracked default models, with a…\n\n\n\nDevon-Lee Allies\n\n\nOct 29, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nDifferential Expression Analysis of Chromosome X RNA-seq Data\n\n\n\n\n\n\nDevon Allies\n\n\nOct 29, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nDatabricks data pipeline: simulated BAL study\n\n\nBronze, silver and gold Delta tables, tested cleaning functions, MLflow model tracking and a Streamlit demo, built on simulated clinical data.\n\n\n\nDevon Allies\n\n\nOct 27, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe use of R & Python in data science\n\n\n\n\n\n\nDevon Allies\n\n\nFeb 8, 2026\n\n\n\n\n\n\nNo matching items"
   }
 ]

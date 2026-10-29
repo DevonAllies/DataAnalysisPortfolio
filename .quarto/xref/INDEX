@@ -58,5 +58,8 @@
   },
   "projects/databricks_mlflow/bal_pipeline.qmd": {
     "bal_pipeline.html": "6242dba2"
+  },
+  "projects/credit-lending-pipeline/credit-risk-pipeline.qmd": {
+    "credit-risk-pipeline.html": "300874d8"
   }
 }
