@@ -28,7 +28,9 @@ format:
       - brand
     css: styles.css
     toc: true
-    
+    grid:
+      body-width: 960px   # Quarto default is 800px
+
 filters:
   - acronyms
   

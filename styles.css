@@ -1,7 +1,7 @@
 /* css styles */
 
 .home-intro {
-  max-width: 48rem;
+  max-width: 960px;  /* matches the site reading column (grid body-width) */
   font-size: 1.1rem;
   margin-bottom: 2rem;
 }
