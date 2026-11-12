@@ -10,3 +10,38 @@
   margin-right: 0.5rem;
   margin-top: 0.5rem;
 }
+
+/* About page: skill cards */
+.skills-grid {
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.skill-card {
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-top: 3px solid var(--bs-primary, #2780e3);
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--bs-body-bg, #fff);
+}
+
+.skill-card p {
+  margin-bottom: 0.35rem;
+}
+
+.skill-title {
+  display: block;
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin-bottom: 0.25rem;
+}
+
+.skill-title .bi {
+  color: var(--bs-primary, #2780e3);
+  margin-right: 0.35rem;
+}
+
+.skill-detail {
+  color: var(--bs-secondary-color, #6c757d);
+  font-size: 0.9rem;
+}

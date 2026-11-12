@@ -33,9 +33,54 @@ I’m passionate about integrating bioinformatics and computational biology to d
 
 ## Skills
 
-- **Languages:** Python (pandas, NumPy, scikit-learn), R (tidyverse, ggplot2, gtsummary), SQL, Bash
-- **Bioinformatics:** Nextflow DSL2, GATK, BWA-MEM2, samtools, HISAT2, StringTie, Ballgown; WGS and RNA-seq
-- **Data engineering:** Databricks (PySpark, Delta Lake, MLflow), HPC / PBS, Docker / Singularity, Git
-- **Statistics & ML:** regression, PCA, random forest, cross-validation, SHAP, ROC/AUC
-- **Reporting & BI:** Quarto, RMarkdown, Power BI, Tableau, Databricks AI/BI
-- **Laboratory & clinical:** flow cytometry (FACSCantoII, FlowJo), PBMC processing, ISO-accredited QA, clinical trial coordination
+::: {.grid .skills-grid}
+
+::: {.g-col-12 .g-col-md-6 .skill-card}
+[<i class="bi bi-code-slash"></i> Programming & Analysis]{.skill-title}
+
+Python · R · SQL · Bash
+
+[pandas, NumPy, scikit-learn, tidyverse, ggplot2, gtsummary]{.skill-detail}
+:::
+
+::: {.g-col-12 .g-col-md-6 .skill-card}
+[<i class="bi bi-diagram-3"></i> Bioinformatics]{.skill-title}
+
+Nextflow DSL2 · GATK · BWA-MEM2 · samtools
+
+[HISAT2, StringTie, Ballgown; WGS and RNA-seq workflows]{.skill-detail}
+:::
+
+::: {.g-col-12 .g-col-md-6 .skill-card}
+[<i class="bi bi-database"></i> Data Engineering & MLOps]{.skill-title}
+
+Databricks · PySpark · Delta Lake · MLflow
+
+[HPC / PBS, Docker / Singularity, Git; medallion (bronze/silver/gold) pipelines]{.skill-detail}
+:::
+
+::: {.g-col-12 .g-col-md-6 .skill-card}
+[<i class="bi bi-graph-up"></i> Statistics & Machine Learning]{.skill-title}
+
+Regression · PCA · Random forest · SHAP
+
+[Cross-validation, ROC/AUC, FDR correction, association testing]{.skill-detail}
+:::
+
+::: {.g-col-12 .g-col-md-6 .skill-card}
+[<i class="bi bi-bar-chart-line"></i> Reporting & BI]{.skill-title}
+
+Quarto · RMarkdown · Power BI · Tableau
+
+[Databricks AI/BI dashboards, LaTeX, publication-ready figures]{.skill-detail}
+:::
+
+::: {.g-col-12 .g-col-md-6 .skill-card}
+[<i class="bi bi-clipboard2-pulse"></i> Laboratory & Clinical]{.skill-title}
+
+Flow cytometry · PBMC processing · ISO QA
+
+[FACSCantoII, FlowJo, assay validation, clinical trial coordination]{.skill-detail}
+:::
+
+:::
