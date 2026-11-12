@@ -74,7 +74,7 @@
     "href": "projects/credit-lending-pipeline/credit-risk-pipeline.html",
     "title": "Credit Risk Pipeline on Databricks",
     "section": "",
-    "text": "NoteAt a glance\n\n\n\n\nData: 9,564 loans across six simulated source tables (customers, applications, loans, repayments, partners, campaigns)\nPipeline: bronze → silver → gold Delta tables on Databricks, with automated data quality checks\nModel: logistic regression, AUC 0.668 / Gini 0.336 on a time-based holdout of 1,256 loans\nTools: Databricks, PySpark, Delta Lake, SQL, scikit-learn, MLflow, Databricks AI/BI\n\nView the code on GitHub Open the live dashboard"
+    "text": "NoteAt a glance\n\n\n\n\nData: 9,564 loans across six simulated source tables (customers, applications, loans, repayments, partners, campaigns)\nPipeline: bronze → silver → gold Delta tables on Databricks, with automated data quality checks\nModel: logistic regression, AUC 0.668 / Gini 0.336 on a time-based holdout of 1,256 loans\nTools: Databricks, PySpark, Delta Lake, SQL, scikit-learn, MLflow, Databricks AI/BI\n\nOpen the live dashboard"
   },
   {
     "objectID": "projects/credit-lending-pipeline/credit-risk-pipeline.html#why-i-built-this",

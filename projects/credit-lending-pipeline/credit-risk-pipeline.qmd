@@ -21,8 +21,7 @@ format:
 - **Model:** logistic regression, **AUC 0.668 / Gini 0.336** on a time-based holdout of 1,256 loans
 - **Tools:** Databricks, PySpark, Delta Lake, SQL, scikit-learn, MLflow, Databricks AI/BI
 
-[View the code on GitHub](https://github.com/DevonAllies/credit_risk_pipeline){.btn .btn-primary}
-[Open the live dashboard](https://dbc-6c4cb454-75d3.cloud.databricks.com/dashboardsv3/01f1d37289f81ae5a64c077cede169e6/published?o=7474644303483899){.btn .btn-outline-primary}
+[Open the live dashboard](https://dbc-6c4cb454-75d3.cloud.databricks.com/dashboardsv3/01f1d37289f81ae5a64c077cede169e6/published?o=7474644303483899){.btn .btn-primary}
 :::
 
 ::: {.callout-important appearance="simple"}
