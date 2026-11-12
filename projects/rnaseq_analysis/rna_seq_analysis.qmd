@@ -1,5 +1,6 @@
 ---
 title: "Differential Expression Analysis of Chromosome X RNA-seq Data"
+description: "Sex-based differential expression on chromosome X from 12 paired-end RNA-seq samples, using a Nextflow pipeline with HISAT2 and StringTie, and Ballgown in R."
 author:
   - name: "Devon Allies"
     email: "alliesdl@gmail.com"

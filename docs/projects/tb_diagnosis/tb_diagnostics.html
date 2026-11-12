@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Devon Allies">
+<meta name="description" content="Compartmental TB diagnostics on a simulated BAL cytokine cohort: cleaning and statistics in R, building towards a 3-class classifier for active TB, LTBI and uninfected.">
 
 <title>Compartmental TB Diagnostics: A Simulated BAL Cytokine cohort – Devon Allies</title>
 <style>
@@ -126,6 +127,12 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Compartmental TB Diagnostics: A Simulated BAL Cytokine cohort – Devon Allies">
+<meta property="og:description" content="Compartmental TB diagnostics on a simulated BAL cytokine cohort: cleaning and statistics in R, building towards a 3-class classifier for active TB, LTBI and uninfected.">
+<meta property="og:image" content="https://devonallies.github.io/DataAnalysisPortfolio/projects/tb_diagnosis/src/tb.jpeg">
+<meta property="og:site_name" content="Devon Allies">
+<meta property="og:image:height" content="768">
+<meta property="og:image:width" content="1376">
 </head>
 
 <body class="floating nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
@@ -203,6 +210,11 @@ window.Quarto = {
 <h1 class="title">Compartmental TB Diagnostics: A Simulated BAL Cytokine cohort</h1>
 </div>
 
+<div>
+  <div class="description">
+    Compartmental TB diagnostics on a simulated BAL cytokine cohort: cleaning and statistics in R, building towards a 3-class classifier for active TB, LTBI and uninfected.
+  </div>
+</div>
 
 <div class="quarto-title-meta-author">
   <div class="quarto-title-meta-heading">Author</div>
@@ -266,23 +278,23 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
 </figcaption>
 <div aria-describedby="tbl-column-names-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="uusxfwklcq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#uusxfwklcq table {
+<div id="csqilvwkfv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#csqilvwkfv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#uusxfwklcq thead, #uusxfwklcq tbody, #uusxfwklcq tfoot, #uusxfwklcq tr, #uusxfwklcq td, #uusxfwklcq th {
+#csqilvwkfv thead, #csqilvwkfv tbody, #csqilvwkfv tfoot, #csqilvwkfv tr, #csqilvwkfv td, #csqilvwkfv th {
   border-style: none;
 }
 
-#uusxfwklcq p {
+#csqilvwkfv p {
   margin: 0;
   padding: 0;
 }
 
-#uusxfwklcq .gt_table {
+#csqilvwkfv .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -308,12 +320,12 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-left-color: #D3D3D3;
 }
 
-#uusxfwklcq .gt_caption {
+#csqilvwkfv .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#uusxfwklcq .gt_title {
+#csqilvwkfv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -325,7 +337,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-bottom-width: 0;
 }
 
-#uusxfwklcq .gt_subtitle {
+#csqilvwkfv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -337,7 +349,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-top-width: 0;
 }
 
-#uusxfwklcq .gt_heading {
+#csqilvwkfv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -349,13 +361,13 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-right-color: #D3D3D3;
 }
 
-#uusxfwklcq .gt_bottom_border {
+#csqilvwkfv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#uusxfwklcq .gt_col_headings {
+#csqilvwkfv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -370,7 +382,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-right-color: #D3D3D3;
 }
 
-#uusxfwklcq .gt_col_heading {
+#csqilvwkfv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -390,7 +402,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   overflow-x: hidden;
 }
 
-#uusxfwklcq .gt_column_spanner_outer {
+#csqilvwkfv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -402,15 +414,15 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 4px;
 }
 
-#uusxfwklcq .gt_column_spanner_outer:first-child {
+#csqilvwkfv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#uusxfwklcq .gt_column_spanner_outer:last-child {
+#csqilvwkfv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#uusxfwklcq .gt_column_spanner {
+#csqilvwkfv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -422,11 +434,11 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   width: 100%;
 }
 
-#uusxfwklcq .gt_spanner_row {
+#csqilvwkfv .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#uusxfwklcq .gt_group_heading {
+#csqilvwkfv .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -452,7 +464,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   text-align: left;
 }
 
-#uusxfwklcq .gt_empty_group_heading {
+#csqilvwkfv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -467,15 +479,15 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   vertical-align: middle;
 }
 
-#uusxfwklcq .gt_from_md > :first-child {
+#csqilvwkfv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#uusxfwklcq .gt_from_md > :last-child {
+#csqilvwkfv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#uusxfwklcq .gt_row {
+#csqilvwkfv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -494,7 +506,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   overflow-x: hidden;
 }
 
-#uusxfwklcq .gt_stub {
+#csqilvwkfv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -507,7 +519,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#uusxfwklcq .gt_stub_row_group {
+#csqilvwkfv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -521,15 +533,15 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   vertical-align: top;
 }
 
-#uusxfwklcq .gt_row_group_first td {
+#csqilvwkfv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#uusxfwklcq .gt_row_group_first th {
+#csqilvwkfv .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#uusxfwklcq .gt_summary_row {
+#csqilvwkfv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -539,16 +551,16 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#uusxfwklcq .gt_first_summary_row {
+#csqilvwkfv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#uusxfwklcq .gt_first_summary_row.thick {
+#csqilvwkfv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#uusxfwklcq .gt_last_summary_row {
+#csqilvwkfv .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -558,7 +570,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-bottom-color: #D3D3D3;
 }
 
-#uusxfwklcq .gt_grand_summary_row {
+#csqilvwkfv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -568,7 +580,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#uusxfwklcq .gt_first_grand_summary_row {
+#csqilvwkfv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -578,7 +590,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-top-color: #D3D3D3;
 }
 
-#uusxfwklcq .gt_last_grand_summary_row_top {
+#csqilvwkfv .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -588,11 +600,11 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-bottom-color: #D3D3D3;
 }
 
-#uusxfwklcq .gt_striped {
+#csqilvwkfv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#uusxfwklcq .gt_table_body {
+#csqilvwkfv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -601,7 +613,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-bottom-color: #D3D3D3;
 }
 
-#uusxfwklcq .gt_footnotes {
+#csqilvwkfv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -615,7 +627,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-right-color: #D3D3D3;
 }
 
-#uusxfwklcq .gt_footnote {
+#csqilvwkfv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -624,7 +636,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#uusxfwklcq .gt_sourcenotes {
+#csqilvwkfv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -638,7 +650,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-right-color: #D3D3D3;
 }
 
-#uusxfwklcq .gt_sourcenote {
+#csqilvwkfv .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -646,72 +658,72 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#uusxfwklcq .gt_left {
+#csqilvwkfv .gt_left {
   text-align: left;
 }
 
-#uusxfwklcq .gt_center {
+#csqilvwkfv .gt_center {
   text-align: center;
 }
 
-#uusxfwklcq .gt_right {
+#csqilvwkfv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#uusxfwklcq .gt_font_normal {
+#csqilvwkfv .gt_font_normal {
   font-weight: normal;
 }
 
-#uusxfwklcq .gt_font_bold {
+#csqilvwkfv .gt_font_bold {
   font-weight: bold;
 }
 
-#uusxfwklcq .gt_font_italic {
+#csqilvwkfv .gt_font_italic {
   font-style: italic;
 }
 
-#uusxfwklcq .gt_super {
+#csqilvwkfv .gt_super {
   font-size: 65%;
 }
 
-#uusxfwklcq .gt_footnote_marks {
+#csqilvwkfv .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#uusxfwklcq .gt_asterisk {
+#csqilvwkfv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#uusxfwklcq .gt_indent_1 {
+#csqilvwkfv .gt_indent_1 {
   text-indent: 5px;
 }
 
-#uusxfwklcq .gt_indent_2 {
+#csqilvwkfv .gt_indent_2 {
   text-indent: 10px;
 }
 
-#uusxfwklcq .gt_indent_3 {
+#csqilvwkfv .gt_indent_3 {
   text-indent: 15px;
 }
 
-#uusxfwklcq .gt_indent_4 {
+#csqilvwkfv .gt_indent_4 {
   text-indent: 20px;
 }
 
-#uusxfwklcq .gt_indent_5 {
+#csqilvwkfv .gt_indent_5 {
   text-indent: 25px;
 }
 
-#uusxfwklcq .katex-display {
+#csqilvwkfv .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#uusxfwklcq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#csqilvwkfv div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -793,23 +805,23 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
 </figcaption>
 <div aria-describedby="tbl-summary-statistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="ydnqvkyqtq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ydnqvkyqtq table {
+<div id="uwwrxcmwde" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#uwwrxcmwde table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ydnqvkyqtq thead, #ydnqvkyqtq tbody, #ydnqvkyqtq tfoot, #ydnqvkyqtq tr, #ydnqvkyqtq td, #ydnqvkyqtq th {
+#uwwrxcmwde thead, #uwwrxcmwde tbody, #uwwrxcmwde tfoot, #uwwrxcmwde tr, #uwwrxcmwde td, #uwwrxcmwde th {
   border-style: none;
 }
 
-#ydnqvkyqtq p {
+#uwwrxcmwde p {
   margin: 0;
   padding: 0;
 }
 
-#ydnqvkyqtq .gt_table {
+#uwwrxcmwde .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -835,12 +847,12 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-left-color: #D3D3D3;
 }
 
-#ydnqvkyqtq .gt_caption {
+#uwwrxcmwde .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ydnqvkyqtq .gt_title {
+#uwwrxcmwde .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -852,7 +864,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-bottom-width: 0;
 }
 
-#ydnqvkyqtq .gt_subtitle {
+#uwwrxcmwde .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -864,7 +876,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-top-width: 0;
 }
 
-#ydnqvkyqtq .gt_heading {
+#uwwrxcmwde .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -876,13 +888,13 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-right-color: #D3D3D3;
 }
 
-#ydnqvkyqtq .gt_bottom_border {
+#uwwrxcmwde .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ydnqvkyqtq .gt_col_headings {
+#uwwrxcmwde .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -897,7 +909,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-right-color: #D3D3D3;
 }
 
-#ydnqvkyqtq .gt_col_heading {
+#uwwrxcmwde .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -917,7 +929,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   overflow-x: hidden;
 }
 
-#ydnqvkyqtq .gt_column_spanner_outer {
+#uwwrxcmwde .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -929,15 +941,15 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 4px;
 }
 
-#ydnqvkyqtq .gt_column_spanner_outer:first-child {
+#uwwrxcmwde .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ydnqvkyqtq .gt_column_spanner_outer:last-child {
+#uwwrxcmwde .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ydnqvkyqtq .gt_column_spanner {
+#uwwrxcmwde .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -949,11 +961,11 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   width: 100%;
 }
 
-#ydnqvkyqtq .gt_spanner_row {
+#uwwrxcmwde .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ydnqvkyqtq .gt_group_heading {
+#uwwrxcmwde .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -979,7 +991,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   text-align: left;
 }
 
-#ydnqvkyqtq .gt_empty_group_heading {
+#uwwrxcmwde .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -994,15 +1006,15 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   vertical-align: middle;
 }
 
-#ydnqvkyqtq .gt_from_md > :first-child {
+#uwwrxcmwde .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ydnqvkyqtq .gt_from_md > :last-child {
+#uwwrxcmwde .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ydnqvkyqtq .gt_row {
+#uwwrxcmwde .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1021,7 +1033,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   overflow-x: hidden;
 }
 
-#ydnqvkyqtq .gt_stub {
+#uwwrxcmwde .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1034,7 +1046,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#ydnqvkyqtq .gt_stub_row_group {
+#uwwrxcmwde .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1048,15 +1060,15 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   vertical-align: top;
 }
 
-#ydnqvkyqtq .gt_row_group_first td {
+#uwwrxcmwde .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ydnqvkyqtq .gt_row_group_first th {
+#uwwrxcmwde .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ydnqvkyqtq .gt_summary_row {
+#uwwrxcmwde .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1066,16 +1078,16 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#ydnqvkyqtq .gt_first_summary_row {
+#uwwrxcmwde .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ydnqvkyqtq .gt_first_summary_row.thick {
+#uwwrxcmwde .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ydnqvkyqtq .gt_last_summary_row {
+#uwwrxcmwde .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1085,7 +1097,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-bottom-color: #D3D3D3;
 }
 
-#ydnqvkyqtq .gt_grand_summary_row {
+#uwwrxcmwde .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1095,7 +1107,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#ydnqvkyqtq .gt_first_grand_summary_row {
+#uwwrxcmwde .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1105,7 +1117,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-top-color: #D3D3D3;
 }
 
-#ydnqvkyqtq .gt_last_grand_summary_row_top {
+#uwwrxcmwde .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1115,11 +1127,11 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-bottom-color: #D3D3D3;
 }
 
-#ydnqvkyqtq .gt_striped {
+#uwwrxcmwde .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ydnqvkyqtq .gt_table_body {
+#uwwrxcmwde .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1128,7 +1140,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-bottom-color: #D3D3D3;
 }
 
-#ydnqvkyqtq .gt_footnotes {
+#uwwrxcmwde .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1142,7 +1154,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-right-color: #D3D3D3;
 }
 
-#ydnqvkyqtq .gt_footnote {
+#uwwrxcmwde .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1151,7 +1163,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#ydnqvkyqtq .gt_sourcenotes {
+#uwwrxcmwde .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1165,7 +1177,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-right-color: #D3D3D3;
 }
 
-#ydnqvkyqtq .gt_sourcenote {
+#uwwrxcmwde .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1173,72 +1185,72 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#ydnqvkyqtq .gt_left {
+#uwwrxcmwde .gt_left {
   text-align: left;
 }
 
-#ydnqvkyqtq .gt_center {
+#uwwrxcmwde .gt_center {
   text-align: center;
 }
 
-#ydnqvkyqtq .gt_right {
+#uwwrxcmwde .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ydnqvkyqtq .gt_font_normal {
+#uwwrxcmwde .gt_font_normal {
   font-weight: normal;
 }
 
-#ydnqvkyqtq .gt_font_bold {
+#uwwrxcmwde .gt_font_bold {
   font-weight: bold;
 }
 
-#ydnqvkyqtq .gt_font_italic {
+#uwwrxcmwde .gt_font_italic {
   font-style: italic;
 }
 
-#ydnqvkyqtq .gt_super {
+#uwwrxcmwde .gt_super {
   font-size: 65%;
 }
 
-#ydnqvkyqtq .gt_footnote_marks {
+#uwwrxcmwde .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ydnqvkyqtq .gt_asterisk {
+#uwwrxcmwde .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ydnqvkyqtq .gt_indent_1 {
+#uwwrxcmwde .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ydnqvkyqtq .gt_indent_2 {
+#uwwrxcmwde .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ydnqvkyqtq .gt_indent_3 {
+#uwwrxcmwde .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ydnqvkyqtq .gt_indent_4 {
+#uwwrxcmwde .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ydnqvkyqtq .gt_indent_5 {
+#uwwrxcmwde .gt_indent_5 {
   text-indent: 25px;
 }
 
-#ydnqvkyqtq .katex-display {
+#uwwrxcmwde .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#ydnqvkyqtq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#uwwrxcmwde div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1559,11 +1571,12 @@ Wickham, H., Vaughan, D. and Girlich, M., 2026. <em>Tidyr: Tidy messy data</em>.
   author = {Allies, Devon},
   title = {Compartmental {TB} {Diagnostics:} {A} {Simulated} {BAL}
     {Cytokine} Cohort},
+  url = {https://devonallies.github.io/DataAnalysisPortfolio/projects/tb_diagnosis/tb_diagnostics.html},
   langid = {en}
 }
 </code></pre><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-allies" class="csl-entry quarto-appendix-citeas" role="listitem">
 Allies, D., n.d. <em>Compartmental TB Diagnostics: A Simulated BAL
-Cytokine cohort</em>.
+Cytokine cohort</em>. [online] Available at: &lt;<a href="https://devonallies.github.io/DataAnalysisPortfolio/projects/tb_diagnosis/tb_diagnostics.html">https://devonallies.github.io/DataAnalysisPortfolio/projects/tb_diagnosis/tb_diagnostics.html</a>&gt;.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1638,7 +1651,7 @@ Cytokine cohort</em>.
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/devonallies\.github\.io\/DataAnalysisPortfolio\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

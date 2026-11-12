@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Devon Allies, bioinformatician and computational biologist in Cape Town: data science portfolio, R and Python tutorials, and TB research publications.">
 
 <title>Devon Allies</title>
 <style>
@@ -131,9 +132,15 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="Devon Allies">
+<meta property="og:description" content="Devon Allies, bioinformatician and computational biologist in Cape Town: data science portfolio, R and Python tutorials, and TB research publications.">
+<meta property="og:image" content="https://devonallies.github.io/DataAnalysisPortfolio/images/me.jpeg">
+<meta property="og:site_name" content="Devon Allies">
+<meta property="og:image:height" content="800">
+<meta property="og:image:width" content="800">
 </head>
 
-<body class="nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+<body class="nav-fixed hide-description quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -183,7 +190,12 @@ window.Quarto = {
     <div class="quarto-title column-page">
       <h1 class="title">Devon Allies</h1>
             <p class="subtitle lead">Bioinformatician &amp; Computational Biologist · Data Analyst at Stellenbosch University</p>
-                      </div>
+                  <div>
+        <div class="description">
+          Devon Allies, bioinformatician and computational biologist in Cape Town: data science portfolio, R and Python tutorials, and TB research publications.
+        </div>
+      </div>
+                </div>
   </div>
     
   
@@ -273,7 +285,7 @@ Databricks data pipeline: simulated BAL study
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-date-sort="1794434400000" data-listing-file-modified-sort="1781337295048" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2470">
+<div class="g-col-1" data-index="2" data-listing-date-sort="1794434400000" data-listing-file-modified-sort="1794492293455" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2470">
 <a href="./projects/rnaseq_analysis/rna_seq_analysis.html" class="quarto-grid-link no-external-icon">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -284,12 +296,12 @@ Databricks data pipeline: simulated BAL study
 Differential Expression Analysis of Chromosome X RNA-seq Data
 </h5>
 <div class="card-text listing-description">
-This analysis evaluates transcriptional variations on Chromosome X (chrX) between male and female individuals to uncover sex-specific dynamics. This study utilizes a cohort…
+<p>Sex-based differential expression on chromosome X from 12 paired-end RNA-seq samples, using a Nextflow pipeline with HISAT2 and StringTie, and Ballgown in R.</p>
 </div>
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="3" data-listing-date-sort="1770561465000" data-listing-file-modified-sort="1770561465633" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1124">
+<div class="g-col-1" data-index="3" data-listing-date-sort="1794492293000" data-listing-file-modified-sort="1794492293461" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1124">
 <a href="./projects/R &amp; Python/R &amp; Python.html" class="quarto-grid-link no-external-icon">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
@@ -300,7 +312,7 @@ This analysis evaluates transcriptional variations on Chromosome X (chrX) betwee
 The use of R &amp; Python in data science
 </h5>
 <div class="card-text listing-description">
-The age old debate, which is better, R or Python? The answer is, it depends. Both languages have their strengths and weaknesses, and the best choice for a data scientist…
+<p>A cross-language workflow on high-dimensional gene expression data: PCA with Python’s scikit-learn and statistical tables with R’s gtsummary, linked by reticulate.</p>
 </div>
 </div>
 </div></a>
@@ -404,7 +416,7 @@ The age old debate, which is better, R or Python? The answer is, it depends. Bot
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/devonallies\.github\.io\/DataAnalysisPortfolio\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

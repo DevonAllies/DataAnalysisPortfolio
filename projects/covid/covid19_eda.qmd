@@ -1,5 +1,6 @@
 ---
 title: "Covid 19 Dataset"
+description: "Exploratory data analysis of complete blood count data from COVID-19 patients in Bangladesh, comparing patient outcomes by age, sex and blood markers in Python and R."
 author:
   - name: 'Devon Allies, BSc. Honours: Bioinformatics & Computational Biology'
     affiliations:

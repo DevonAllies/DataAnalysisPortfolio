@@ -8,6 +8,11 @@ project:
 website:
   title: "Devon Allies"
   description: "Bioinformatician and computational biologist: data portfolio, tutorials and publications."
+  # Search and sharing: site-url makes Quarto write docs/sitemap.xml;
+  # open-graph adds link-preview tags to every page.
+  site-url: "https://devonallies.github.io/DataAnalysisPortfolio/"
+  image: images/me.jpeg
+  open-graph: true
   navbar:
     left:
       - href: index.qmd

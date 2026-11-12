@@ -1,5 +1,6 @@
 ---
 title: "The use of R & Python in data science"
+description: "A cross-language workflow on high-dimensional gene expression data: PCA with Python's scikit-learn and statistical tables with R's gtsummary, linked by reticulate."
 format: html
 author: "Devon Allies"
 date: last-modified

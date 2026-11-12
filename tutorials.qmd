@@ -1,6 +1,8 @@
 ---
 title: "Data Science Tutorials"
 subtitle: "Short, practical guides using a simulated TB research dataset"
+description: "Practical R and Python tutorials using a simulated TB study dataset, from importing data in RStudio to working with the same data in pandas."
+body-classes: hide-description   # description is for search/link previews only
 listing:
   contents: tutorials
   type: grid

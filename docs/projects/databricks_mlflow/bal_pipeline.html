@@ -80,6 +80,12 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Databricks data pipeline: simulated BAL study – Devon Allies">
+<meta property="og:description" content="Bronze, silver and gold Delta tables, tested cleaning functions, MLflow model tracking and a Streamlit demo, built on simulated clinical data.">
+<meta property="og:image" content="https://devonallies.github.io/DataAnalysisPortfolio/projects/databricks_mlflow/bal-pipeline.png">
+<meta property="og:site_name" content="Devon Allies">
+<meta property="og:image:height" content="630">
+<meta property="og:image:width" content="1200">
 </head>
 
 <body class="nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
@@ -303,7 +309,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/devonallies\.github\.io\/DataAnalysisPortfolio\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

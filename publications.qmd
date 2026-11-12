@@ -1,6 +1,8 @@
 ---
 title: "Publications & Writing"
 subtitle: "Peer-reviewed TB research, and articles on reproducible science"
+description: "Peer-reviewed TB research co-authored by Devon Allies in Scientific Reports, BMC Infectious Diseases and The Lancet Infectious Diseases, plus articles on reproducible science with Quarto."
+body-classes: hide-description   # description is for search/link previews only
 engine: knitr
 toc: false
 execute:

@@ -1,5 +1,7 @@
 ---
 title: "Data Science Projects"
+description: "Data science and bioinformatics projects by Devon Allies: RNA-seq, TB biomarkers, public health analyses and Databricks pipelines in R and Python."
+body-classes: hide-description   # description is for search/link previews only
 listing:
   contents: projects # This looks inside your 'projects' folder
   type: grid         # Creates a professional card layout

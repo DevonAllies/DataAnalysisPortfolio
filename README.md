@@ -88,3 +88,4 @@ quarto render publications.qmd
 - GitHub: [DevonAllies](https://github.com/DevonAllies)
 - ORCID: [0000-0001-8928-4334](https://orcid.org/0000-0001-8928-4334)
 - Medium: [@alliesdl](https://medium.com/@alliesdl)
+- Discord: [Devon Allies](https://discord.com/users/492592734805164044)

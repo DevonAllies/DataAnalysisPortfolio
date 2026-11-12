@@ -1,5 +1,6 @@
 ---
 title: "TBTrends:"
+description: "Exploratory analysis of global tuberculosis indicators from 2000 to 2024: South Africa's trends, drivers of TB burden, and a forecast against the End TB 2030 targets."
 author: 'Devon Allies'
 bibliography: references.bib
 csl: harvard-anglia-ruskin-university.csl

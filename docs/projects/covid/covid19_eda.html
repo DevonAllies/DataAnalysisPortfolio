@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Devon Allies, BSc. Honours: Bioinformatics &amp; Computational Biology">
+<meta name="description" content="Exploratory data analysis of complete blood count data from COVID-19 patients in Bangladesh, comparing patient outcomes by age, sex and blood markers in Python and R.">
 
 <title>Covid 19 Dataset – Devon Allies</title>
 <style>
@@ -161,6 +162,12 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Covid 19 Dataset – Devon Allies">
+<meta property="og:description" content="Exploratory data analysis of complete blood count data from COVID-19 patients in Bangladesh, comparing patient outcomes by age, sex and blood markers in Python and R.">
+<meta property="og:image" content="https://devonallies.github.io/DataAnalysisPortfolio/projects/covid/image_ccf77676.png">
+<meta property="og:site_name" content="Devon Allies">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:width" content="1024">
 </head>
 
 <body class="nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
@@ -250,6 +257,11 @@ window.Quarto = {
 <h1 class="title">Covid 19 Dataset</h1>
 </div>
 
+<div>
+  <div class="description">
+    Exploratory data analysis of complete blood count data from COVID-19 patients in Bangladesh, comparing patient outcomes by age, sex and blood markers in Python and R.
+  </div>
+</div>
 
 <div class="quarto-title-meta-author">
   <div class="quarto-title-meta-heading">Author</div>
@@ -499,7 +511,7 @@ Figure&nbsp;5: Length of Stay
 </section>
 <section id="ventilation-and-treatment-analysis" class="level4">
 <h4 class="anchored" data-anchor-id="ventilation-and-treatment-analysis">Ventilation and Treatment Analysis:</h4>
-<div id="tbl-vent" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-pos="H" data-warnings="false">
+<div id="tbl-vent" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-warnings="false" data-tbl-pos="H">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-vent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;4: Ventilation and treatment analysis
@@ -703,7 +715,7 @@ Wickham, H., Averick, M., Bryan, J., Chang, W., McGowan, L.D., François, R., Gr
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/devonallies\.github\.io\/DataAnalysisPortfolio\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

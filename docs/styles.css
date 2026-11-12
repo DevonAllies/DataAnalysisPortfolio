@@ -151,3 +151,10 @@
   color: var(--bs-secondary-color, #6c757d);
   font-size: 0.9rem;
 }
+
+/* Pages with body-classes: hide-description keep their description for
+   search engines and link previews, but don't show it under the title. */
+.hide-description #title-block-header .description,
+.hide-description .quarto-title-block .description {
+  display: none;
+}

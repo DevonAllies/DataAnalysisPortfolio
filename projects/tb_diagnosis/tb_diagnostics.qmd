@@ -1,5 +1,6 @@
 ---
 title: "Compartmental TB Diagnostics: A Simulated BAL Cytokine cohort"
+description: "Compartmental TB diagnostics on a simulated BAL cytokine cohort: cleaning and statistics in R, building towards a 3-class classifier for active TB, LTBI and uninfected."
 author:
   - name: "Devon Allies"
     email: "alliesdl@gmail.com"

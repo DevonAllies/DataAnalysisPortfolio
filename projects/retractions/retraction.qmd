@@ -1,5 +1,6 @@
 ---
 title: " Global Retractions of Scientific Publications"
+description: "Trends in retracted scientific publications from 2020 to 2025 across fields and countries, analysed in R from a Kaggle dataset stored in MySQL."
 author:
   - name: "Devon Allies"
     email: "alliesdl@gmail.com"
