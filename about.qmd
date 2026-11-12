@@ -24,7 +24,7 @@ In my current role as a Data Analyst at the Division of Molecular Biology and Hu
 I started my career at the bench, processing clinical samples and running flow cytometry for TB immunology trials, and later coordinated multi-site clinical research studies. That means I understand the data because I was there when it was created.
 
 Key Highlights:
-- Contributed to peer-reviewed TB diagnostics and vaccine immunogenicity research cited 60+ times.
+- Contributed to peer-reviewed TB diagnostics and vaccine immunogenicity research cited 100+ times.
 - Built Nextflow pipelines for WGS and RNA-seq, and medallion-architecture pipelines on Databricks with MLflow.
 - Developed an automated data-logging dashboard for clinical trial field operations.
 - 7+ years in ISO-accredited laboratories with flow cytometry, PBMC processing, and assay validation.

@@ -354,13 +354,13 @@ def forecast_incidence_2030(south_africa_df):
 
   df = south_africa_df.copy()
   
-  df[YEAR_COL] = pd.to_datetime(df[YEAR_COL], format='%Y')
+  df[YEAR_COL] = pd.to_datetime(df[YEAR_COL].astype(str), format='%Y')
   
   # CRITICAL FIX: Handle duplicate years by averaging the incidence rate
   df = df.groupby(YEAR_COL)[INCIDENCE_COL].mean().reset_index()
   
   # Now set the unique years as the index
-  df.set_index(YEAR_COL, inplace=True)
+  df = df.set_index(YEAR_COL)
   df = df.asfreq('YS')
   
   ts = df[INCIDENCE_COL]
