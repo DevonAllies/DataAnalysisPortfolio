@@ -1,6 +1,9 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - "tutorials/data/*.xlsx"
+    - "tutorials/data/*.csv"
 
 website:
   title: "Data Science Projects"

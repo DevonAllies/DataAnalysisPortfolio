@@ -1,0 +1,256 @@
+---
+title: "Using one dataset in both R and Python"
+subtitle: "Tutorial 2: pass an R data frame to pandas and back with reticulate"
+author: "Devon Allies"
+date: 2026-11-12
+order: 2
+description: "Use reticulate to turn an R data frame into a pandas DataFrame and back, so R and Python can work on the same data in one document, and learn what changes when the data crosses over."
+categories: [Tutorial, R, Python, reticulate, pandas]
+---
+
+::: {.callout-note}
+## What you'll learn
+
+- Connect R to a Python environment with `reticulate`
+- Send an R data frame to Python as a pandas DataFrame (`r.` in Python)
+- Bring a pandas DataFrame back to R (`py$` in R)
+- Know which column types change on the way, and the two conversions that quietly corrupt data
+:::
+
+::: {.callout-important appearance="simple"}
+## Simulated data
+
+This tutorial uses the same **simulated** BAL study extract as [Tutorial 1](../01-import-data-in-r/import-data-in-r.qmd). No row describes a real person.
+
+[Download bal_baseline.csv](../data/bal_baseline.csv){.btn .btn-sm .btn-outline-primary}
+[Download bal_cell_counts.xlsx](../data/bal_cell_counts.xlsx){.btn .btn-sm .btn-outline-primary}
+:::
+
+## Why use both?
+
+R and Python each have strengths. R has `dplyr`, `ggplot2` and a deep set of statistics and Bioconductor packages; Python has `pandas`, `scikit-learn` and most machine learning tools. With **reticulate**, a single Quarto document (or R session) can run both languages and pass data between them, without saving and re-reading CSV files in between.
+
+## 1. Set up reticulate
+
+`reticulate` needs a Python installation with pandas. Using a project-specific environment keeps package versions stable. For example, with [uv](https://docs.astral.sh/uv/) in your project folder:
+
+```{.bash}
+uv init --bare
+uv add pandas numpy
+```
+
+Then tell reticulate to use it, **before** any Python code runs:
+
+```{r}
+#| label: use-python
+#| eval: false
+library(reticulate)
+use_python(here::here(".venv", "bin", "python"))   # on Windows: ".venv/Scripts/python.exe"
+```
+
+```{r}
+#| label: setup
+#| echo: false
+library(reticulate)
+```
+
+Check that reticulate found Python and pandas:
+
+```{r}
+#| label: check-python
+py_module_available("pandas")
+py_version()
+```
+
+::: {.callout-tip}
+Once Python has started in an R session, reticulate can't switch to another Python. If it picked the wrong one, restart R (*Session → Restart R*) and call `use_python()` first. Setting the `RETICULATE_PYTHON` environment variable in your project's `.Renviron` makes the choice permanent.
+:::
+
+## 2. Prepare the data in R
+
+Load the baseline table and the baseline-visit cell counts, as in Tutorial 1, and join them:
+
+```{r}
+#| label: packages
+library(readr)
+library(readxl)
+library(dplyr)
+library(janitor)
+library(ggplot2)
+```
+
+```{r}
+#| label: paths-site
+#| echo: false
+baseline_path <- here::here("tutorials", "data", "bal_baseline.csv")
+cells_path    <- here::here("tutorials", "data", "bal_cell_counts.xlsx")
+```
+
+```{r}
+#| label: prepare
+missing_codes <- c("", "N/A", "ND", ".", "-", "not done")
+
+baseline <- read_csv(baseline_path) |>
+  distinct(pt_id, .keep_all = TRUE)            # two participants were entered twice
+
+baseline_cells <- read_excel(cells_path, sheet = "Baseline", col_types = "text") |>
+  type_convert(na = missing_codes) |>
+  clean_names() |>
+  select(pt_id, macrophages_percent, lymphocytes_percent, neutrophils_percent)
+
+bal <- baseline |>
+  left_join(baseline_cells, by = "pt_id") |>
+  mutate(
+    tb_diagnosis = factor(tb_diagnosis, levels = c("Control", "LTBI", "Active TB")),
+    viability_percent = 100 * live_cells / total_cells
+  ) |>
+  select(pt_id, sex, tb_diagnosis, hiv_status, age_at_visit, bronc_date,
+         total_cells, viability_percent, time_to_process_min,
+         macrophages_percent, lymphocytes_percent, neutrophils_percent)
+
+glimpse(bal)
+```
+
+`bal` now has one row per participant, with text, a factor, a date and numeric columns: a good mix for seeing how each type converts.
+
+## 3. From R to Python: `r.`
+
+Inside a Python chunk, every object in the R session is available through `r`. Reading `r.bal` converts the R data frame to a pandas DataFrame:
+
+```{python}
+#| label: r-to-python
+import pandas as pd
+pd.set_option("display.width", 120)        # show wide tables
+pd.set_option("display.max_columns", None) # ...without hiding columns as "..."
+
+bal = r.bal
+print(type(bal))
+print(bal.dtypes)
+```
+
+Now use pandas as normal. For example, summarise each diagnosis group by HIV status:
+
+```{python}
+#| label: pandas-summary
+summary = (
+    bal.groupby(["tb_diagnosis", "hiv_status"], observed=True)
+       .agg(
+           participants=("pt_id", "count"),
+           median_cells=("total_cells", "median"),
+           median_viability=("viability_percent", "median"),
+           median_lymphocytes=("lymphocytes_percent", "median"),
+       )
+       .reset_index()
+       .round(1)
+)
+summary
+```
+
+`observed=True` keeps only the diagnosis and HIV combinations that actually occur. Without it, pandas also adds empty rows for every unused level of a category column.
+
+## 4. From Python to R: `py$`
+
+Back in R, every Python object is available through `py$`. `py$summary` converts the pandas DataFrame to an R data frame:
+
+```{r}
+#| label: python-to-r
+summary_r <- py$summary
+str(summary_r)
+```
+
+The pandas `category` column came back as an R **factor**, with its levels in the original order, so it plots in the right order:
+
+```{r}
+#| label: fig-lymphocytes
+#| fig-cap: "Median BAL lymphocyte percentage by TB diagnosis and HIV status, summarised in pandas and plotted with ggplot2."
+#| fig-height: 3.5
+ggplot(summary_r, aes(tb_diagnosis, median_lymphocytes, fill = hiv_status)) +
+  geom_col(position = "dodge") +
+  labs(x = NULL, y = "Median lymphocytes (%)", fill = "HIV status") +
+  theme_minimal()
+```
+
+## 5. What changes when data crosses over
+
+Most columns convert the way you'd expect:
+
+| R | pandas | Back to R |
+|---|---|---|
+| `character` | `str` (pandas 3) or `object` | `character` |
+| `numeric` (double) | `float64` | `numeric` |
+| `logical` | `bool` | `logical` |
+| `factor` | `category` (levels and order kept) | `factor` |
+| `NA` in a double column | `NaN` | `NaN` (`is.na()` is still `TRUE`) |
+| pandas index | n/a | row names |
+
+Two conversions need care, because neither raises an error.
+
+### Pitfall 1: integer columns with missing values
+
+R stores a missing integer as a special number. pandas' standard integer type has no way to represent "missing", so that special number comes through **as if it were a real value**:
+
+```{r}
+#| label: int-na-r
+demo <- data.frame(minutes = c(120L, NA, 95L))   # 120L means "integer 120"
+demo
+```
+
+```{python}
+#| label: int-na-python
+r.demo
+```
+
+The missing value became `-2147483648`, and any average you calculate in Python is now wrong. Convert integer columns to doubles in R before sending them:
+
+```{r}
+#| label: int-na-fix
+demo <- demo |>
+  mutate(across(where(is.integer), as.double))
+```
+
+```{python}
+#| label: int-na-python-fixed
+r.demo
+```
+
+::: {.callout-tip}
+`read_csv()` and `read_excel()` read numbers as doubles, so you mainly meet this with columns you created with `as.integer()`, `1L` or functions such as `n()`.
+:::
+
+### Pitfall 2: dates
+
+R `Date` columns arrive as a column of plain Python `date` objects (dtype `object`), not as pandas dates:
+
+```{python}
+#| label: dates-python
+print(bal["bronc_date"].dtype)
+print(type(bal["bronc_date"].iloc[0]))
+```
+
+Date methods such as `.dt.year` won't work until you convert the column:
+
+```{python}
+#| label: dates-fix
+bal["bronc_date"] = pd.to_datetime(bal["bronc_date"])
+bal["bronc_year"] = bal["bronc_date"].dt.year
+bal.groupby("bronc_year").size()
+```
+
+Going the other way, pandas datetimes come back to R as date-times (`POSIXct`), displayed in your computer's time zone. Use `as.Date()` if you only need the date.
+
+## Common pitfalls
+
+| Problem | Symptom | Fix |
+|---|---|---|
+| Wrong Python found | `ModuleNotFoundError: No module named 'pandas'` | `use_python()` before any Python runs; restart R to switch |
+| Integer column with `NA` | Values of `-2147483648` in pandas | `mutate(across(where(is.integer), as.double))` before sending |
+| Dates | `.dt` accessor fails; dtype is `object` | `pd.to_datetime()` in Python |
+| Extra empty groups | `groupby` returns combinations with 0 rows | `observed=True` when grouping by a category column |
+| Row names in R | pandas index becomes row names | `.reset_index()` in Python before returning |
+| Large data | Slow conversions, double memory use | Each `r.x` or `py$x` makes a copy, so convert once and reuse it |
+
+## Going further
+
+For a larger worked example (dimensionality reduction with scikit-learn on 22,000 gene features, then statistical tables in R), see the project [The use of R & Python in data science](../../projects/R%20&%20Python/R%20&%20Python.qmd).
+
+← Back to [Tutorial 1: Importing data into RStudio with R](../01-import-data-in-r/import-data-in-r.qmd)

@@ -1,7 +1,10 @@
 ---
 title: "Data Science Tutorials"
+subtitle: "Short, practical guides using a simulated TB research dataset"
 listing:
-  contents: tutorials # This looks inside your 'projects' folder
-  type: grid         # Creates a professional card layout
-  sort: "date desc"
+  contents: tutorials
+  type: grid
+  sort: "order"
+  fields: [image, title, description, categories]
+  grid-columns: 2
 ---

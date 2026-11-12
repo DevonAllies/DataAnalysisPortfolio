@@ -1,0 +1,307 @@
+---
+title: "Importing data into RStudio with R"
+subtitle: "Tutorial 1: CSV and Excel files, multiple sheets, and checking what you loaded"
+author: "Devon Allies"
+date: 2026-11-12
+order: 1
+description: "Load CSV and Excel files into R with readr and readxl, combine one sheet per study visit into a single table, and check the import before you analyse anything."
+categories: [Tutorial, R, readr, readxl, Data import]
+---
+
+::: {.callout-note}
+## What you'll learn
+
+- Organise files in an RStudio Project and build paths with `here()`
+- Read CSV files with `read.csv()` and `readr::read_csv()`, and see why they differ
+- Read Excel files with `readxl`, including choosing sheets and handling missing-value codes
+- Combine several sheets (one per study visit) into one table
+- Check an import with `glimpse()`, `count()` and `get_dupes()`
+:::
+
+::: {.callout-important appearance="simple"}
+## Simulated data
+
+This tutorial uses a small extract of a **simulated** bronchoalveolar lavage (BAL) study: 500 fictional participants with TB diagnosis, HIV status and BAL cell counts. No row describes a real person.
+
+[Download bal_metadata.xlsx](../data/bal_metadata.xlsx){.btn .btn-sm .btn-outline-primary}
+[Download bal_cell_counts.xlsx](../data/bal_cell_counts.xlsx){.btn .btn-sm .btn-outline-primary}
+[Download bal_baseline.csv](../data/bal_baseline.csv){.btn .btn-sm .btn-outline-primary}
+:::
+
+## 1. Set up an RStudio Project
+
+Start every analysis in an **RStudio Project** (*File → New Project*). A project sets the working directory to the project folder, so file paths are the same on every computer that opens it.
+
+A simple layout:
+
+```
+my-analysis/
+├── my-analysis.Rproj
+├── data/
+│   ├── bal_metadata.xlsx
+│   ├── bal_cell_counts.xlsx
+│   └── bal_baseline.csv
+└── analysis.qmd
+```
+
+Put the three downloaded files in `data/`, then load the packages used in this tutorial (install any you're missing with `install.packages()`):
+
+```{r}
+#| label: packages
+library(readr)    # fast, consistent CSV reading
+library(readxl)   # Excel files (.xls and .xlsx)
+library(dplyr)    # data manipulation
+library(purrr)    # repeat a step over many sheets
+library(janitor)  # tidy column names, find duplicates
+library(here)     # build file paths from the project root
+library(ggplot2)  # a quick plot to check the data
+```
+
+`here()` builds a path starting from the project root, wherever your script lives:
+
+```{r}
+#| label: paths
+#| eval: false
+# In your own project:
+metadata_path <- here("data", "bal_metadata.xlsx")
+```
+
+```{r}
+#| label: paths-site
+#| echo: false
+# On this website, the files live in tutorials/data/
+metadata_path <- here("tutorials", "data", "bal_metadata.xlsx")
+cells_path    <- here("tutorials", "data", "bal_cell_counts.xlsx")
+baseline_path <- here("tutorials", "data", "bal_baseline.csv")
+```
+
+::: {.callout-tip}
+Avoid `setwd("C:/Users/me/Desktop/...")`. A hard-coded path only works on your own computer, and breaks as soon as you move the folder or share it.
+:::
+
+## 2. Read a CSV file
+
+`bal_baseline.csv` is the tidy baseline table. R can read it in two ways.
+
+**Base R** comes with `read.csv()`:
+
+```{r}
+#| label: read-csv-base
+baseline_base <- read.csv(baseline_path)
+str(baseline_base[, 1:6])
+```
+
+**readr** has `read_csv()` (note the underscore):
+
+```{r}
+#| label: read-csv-readr
+#| eval: false
+baseline <- read_csv(here("data", "bal_baseline.csv"))
+```
+
+```{r}
+#| label: read-csv-readr-site
+#| echo: false
+baseline <- read_csv(baseline_path)
+```
+
+```{r}
+#| label: show-csv-readr
+baseline
+```
+
+Look at `bronc_date`. Base R reads it as plain text (`chr`); `read_csv()` recognises it as a `date`, so you can sort, filter and calculate with it straight away. `read_csv()` also returns a **tibble**, which prints only the first rows and shows each column's type.
+
+::: {.callout-tip}
+Prefer `read_csv()` for most work: it's faster on large files, guesses types more sensibly, and never silently turns text into factors.
+:::
+
+## 3. Read an Excel file
+
+Excel workbooks can hold several sheets, so list them first:
+
+```{r}
+#| label: list-sheets
+excel_sheets(metadata_path)
+```
+
+Then read the sheet you want by name:
+
+```{r}
+#| label: read-excel-raw
+metadata_raw <- read_excel(metadata_path, sheet = "MetaData")
+glimpse(metadata_raw)
+```
+
+Two things stand out:
+
+1. The column names contain brackets and slashes (`Height_1(cm)`, `IGRA_Value(IU/ml)`), so you'd have to wrap them in backticks every time you use them.
+2. Height, weight and IGRA value should be numbers, but they were read as text (`<chr>`).
+
+Why are they text? Look at the values that aren't numbers:
+
+```{r}
+#| label: find-non-numeric
+metadata_raw |>
+  filter(is.na(suppressWarnings(as.numeric(`Height_1(cm)`))),
+         !is.na(`Height_1(cm)`)) |>
+  count(`Height_1(cm)`, sort = TRUE)
+```
+
+The people who entered the data recorded "missing" in five different ways. One text value is enough to make the whole column text. Tell `read_excel()` which codes mean missing with the `na` argument, and use `clean_names()` to fix the column names:
+
+```{r}
+#| label: read-excel-na
+missing_codes <- c("", "N/A", "ND", ".", "-", "not done")
+
+read_excel(metadata_path, sheet = "MetaData", na = missing_codes) |>
+  clean_names() |>
+  select(pt_id, age, height_1_cm, weight_1_kg, igra_value_iu_ml) |>
+  glimpse()
+```
+
+The column names are fixed and `igra_value_iu_ml` is now numeric, but height and weight are **still text**. This is a second, very common Excel problem: **numbers stored as text**. The cells look like numbers, but Excel saved them as text, and `read_excel()` keeps whatever type Excel stored.
+
+The reliable fix is to read the sheet as text, then let `readr::type_convert()` guess each column's type from its contents, treating the missing-value codes as `NA`:
+
+```{r}
+#| label: read-excel-clean
+metadata <- read_excel(metadata_path, sheet = "MetaData", col_types = "text") |>
+  type_convert(na = missing_codes) |>
+  clean_names()
+
+metadata |>
+  select(pt_id, age, height_1_cm, weight_1_kg, igra_value_iu_ml) |>
+  glimpse()
+```
+
+All the measurement columns are now numeric (`<dbl>`), and every column name is lowercase with underscores.
+
+::: {.callout-tip}
+## Other useful `read_excel()` arguments
+
+- `skip = 3` ignores title rows above the table
+- `range = "A1:F200"` reads only part of a sheet
+- `col_types = "text"` reads everything as text, which is useful when you want to clean values yourself before converting them
+:::
+
+## 4. Combine one sheet per visit
+
+`bal_cell_counts.xlsx` has one sheet for each study visit, with the same columns on every sheet:
+
+```{r}
+#| label: cell-sheets
+excel_sheets(cells_path)
+```
+
+Rather than reading each sheet by hand, read them all in one step with `map()`, then stack them with `list_rbind()`. The `names_to = "visit"` argument adds a column recording which sheet each row came from:
+
+```{r}
+#| label: read-all-sheets-error
+#| error: true
+excel_sheets(cells_path) |>
+  set_names() |>
+  map(\(sheet) read_excel(cells_path, sheet = sheet, na = missing_codes)) |>
+  list_rbind(names_to = "visit")
+```
+
+It fails. `read_excel()` works out each column's type **separately for each sheet**, and `Macrophages%` has numbers stored as text on some sheets but not others. So the same column is text on one sheet and a number on another, and R won't stack them.
+
+The fix is the same pattern as in section 3: read every sheet as text, stack them, then let `type_convert()` guess the types once, across all rows together:
+
+```{r}
+#| label: read-all-sheets
+cell_counts <- excel_sheets(cells_path) |>
+  set_names() |>
+  map(\(sheet) read_excel(cells_path, sheet = sheet, col_types = "text")) |>
+  list_rbind(names_to = "visit") |>
+  type_convert(na = missing_codes) |>
+  clean_names() |>
+  mutate(visit = factor(visit, levels = c("Baseline", "Month3", "Month6", "Month12")))
+
+cell_counts |>
+  count(visit)
+```
+
+Fewer participants return at each visit, which is typical of a longitudinal study. The cell count columns are now numeric on every row:
+
+```{r}
+#| label: cell-types
+cell_counts |>
+  select(visit, pt_id, total_cells, macrophages_percent, lymphocytes_percent) |>
+  glimpse()
+```
+
+## 5. Check what you imported
+
+Always check a new import before you analyse it. These checks take seconds and catch most problems early.
+
+**Categories with inconsistent spelling.** `count()` shows every distinct value:
+
+```{r}
+#| label: check-categories
+metadata |>
+  count(hiv_status, sort = TRUE)
+```
+
+Eight spellings of two answers. Cleaning these up is the next step after importing, but `count()` is how you find them.
+
+**Duplicate participants.** Each participant should appear once:
+
+```{r}
+#| label: check-dupes
+metadata |>
+  get_dupes(pt_id) |>
+  select(pt_id, dupe_count, sex, age, tb_diagnosis)
+```
+
+Two participants were entered twice. Decide whether to keep the first row or investigate before you join this table to anything else, or the duplicates will multiply your rows.
+
+**Missing values per column:**
+
+```{r}
+#| label: check-missing
+metadata |>
+  summarise(across(everything(), \(x) sum(is.na(x)))) |>
+  tidyr::pivot_longer(everything(), names_to = "column", values_to = "n_missing") |>
+  filter(n_missing > 0) |>
+  arrange(desc(n_missing))
+```
+
+**A quick plot** often shows problems that tables hide:
+
+```{r}
+#| label: fig-age
+#| fig-cap: "Age of participants by TB diagnosis. A quick plot confirms the imported values look sensible."
+#| fig-height: 3.5
+ggplot(metadata, aes(age, fill = tb_diagnosis)) +
+  geom_histogram(binwidth = 5, colour = "white") +
+  labs(x = "Age (years)", y = "Participants", fill = "TB diagnosis") +
+  theme_minimal()
+```
+
+## 6. The "Import Dataset" button
+
+RStudio can also import files without writing code: in the **Environment** pane, choose **Import Dataset → From Excel…** (or **From Text (readr)…** for CSV files). The dialog:
+
+1. Lets you browse to the file and previews the first rows.
+2. Lets you choose the sheet, rows to skip, missing-value codes and column types.
+3. Shows the matching R code in the **Code Preview** box.
+
+Use the dialog to explore, then **copy the code from Code Preview into your script**. Imports done only through the dialog aren't saved anywhere, so nobody (including you, later) can rerun them.
+
+## Common pitfalls
+
+| Problem | Symptom | Fix |
+|---|---|---|
+| Hard-coded paths | `cannot open file 'C:/Users/...'` on another computer | Use an RStudio Project and `here()` |
+| Missing-value codes | Numeric columns read as `<chr>` | Pass every code to `na =` |
+| Numbers stored as text in Excel | Still `<chr>` after setting `na`; sheets won't stack | `col_types = "text"`, then `type_convert()` |
+| Awkward column names | Backticks everywhere: `` `Height_1(cm)` `` | `janitor::clean_names()` |
+| Dates read as text | `bronc_date` is `<chr>` | Use `read_csv()`, or parse with `lubridate` |
+| Duplicate IDs | Row counts grow after a join | Check with `get_dupes()` before joining |
+| File open in Excel | Permission or lock errors on Windows | Close the file in Excel and read it again |
+
+## Next
+
+You now have `metadata`, `cell_counts` and `baseline` loaded in R. In [Tutorial 2](../02-r-and-python/r-and-python-dataframes.qmd) you'll pass the same data to Python as a pandas DataFrame, so you can use R and Python in one analysis.

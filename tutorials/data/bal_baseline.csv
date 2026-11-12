@@ -1,0 +1,503 @@
+pt_id,sex,tb_diagnosis,hiv_status,age_at_visit,bronc_date,dr_name,vol_pbs_in_ml,vol_pbs_out_ml,lobe,lab_tech,pellet_colour,live_cells,dead_cells,total_cells,time_to_process_min,diff_method
+SP34696,Female,LTBI,Negative,53,2018-07-01,Dr. Van Der Merwe,100,45.7,Left Lower,thandi,Bloody,5432000,1169209,6601209,183,Manual
+SP22845,Female,Control,Positive,30,2020-04-16,Dr. Naidoo,120,75.8,Left Upper,lize,Cream,3290000,1078335,4370000,124,Automated
+SP31186,Male,LTBI,Negative,15,2020-07-01,Dr. Van Der Merwe,120,78.2,Right Upper,marietjie,Yellow,4527623,734242,5261865,89,Automated
+SP39161,Female,Control,Positive,50,2016-07-29,Dr. Smith,80,36.3,Right Upper,thandi,White,5116210,1565531,6681741,187,Both
+SP06180,Female,LTBI,Positive,30,2018-08-23,Dr. Smith,120,88.9,Right Upper,fatima,White,3602018,635658,4237676,160,Manual
+SP34673,Male,Control,Positive,35,2020-01-06,Dr. Jacobs,160,95.1,Right Lower,fatima,Yellow,3286561,615551,3902112,28,Both
+SP03636,Female,Active TB,Negative,54,2017-03-25,Dr. Botha,140,62.7,Right Lower,fatima,White,7020430,537000,7557442,61,Automated
+SP31558,Female,LTBI,Positive,38,2016-12-24,Dr. Botha,160,100.3,Left Upper,thandi,Yellow,2686183,850000,3535880,120,Manual
+SP19235,Male,Control,Positive,20,2016-07-01,Dr. Botha,80,32.8,Right Lower,marietjie,Clear,3366761,293000,3659636,198,Manual
+SP15306,Female,Active TB,Positive,43,2020-06-26,Dr. Van Der Merwe,100,50.5,Left Lower,fatima,Yellow,5131891,811675,5943566,62,Automated
+SP08398,Male,Indeterminate,Negative,44,2020-09-16,Dr. Smith,80,34.1,Right Lower,yolanda,Yellow,2930000,844000,3780000,30,Automated
+SP20582,Male,Active TB,Positive,27,2019-07-27,Dr. Adams,80,NA,Left Upper,fatima,Cream,1979399,180000,2160000,177,Automated
+SP14775,Male,Indeterminate,Positive,24,2017-12-20,Dr. Naidoo,120,NA,Left Lower,fatima,Cream,2535161,376143,2911304,79,Manual
+SP28061,Female,Active TB,Negative,40,2019-01-30,Dr. Naidoo,120,68.4,Right Upper,marietjie,White,4129686,1530000,5660000,57,Both
+SP34998,Female,LTBI,Negative,49,2020-08-05,Dr. Adams,160,116.7,Left Upper,yolanda,White,4890000,1610000,6494766,141,Both
+SP35867,Male,Active TB,Negative,21,2019-06-20,Dr. Hendricks,140,103.1,Left Lower,thandi,Yellow,2269417,691000,2959990,NA,Manual
+SP12294,Male,Indeterminate,Positive,44,2019-06-23,Dr. Van Der Merwe,120,78.3,Left Upper,marietjie,Bloody,3604627,1140000,4740000,70,Manual
+SP10059,Male,Control,Negative,28,2018-06-20,Dr. Naidoo,140,NA,Right Upper,marietjie,Pink,999,1549334,6563566,NA,Automated
+SP12334,Female,Indeterminate,Negative,58,2020-07-12,Prof. Malan,80,40.8,Right Lower,fatima,White,2810000,562000,3380000,60,Manual
+SP21645,Female,Active TB,Negative,42,2018-08-15,Prof. Malan,100,53.2,Right Middle,marietjie,Yellow,2830000,829904,3655276,26,Both
+SP35589,Male,Control,Negative,56,2020-03-12,Dr. Van Der Merwe,120,59.4,Left Lower,marietjie,White,2880000,447000,3324593,101,Automated
+SP26503,Female,Active TB,Positive,36,2018-07-08,Dr. Jacobs,100,68.9,Left Upper,thandi,Bloody,3020000,441000,3458856,48,Both
+SP28582,Female,LTBI,Negative,12,2017-08-23,Dr. Jacobs,140,NA,Left Lower,thandi,Yellow,3280000,595282,3877523,85,Automated
+SP17219,Male,Active TB,Positive,55,2016-06-18,Prof. Theron,140,77.8,Right Lower,yolanda,Yellow,4336050,226644,4562694,92,Manual
+SP37936,Male,Active TB,Negative,24,2017-07-25,Prof. Malan,100,74.1,Left Lower,fatima,Bloody,3958703,286000,4240000,94,Both
+SP04724,Female,Active TB,Negative,34,2018-07-15,Prof. Malan,120,80.7,Right Lower,yolanda,White,5082334,1160000,6238398,39,Both
+SP37157,Female,Active TB,Negative,26,2020-08-22,Dr. Botha,140,61.1,Left Upper,fatima,Bloody,4577768,957910,5540000,47,Manual
+SP34423,Male,LTBI,Negative,42,2016-06-21,Dr. Hendricks,120,47.1,Left Lower,thandi,White,2922562,770000,3692779,105,Manual
+SP39351,Male,LTBI,Negative,12,2020-07-11,Prof. Malan,80,NA,Right Lower,thandi,Bloody,2000000,669336,2673231,67,Automated
+SP22627,Female,LTBI,Positive,51,2016-07-07,Prof. Theron,100,48.1,Right Upper,thandi,Bloody,5860609,2190000,8050000,151,Manual
+SP34615,Female,Active TB,Negative,11,2018-05-13,Prof. de Villiers,100,51.9,Right Middle,yolanda,White,NA,NA,5525270,72,Automated
+SP35375,Male,LTBI,Negative,24,2018-08-24,Dr. Adams,80,46.8,Left Lower,lize,Bloody,4678908,1170000,5844402,60,Manual
+SP24791,Male,Control,Positive,43,2016-07-16,Dr. Naidoo,60,40.9,Right Middle,thandi,Pink,4434624,1320000,5755608,259,Automated
+SP06603,Female,Indeterminate,Negative,26,2019-08-25,Prof. Theron,160,111.2,Right Lower,marietjie,Pink,2520000,203000,2720000,114,Automated
+SP29709,Female,LTBI,Negative,29,2016-06-17,Dr. Jacobs,100,44.8,Right Upper,fatima,Cream,2334282,249295,2580000,164,Manual
+SP26561,Male,Active TB,Positive,35,2020-06-22,Dr. Adams,60,32.4,Left Upper,marietjie,Bloody,4626118,1277899,5900000,69,Manual
+SP14371,Female,Control,Positive,39,2018-06-07,Dr. Smith,100,70.4,Left Lower,thandi,Bloody,999,739241,4740000,97,Automated
+SP09782,Male,LTBI,Positive,51,2016-06-01,Dr. Botha,120,59.7,Left Lower,thandi,Clear,2515738,487599,3000000,176,Automated
+SP32034,Male,Control,Positive,41,2020-07-01,Dr. Jacobs,160,98.4,Left Lower,marietjie,Yellow,3446946,624806,4071752,161,Manual
+SP10228,Male,Indeterminate,Negative,21,2016-07-16,Prof. Malan,100,49.3,Right Upper,lize,Bloody,6684211,1626684,8310000,113,Automated
+SP27461,Male,Active TB,Negative,51,2018-04-09,Dr. Jacobs,140,92.8,Right Lower,thandi,Bloody,2650000,547000,3193168,85,Both
+SP11648,Female,Control,Negative,30,2019-07-18,Dr. Hendricks,160,70.4,Left Upper,fatima,White,2044585,409119,2450000,69,Both
+SP24188,Male,Control,Negative,31,2018-07-11,Dr. Smith,60,26.5,Left Lower,fatima,Clear,2400000,794000,3200000,110,Automated
+SP15598,Female,Active TB,Negative,13,2020-03-26,Dr. Adams,140,65.1,Right Upper,marietjie,Cream,2844350,822798,3667148,NA,Automated
+SP14150,Female,Control,Negative,13,2016-07-13,Dr. Hendricks,120,81.6,Left Lower,yolanda,Cream,4760538,360000,5120000,24,Automated
+SP17447,Male,Active TB,Negative,25,2016-07-05,Prof. Malan,140,96.5,Right Middle,thandi,Bloody,3280000,309537,3585148,96,Automated
+SP23406,Female,Active TB,Positive,57,2019-08-09,Prof. Theron,140,94.2,Right Lower,lize,Yellow,4560000,589000,5150000,105,Automated
+SP05942,Female,LTBI,Negative,47,2017-06-08,Dr. Botha,100,41.2,Right Upper,marietjie,Clear,3082513,1030000,4110000,128,Automated
+SP16734,Female,Active TB,Negative,56,2017-06-13,Dr. Jacobs,120,88.4,Left Upper,lize,Clear,3235159,1170000,4410000,143,Automated
+SP31092,Male,LTBI,Negative,21,2017-08-17,Dr. Van Der Merwe,140,NA,Left Upper,marietjie,Cream,1690000,198000,1890000,78,Automated
+SP32837,Female,Indeterminate,Positive,26,2017-06-24,Dr. Adams,60,42.3,Right Upper,marietjie,White,2890000,169000,3050000,73,Automated
+SP05964,Female,LTBI,Positive,36,2017-07-02,Dr. Jacobs,140,100.9,Right Lower,yolanda,Yellow,1486234,586507,2072741,22,Both
+SP23608,Female,Control,Negative,24,2017-07-30,Prof. Malan,80,55.3,Left Lower,fatima,Cream,4030000,720388,4745761,68,Manual
+SP39683,Female,Control,Positive,13,2016-07-24,Prof. Theron,140,NA,Left Upper,fatima,Bloody,NA,1394744,7170000,74,Both
+SP12585,Male,Active TB,Positive,53,2018-06-30,Dr. Hendricks,80,42.8,Right Middle,marietjie,Clear,2790000,1060000,3850601,74,Manual
+SP39822,Female,Indeterminate,Negative,52,2017-07-25,Dr. Botha,60,36.2,Right Lower,fatima,Bloody,3800000,1280000,5076025,116,Automated
+SP29987,Female,Indeterminate,Negative,44,2018-08-11,Dr. Smith,100,52.1,Right Lower,marietjie,Yellow,2011912,565155,2580000,96,Both
+SP03015,Male,LTBI,Positive,22,2018-08-29,Dr. Jacobs,100,72.9,Left Upper,fatima,White,4930000,1860166,6790000,87,Automated
+SP23975,Male,LTBI,Negative,44,2017-08-26,Dr. Jacobs,160,80.8,Left Upper,lize,Cream,2940000,824000,3760000,92,Both
+SP08876,Female,Control,Negative,46,2016-08-01,Prof. Theron,140,89.3,Right Upper,fatima,White,2843423,864000,NA,199,Automated
+SP33027,Male,Control,Positive,53,2019-01-19,Prof. Theron,160,101.2,Right Middle,yolanda,Yellow,35500000,NA,4898348,84,Automated
+SP21968,Female,Active TB,Negative,23,2018-07-21,Dr. Smith,80,36.8,Right Lower,marietjie,Clear,4350000,527000,4878048,118,Manual
+SP06722,Male,Control,Positive,22,2019-06-28,Dr. Botha,140,68.6,Left Upper,marietjie,Yellow,4011281,371433,4380000,104,Both
+SP33082,Female,Control,Negative,52,2017-04-20,Dr. Smith,80,34.3,Right Lower,fatima,Pink,3605153,493538,4098691,79,Automated
+SP11575,Female,LTBI,Negative,44,2017-07-16,Dr. Smith,120,NA,Left Lower,thandi,Bloody,2426456,NA,2905410,63,Manual
+SP29038,Male,LTBI,Positive,39,2016-08-02,Prof. Malan,100,41.1,Right Lower,marietjie,Bloody,3020871,1004615,4030000,135,Automated
+SP31914,Female,Active TB,Negative,43,2017-08-14,Dr. Van Der Merwe,100,39.2,Left Lower,marietjie,White,4420000,1160072,NA,1,Both
+SP38888,Male,Active TB,Positive,54,2019-06-15,Prof. de Villiers,60,32.7,Right Upper,fatima,Clear,3025660,224970,3250630,114,Manual
+SP19890,Female,Indeterminate,Negative,31,2019-06-03,Dr. Smith,140,66.1,Right Middle,yolanda,White,NA,659000,4454530,74,Automated
+SP37613,Male,Control,Negative,23,2019-06-13,Prof. de Villiers,140,65.5,Left Upper,fatima,Yellow,4340000,963680,5300000,129,Automated
+SP09721,Female,LTBI,Positive,15,2019-07-18,Dr. Hendricks,80,49.5,Right Middle,yolanda,Yellow,3226919,1135676,4362595,198,Manual
+SP30542,Male,Control,Negative,39,2019-05-27,Dr. Adams,140,66.2,Left Upper,thandi,Bloody,1530000,470682,1998040,NA,Manual
+SP10748,Female,Active TB,Negative,28,2019-09-19,Prof. de Villiers,140,77.5,Right Middle,lize,Cream,2750000,835393,3581845,113,Automated
+SP17656,Female,LTBI,Negative,39,2016-12-20,Dr. Naidoo,60,33.7,Right Middle,fatima,Cream,2670000,978815,3650000,29,Automated
+SP15540,Male,LTBI,Positive,17,2019-04-15,Dr. Botha,120,61.2,Right Middle,fatima,Bloody,2770000,1040000,3806195,67,Both
+SP37231,Female,Active TB,Positive,48,2016-07-07,Prof. Theron,160,97.7,Right Middle,fatima,Pink,1597821,288905,1890000,75,Both
+SP10772,Female,LTBI,Negative,52,2019-06-20,Dr. Adams,160,91.5,Left Lower,fatima,Bloody,1990000,326000,2320000,117,Manual
+SP19169,Male,Active TB,Positive,37,2016-02-19,Dr. Hendricks,80,40.2,Left Lower,yolanda,White,1382996,228000,1610593,105,Both
+SP25502,Male,Indeterminate,Positive,23,2019-07-08,Dr. Van Der Merwe,140,NA,Left Upper,fatima,White,1678580,310000,1988565,89,Automated
+SP13698,Male,Control,Negative,50,2019-08-06,Prof. Theron,100,57.6,Right Middle,thandi,White,32123070,937000,4149555,47,Automated
+SP39597,Female,Active TB,Negative,24,2020-05-12,Prof. Malan,100,62.8,Left Upper,yolanda,Yellow,2846710,635559,3482269,56,Automated
+SP07420,Male,Control,Positive,13,2016-06-28,Prof. Theron,160,75.5,Right Upper,thandi,Cream,2539711,577000,NA,27,Both
+SP09837,Male,Indeterminate,Negative,24,2019-06-14,Dr. Adams,100,70.6,Right Lower,thandi,Pink,3836232,NA,4620000,105,Automated
+SP23983,Female,Active TB,Negative,33,2019-04-24,Dr. Botha,80,45.6,Right Lower,fatima,Clear,3320000,1150000,4470000,176,Automated
+SP14586,Male,LTBI,Negative,17,2016-04-27,Prof. Theron,60,38.2,Left Upper,yolanda,Clear,6012583,2220000,8240000,60,Automated
+SP07711,Male,LTBI,Positive,23,2020-08-15,Dr. Smith,140,72.9,Left Lower,fatima,White,2529744,196000,2730000,133,Both
+SP00169,Male,Indeterminate,Negative,24,2018-08-28,Dr. Adams,80,42.9,Left Lower,fatima,Bloody,4060000,867663,4929123,18,Automated
+SP36654,Female,Active TB,Negative,44,2019-06-30,Dr. Hendricks,60,33.6,Right Upper,yolanda,Bloody,2660000,147000,2808198,152,Automated
+SP38430,Male,LTBI,Positive,19,2017-04-01,Dr. Smith,80,53.6,Right Upper,fatima,Clear,4220000,1002843,5227322,92,Manual
+SP34802,Male,LTBI,Positive,31,2018-07-09,Dr. Van Der Merwe,100,62.4,Right Upper,fatima,Bloody,4272852,1614273,5890000,109,Both
+SP22113,Female,LTBI,Negative,44,2016-07-01,Dr. Hendricks,120,67.2,Right Middle,yolanda,Cream,5970000,1991153,7960000,94,Automated
+SP10127,Male,Active TB,Negative,20,2019-07-29,Dr. Hendricks,160,NA,Left Upper,marietjie,Yellow,5480000,1911288,7390000,NA,Automated
+SP14163,Female,LTBI,Positive,50,2019-04-02,Dr. Smith,140,69,Right Upper,thandi,White,3892239,1030000,4920000,69,Manual
+SP25732,Female,Active TB,Positive,55,2017-01-12,Prof. Malan,140,95.4,Left Upper,yolanda,Bloody,1904159,711785,2620000,49,Both
+SP09389,Female,LTBI,Negative,24,2016-01-25,Dr. Botha,100,39,Right Middle,lize,Clear,4670000,384680,5056869,81,Manual
+SP12618,Female,Control,Negative,21,2016-04-10,Dr. Botha,120,84.1,Right Middle,fatima,Cream,4420000,1127040,5549423,97,Manual
+SP25168,Male,Active TB,Positive,41,2019-06-06,Dr. Botha,120,50.1,Left Upper,thandi,Bloody,4210000,840695,5050000,4,Both
+SP08512,Male,Active TB,Negative,33,2018-07-29,Prof. Theron,160,93.6,Right Upper,lize,Clear,2633754,1000000,3640000,248,Automated
+SP02126,Female,LTBI,Positive,42,2019-04-19,Prof. Theron,160,83.4,Left Lower,fatima,Cream,2750000,963000,3708542,106,Manual
+SP23833,Female,LTBI,Negative,49,2017-07-03,Dr. Botha,120,47.8,Right Upper,marietjie,White,4520000,1150000,5667206,188,Both
+SP29222,Male,Active TB,Negative,34,2020-07-27,Dr. Adams,80,28.2,Left Upper,thandi,White,4590000,1117853,5710000,138,Automated
+SP32012,Female,Active TB,Negative,14,2018-02-27,Dr. Jacobs,160,97.5,Left Lower,yolanda,Cream,4840000,1438101,6280000,111,Manual
+SP24965,Male,LTBI,Negative,55,2018-09-20,Dr. Smith,160,84.7,Right Lower,yolanda,Bloody,4171061,1570199,5741260,-1,Manual
+SP29278,Male,Control,Negative,30,2018-03-02,Dr. Naidoo,100,46.5,Right Upper,thandi,Yellow,3430000,997962,4429177,71,Manual
+SP10683,Female,Active TB,Negative,44,2019-12-31,Dr. Van Der Merwe,60,21,Left Lower,fatima,White,3945774,1390000,5330000,99,Both
+SP09573,Female,Active TB,Negative,49,2020-10-15,Dr. Jacobs,100,66.6,Right Lower,yolanda,Bloody,3950000,668697,4620000,111,Automated
+SP00419,Male,Active TB,Negative,16,2018-06-17,Dr. Naidoo,60,34.7,Right Middle,fatima,White,4105892,232000,4337906,175,Automated
+SP09573,Female,Active TB,Negative,49,2020-10-15,Dr. Jacobs,100,66.6,Right Lower,yolanda,Bloody,3950000,668697,4620000,111,Automated
+SP09480,Male,Control,Negative,12,2018-07-06,Prof. de Villiers,160,64.5,Right Middle,fatima,White,4355219,839000,5190000,152,Both
+SP38322,Male,Active TB,Positive,21,2019-07-02,Dr. Adams,120,55.8,Left Upper,fatima,White,2890000,731785,3620000,72,Automated
+SP01150,Female,Indeterminate,Negative,38,2016-06-05,Dr. Jacobs,60,41.2,Left Upper,yolanda,Bloody,NA,1830000,6662197,161,Both
+SP08533,Female,LTBI,Positive,21,2016-06-27,Dr. Naidoo,160,73.4,Right Middle,fatima,White,4020000,253340,4280000,105,Automated
+SP22322,Male,Active TB,Positive,29,2016-10-24,Dr. Van Der Merwe,120,70.4,Left Upper,lize,Yellow,3455343,401000,3855914,56,Automated
+SP38963,Female,Control,Positive,31,2019-06-16,Dr. Jacobs,80,49.2,Left Lower,marietjie,White,3408800,868000,4280000,84,Both
+SP36332,Female,Control,Positive,19,2018-07-29,Dr. Adams,140,96.7,Right Lower,yolanda,Pink,5170000,1646125,6820000,104,Both
+SP09756,Male,Indeterminate,Positive,42,2020-07-25,Prof. Theron,160,108.4,Left Upper,fatima,White,4990000,1620000,6610000,93,Automated
+SP06629,Male,Indeterminate,Positive,28,2020-06-22,Prof. de Villiers,140,89.2,Left Lower,thandi,White,4796807,1350000,6149691,89,Automated
+SP10077,Male,LTBI,Negative,41,2018-08-12,Dr. Van Der Merwe,160,81,Right Upper,fatima,Yellow,1319565,161570,1480000,88,Manual
+SP13072,Male,LTBI,Positive,42,2018-01-31,Prof. de Villiers,60,23.9,Right Upper,thandi,Bloody,3070000,NA,3231898,49,Manual
+SP29673,Female,LTBI,Negative,35,2020-08-24,Prof. de Villiers,140,103.8,Left Upper,thandi,Clear,4137780,845000,4982799,115,Manual
+SP36265,Male,Active TB,Positive,45,2020-08-17,Prof. Theron,100,68.6,Right Upper,thandi,White,5213875,462059,5675934,125,Automated
+SP19543,Male,Active TB,Positive,45,2018-08-15,Dr. Hendricks,160,81.1,Left Upper,marietjie,Cream,3411213,NA,3972813,137,Automated
+SP14556,Female,LTBI,Positive,45,2018-06-30,Dr. Naidoo,80,33,Left Upper,fatima,Cream,24400000,964191,3406071,78,Both
+SP02400,Male,LTBI,Negative,19,2016-08-05,Prof. de Villiers,120,56.8,Right Lower,marietjie,White,3800000,605427,4410000,89,Both
+SP20507,Female,Active TB,Positive,21,2017-06-04,Dr. Botha,60,24.1,Left Lower,marietjie,Bloody,NA,465000,2304249,76,Automated
+SP13735,Female,LTBI,Negative,24,2019-09-30,Prof. Malan,120,77.4,Right Lower,yolanda,White,3625798,1090000,4720000,60,Manual
+SP34258,Male,Active TB,Positive,16,2020-03-17,Prof. Malan,100,41.8,Right Middle,lize,White,2270000,135751,2404162,55,Manual
+SP17888,Female,Indeterminate,Negative,18,2017-07-14,Prof. Theron,160,82.6,Right Upper,fatima,Cream,3900000,998822,4895808,66,Automated
+SP02791,Female,LTBI,Positive,36,2017-03-05,Dr. Smith,80,55,Left Upper,lize,Bloody,2965365,874274,3839639,45,Automated
+SP36616,Female,Control,Negative,45,2016-07-19,Prof. de Villiers,100,NA,Right Middle,fatima,Cream,3620000,1309225,4927096,104,Automated
+SP07716,Female,LTBI,Positive,48,2019-07-27,Prof. Theron,140,75.7,Right Middle,marietjie,White,3777835,637020,4410000,119,Both
+SP24571,Female,LTBI,Negative,34,2017-02-06,Dr. Adams,140,65.9,Left Lower,thandi,Cream,5350000,434548,5784022,98,Automated
+SP09522,Male,Active TB,Negative,16,2017-08-25,Dr. Adams,60,NA,Left Upper,marietjie,Clear,3112753,532716,3650000,78,Automated
+SP22251,Male,Active TB,Negative,55,2019-06-17,Prof. Malan,80,36.2,Right Upper,fatima,Cream,4730000,1070000,5810000,38,Both
+SP20008,Female,Indeterminate,Positive,24,2020-08-08,Dr. Van Der Merwe,140,75.8,Left Upper,fatima,Bloody,3580000,834000,4420000,146,Automated
+SP12960,Male,LTBI,Positive,19,2016-03-31,Prof. Malan,140,70.7,Right Upper,thandi,Clear,3860000,1078461,4940000,NA,Manual
+SP13547,Male,LTBI,Negative,16,2019-06-02,Dr. Naidoo,140,92.5,Left Lower,thandi,Cream,3640000,400000,NA,120,Both
+SP34575,Female,Active TB,Negative,35,2020-08-27,Dr. Smith,160,57,Right Middle,yolanda,Yellow,1285212,171000,1456644,98,Automated
+SP24484,Female,LTBI,Negative,19,2019-06-11,Prof. Malan,60,44.7,Left Lower,thandi,Bloody,3260000,334107,3600000,106,Manual
+SP38408,Female,Control,Negative,43,2018-09-06,Dr. Smith,120,54.4,Right Upper,fatima,Bloody,999,1060000,4480026,56,Manual
+SP21590,Female,Control,Positive,42,2016-07-28,Prof. Malan,60,21.9,Right Middle,fatima,White,1491950,498467,1990417,54,Automated
+SP35140,Female,Indeterminate,Negative,23,2016-06-09,Dr. Jacobs,100,45.3,Right Middle,yolanda,Yellow,3877678,244000,4121991,111,Manual
+SP16720,Male,Control,Positive,52,2016-10-30,Dr. Van Der Merwe,80,43.3,Left Lower,marietjie,Cream,4276584,426338,4702922,78,Automated
+SP07584,Male,Control,Negative,34,2019-06-04,Dr. Adams,140,68.7,Right Upper,fatima,Clear,3333356,346731,3680000,61,Automated
+SP06732,Male,LTBI,Positive,33,2018-12-28,Dr. Van Der Merwe,80,31.3,Right Lower,thandi,Clear,5128843,799000,NA,94,Automated
+SP01200,Female,Active TB,Positive,29,2018-08-31,Dr. Smith,120,46.8,Right Upper,lize,Bloody,1949551,380539,2330090,119,Both
+SP30729,Female,Active TB,Negative,17,2017-08-18,Dr. Hendricks,140,52.2,Left Lower,yolanda,Cream,2940000,212238,3150000,-1,Both
+SP26363,Female,Active TB,Positive,50,2016-07-20,Dr. Smith,140,68.7,Left Upper,marietjie,Yellow,3773085,1490000,5260000,43,Both
+SP01748,Female,Indeterminate,Positive,54,2016-06-22,Dr. Naidoo,140,101.9,Right Upper,lize,Yellow,2072266,351000,2423083,102,Automated
+SP24526,Male,LTBI,Positive,48,2016-10-30,Dr. Hendricks,140,77.6,Right Middle,marietjie,White,3155294,1029626,4184920,NA,Manual
+SP36479,Female,Indeterminate,Negative,41,2017-07-31,Prof. Malan,140,90.1,Right Upper,marietjie,Bloody,2300000,358694,2655081,113,Automated
+SP22547,Male,Active TB,Positive,25,2016-04-28,Prof. Theron,80,45.1,Left Upper,fatima,Bloody,4526382,577000,5100000,122,Both
+SP20445,Female,Control,Negative,34,2018-07-15,Dr. Botha,160,103,Left Lower,fatima,Bloody,4893061,1331027,6224088,10,Both
+SP04779,Female,Control,Negative,19,2017-11-20,Dr. Van Der Merwe,100,53.3,Left Upper,fatima,Bloody,2540000,172002,2710000,76,Automated
+SP11220,Male,Control,Negative,59,2017-03-18,Prof. Malan,120,49.8,Left Upper,thandi,Cream,3077962,992000,4070000,135,Automated
+SP07855,Female,Control,Positive,49,2016-07-03,Dr. Adams,60,40.3,Right Lower,fatima,White,1889747,120345,2010092,77,Automated
+SP05627,Male,LTBI,Negative,34,2016-08-09,Dr. Hendricks,140,94.4,Left Lower,yolanda,Bloody,2760000,813000,3569006,127,Automated
+SP14452,Female,Active TB,Negative,26,2020-06-25,Dr. Hendricks,140,52,Right Middle,marietjie,Bloody,5100000,1533758,6640000,18,Manual
+SP29715,Female,LTBI,Positive,25,2020-09-05,Dr. Naidoo,140,66.3,Left Upper,fatima,White,4410815,1019587,5430402,3,Manual
+SP27723,Male,Indeterminate,Negative,43,2018-08-07,Dr. Smith,160,60.1,Right Middle,marietjie,Bloody,2791032,1100030,3891062,77,Manual
+SP31118,Male,LTBI,Negative,15,2017-07-06,Dr. Adams,140,91.3,Left Lower,thandi,Clear,5050000,1020084,6070572,135,Manual
+SP36283,Female,Active TB,Positive,53,2019-07-22,Dr. Hendricks,120,NA,Right Upper,marietjie,Clear,4480000,5326388,5325388,75,Both
+SP10015,Female,Control,Positive,14,2020-11-30,Dr. Smith,80,28.6,Left Upper,thandi,Yellow,4666663,1580000,6249822,49,Automated
+SP26835,Male,Control,Positive,37,2016-07-30,Dr. Van Der Merwe,120,61.2,Right Middle,yolanda,Pink,3249529,607490,3857019,22,Manual
+SP37340,Female,Active TB,Negative,51,2017-04-06,Prof. Theron,120,54,Left Upper,lize,Bloody,0,1348405,5710000,108,Automated
+sp20422,Male,Active TB,Negative,37,2020-07-28,Dr. Adams,80,44.4,Right Upper,thandi,Bloody,4220000,470000,NA,54,Both
+SP30423,Female,Indeterminate,Negative,56,2017-06-05,Dr. Botha,80,34.5,Right Lower,fatima,Yellow,1840000,999,1968367,66,Automated
+SP37071,Female,LTBI,Negative,44,2017-06-30,Prof. de Villiers,60,35.6,Right Lower,thandi,Cream,5270000,1008118,NA,95,Automated
+SP35122,Female,Active TB,Negative,24,2020-10-26,Prof. Theron,60,22.5,Right Middle,yolanda,White,3971350,1270000,5244639,130,Both
+SP12808,Female,Active TB,Negative,46,2017-06-25,Dr. Van Der Merwe,160,90.3,Right Upper,thandi,Clear,4400000,439486,4835858,156,Automated
+SP27189,Female,Control,Positive,56,2016-06-30,Prof. Theron,140,93.8,Left Upper,yolanda,White,6408186,501978,6910000,75,Automated
+SP01972,Male,Active TB,Negative,16,2020-05-22,Dr. Smith,120,76.4,Right Lower,yolanda,Bloody,3187717,788438,3976155,145,Both
+SP20160,Female,Control,Negative,22,2020-04-14,Dr. Smith,120,88.1,Right Middle,fatima,Yellow,2760000,821862,3580948,120,Automated
+SP15793,Female,Active TB,Positive,15,2018-08-16,Prof. de Villiers,60,30.4,Right Middle,lize,Pink,3520000,1141269,4660000,123,Automated
+SP31518,Female,Active TB,Negative,22,2017-07-20,Dr. Jacobs,160,66.4,Left Upper,fatima,Bloody,4360000,1258963,5623333,182,Manual
+SP19760,Male,LTBI,Negative,53,2020-07-20,Dr. Smith,120,85.2,Left Lower,yolanda,White,5672416,637178,6309594,101,Both
+SP24296,Male,LTBI,Positive,48,2019-08-14,Dr. Adams,120,86.9,Left Lower,fatima,White,3447023,746000,4190000,101,Manual
+SP09801,Female,LTBI,Negative,36,2017-01-09,Dr. Jacobs,100,NA,Right Upper,yolanda,Bloody,3124631,350000,3470000,76,Automated
+SP31620,Female,Indeterminate,Positive,35,2017-08-18,Prof. de Villiers,120,75.5,Left Lower,marietjie,Yellow,5001209,772109,5770000,84,Automated
+SP20257,Female,LTBI,Positive,20,2018-06-17,Dr. Botha,60,21.2,Right Upper,fatima,Bloody,999,835658,3632673,75,Automated
+SP05209,Male,LTBI,Negative,51,2019-07-05,Dr. Jacobs,100,48.5,Right Middle,thandi,Cream,4060000,665221,4726299,88,Both
+SP34722,Male,Indeterminate,Negative,27,2017-11-21,Dr. Adams,160,94.6,Right Lower,yolanda,Bloody,3430000,1320000,4757749,16,Manual
+SP32799,Female,Indeterminate,Positive,32,2016-07-08,Dr. Naidoo,100,41.4,Right Upper,fatima,White,3252776,448440,3701216,99,Automated
+SP18317,Male,Active TB,Negative,55,2017-07-10,Dr. Hendricks,120,85.9,Left Upper,thandi,White,2778275,159586,2937861,53,Automated
+SP31309,Male,Active TB,Positive,20,2018-07-29,Dr. Adams,60,39.5,Right Middle,fatima,Pink,3070000,622869,3690000,46,Automated
+SP37335,Male,Indeterminate,Negative,18,2018-07-18,Dr. Adams,80,42.1,Left Upper,fatima,Bloody,2499655,619975,3119630,103,Both
+SP39073,Male,Control,Positive,26,2019-06-07,Prof. Malan,140,78.4,Left Upper,lize,Cream,4093229,1462478,5555707,87,Automated
+SP27163,Male,LTBI,Positive,30,2017-07-17,Dr. Naidoo,100,55,Right Upper,thandi,Clear,NA,228000,2171124,119,Automated
+SP10968,Female,LTBI,Negative,36,2018-07-24,Dr. Van Der Merwe,80,38.4,Right Upper,marietjie,White,4599631,632870,NA,40,Manual
+SP20689,Female,Control,Positive,42,2016-08-05,Dr. Naidoo,120,43.3,Right Middle,fatima,White,4790000,678000,5470000,18,Both
+SP26975,Male,LTBI,Positive,15,2016-06-01,Dr. Hendricks,80,36.9,Right Middle,thandi,Bloody,4362895,1260818,5623713,96,Manual
+SP08193,Female,LTBI,Negative,49,2017-06-06,Dr. Naidoo,100,64.6,Right Lower,thandi,Yellow,2627210,836000,3460000,99,Both
+SP20429,Male,Active TB,Negative,31,2019-06-06,Prof. Theron,60,44.2,Left Upper,fatima,Bloody,2590000,210000,2800000,105,Automated
+SP04942,Male,Indeterminate,Positive,55,2019-08-25,Dr. Jacobs,140,100.3,Left Lower,thandi,Bloody,4158655,453000,4610000,138,Manual
+SP15443,Male,Control,Negative,30,2019-07-07,Prof. de Villiers,60,NA,Right Middle,marietjie,White,5204101,2019921,7220000,122,Automated
+SP08954,Female,LTBI,Positive,53,2020-12-07,Dr. Naidoo,60,36.8,Left Lower,fatima,Yellow,3322284,965448,4287732,NA,Manual
+SP06487,Female,Indeterminate,Positive,38,2020-08-09,Prof. Theron,120,67.6,Right Upper,fatima,Cream,4722820,493705,5216525,84,Automated
+SP08514,Female,Active TB,Positive,43,2017-06-07,Dr. Naidoo,60,37.8,Left Lower,thandi,Bloody,2629233,527000,3156560,22,Manual
+SP31187,Male,Control,Negative,26,2020-06-19,Dr. Naidoo,60,38.4,Left Upper,yolanda,Cream,6439057,1566326,8010000,49,Manual
+SP30367,Female,Active TB,Negative,27,2016-06-15,Dr. Naidoo,120,53,Right Upper,fatima,White,4390000,1130000,5519939,79,Automated
+SP27166,Female,Active TB,Positive,23,2018-06-26,Prof. Malan,100,60.6,Left Lower,thandi,White,1195973,302731,1498704,43,Manual
+SP39257,Male,LTBI,Negative,58,2020-09-15,Prof. Theron,120,51.4,Left Upper,fatima,Yellow,1644016,292000,1936467,128,Automated
+SP28717,Female,Control,Negative,21,2019-07-26,Dr. Van Der Merwe,100,35.3,Left Lower,marietjie,Yellow,3198375,552000,3750000,NA,Automated
+SP24337,Male,Control,Negative,28,2019-07-21,Prof. Malan,80,33.7,Left Upper,thandi,Clear,3838750,545669,NA,127,Manual
+SP20517,Female,Active TB,Negative,27,2020-07-18,Dr. Van Der Merwe,60,32.8,Left Lower,thandi,Bloody,3854615,996218,4850000,49,Manual
+SP13975,Male,Indeterminate,Negative,58,2020-08-29,Prof. Malan,60,25.9,Left Upper,thandi,Bloody,5360000,589265,5949970,124,Manual
+SP32680,Male,Active TB,Negative,40,2017-07-08,Dr. Naidoo,160,58.8,Right Lower,fatima,Bloody,3899680,730457,4630137,88,Both
+SP18175,Female,Active TB,Negative,22,2016-06-28,Dr. Naidoo,160,112.1,Right Middle,yolanda,Bloody,2850000,448849,3303048,136,Both
+SP38098,Male,Control,Negative,42,2020-04-15,Dr. Adams,100,58.9,Left Lower,yolanda,Bloody,2350000,504729,2857864,22,Both
+SP09819,Female,Control,Positive,53,2017-08-08,Dr. Van Der Merwe,160,111.3,Right Middle,yolanda,Bloody,3341296,971000,NA,111,Automated
+SP26149,Female,Active TB,Negative,18,2017-06-24,Prof. de Villiers,80,45.2,Right Upper,marietjie,Bloody,3340000,1301881,NA,83,Automated
+SP08183,Male,Control,Negative,58,2018-06-20,Dr. Smith,100,58.4,Right Upper,marietjie,Pink,5277873,NA,7241351,115,Both
+SP26551,Female,LTBI,Negative,55,2018-07-19,Dr. Naidoo,100,36.8,Left Lower,marietjie,Bloody,19000000,169112,2071965,2,Both
+SP09713,Female,LTBI,Positive,51,2019-08-10,Prof. Malan,160,115,Right Middle,fatima,Bloody,3863189,974121,4837310,66,Both
+SP07522,Male,Indeterminate,Negative,32,2020-07-09,Prof. Malan,100,59.5,Right Middle,yolanda,Bloody,3015918,175948,3190000,64,Both
+SP30438,Female,Indeterminate,Negative,17,2020-06-24,Dr. Smith,140,81,Left Upper,fatima,Cream,4780000,1186385,5966245,56,Manual
+SP26873,Male,Active TB,Negative,49,2016-07-29,Dr. Smith,140,101.4,Left Upper,marietjie,Bloody,2803969,948894,3752863,133,Both
+SP07833,Male,Active TB,Negative,37,2019-04-30,Dr. Naidoo,160,68.7,Left Upper,lize,Cream,NA,2200990,8109981,66,Automated
+SP32774,Female,Active TB,Negative,16,2018-07-04,Dr. Naidoo,120,50.7,Right Upper,fatima,Yellow,3004653,577312,999,119,Automated
+SP35389,Female,LTBI,Positive,35,2020-07-07,Dr. Hendricks,80,43,Left Upper,thandi,Pink,2920870,393157,3314027,48,Automated
+SP28811,Female,LTBI,Negative,25,2018-02-05,Prof. Theron,80,56.3,Left Upper,fatima,Cream,NA,140000,2755447,86,Manual
+SP22655,Female,LTBI,Positive,15,2018-08-31,Prof. de Villiers,140,77.2,Right Upper,yolanda,Yellow,3699525,1220635,4920160,200,Automated
+SP02145,Male,Control,Negative,27,2019-08-31,Dr. Hendricks,160,57.1,Right Upper,fatima,Pink,2438549,886000,3320000,49,Manual
+SP24092,Male,Indeterminate,Positive,25,2019-07-15,Dr. Hendricks,60,39.5,Left Lower,thandi,Clear,1877080,124202,2001282,17,Automated
+SP34213,Female,LTBI,Negative,50,2019-08-26,Dr. Hendricks,100,61.2,Right Lower,yolanda,Yellow,2142105,766302,2908407,160,Both
+SP23284,Male,Control,Negative,26,2020-08-16,Prof. de Villiers,120,61.2,Right Lower,marietjie,Clear,4130000,391627,4524034,126,Both
+SP34098,Female,Active TB,Positive,57,2016-06-10,Prof. de Villiers,160,NA,Right Upper,thandi,Bloody,2850000,950000,3800000,141,Manual
+SP23742,Male,Indeterminate,Positive,59,2017-07-17,Dr. Adams,60,36.6,Right Lower,thandi,White,3630000,NA,4851127,198,Manual
+SP38239,Female,Control,Negative,40,2020-06-09,Dr. Botha,140,63.5,Left Upper,marietjie,Clear,2886852,936000,3820000,59,Both
+SP38844,Female,Control,Negative,53,2019-07-31,Prof. de Villiers,80,59.7,Right Lower,thandi,White,2460000,884000,3340000,NA,Automated
+SP26738,Female,Control,Negative,16,2018-11-13,Dr. Naidoo,80,48.1,Right Middle,marietjie,White,4430000,713000,5140000,1,Automated
+SP27129,Male,Control,Positive,45,2017-07-02,Dr. Jacobs,80,28.4,Right Middle,lize,White,1530000,234000,1760894,112,Both
+SP29796,Male,Active TB,Positive,22,2016-07-21,Dr. Adams,160,59,Right Lower,marietjie,Clear,3860000,1134052,4997595,66,Automated
+SP04907,Male,Active TB,Negative,21,2020-07-29,Dr. Smith,60,34.9,Right Middle,fatima,Clear,4510000,735000,NA,72,Automated
+SP10344,Female,Control,Negative,20,2019-12-21,Dr. Botha,80,54.6,Left Upper,fatima,Yellow,5490000,1910000,7396577,106,Manual
+SP20515,Female,LTBI,Positive,11,2020-08-01,Dr. Naidoo,60,39.2,Right Upper,lize,Bloody,3165308,917224,4082532,124,Automated
+SP08638,Female,Active TB,Positive,19,2017-12-24,Prof. Malan,120,88.7,Left Lower,fatima,White,4738564,1440917,6179481,NA,Both
+SP30222,Female,LTBI,Negative,31,2019-07-14,Prof. de Villiers,60,38.4,Right Upper,marietjie,Clear,3544776,1308953,4853729,76,Automated
+SP05148,Female,Indeterminate,Positive,39,2020-01-21,Prof. Theron,140,57.4,Left Lower,thandi,Yellow,4321204,969509,5290000,141,Automated
+SP32155,Male,Active TB,Negative,35,2016-06-20,Prof. de Villiers,140,53,Right Upper,fatima,Clear,3805283,979000,4780000,90,Manual
+SP32169,Female,LTBI,Positive,58,2018-08-20,Dr. Van Der Merwe,120,61.1,Right Upper,lize,Bloody,2860000,1124019,3986426,35,Both
+SP20407,Female,Active TB,Positive,59,2019-08-07,Dr. Jacobs,80,38.2,Right Lower,yolanda,Clear,2086532,491000,2580000,57,Automated
+SP17835,Female,LTBI,Positive,51,2018-08-22,Dr. Adams,60,35.2,Right Upper,marietjie,Clear,2700000,750420,3453990,42,Automated
+SP22341,Male,Active TB,Negative,18,2016-08-27,Prof. Theron,100,40.1,Right Middle,yolanda,Bloody,4130000,724209,NA,93,Automated
+SP29111,Female,LTBI,Positive,35,2020-10-02,Dr. Botha,60,33.2,Left Upper,yolanda,Cream,6780000,1260000,8034898,42,Automated
+SP18130,Female,LTBI,Positive,37,2020-04-25,Prof. Malan,160,95.4,Right Lower,fatima,White,2740000,192000,2935840,151,Manual
+SP34340,Male,Control,Negative,28,2019-12-16,Dr. Adams,160,85,Left Upper,thandi,Yellow,4100000,1160000,5260000,79,Both
+SP02757,Male,Control,Positive,25,2020-07-17,Prof. Theron,60,44.5,Right Lower,fatima,Cream,5784155,789000,6570000,104,Both
+SP21301,Female,Active TB,Positive,46,2020-08-05,Dr. Botha,140,87.3,Right Upper,thandi,Cream,2390000,227573,2620000,75,Manual
+SP18622,Female,Active TB,Negative,32,2020-07-25,Dr. Adams,160,89.1,Right Upper,fatima,Clear,4570000,1783817,6350000,68,Automated
+SP00897,Male,LTBI,Positive,31,2018-07-06,Dr. Hendricks,60,36.2,Left Upper,thandi,Clear,5138448,1810000,6950000,144,Automated
+SP11853,Male,Control,Positive,38,2020-07-04,Dr. Hendricks,80,45.1,Left Lower,yolanda,Clear,6727685,966000,7693567,133,Both
+SP37875,Male,Indeterminate,Negative,25,2018-06-25,Dr. Botha,140,53.9,Left Upper,fatima,White,1580000,559422,2136545,122,Manual
+SP18851,Male,LTBI,Positive,32,2018-06-11,Dr. Smith,160,66.5,Right Upper,yolanda,White,1947112,179227,2126339,115,Both
+SP37635,Female,Active TB,Negative,47,2017-06-29,Dr. Adams,80,51.5,Right Lower,thandi,White,2710000,1027003,3740295,63,Manual
+SP11433,Male,Active TB,Positive,56,2016-06-18,Dr. Jacobs,80,47.6,Right Middle,fatima,Bloody,4935464,1742521,6677985,70,Automated
+SP00013,Female,Indeterminate,Positive,17,2016-07-08,Dr. Smith,60,42.3,Left Upper,fatima,Yellow,2993206,348062,3340000,102,Both
+SP08030,Female,Active TB,Positive,25,2016-08-20,Dr. Smith,60,27.9,Left Lower,yolanda,White,3917383,254485,4171868,66,Both
+SP26261,Male,Active TB,Negative,14,2019-01-17,Dr. Hendricks,100,49.5,Left Upper,yolanda,White,3039245,1030000,4073879,128,Manual
+SP07016,Female,LTBI,Negative,27,2019-07-12,Dr. Smith,80,32,Right Middle,marietjie,White,2839027,577000,3415885,103,Automated
+SP38685,Male,Indeterminate,Negative,51,2018-08-15,Dr. Smith,60,31.2,Right Middle,yolanda,Bloody,2779565,1015152,3794717,147,Manual
+SP25352,Male,Control,Negative,26,2016-08-10,Prof. Theron,120,75.9,Right Upper,fatima,Yellow,3416941,349000,3770000,51,Automated
+SP20758,Male,LTBI,Negative,18,2016-02-19,Dr. Jacobs,160,85.2,Left Lower,fatima,Cream,1480000,206098,1688979,97,Automated
+SP24218,Female,Active TB,Negative,40,2017-06-28,Dr. Van Der Merwe,80,48.1,Right Upper,thandi,Yellow,2316057,709164,3030000,84,Both
+SP36473,Male,LTBI,Positive,27,2016-07-13,Dr. Smith,160,82.8,Right Lower,yolanda,Yellow,1649693,473253,2120000,157,Manual
+SP11323,Female,Active TB,Negative,28,2017-08-13,Dr. Hendricks,80,32.8,Left Upper,yolanda,Yellow,1714436,89425,1803861,116,Both
+SP26604,Male,LTBI,Positive,54,2020-07-30,Prof. Theron,80,54.2,Right Upper,fatima,Yellow,3804862,793374,4600000,200,Both
+SP26854,Male,Active TB,Positive,16,2017-07-15,Dr. Hendricks,100,71.6,Right Middle,thandi,Bloody,0,706000,4394498,60,Both
+SP37008,Female,LTBI,Negative,28,2020-07-29,Dr. Hendricks,60,30.5,Left Lower,fatima,Clear,3480000,176985,3655319,37,Automated
+SP00876,Male,LTBI,Positive,29,2016-07-08,Dr. Jacobs,120,59.6,Right Lower,fatima,Cream,4352338,1258637,5610975,102,Both
+SP07194,Female,LTBI,Negative,20,2019-06-25,Dr. Smith,100,46.8,Left Upper,fatima,White,4950000,1238841,6189887,76,Manual
+SP08087,Female,Indeterminate,Negative,56,2017-11-25,Dr. Van Der Merwe,160,107.9,Left Lower,lize,Bloody,1470416,175000,1645903,146,Manual
+SP30823,Male,LTBI,Negative,25,2019-06-24,Dr. Adams,100,39.8,Right Upper,fatima,Bloody,3650000,756000,4404521,147,Automated
+SP03052,Female,Active TB,Positive,44,2016-07-19,Prof. Theron,140,92.7,Left Lower,marietjie,Cream,4970000,908987,NA,NA,Automated
+SP20714,Male,LTBI,Negative,13,2020-07-25,Dr. Smith,100,40.3,Right Middle,yolanda,White,4349636,729000,5078450,47,Manual
+SP27344,Female,Control,Negative,45,2017-07-03,Dr. Adams,60,43.6,Right Upper,lize,Bloody,1998519,665000,2660000,82,Automated
+SP38956,Female,Control,Negative,16,2016-07-05,Prof. Theron,60,32.1,Left Upper,fatima,Pink,2447574,133501,2580000,143,Manual
+SP34125,Female,Indeterminate,Negative,36,2016-06-13,Dr. Van Der Merwe,140,63.4,Right Middle,marietjie,Bloody,2917203,1136531,4053734,142,Manual
+SP00431,Female,Indeterminate,Negative,19,2016-11-23,Dr. Van Der Merwe,160,59.7,Left Upper,fatima,White,3590671,952549,4540000,107,Both
+SP22704,Female,Control,Negative,48,2020-03-02,Prof. Malan,100,72.2,Right Middle,lize,Yellow,3302726,969428,4272154,49,Automated
+SP06325,Male,LTBI,Negative,48,2016-07-01,Prof. de Villiers,80,32.5,Right Upper,yolanda,White,2770000,1006162,999,41,Manual
+SP02140,Female,LTBI,Negative,36,2019-08-03,Dr. Adams,60,29.1,Right Upper,fatima,Bloody,3460000,179241,3638819,130,Automated
+SP21051,Male,Indeterminate,Positive,54,2019-07-12,Dr. Hendricks,100,59,Left Lower,yolanda,Yellow,3540000,402000,3946131,115,Automated
+SP35683,Male,Active TB,Negative,43,2020-06-20,Prof. Malan,160,NA,Right Lower,thandi,White,2746750,618037,3364787,29,Manual
+SP23033,Male,Indeterminate,Negative,39,2019-01-08,Dr. Naidoo,60,30.3,Right Upper,fatima,White,3917734,1383206,5300940,40,Both
+SP27030,Male,LTBI,Positive,20,2020-07-30,Dr. Botha,60,25.7,Left Upper,fatima,Clear,NA,1497171,7049552,91,Automated
+SP24115,Male,Control,Negative,13,2020-06-23,Dr. Naidoo,120,75.5,Right Lower,yolanda,Bloody,3193015,1028591,4221606,99,Automated
+SP34680,Male,Control,Positive,37,2017-06-16,Dr. Adams,80,43.5,Left Lower,yolanda,White,3126571,308881,3440000,62,Manual
+SP26715,Male,Active TB,Positive,18,2019-06-08,Dr. Van Der Merwe,120,53.2,Right Lower,yolanda,Yellow,2478228,190000,2668507,126,Manual
+SP16354,Male,LTBI,Negative,53,2019-07-02,Prof. Malan,140,90.6,Right Upper,yolanda,Clear,3170000,320770,3490000,155,Both
+SP24985,Female,LTBI,Positive,33,2016-06-09,Prof. Theron,100,61.5,Right Middle,thandi,Bloody,3740000,454000,4191610,114,Manual
+SP11751,Female,Control,Positive,44,2019-06-03,Prof. Theron,160,93,Right Middle,thandi,White,3960000,1337724,5302561,154,Automated
+SP26021,Female,Control,Negative,49,2018-06-04,Prof. Theron,80,50.5,Right Upper,yolanda,Pink,NA,926000,4476009,98,Both
+SP11047,Male,LTBI,Positive,56,2016-09-21,Dr. Naidoo,100,65.8,Left Lower,fatima,White,4620666,1078968,5699634,83,Manual
+SP25087,Male,Indeterminate,Positive,32,2018-08-25,Dr. Adams,120,42.1,Right Upper,yolanda,White,4201297,773000,4973926,NA,Both
+SP22290,Male,Control,Negative,53,2020-04-23,Dr. Botha,160,118,Right Upper,yolanda,White,4097558,1592040,5689598,96,Manual
+SP25531,Female,Indeterminate,Negative,15,2017-06-05,Prof. Theron,100,72.2,Right Lower,thandi,White,4680852,1850000,NA,53,Manual
+SP27368,Female,Indeterminate,Positive,37,2017-08-14,Dr. Hendricks,160,85.4,Right Middle,fatima,Bloody,2830000,658056,3491587,NA,Both
+SP15248,Male,Active TB,Positive,19,2019-08-06,Prof. Theron,80,36.3,Right Lower,fatima,Cream,1625300,645057,2270000,81,Automated
+SP14784,Female,Active TB,Negative,54,2018-05-07,Dr. Naidoo,140,101.4,Left Lower,marietjie,Cream,6180000,1425018,7600000,3,Automated
+SP14432,Male,Indeterminate,Negative,46,2019-07-28,Dr. Adams,100,62.8,Right Lower,fatima,Cream,2005294,382972,2388266,60,Automated
+SP02242,Female,Active TB,Positive,14,2019-04-10,Prof. de Villiers,140,104.5,Right Upper,marietjie,Cream,3080000,202758,NA,124,Automated
+SP09992,Male,Active TB,Negative,32,2020-07-29,Prof. Malan,120,66.8,Right Middle,fatima,White,1839451,230975,2070426,138,Both
+SP22461,Male,Active TB,Positive,39,2016-07-22,Dr. Smith,140,77.7,Right Middle,thandi,Clear,3928253,882000,4809865,123,Automated
+SP25332,Female,Indeterminate,Negative,17,2016-07-16,Dr. Botha,120,46.2,Left Upper,thandi,Bloody,1412945,246000,1660000,24,Manual
+SP09600,Male,Control,Negative,26,2016-06-23,Dr. Botha,60,23.6,Left Lower,marietjie,Pink,NA,1120000,5491306,125,Manual
+SP17336,Female,Control,Negative,43,2020-09-20,Dr. Botha,60,25.1,Right Upper,yolanda,Bloody,2780000,668000,3450628,173,Manual
+SP22251,Male,Active TB,Negative,55,2019-06-17,Prof. Malan,80,36.2,Right Upper,fatima,Cream,4730000,1070000,5810000,38,Both
+SP34828,Female,LTBI,Positive,44,2019-07-25,Dr. Adams,80,28.5,Right Upper,fatima,Yellow,3734522,NA,4224037,2,Manual
+SP13552,Male,Active TB,Positive,32,2017-08-14,Dr. Botha,80,57.8,Right Lower,thandi,Bloody,5587783,625000,6210000,57,Automated
+SP20736,Female,Control,Negative,13,2017-07-21,Dr. Van Der Merwe,120,46.6,Right Upper,marietjie,Cream,3670000,1020000,4700000,86,Both
+SP12266,Female,Control,Negative,31,2019-07-01,Dr. Botha,140,96.6,Left Lower,fatima,Cream,4186007,1497644,5680000,7,Both
+SP00731,Male,Active TB,Positive,52,2018-06-23,Dr. Smith,60,29.8,Left Lower,thandi,Yellow,4880000,1170000,6050000,124,Automated
+SP28224,Female,LTBI,Positive,52,2016-06-18,Dr. Adams,120,72.9,Left Lower,fatima,Cream,2930713,774591,3705304,155,Both
+SP07175,Male,Indeterminate,Positive,13,2017-08-04,Prof. Malan,140,63.3,Right Upper,yolanda,Cream,4312733,1181412,5494145,104,Automated
+SP31930,Female,Control,Negative,37,2019-07-12,Prof. Malan,140,67,Right Middle,marietjie,Bloody,2990000,1120492,4113862,120,Both
+SP11511,Male,Active TB,Negative,50,2016-06-12,Prof. Theron,80,59.2,Right Upper,thandi,Clear,3260229,941000,4200000,43,Automated
+SP37530,Female,Indeterminate,Positive,16,2018-08-06,Dr. Adams,60,42,Right Lower,yolanda,Cream,0,865220,4420000,121,Manual
+SP26252,Male,Active TB,Positive,41,2017-01-21,Dr. Adams,120,46.1,Right Lower,yolanda,Cream,NA,1537329,5938609,177,Automated
+SP31598,Female,LTBI,Negative,54,2019-08-16,Dr. Hendricks,100,42.5,Left Upper,lize,White,2868688,622633,3491321,72,Automated
+SP34569,Female,Indeterminate,Negative,33,2018-08-26,Prof. de Villiers,160,76.3,Right Middle,yolanda,Pink,5563129,1561702,7124831,131,Manual
+SP31668,Female,Control,Negative,28,2016-02-10,Dr. Adams,160,81.2,Right Middle,fatima,Cream,3827702,835429,4663131,170,Both
+SP25151,Male,Active TB,Positive,13,2018-08-02,Dr. Naidoo,80,28.5,Left Upper,yolanda,Yellow,2490000,425000,2910000,110,Both
+SP32503,Male,Indeterminate,Positive,31,2020-08-06,Dr. Van Der Merwe,160,115.9,Right Middle,lize,Bloody,NA,428065,4450036,50,Automated
+SP11792,Female,Active TB,Positive,48,2016-06-29,Dr. Adams,120,76.6,Left Upper,thandi,Bloody,1391359,243917,1640000,139,Automated
+SP33405,Male,LTBI,Negative,26,2017-07-06,Prof. Theron,60,39.2,Left Lower,yolanda,Bloody,5020000,1682944,6700000,29,Both
+SP01400,Male,Active TB,Positive,42,2017-10-01,Dr. Smith,120,NA,Right Upper,fatima,Bloody,3570000,1420000,4989347,NA,Automated
+SP13963,Female,Control,Negative,45,2016-08-27,Dr. Naidoo,60,29,Left Upper,fatima,White,2706547,243000,2949974,105,Automated
+SP20020,Female,LTBI,Negative,37,2018-06-11,Prof. de Villiers,120,47.8,Right Lower,fatima,Yellow,2022041,415587,2440000,81,Manual
+SP04167,Female,Control,Negative,56,2016-07-29,Dr. Botha,160,94.3,Left Lower,thandi,Clear,2156622,774810,2930000,84,Both
+SP16372,Female,Indeterminate,Negative,57,2016-01-08,Dr. Hendricks,120,86.5,Left Upper,fatima,White,3559793,339533,3899326,112,Manual
+SP36764,Male,Control,Negative,43,2016-06-04,Dr. Botha,120,69.7,Right Middle,thandi,White,1798904,NA,2450000,134,Manual
+SP37054,Male,LTBI,Positive,46,2019-06-20,Dr. Van Der Merwe,140,49.7,Right Lower,lize,Cream,4031575,1200000,5231900,75,Automated
+SP39325,Female,Active TB,Positive,56,2020-07-26,Dr. Van Der Merwe,160,112,Left Lower,fatima,Bloody,4056578,1230000,5283972,62,Manual
+SP36281,Male,LTBI,Positive,54,2019-07-21,Dr. Jacobs,80,30.6,Right Middle,thandi,Pink,3700742,451286,4152028,67,Automated
+SP20209,Female,Active TB,Positive,28,2017-06-29,Dr. Jacobs,140,NA,Left Upper,marietjie,Clear,3930673,969086,4900000,198,Automated
+SP28456,Female,Active TB,Positive,19,2017-06-18,Dr. Botha,80,36.1,Left Upper,lize,Pink,4876308,1505193,6381501,159,Both
+SP21119,Male,LTBI,Negative,23,2020-08-21,Dr. Jacobs,100,67.3,Right Lower,thandi,Pink,2744160,971000,3720000,24,Manual
+SP36958,Female,Active TB,Positive,54,2020-06-13,Prof. Malan,160,105,Right Upper,yolanda,Cream,2438158,485449,2923607,82,Manual
+SP04562,Female,LTBI,Positive,14,2019-12-08,Prof. Malan,120,73,Right Lower,thandi,Yellow,1492503,357974,1850477,72,Automated
+SP28597,Female,Active TB,Negative,36,2019-07-24,Dr. Jacobs,120,79.9,Left Lower,lize,Cream,3670000,1100000,4770661,183,Manual
+SP30393,Male,LTBI,Negative,23,2018-07-29,Dr. Hendricks,100,66.8,Right Upper,marietjie,Pink,NA,559111,NA,89,Both
+SP23309,Female,Active TB,Negative,26,2016-10-31,Dr. Van Der Merwe,80,57.6,Left Lower,yolanda,Yellow,3940000,1510000,5450000,1,Automated
+SP17408,Female,Indeterminate,Positive,22,2016-07-24,Prof. de Villiers,60,36.6,Right Lower,thandi,Cream,3230000,420857,3650260,96,Automated
+SP12778,Female,Control,Negative,14,2020-06-20,Dr. Adams,140,104,Left Upper,thandi,White,3190000,467733,3659127,102,Automated
+SP32219,Male,LTBI,Positive,37,2017-08-31,Prof. Theron,140,76.5,Left Upper,thandi,Yellow,1940000,246797,2180000,113,Manual
+SP19257,Male,Active TB,Negative,41,2017-09-15,Prof. de Villiers,160,103,Right Upper,fatima,White,2630000,853261,3478812,18,Automated
+SP13589,Female,Control,Negative,56,2020-08-21,Prof. Theron,60,NA,Right Upper,fatima,Bloody,5108311,1221376,6330000,119,Manual
+SP00211,Female,Active TB,Negative,35,2017-06-04,Prof. de Villiers,160,74.3,Left Upper,lize,White,5694124,306000,6000000,88,Automated
+SP09455,Female,Active TB,Negative,34,2018-08-24,Dr. Smith,60,22.7,Left Upper,fatima,Yellow,3825175,318884,4144059,150,Manual
+SP19534,Male,Indeterminate,Negative,34,2020-07-15,Dr. Van Der Merwe,120,87.3,Right Lower,thandi,White,3600000,905000,4508400,91,Automated
+SP32886,Female,LTBI,Negative,49,2020-08-14,Dr. Naidoo,160,108.2,Left Upper,thandi,Yellow,3073546,931912,4010000,103,Manual
+SP24198,Female,Control,Negative,23,2020-07-31,Dr. Hendricks,80,55.7,Left Lower,marietjie,Cream,4495640,868258,5360000,128,Manual
+SP23219,Female,Active TB,Negative,51,2018-07-17,Dr. Jacobs,160,106.9,Right Upper,marietjie,Clear,3520000,817448,4337583,71,Manual
+SP29724,Male,Active TB,Negative,15,2019-10-21,Prof. Theron,160,110.9,Right Middle,yolanda,Cream,3700000,1230398,4930000,111,Automated
+SP16138,Male,Active TB,Negative,18,2019-06-24,Dr. Van Der Merwe,60,29.5,Right Lower,thandi,Cream,4389781,1592940,5980000,162,Automated
+SP00747,Male,Active TB,Negative,35,2017-05-26,Prof. Malan,100,41,Right Upper,fatima,Cream,5669173,453000,6120000,108,Manual
+SP38602,Male,LTBI,Positive,17,2018-06-18,Dr. Botha,100,52.8,Right Upper,marietjie,White,1190000,289011,1480525,-1,Automated
+SP13353,Female,Indeterminate,Positive,47,2019-06-06,Dr. Botha,140,54.8,Left Lower,marietjie,Cream,3969814,1093340,5063154,79,Manual
+SP03926,Male,Active TB,Negative,33,2017-06-24,Prof. Malan,80,52.8,Right Middle,fatima,Yellow,5320000,1749846,7070000,149,Automated
+SP35201,Female,LTBI,Negative,59,2020-08-17,Prof. Malan,80,29.1,Left Upper,lize,Yellow,4610000,661122,5270000,87,Both
+SP33207,Female,Active TB,Negative,19,2016-04-20,Dr. Van Der Merwe,120,85.6,Right Upper,marietjie,Clear,2780366,204000,2983940,105,Manual
+SP22441,Male,Control,Negative,45,2020-08-24,Dr. Naidoo,80,50.4,Left Lower,marietjie,Pink,3940000,NA,5260000,183,Both
+SP09082,Female,Active TB,Negative,25,2018-06-26,Dr. Naidoo,160,88.6,Right Middle,lize,Bloody,3876789,439293,4320000,53,Both
+SP15369,Male,Control,Positive,29,2020-08-22,Prof. Theron,60,NA,Right Lower,fatima,White,1980000,664090,2640564,103,Both
+SP39068,Female,Indeterminate,Positive,59,2018-03-14,Dr. Botha,100,51,Right Lower,fatima,White,5710000,1850000,7561961,7,Automated
+SP20717,Male,Active TB,Negative,32,2017-05-09,Dr. Adams,160,105.4,Right Lower,marietjie,Bloody,5810000,1220000,7030000,24,Manual
+SP23808,Male,Active TB,Positive,28,2017-04-21,Dr. Van Der Merwe,160,113.1,Left Upper,yolanda,Cream,3289915,1190000,4480299,124,Both
+SP11364,Female,Control,Positive,55,2016-10-29,Prof. Malan,80,33,Right Middle,fatima,Pink,2477253,208896,2686149,NA,Manual
+SP31747,Female,LTBI,Negative,47,2019-10-20,Dr. Hendricks,60,42.1,Right Lower,thandi,Bloody,1920000,232687,2151936,68,Manual
+SP35964,Female,Control,Negative,17,2018-07-15,Dr. Smith,100,58.5,Left Lower,fatima,Cream,3560000,821784,NA,84,Manual
+SP22520,Male,Indeterminate,Positive,43,2019-06-16,Dr. Jacobs,60,43.5,Right Upper,marietjie,Cream,1051737,60505,1110000,83,Both
+SP14695,Female,Active TB,Negative,49,2017-07-26,Dr. Adams,80,35.4,Right Upper,thandi,Bloody,970040,282516,1252556,NA,Automated
+SP31873,Male,Control,Positive,48,2019-02-11,Dr. Jacobs,100,48.7,Right Middle,thandi,Cream,34100000,235000,3640000,142,Automated
+SP10983,Female,LTBI,Negative,34,2017-08-29,Dr. Adams,140,67,Right Middle,fatima,Bloody,4020000,578728,4602135,95,Manual
+SP31556,Male,Active TB,Negative,44,2019-08-02,Prof. Malan,80,52.1,Left Upper,yolanda,Bloody,3543728,947489,4491217,160,Manual
+SP21303,Female,LTBI,Positive,45,2017-09-08,Prof. Theron,100,57.6,Right Lower,thandi,Pink,4380000,573350,4954474,152,Both
+SP31373,Female,Active TB,Positive,54,2019-06-19,Prof. de Villiers,80,59.3,Left Lower,thandi,Bloody,3437301,361000,3798554,99,Automated
+SP25236,Female,Active TB,Positive,23,2019-08-29,Dr. Adams,160,NA,Right Lower,marietjie,Yellow,1870073,374474,2244547,15,Automated
+SP28565,Female,Active TB,Negative,24,2018-03-20,Dr. Jacobs,60,25.3,Right Upper,fatima,Bloody,4854420,1670000,6530000,173,Automated
+SP03961,Female,Active TB,Negative,16,2016-06-16,Prof. Theron,100,NA,Left Upper,fatima,Pink,2021848,309326,2331174,44,Automated
+SP18236,Female,Active TB,Negative,47,2016-06-25,Prof. Theron,160,74.3,Left Upper,lize,Clear,3500000,753704,4260000,41,Automated
+SP26042,Female,LTBI,Negative,26,2017-06-04,Prof. de Villiers,100,50.5,Left Lower,fatima,White,2898620,346057,NA,154,Automated
+SP00809,Male,Active TB,Positive,51,2020-08-28,Dr. Botha,60,34.9,Right Lower,fatima,Clear,4719615,1798079,6517694,32,Manual
+SP10400,Male,Active TB,Positive,44,2019-06-05,Prof. Malan,140,62.9,Right Middle,yolanda,Clear,5230000,1574579,6806777,73,Both
+SP24166,Female,LTBI,Negative,11,2020-08-20,Dr. Hendricks,100,NA,Right Middle,lize,White,4072953,1480000,5550000,39,Manual
+SP27231,Male,LTBI,Positive,53,2020-09-20,Dr. Van Der Merwe,140,53.6,Right Middle,lize,Yellow,3984894,734822,4720000,162,Automated
+SP04669,Male,LTBI,Negative,49,2018-05-30,Dr. Jacobs,160,98.1,Right Lower,fatima,Bloody,4630312,1629087,6259399,47,Automated
+SP01860,Female,Active TB,Negative,18,2020-06-30,Prof. de Villiers,60,28.1,Right Lower,marietjie,Bloody,5057271,1830559,6887830,81,Manual
+SP12262,Male,Indeterminate,Negative,33,2020-08-15,Prof. de Villiers,160,77.7,Right Middle,marietjie,Cream,2941877,600806,3540000,77,Automated
+SP28735,Male,Control,Positive,42,2020-07-28,Dr. Naidoo,100,46.9,Right Upper,fatima,Bloody,5380000,NA,6287203,66,Automated
+SP39551,Female,Active TB,Negative,46,2018-11-15,Dr. Smith,60,28.7,Right Lower,lize,White,2990702,718573,3709275,52,Manual
+SP22133,Female,Active TB,Positive,41,2019-08-12,Dr. Smith,160,105.4,Right Lower,fatima,White,2650000,255000,2901139,91,Automated
+SP09669,Female,LTBI,Negative,39,2019-08-18,Dr. Jacobs,140,79.3,Right Upper,lize,Bloody,NA,263000,4343717,125,Manual
+SP15682,Male,Active TB,Negative,20,2016-07-09,Dr. Hendricks,60,40.3,Right Upper,thandi,Yellow,3404814,855000,4259910,95,Manual
+SP01744,Female,Active TB,Positive,15,2019-06-27,Dr. Naidoo,80,35.9,Right Upper,fatima,Yellow,NA,1368933,5422849,106,Manual
+SP30253,Female,Control,Negative,33,2019-07-24,Prof. Malan,60,24.6,Right Upper,fatima,Bloody,4215350,321000,4536300,117,Automated
+SP01565,Male,Indeterminate,Negative,55,2017-12-09,Dr. Botha,60,25.7,Right Upper,yolanda,White,1970000,681000,2649402,NA,Manual
+SP37497,Male,Active TB,Negative,43,2018-08-25,Prof. de Villiers,60,37.2,Right Upper,lize,Pink,3763910,999,5200000,146,Both
+SP02010,Female,Active TB,Negative,28,2018-07-26,Prof. de Villiers,140,65.5,Left Lower,fatima,White,3510000,357416,3862865,66,Manual
+SP27145,Male,Active TB,Negative,24,2018-07-17,Dr. Jacobs,140,87.7,Right Middle,lize,Bloody,NA,734152,3688359,58,Automated
+SP07606,Male,Active TB,Negative,35,2017-07-20,Prof. Malan,100,72,Left Lower,fatima,Clear,5607277,NA,NA,179,Both
+SP20627,Female,LTBI,Positive,35,2019-08-24,Prof. de Villiers,140,57.2,Left Lower,yolanda,Pink,6170000,705341,6870000,79,Manual
+SP00403,Male,LTBI,Negative,13,2020-10-27,Prof. de Villiers,140,75.5,Left Lower,fatima,Pink,4026693,945953,4972646,NA,Automated
+SP02701,Female,Control,Positive,30,2019-06-09,Prof. de Villiers,80,33.4,Left Lower,marietjie,White,3855466,1520000,5370000,167,Automated
+SP37829,Male,LTBI,Positive,34,2016-11-15,Dr. Naidoo,120,51.2,Left Lower,fatima,Yellow,4190000,972000,5170000,22,Manual
+SP09852,Male,Active TB,Negative,25,2018-06-10,Dr. Smith,80,42.7,Right Upper,marietjie,Bloody,2320141,153740,2473881,109,Automated
+SP34063,Male,LTBI,Positive,16,2020-08-09,Prof. de Villiers,100,52.3,Left Upper,fatima,Bloody,3202929,819000,4021887,72,Automated
+SP39076,Female,Active TB,Negative,23,2018-06-18,Prof. de Villiers,160,56.8,Right Lower,fatima,Cream,2328730,863000,3190000,167,Automated
+SP03372,Female,Indeterminate,Positive,53,2020-08-13,Dr. Adams,140,97.6,Left Lower,yolanda,Cream,4465192,1551666,6016858,15,Manual
+SP12026,Male,LTBI,Positive,26,2019-08-31,Dr. Jacobs,80,53.2,Right Middle,lize,Pink,NA,932000,3413279,127,Manual
+SP30319,Male,Control,Negative,43,2016-10-30,Dr. Jacobs,160,68.3,Left Upper,thandi,Yellow,4471048,1734102,6205150,69,Manual
+SP12281,Male,LTBI,Negative,35,2019-08-13,Dr. Adams,160,62.4,Right Lower,marietjie,Bloody,3210072,351000,3561262,1,Manual
+SP19813,Male,Active TB,Positive,11,2017-12-31,Prof. de Villiers,160,79.2,Right Middle,fatima,White,2570000,1020977,3590000,108,Automated
+SP39581,Male,Control,Positive,46,2020-07-09,Prof. de Villiers,140,76.5,Right Upper,lize,Bloody,3254180,476566,3730000,9,Automated
+SP17091,Male,LTBI,Negative,31,2017-07-02,Dr. Hendricks,140,50.5,Right Upper,fatima,Cream,3522396,1076406,4600000,62,Both
+SP36687,Male,Control,Negative,20,2020-06-12,Dr. Jacobs,80,30.7,Left Upper,yolanda,Yellow,2567423,546000,3110000,102,Manual
+SP16987,Female,Control,Negative,47,2020-06-23,Dr. Adams,80,42.6,Left Lower,fatima,Clear,4886150,1767688,6650000,101,Automated
+SP36262,Male,Control,Negative,38,2020-04-28,Dr. Naidoo,120,55.2,Left Lower,marietjie,White,3426767,945000,4372049,79,Both
+SP39031,Male,Indeterminate,Negative,23,2020-04-05,Prof. de Villiers,140,76.2,Left Lower,yolanda,White,4299287,658433,4957720,111,Automated
+SP16582,Female,LTBI,Positive,57,2019-07-04,Prof. Theron,120,44.9,Right Lower,marietjie,Bloody,5032380,426329,5458709,85,Manual
+SP04576,Male,Indeterminate,Negative,11,2018-06-25,Dr. Hendricks,120,55,Right Middle,marietjie,Bloody,3969052,250101,4219153,86,Automated
+SP24917,Male,Control,Positive,23,2016-07-14,Prof. Theron,120,44.2,Left Lower,fatima,Bloody,3410000,837089,4250000,29,Manual
+SP31755,Male,Indeterminate,Negative,30,2018-06-11,Dr. Van Der Merwe,120,89.5,Right Lower,fatima,Cream,3837445,1215063,5052508,60,Automated
+SP38216,Male,LTBI,Negative,20,2020-07-10,Prof. de Villiers,140,54.8,Right Upper,thandi,White,3130000,NA,4050000,NA,Both
+SP29084,Male,LTBI,Positive,47,2020-07-26,Dr. Van Der Merwe,140,68.1,Right Middle,yolanda,Pink,4235924,1440000,5673976,218,Both
+SP20673,Male,Indeterminate,Negative,19,2020-07-26,Dr. Botha,140,61.2,Right Middle,marietjie,Bloody,4095331,709000,4800000,44,Automated
+SP02077,Female,Control,Positive,41,2019-07-23,Dr. Naidoo,80,50.7,Left Lower,lize,White,NA,478360,3134234,184,Both
+SP25235,Female,Active TB,Positive,54,2017-07-12,Dr. Jacobs,160,76,Right Lower,fatima,Bloody,6660385,1544746,8210000,35,Manual
+SP17158,Female,Active TB,Negative,39,2019-08-22,Dr. Adams,120,79.6,Right Upper,thandi,Clear,3369661,288998,3660000,160,Automated
+SP39275,Male,Control,Negative,30,2020-06-12,Dr. Naidoo,80,46.6,Left Lower,marietjie,Yellow,3875145,449184,4324329,113,Automated
+SP18065,Female,Active TB,Negative,11,2018-12-13,Dr. Adams,160,92.7,Right Middle,fatima,White,3830000,592480,4422441,91,Automated
+SP17515,Female,LTBI,Negative,29,2019-08-16,Prof. de Villiers,100,37.3,Right Middle,thandi,Yellow,2720000,671000,3390000,134,Manual
+SP35637,Female,Active TB,Positive,21,2016-10-09,Dr. Naidoo,80,35.5,Right Middle,fatima,Pink,2980000,1060000,4040000,78,Both
+SP16824,Female,Indeterminate,Negative,36,2020-06-16,Dr. Smith,60,37.3,Right Upper,thandi,Clear,NA,596000,3701046,6,Manual
+SP06812,Female,LTBI,Negative,13,2020-07-13,Dr. Naidoo,120,86.1,Right Middle,lize,Bloody,4360000,NA,5310000,70,Automated
+SP33453,Male,Active TB,Negative,29,2016-08-22,Prof. de Villiers,140,90.6,Right Lower,yolanda,White,4582564,322598,4910000,98,Manual
+SP15391,Female,LTBI,Negative,48,2018-11-21,Prof. de Villiers,120,77.8,Right Lower,marietjie,Yellow,3852230,4296531,4295531,151,Both
+SP35457,Male,LTBI,Negative,16,2016-08-24,Dr. Jacobs,80,47.6,Left Upper,lize,Bloody,3808334,193060,4001394,138,Manual
+SP36087,Male,LTBI,Positive,30,2017-03-12,Dr. Van Der Merwe,100,72.1,Right Middle,thandi,Yellow,2753214,142362,2895576,57,Manual
+SP03008,Female,Active TB,Negative,20,2020-08-09,Dr. Van Der Merwe,120,69.3,Right Upper,marietjie,Yellow,3391073,450680,3841753,194,Both
+SP33651,Female,LTBI,Negative,48,2020-08-03,Dr. Naidoo,160,101.6,Left Upper,fatima,Bloody,2842483,698298,3540781,123,Both
+SP07725,Male,Control,Negative,53,2020-09-11,Dr. Hendricks,140,101.3,Right Lower,fatima,Bloody,3804878,1510000,5310000,132,Manual
+SP16941,Male,Control,Positive,56,2018-06-20,Dr. Botha,140,78,Right Lower,lize,White,3100000,1140724,4240000,82,Both
+SP07482,Male,Indeterminate,Negative,22,2018-07-24,Dr. Botha,60,38.1,Left Upper,yolanda,Cream,4333036,322428,NA,87,Manual
+SP31348,Male,LTBI,Positive,50,2020-06-07,Prof. Malan,120,45.1,Right Middle,fatima,Bloody,2532253,844157,3376410,98,Automated
+SP09410,Male,Active TB,Negative,51,2016-05-09,Prof. Theron,160,107.3,Left Upper,marietjie,White,2600000,185518,2790000,136,Manual
+SP32240,Male,Active TB,Positive,30,2019-07-23,Prof. Theron,80,48.7,Right Lower,fatima,Bloody,4200000,908182,5107234,105,Automated
+SP24410,Male,Control,Negative,18,2020-09-04,Prof. Malan,60,31.4,Right Middle,fatima,Cream,2890000,350921,3240000,97,Automated
+SP02450,Male,Active TB,Negative,16,2019-06-20,Dr. Van Der Merwe,140,95.9,Right Upper,yolanda,Yellow,4957348,811000,5768809,58,Both
+SP05255,Female,LTBI,Positive,34,2019-11-01,Dr. Van Der Merwe,160,68.2,Left Upper,fatima,Bloody,3940000,962000,4900321,47,Both
+SP39216,Male,LTBI,Negative,51,2019-11-30,Dr. Naidoo,60,27.8,Left Lower,lize,Pink,4020000,1068831,5090000,69,Manual
+SP35931,Male,LTBI,Negative,53,2017-07-04,Prof. de Villiers,100,46.4,Right Lower,thandi,Pink,4054696,756702,4810000,7,Manual
+SP14859,Male,Active TB,Negative,33,2016-07-01,Dr. Hendricks,80,54.2,Left Upper,marietjie,White,3387395,351000,3738519,45,Automated
+SP20434,Female,Control,Negative,11,2020-08-19,Prof. Theron,160,110.1,Right Upper,yolanda,White,1470000,77500,1542550,165,Manual
+SP02359,Female,Indeterminate,Negative,35,2018-06-22,Prof. de Villiers,60,34.1,Right Lower,fatima,Bloody,3493066,364538,3860000,127,Automated
+SP13841,Female,Active TB,Positive,24,2016-07-06,Dr. Smith,60,23.5,Left Lower,yolanda,Clear,NA,489670,5042992,65,Automated
+SP16903,Male,LTBI,Negative,22,2016-06-24,Dr. Naidoo,100,62.2,Right Middle,fatima,Clear,1810000,596000,NA,125,Manual
+SP39675,Female,Control,Positive,19,2020-08-02,Dr. Botha,80,31.7,Right Lower,thandi,Clear,3410000,225274,3640000,57,Automated
+SP19493,Male,Active TB,Positive,36,2017-11-19,Dr. Adams,80,57.5,Right Upper,yolanda,Bloody,4840000,1474569,6320000,127,Manual
+SP23563,Male,Control,Negative,54,2017-08-21,Prof. Malan,120,50.6,Right Lower,thandi,Cream,1577310,463935,2040000,83,Both
+SP23667,Female,LTBI,Positive,51,2016-04-24,Dr. Smith,80,29.3,Left Lower,fatima,White,2937166,775000,3712105,160,Automated
+SP24969,Female,LTBI,Negative,52,2019-10-08,Prof. Theron,100,37.9,Right Upper,fatima,White,2630000,302609,2930623,60,Automated
+SP10213,Female,Active TB,Positive,22,2016-09-06,Prof. Malan,80,40,Right Upper,lize,White,3130000,402000,3530000,100,Both
+SP12965,Male,LTBI,Negative,50,2020-12-05,Dr. Smith,140,60.8,Left Lower,yolanda,Cream,2968977,NA,4028272,NA,Both
+SP13753,Female,Control,Negative,26,2016-06-14,Dr. Naidoo,120,84.7,Right Lower,yolanda,Bloody,5386267,1670940,7060000,90,Automated
+SP05182,Female,Active TB,Positive,15,2020-08-20,Dr. Van Der Merwe,100,35.8,Right Middle,thandi,Clear,4150066,1350470,5500000,105,Manual
+SP05679,Female,Control,Negative,52,2017-04-23,Prof. de Villiers,140,61.5,Right Upper,lize,White,4014973,1531907,5546880,75,Both
+SP30389,Male,Indeterminate,Positive,59,2019-01-05,Dr. Van Der Merwe,160,87.4,Right Lower,fatima,Bloody,3920000,858967,4777388,143,Automated
+SP25752,Male,LTBI,Negative,45,2016-05-07,Prof. de Villiers,100,62.2,Left Lower,yolanda,Clear,1856385,481310,2340000,163,Automated
+SP32257,Male,LTBI,Positive,58,2020-07-29,Dr. Van Der Merwe,100,65.6,Left Upper,lize,Yellow,4107935,546545,4654480,14,Both
+SP30625,Male,Active TB,Negative,40,2019-08-27,Dr. Smith,120,52.2,Right Middle,marietjie,Pink,3310000,669236,3983226,2,Automated
+SP34758,Male,Active TB,Negative,28,2018-07-21,Dr. Naidoo,80,36.7,Left Lower,lize,Bloody,3220000,NA,3754737,118,Manual
+SP25237,Male,Control,Negative,15,2018-10-17,Prof. Theron,60,42.8,Left Upper,lize,White,3280000,391000,3674679,57,Automated
+SP38208,Male,Indeterminate,Negative,22,2020-08-23,Dr. Jacobs,160,72,Right Lower,fatima,Cream,2833689,944000,3777222,109,Automated
+SP14723,Female,Active TB,Positive,42,2019-09-17,Dr. Van Der Merwe,100,52,Right Upper,thandi,Clear,3900427,296000,4200000,26,Automated
+SP20342,Male,LTBI,Positive,55,2020-05-03,Dr. Botha,100,NA,Left Lower,yolanda,Clear,3740000,1233657,4970000,57,Automated
+SP12896,Female,LTBI,Positive,53,2020-07-26,Dr. Adams,60,30.1,Left Lower,fatima,Bloody,2020000,107000,2125742,90,Automated
+SP30632,Female,Active TB,Negative,36,2019-05-08,Dr. Botha,80,34.3,Right Middle,marietjie,Yellow,2858362,1100000,3956249,58,Both
+SP03593,Male,Active TB,Negative,56,2018-04-14,Prof. Theron,160,60.3,Left Upper,marietjie,Pink,4397501,1211308,5608809,51,Automated
+SP19591,Male,LTBI,Positive,11,2016-07-10,Dr. Botha,160,70.3,Right Upper,fatima,Pink,5946993,1348877,NA,88,Automated
+SP01298,Female,LTBI,Negative,14,2020-06-25,Dr. Smith,160,89,Left Upper,thandi,Bloody,4552157,355507,4907664,57,Both
+SP29777,Male,LTBI,Negative,32,2017-06-18,Prof. Malan,120,64.1,Left Lower,fatima,Clear,2450000,792820,3250000,120,Manual
+SP07270,Female,LTBI,Negative,39,2020-08-07,Prof. de Villiers,140,57,Right Lower,thandi,Bloody,NA,1062165,4330000,73,Both
+SP33676,Female,Active TB,Positive,34,2017-07-26,Dr. Smith,120,54.2,Left Upper,fatima,Cream,4145590,668000,NA,82,Manual
+SP21229,Female,Active TB,Negative,41,2016-08-31,Dr. Botha,80,58,Left Upper,yolanda,Yellow,6240000,599122,6836748,43,Automated
+SP38792,Male,Control,Negative,58,2016-01-20,Dr. Hendricks,140,72.1,Right Lower,fatima,Cream,3754552,1290000,5040509,47,Manual
+SP24197,Male,Indeterminate,Negative,42,2020-08-17,Prof. de Villiers,80,59.1,Left Lower,marietjie,Pink,3207422,1080000,4290865,4,Both
+SP27238,Male,Control,Negative,54,2019-06-20,Dr. Adams,60,NA,Right Lower,lize,Clear,3728864,933387,4660000,161,Automated
+SP22136,Female,LTBI,Positive,53,2020-01-15,Dr. Van Der Merwe,60,38.2,Right Lower,fatima,White,2339151,790825,3130000,72,Automated
+SP32221,Female,LTBI,Negative,53,2017-11-25,Dr. Hendricks,100,68.7,Left Lower,fatima,Clear,5455556,1023712,6479268,58,Manual
+SP01932,Male,LTBI,Negative,37,2016-06-22,Dr. Naidoo,160,70.5,Left Upper,marietjie,Cream,1912858,151075,2063933,109,Automated
+SP28134,Male,LTBI,Negative,42,2016-08-25,Prof. de Villiers,80,45.3,Left Upper,marietjie,Cream,2605928,792538,3398466,45,Automated
+SP24107,Male,LTBI,Positive,53,2020-08-25,Dr. Naidoo,140,49.7,Right Middle,thandi,White,4950000,738480,5690000,122,Automated
+SP01175,Male,Indeterminate,Negative,13,2018-08-05,Dr. Adams,100,52.8,Right Middle,yolanda,White,3720000,1270000,4990000,128,Manual
+SP18651,Male,Indeterminate,Positive,26,2018-08-15,Prof. de Villiers,160,79.4,Right Middle,thandi,Bloody,NA,862062,5817392,111,Manual
+SP10525,Male,Control,Negative,18,2020-10-05,Dr. Smith,140,80.6,Right Upper,fatima,Pink,4709849,346000,5060000,60,Automated
+SP31245,Female,Active TB,Negative,16,2018-06-07,Dr. Adams,80,36.5,Right Lower,marietjie,Cream,3829002,1453464,5282466,60,Both
+SP23493,Male,Control,Negative,56,2017-01-06,Prof. Theron,80,28,Right Lower,yolanda,Bloody,2770000,564073,3330000,63,Automated
+SP27003,Female,LTBI,Positive,25,2019-06-23,Dr. Adams,160,115.8,Right Lower,thandi,Bloody,4330000,367000,4700000,152,Automated
+SP12492,Male,Indeterminate,Positive,33,2017-08-23,Dr. Naidoo,140,81.6,Left Upper,fatima,Clear,4441306,1253756,5700000,115,Automated
+SP38654,Female,LTBI,Negative,48,2019-04-10,Dr. Adams,140,64.1,Right Lower,fatima,Yellow,3875746,1410000,5290000,90,Automated

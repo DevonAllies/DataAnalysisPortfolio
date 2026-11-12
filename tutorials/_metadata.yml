@@ -1,0 +1,12 @@
+# Shared settings for every tutorial in this folder.
+engine: knitr
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    toc-location: left
+    code-copy: true
+    code-overflow: wrap
+execute:
+  warning: false
+  message: false

@@ -17,6 +17,13 @@ This is my portfolio of data science and bioinformatics projects. I've worked in
 | [Global Retractions of Scientific Publications](https://devonallies.github.io/DataAnalysisPortfolio/projects/retractions/retraction.html) | Trends in retracted publications | R, SQL (MySQL) |
 | [The use of R & Python in data science](https://devonallies.github.io/DataAnalysisPortfolio/projects/R%20%26%20Python/R%20%26%20Python.html) | A cross-language PCA workflow on gene expression data | R, Python, reticulate, scikit-learn |
 
+## Tutorials
+
+Short, practical guides using a small extract of a simulated TB study (BAL cell counts and participant metadata). The data is in [`tutorials/data/`](tutorials/data/).
+
+1. [Importing data into RStudio with R](https://devonallies.github.io/DataAnalysisPortfolio/tutorials/01-import-data-in-r/import-data-in-r.html): CSV and Excel files, multiple sheets, missing-value codes and numbers stored as text.
+2. [Using one dataset in both R and Python](https://devonallies.github.io/DataAnalysisPortfolio/tutorials/02-r-and-python/r-and-python-dataframes.html): passing data frames between R and pandas with reticulate, and the conversions that quietly corrupt data.
+
 ## How the site is built
 
 The site is a [Quarto](https://quarto.org) website. Each project is a `.qmd` file in `projects/<name>/`, and `quarto render` writes the static site to `docs/`. GitHub Pages serves the site from `docs/` on the `main` branch.
@@ -26,6 +33,7 @@ _quarto.yml        site configuration (navbar, theme, filters)
 index.qmd          home page
 projects.qmd       project listing
 projects/<name>/   one folder per project: .qmd, references, images
+tutorials/         numbered tutorials, plus the small dataset they use in tutorials/data/
 docs/              rendered site (committed; served by GitHub Pages)
 ```
 
@@ -45,7 +53,7 @@ quarto preview
 quarto render projects/covid/covid19_eda.qmd   # a single page
 ```
 
-Most pages read data files that aren't in the repo (`*.csv` and `data/` are gitignored), and the retractions page queries a MySQL database. So on a fresh clone, most analysis pages won't re-render without the source data. The rendered versions in `docs/` are always current.
+The tutorials render from a fresh clone, because their data is committed. Most project pages read data files that aren't in the repo (`*.csv` and `data/` are gitignored), and the retractions page queries a MySQL database. So on a fresh clone, most analysis pages won't re-render without the source data. The rendered versions in `docs/` are always current.
 
 ## Contact
 

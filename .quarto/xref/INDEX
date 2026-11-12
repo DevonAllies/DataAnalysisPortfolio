@@ -61,5 +61,11 @@
   },
   "projects/credit-lending-pipeline/credit-risk-pipeline.qmd": {
     "credit-risk-pipeline.html": "300874d8"
+  },
+  "tutorials/01-import-data-in-r/import-data-in-r.qmd": {
+    "import-data-in-r.html": "0836bf33"
+  },
+  "tutorials/02-r-and-python/r-and-python-dataframes.qmd": {
+    "r-and-python-dataframes.html": "d69f91b5"
   }
 }

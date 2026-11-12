@@ -1,7 +1,10 @@
 [
   {
     "listing": "/tutorials.html",
-    "items": []
+    "items": [
+      "/tutorials/01-import-data-in-r/import-data-in-r.html",
+      "/tutorials/02-r-and-python/r-and-python-dataframes.html"
+    ]
   },
   {
     "listing": "/projects.html",
