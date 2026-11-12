@@ -67,5 +67,8 @@
   },
   "tutorials/02-r-and-python/r-and-python-dataframes.qmd": {
     "r-and-python-dataframes.html": "d69f91b5"
+  },
+  "publications.qmd": {
+    "publications.html": "30e83e67"
   }
 }

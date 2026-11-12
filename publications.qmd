@@ -1,0 +1,101 @@
+---
+title: "Publications & Writing"
+subtitle: "Peer-reviewed TB research, and articles on reproducible science"
+engine: knitr
+toc: false
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+#| label: load
+library(jsonlite)
+pubs_data <- fromJSON(here::here("_data", "publications.json"), simplifyVector = FALSE)
+pubs <- pubs_data$publications
+total_cites <- sum(vapply(pubs, \(p) if (is.null(p$cited_by)) 0 else p$cited_by, numeric(1)))
+```
+
+## Peer-reviewed papers
+
+::: {.pub-intro}
+My work at Stellenbosch University's Division of Molecular Biology and Human Genetics has contributed to `r length(pubs)` peer-reviewed papers, cited `r total_cites` times according to Crossref.
+
+[ORCID: `r pubs_data$orcid`](https://orcid.org/`r pubs_data$orcid`){.btn .btn-sm .btn-outline-primary}
+:::
+
+```{r}
+#| label: list
+#| output: asis
+# Match on surname: papers list me as "Allies D" or "Allies DL".
+my_position <- function(authors) which(startsWith(unlist(authors), "Allies "))[1]
+
+format_authors <- function(authors) {
+  authors <- unlist(authors)
+  n <- length(authors)
+  pos <- my_position(authors)
+  shown <- head(authors, 3)
+  if (!is.na(pos) && pos <= 3) shown[pos] <- paste0("**", shown[pos], "**")
+  out <- paste(shown, collapse = ", ")
+  if (!is.na(pos) && pos > 3) out <- paste0(out, ", … **", authors[pos], "**")
+  if (n > max(3, if (is.na(pos)) 0 else pos)) out <- paste0(out, ", et al.")
+  out
+}
+
+for (p in pubs) {
+  ref <- paste0("*", p$journal, "*. ", p$year)
+  if (!is.null(p$volume)) ref <- paste0(ref, ";", p$volume)
+  if (!is.null(p$issue))  ref <- paste0(ref, "(", p$issue, ")")
+  if (!is.null(p$pages))  ref <- paste0(ref, ":", p$pages)
+
+  links <- c(
+    if (!is.null(p$doi))   sprintf("[DOI](https://doi.org/%s){.btn .btn-sm .btn-primary}", p$doi),
+    if (!is.null(p$pmid))  sprintf("[PubMed](https://pubmed.ncbi.nlm.nih.gov/%s/){.btn .btn-sm .btn-outline-primary}", p$pmid),
+    if (!is.null(p$pmcid)) sprintf("[Free full text](https://pmc.ncbi.nlm.nih.gov/articles/%s/){.btn .btn-sm .btn-outline-primary}", p$pmcid)
+  )
+
+  pos <- my_position(p$authors)
+  role <- if (is.na(pos)) "" else sprintf("Author %d of %d · ", pos, length(p$authors))
+  cites <- if (is.null(p$cited_by)) "" else sprintf("Cited %d times", p$cited_by)
+
+  cat(
+    "::: {.pub-card}\n",
+    sprintf("[%s]{.pub-year}\n\n", p$year),
+    sprintf("[%s]{.pub-title}\n\n", p$title),
+    sprintf("[%s]{.pub-authors}\n\n", format_authors(p$authors)),
+    sprintf("%s\n\n", ref),
+    sprintf("[%s%s]{.pub-meta}\n\n", role, cites),
+    paste(links, collapse = "\n"), "\n",
+    ":::\n\n",
+    sep = ""
+  )
+}
+```
+
+## Articles
+
+::: {.pub-intro}
+Plain-language writing on Medium about reproducible research, scientific writing with Quarto, and what sim racing and flight simulators taught me about checklists.
+
+[All articles on Medium](https://medium.com/@alliesdl){.btn .btn-sm .btn-outline-primary}
+:::
+
+```{r}
+#| label: articles
+#| output: asis
+for (a in pubs_data$articles) {
+  date_label <- format(as.Date(a$date), "%d %B %Y")
+  tags <- paste(sprintf("[%s]{.article-tag}", unlist(a$tags)), collapse = " ")
+  cat(
+    "::: {.pub-card .article-card}\n",
+    sprintf("[%s · %d min read]{.pub-year}\n\n", date_label, a$minutes),
+    sprintf("[%s]{.pub-title}\n\n", a$title),
+    sprintf("%s\n\n", a$excerpt),
+    sprintf("%s\n\n", tags),
+    sprintf("[Read on Medium](%s){.btn .btn-sm .btn-primary}\n", a$url),
+    ":::\n\n",
+    sep = ""
+  )
+}
+```

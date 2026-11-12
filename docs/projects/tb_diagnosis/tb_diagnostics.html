@@ -2,21 +2,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Devon Allies">
 
-<title>Compartmental TB Diagnostics: A Simulated BAL Cytokine cohort – Data Science Projects</title>
+<title>Compartmental TB Diagnostics: A Simulated BAL Cytokine cohort – Devon Allies</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -55,14 +58,15 @@ div.csl-indent {
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-839d7b478c557d19ff65a2daea224a03.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-71e4d3328f91e7c3033266d57b7953ae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -92,7 +96,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -124,19 +128,18 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="floating nav-fixed quarto-light">
+<body class="floating nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">Data Science Projects</span>
+    <span class="navbar-title">Devon Allies</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -154,6 +157,10 @@ window.Quarto = {
 <span class="menu-text">Tutorials</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications &amp; Writing</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About Me</span></a>
   </li>  
@@ -161,14 +168,15 @@ window.Quarto = {
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
+            <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <nav id="TOC" role="doc-toc" class="toc-active">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Section">
+    <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Contents</h2>
    
   <ul class="collapse">
@@ -188,7 +196,7 @@ window.Quarto = {
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -258,23 +266,23 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
 </figcaption>
 <div aria-describedby="tbl-column-names-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="mvdvlgkfff" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#mvdvlgkfff table {
+<div id="qwysbjvvox" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qwysbjvvox table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#mvdvlgkfff thead, #mvdvlgkfff tbody, #mvdvlgkfff tfoot, #mvdvlgkfff tr, #mvdvlgkfff td, #mvdvlgkfff th {
+#qwysbjvvox thead, #qwysbjvvox tbody, #qwysbjvvox tfoot, #qwysbjvvox tr, #qwysbjvvox td, #qwysbjvvox th {
   border-style: none;
 }
 
-#mvdvlgkfff p {
+#qwysbjvvox p {
   margin: 0;
   padding: 0;
 }
 
-#mvdvlgkfff .gt_table {
+#qwysbjvvox .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -300,12 +308,12 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-left-color: #D3D3D3;
 }
 
-#mvdvlgkfff .gt_caption {
+#qwysbjvvox .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#mvdvlgkfff .gt_title {
+#qwysbjvvox .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -317,7 +325,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-bottom-width: 0;
 }
 
-#mvdvlgkfff .gt_subtitle {
+#qwysbjvvox .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -329,7 +337,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-top-width: 0;
 }
 
-#mvdvlgkfff .gt_heading {
+#qwysbjvvox .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -341,13 +349,13 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-right-color: #D3D3D3;
 }
 
-#mvdvlgkfff .gt_bottom_border {
+#qwysbjvvox .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mvdvlgkfff .gt_col_headings {
+#qwysbjvvox .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -362,7 +370,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-right-color: #D3D3D3;
 }
 
-#mvdvlgkfff .gt_col_heading {
+#qwysbjvvox .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -382,7 +390,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   overflow-x: hidden;
 }
 
-#mvdvlgkfff .gt_column_spanner_outer {
+#qwysbjvvox .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -394,15 +402,15 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 4px;
 }
 
-#mvdvlgkfff .gt_column_spanner_outer:first-child {
+#qwysbjvvox .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mvdvlgkfff .gt_column_spanner_outer:last-child {
+#qwysbjvvox .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mvdvlgkfff .gt_column_spanner {
+#qwysbjvvox .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -414,11 +422,11 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   width: 100%;
 }
 
-#mvdvlgkfff .gt_spanner_row {
+#qwysbjvvox .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#mvdvlgkfff .gt_group_heading {
+#qwysbjvvox .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -444,7 +452,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   text-align: left;
 }
 
-#mvdvlgkfff .gt_empty_group_heading {
+#qwysbjvvox .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -459,15 +467,15 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   vertical-align: middle;
 }
 
-#mvdvlgkfff .gt_from_md > :first-child {
+#qwysbjvvox .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mvdvlgkfff .gt_from_md > :last-child {
+#qwysbjvvox .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mvdvlgkfff .gt_row {
+#qwysbjvvox .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -486,7 +494,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   overflow-x: hidden;
 }
 
-#mvdvlgkfff .gt_stub {
+#qwysbjvvox .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -499,7 +507,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#mvdvlgkfff .gt_stub_row_group {
+#qwysbjvvox .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -513,15 +521,15 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   vertical-align: top;
 }
 
-#mvdvlgkfff .gt_row_group_first td {
+#qwysbjvvox .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#mvdvlgkfff .gt_row_group_first th {
+#qwysbjvvox .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#mvdvlgkfff .gt_summary_row {
+#qwysbjvvox .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -531,16 +539,16 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#mvdvlgkfff .gt_first_summary_row {
+#qwysbjvvox .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#mvdvlgkfff .gt_first_summary_row.thick {
+#qwysbjvvox .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#mvdvlgkfff .gt_last_summary_row {
+#qwysbjvvox .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -550,7 +558,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-bottom-color: #D3D3D3;
 }
 
-#mvdvlgkfff .gt_grand_summary_row {
+#qwysbjvvox .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -560,7 +568,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#mvdvlgkfff .gt_first_grand_summary_row {
+#qwysbjvvox .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -570,7 +578,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-top-color: #D3D3D3;
 }
 
-#mvdvlgkfff .gt_last_grand_summary_row_top {
+#qwysbjvvox .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -580,11 +588,11 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-bottom-color: #D3D3D3;
 }
 
-#mvdvlgkfff .gt_striped {
+#qwysbjvvox .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mvdvlgkfff .gt_table_body {
+#qwysbjvvox .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -593,7 +601,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-bottom-color: #D3D3D3;
 }
 
-#mvdvlgkfff .gt_footnotes {
+#qwysbjvvox .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -607,7 +615,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-right-color: #D3D3D3;
 }
 
-#mvdvlgkfff .gt_footnote {
+#qwysbjvvox .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -616,7 +624,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#mvdvlgkfff .gt_sourcenotes {
+#qwysbjvvox .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -630,7 +638,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-right-color: #D3D3D3;
 }
 
-#mvdvlgkfff .gt_sourcenote {
+#qwysbjvvox .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -638,72 +646,72 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#mvdvlgkfff .gt_left {
+#qwysbjvvox .gt_left {
   text-align: left;
 }
 
-#mvdvlgkfff .gt_center {
+#qwysbjvvox .gt_center {
   text-align: center;
 }
 
-#mvdvlgkfff .gt_right {
+#qwysbjvvox .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mvdvlgkfff .gt_font_normal {
+#qwysbjvvox .gt_font_normal {
   font-weight: normal;
 }
 
-#mvdvlgkfff .gt_font_bold {
+#qwysbjvvox .gt_font_bold {
   font-weight: bold;
 }
 
-#mvdvlgkfff .gt_font_italic {
+#qwysbjvvox .gt_font_italic {
   font-style: italic;
 }
 
-#mvdvlgkfff .gt_super {
+#qwysbjvvox .gt_super {
   font-size: 65%;
 }
 
-#mvdvlgkfff .gt_footnote_marks {
+#qwysbjvvox .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#mvdvlgkfff .gt_asterisk {
+#qwysbjvvox .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#mvdvlgkfff .gt_indent_1 {
+#qwysbjvvox .gt_indent_1 {
   text-indent: 5px;
 }
 
-#mvdvlgkfff .gt_indent_2 {
+#qwysbjvvox .gt_indent_2 {
   text-indent: 10px;
 }
 
-#mvdvlgkfff .gt_indent_3 {
+#qwysbjvvox .gt_indent_3 {
   text-indent: 15px;
 }
 
-#mvdvlgkfff .gt_indent_4 {
+#qwysbjvvox .gt_indent_4 {
   text-indent: 20px;
 }
 
-#mvdvlgkfff .gt_indent_5 {
+#qwysbjvvox .gt_indent_5 {
   text-indent: 25px;
 }
 
-#mvdvlgkfff .katex-display {
+#qwysbjvvox .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#mvdvlgkfff div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#qwysbjvvox div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -721,51 +729,51 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
 <tbody class="gt_table_body">
 <tr class="odd">
 <td class="gt_row gt_center" headers="Index">1</td>
-<td class="gt_row gt_left" headers="Column Name">subject_id</td>
+<td class="gt_row gt_left" headers="Column-Name">subject_id</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="Index">2</td>
-<td class="gt_row gt_left" headers="Column Name">group</td>
+<td class="gt_row gt_left" headers="Column-Name">group</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_center" headers="Index">3</td>
-<td class="gt_row gt_left" headers="Column Name">age_years</td>
+<td class="gt_row gt_left" headers="Column-Name">age_years</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="Index">4</td>
-<td class="gt_row gt_left" headers="Column Name">sex</td>
+<td class="gt_row gt_left" headers="Column-Name">sex</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_center" headers="Index">5</td>
-<td class="gt_row gt_left" headers="Column Name">hiv_status</td>
+<td class="gt_row gt_left" headers="Column-Name">hiv_status</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="Index">6</td>
-<td class="gt_row gt_left" headers="Column Name">bal_volume_ml</td>
+<td class="gt_row gt_left" headers="Column-Name">bal_volume_ml</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_center" headers="Index">7</td>
-<td class="gt_row gt_left" headers="Column Name">ip10_bal_pg_ml</td>
+<td class="gt_row gt_left" headers="Column-Name">ip10_bal_pg_ml</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="Index">8</td>
-<td class="gt_row gt_left" headers="Column Name">il6_bal_pg_ml</td>
+<td class="gt_row gt_left" headers="Column-Name">il6_bal_pg_ml</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_center" headers="Index">9</td>
-<td class="gt_row gt_left" headers="Column Name">il1b_bal_pg_ml</td>
+<td class="gt_row gt_left" headers="Column-Name">il1b_bal_pg_ml</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="Index">10</td>
-<td class="gt_row gt_left" headers="Column Name">ifng_bal_pg_ml</td>
+<td class="gt_row gt_left" headers="Column-Name">ifng_bal_pg_ml</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_center" headers="Index">11</td>
-<td class="gt_row gt_left" headers="Column Name">tnfa_bal_pg_ml</td>
+<td class="gt_row gt_left" headers="Column-Name">tnfa_bal_pg_ml</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_center" headers="Index">12</td>
-<td class="gt_row gt_left" headers="Column Name">il8_bal_pg_ml</td>
+<td class="gt_row gt_left" headers="Column-Name">il8_bal_pg_ml</td>
 </tr>
 </tbody>
 </table>
@@ -785,23 +793,23 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
 </figcaption>
 <div aria-describedby="tbl-summary-statistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="rhzilgaeky" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#rhzilgaeky table {
+<div id="itbaiuzuqk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#itbaiuzuqk table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#rhzilgaeky thead, #rhzilgaeky tbody, #rhzilgaeky tfoot, #rhzilgaeky tr, #rhzilgaeky td, #rhzilgaeky th {
+#itbaiuzuqk thead, #itbaiuzuqk tbody, #itbaiuzuqk tfoot, #itbaiuzuqk tr, #itbaiuzuqk td, #itbaiuzuqk th {
   border-style: none;
 }
 
-#rhzilgaeky p {
+#itbaiuzuqk p {
   margin: 0;
   padding: 0;
 }
 
-#rhzilgaeky .gt_table {
+#itbaiuzuqk .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -827,12 +835,12 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-left-color: #D3D3D3;
 }
 
-#rhzilgaeky .gt_caption {
+#itbaiuzuqk .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#rhzilgaeky .gt_title {
+#itbaiuzuqk .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -844,7 +852,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-bottom-width: 0;
 }
 
-#rhzilgaeky .gt_subtitle {
+#itbaiuzuqk .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -856,7 +864,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-top-width: 0;
 }
 
-#rhzilgaeky .gt_heading {
+#itbaiuzuqk .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -868,13 +876,13 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-right-color: #D3D3D3;
 }
 
-#rhzilgaeky .gt_bottom_border {
+#itbaiuzuqk .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#rhzilgaeky .gt_col_headings {
+#itbaiuzuqk .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -889,7 +897,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-right-color: #D3D3D3;
 }
 
-#rhzilgaeky .gt_col_heading {
+#itbaiuzuqk .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -909,7 +917,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   overflow-x: hidden;
 }
 
-#rhzilgaeky .gt_column_spanner_outer {
+#itbaiuzuqk .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -921,15 +929,15 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 4px;
 }
 
-#rhzilgaeky .gt_column_spanner_outer:first-child {
+#itbaiuzuqk .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#rhzilgaeky .gt_column_spanner_outer:last-child {
+#itbaiuzuqk .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#rhzilgaeky .gt_column_spanner {
+#itbaiuzuqk .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -941,11 +949,11 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   width: 100%;
 }
 
-#rhzilgaeky .gt_spanner_row {
+#itbaiuzuqk .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#rhzilgaeky .gt_group_heading {
+#itbaiuzuqk .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -971,7 +979,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   text-align: left;
 }
 
-#rhzilgaeky .gt_empty_group_heading {
+#itbaiuzuqk .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -986,15 +994,15 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   vertical-align: middle;
 }
 
-#rhzilgaeky .gt_from_md > :first-child {
+#itbaiuzuqk .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#rhzilgaeky .gt_from_md > :last-child {
+#itbaiuzuqk .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#rhzilgaeky .gt_row {
+#itbaiuzuqk .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1013,7 +1021,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   overflow-x: hidden;
 }
 
-#rhzilgaeky .gt_stub {
+#itbaiuzuqk .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1026,7 +1034,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#rhzilgaeky .gt_stub_row_group {
+#itbaiuzuqk .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1040,15 +1048,15 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   vertical-align: top;
 }
 
-#rhzilgaeky .gt_row_group_first td {
+#itbaiuzuqk .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#rhzilgaeky .gt_row_group_first th {
+#itbaiuzuqk .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#rhzilgaeky .gt_summary_row {
+#itbaiuzuqk .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1058,16 +1066,16 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#rhzilgaeky .gt_first_summary_row {
+#itbaiuzuqk .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#rhzilgaeky .gt_first_summary_row.thick {
+#itbaiuzuqk .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#rhzilgaeky .gt_last_summary_row {
+#itbaiuzuqk .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1077,7 +1085,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-bottom-color: #D3D3D3;
 }
 
-#rhzilgaeky .gt_grand_summary_row {
+#itbaiuzuqk .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1087,7 +1095,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#rhzilgaeky .gt_first_grand_summary_row {
+#itbaiuzuqk .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1097,7 +1105,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-top-color: #D3D3D3;
 }
 
-#rhzilgaeky .gt_last_grand_summary_row_top {
+#itbaiuzuqk .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1107,11 +1115,11 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-bottom-color: #D3D3D3;
 }
 
-#rhzilgaeky .gt_striped {
+#itbaiuzuqk .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#rhzilgaeky .gt_table_body {
+#itbaiuzuqk .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1120,7 +1128,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-bottom-color: #D3D3D3;
 }
 
-#rhzilgaeky .gt_footnotes {
+#itbaiuzuqk .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1134,7 +1142,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-right-color: #D3D3D3;
 }
 
-#rhzilgaeky .gt_footnote {
+#itbaiuzuqk .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1143,7 +1151,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#rhzilgaeky .gt_sourcenotes {
+#itbaiuzuqk .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1157,7 +1165,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-right-color: #D3D3D3;
 }
 
-#rhzilgaeky .gt_sourcenote {
+#itbaiuzuqk .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1165,72 +1173,72 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#rhzilgaeky .gt_left {
+#itbaiuzuqk .gt_left {
   text-align: left;
 }
 
-#rhzilgaeky .gt_center {
+#itbaiuzuqk .gt_center {
   text-align: center;
 }
 
-#rhzilgaeky .gt_right {
+#itbaiuzuqk .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#rhzilgaeky .gt_font_normal {
+#itbaiuzuqk .gt_font_normal {
   font-weight: normal;
 }
 
-#rhzilgaeky .gt_font_bold {
+#itbaiuzuqk .gt_font_bold {
   font-weight: bold;
 }
 
-#rhzilgaeky .gt_font_italic {
+#itbaiuzuqk .gt_font_italic {
   font-style: italic;
 }
 
-#rhzilgaeky .gt_super {
+#itbaiuzuqk .gt_super {
   font-size: 65%;
 }
 
-#rhzilgaeky .gt_footnote_marks {
+#itbaiuzuqk .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#rhzilgaeky .gt_asterisk {
+#itbaiuzuqk .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#rhzilgaeky .gt_indent_1 {
+#itbaiuzuqk .gt_indent_1 {
   text-indent: 5px;
 }
 
-#rhzilgaeky .gt_indent_2 {
+#itbaiuzuqk .gt_indent_2 {
   text-indent: 10px;
 }
 
-#rhzilgaeky .gt_indent_3 {
+#itbaiuzuqk .gt_indent_3 {
   text-indent: 15px;
 }
 
-#rhzilgaeky .gt_indent_4 {
+#itbaiuzuqk .gt_indent_4 {
   text-indent: 20px;
 }
 
-#rhzilgaeky .gt_indent_5 {
+#itbaiuzuqk .gt_indent_5 {
   text-indent: 25px;
 }
 
-#rhzilgaeky .katex-display {
+#itbaiuzuqk .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#rhzilgaeky div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#itbaiuzuqk div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1303,21 +1311,21 @@ N = 120<span class="gt_footnote_marks" style="white-space:nowrap;font-style:ital
 <td class="gt_row gt_center" headers="stat_3">83 (68, 121)</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="label" style="font-weight: bold">IL-1&lt;U+03B2&gt;</td>
+<td class="gt_row gt_left" headers="label" style="font-weight: bold">IL-1β</td>
 <td class="gt_row gt_center" headers="stat_0">53 (40, 72)</td>
 <td class="gt_row gt_center" headers="stat_1">75 (59, 95)</td>
 <td class="gt_row gt_center" headers="stat_2">45 (36, 58)</td>
 <td class="gt_row gt_center" headers="stat_3">45 (35, 58)</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_left" headers="label" style="font-weight: bold">INF-&lt;U+03B3&gt;</td>
+<td class="gt_row gt_left" headers="label" style="font-weight: bold">INF-γ</td>
 <td class="gt_row gt_center" headers="stat_0">50 (34, 79)</td>
 <td class="gt_row gt_center" headers="stat_1">82 (55, 111)</td>
 <td class="gt_row gt_center" headers="stat_2">49 (36, 64)</td>
 <td class="gt_row gt_center" headers="stat_3">32 (24, 40)</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_left" headers="label" style="font-weight: bold">TNF-&lt;U+03B1&gt;</td>
+<td class="gt_row gt_left" headers="label" style="font-weight: bold">TNF-α</td>
 <td class="gt_row gt_center" headers="stat_0">84 (60, 118)</td>
 <td class="gt_row gt_center" headers="stat_1">122 (91, 163)</td>
 <td class="gt_row gt_center" headers="stat_2">77 (57, 104)</td>
@@ -1434,13 +1442,49 @@ Figure&nbsp;1: Compartmental BAL fluid cytokine concentrations across diagnostic
 <dd>
 Bronchoalveolar lavage
 </dd>
+<dt><span id="acronyms_DE">DE</span></dt>
+<dd>
+Differential Expression
+</dd>
+<dt><span id="acronyms_FDR">FDR</span></dt>
+<dd>
+False Discovery Rate
+</dd>
+<dt><span id="acronyms_FPKM">FPKM</span></dt>
+<dd>
+Fragments Per Kilobase of transcript per Million mapped reads
+</dd>
+<dt><span id="acronyms_GTF">GTF</span></dt>
+<dd>
+Gene Transfer Format
+</dd>
 <dt><span id="acronyms_LTBI">LTBI</span></dt>
 <dd>
 Latent Tuberculosis Infection
 </dd>
+<dt><span id="acronyms_PCA">PCA</span></dt>
+<dd>
+Principal Component Analysis
+</dd>
+<dt><span id="acronyms_QC">QC</span></dt>
+<dd>
+Quality Control
+</dd>
+<dt><span id="acronyms_RNA">RNA</span></dt>
+<dd>
+Ribonucleic acid
+</dd>
+<dt><span id="acronyms_RNAseq">RNAseq</span></dt>
+<dd>
+RNA Sequencing
+</dd>
 <dt><span id="acronyms_TB">TB</span></dt>
 <dd>
 Tuberculosis
+</dd>
+<dt><span id="acronyms_TPM">TPM</span></dt>
+<dd>
+Transcripts Per Million
 </dd>
 <dt><span id="acronyms_TPP">TPP</span></dt>
 <dd>
@@ -1454,9 +1498,25 @@ Type 1 helper T cells
 <dd>
 World Health Organization
 </dd>
+<dt><span id="acronyms_XCI">XCI</span></dt>
+<dd>
+X-Chromosome Inactivation
+</dd>
+<dt><span id="acronyms_chrX">chrX</span></dt>
+<dd>
+Chromosome X
+</dd>
 <dt><span id="acronyms_csv">csv</span></dt>
 <dd>
 comma-separated-value
+</dd>
+<dt><span id="acronyms_lncRNA">lncRNA</span></dt>
+<dd>
+long non-coding RNA
+</dd>
+<dt><span id="acronyms_mRNA">mRNA</span></dt>
+<dd>
+messenger RNA
 </dd>
 </dl>
 </section>
@@ -1495,13 +1555,13 @@ Wickham, H., Vaughan, D. and Girlich, M., 2026. <em>Tidyr: Tidy messy data</em>.
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div>CC BY-NC-SA 4.0<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">(View License)</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{allies,
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div>CC BY-NC-SA 4.0<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">(View License)</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><div class="code-copy-outer-scaffold"><pre class="sourceCode quarto-appendix-bibtex code-with-copy"><code class="sourceCode bibtex">@online{allies,
   author = {Allies, Devon},
   title = {Compartmental {TB} {Diagnostics:} {A} {Simulated} {BAL}
     {Cytokine} Cohort},
   langid = {en}
 }
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-allies" class="csl-entry quarto-appendix-citeas" role="listitem">
+</code></pre><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-allies" class="csl-entry quarto-appendix-citeas" role="listitem">
 Allies, D., n.d. <em>Compartmental TB Diagnostics: A Simulated BAL
 Cytokine cohort</em>.
 </div></div></section></div></main> <!-- /main -->
@@ -1583,7 +1643,8 @@ Cytokine cohort</em>.
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -1592,8 +1653,69 @@ Cytokine cohort</em>.
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -1607,6 +1729,7 @@ Cytokine cohort</em>.
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -1769,44 +1892,54 @@ Cytokine cohort</em>.
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1904,6 +2037,9 @@ Cytokine cohort</em>.
       }
     }
   });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
   </script>
 </div> <!-- /content -->
 

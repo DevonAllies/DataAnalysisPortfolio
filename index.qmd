@@ -21,10 +21,11 @@ listing:
 ::: {.home-intro}
 I'm a bioinformatician with over 10 years of experience in immunology and tuberculosis research. I've worked on everything from wet-lab assay development to clinical study coordination and data pipelines.
 
-This site collects my data science work: exploratory analyses of public health data, RNA-seq differential expression, biomarker studies and end-to-end pipelines on Databricks with MLflow.
+This site is my data portfolio: exploratory analyses of public health data, RNA-seq differential expression, biomarker studies and end-to-end pipelines on Databricks with MLflow. It also has practical tutorials in R and Python, the peer-reviewed research I've contributed to, and articles I've written on reproducible science.
 
 [Browse all projects](projects.qmd){.btn .btn-primary}
 [Tutorials](tutorials.qmd){.btn .btn-outline-primary}
+[Publications & writing](publications.qmd){.btn .btn-outline-primary}
 [About me](about.qmd){.btn .btn-outline-primary}
 :::
 

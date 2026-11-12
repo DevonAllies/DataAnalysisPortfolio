@@ -6,7 +6,8 @@ project:
     - "tutorials/data/*.csv"
 
 website:
-  title: "Data Science Projects"
+  title: "Devon Allies"
+  description: "Bioinformatician and computational biologist: data portfolio, tutorials and publications."
   navbar:
     left:
       - href: index.qmd
@@ -15,6 +16,8 @@ website:
         text: Projects
       - href: tutorials.qmd
         text: Tutorials
+      - href: publications.qmd
+        text: Publications & Writing
       - href: about.qmd
         text: About Me
       
