@@ -116,7 +116,7 @@
     "href": "projects/credit-lending-pipeline/credit-risk-pipeline.html#dashboard",
     "title": "Credit Risk Pipeline on Databricks",
     "section": "Dashboard",
-    "text": "Dashboard\nThe dashboard is built in Databricks AI/BI on the gold tables and gives a credit manager a one-page view of the portfolio.\n\n\n\nPortfolio overview: applications, loans disbursed, principal lent, default rate, approval decisions and the monthly disbursement trend.\n\n\n\n\n\nLoans brought in by each marketing campaign, and default rate by province.\n\n\n\n\n\nBorrower profile by province (bureau score, income, debt-to-income, default rate) and loan volume by partner channel."
+    "text": "Dashboard\nThe dashboard is built in Databricks AI/BI on the gold tables and gives a credit manager a one-page view of the portfolio.\n\n\n\nPortfolio overview: applications, loans disbursed, principal lent, default rate, approval decisions and the monthly disbursement trend.\n\n\n\n\n\nLoans brought in by each marketing campaign.\n\n\n\n\n\nDefault rate by province.\n\n\n\n\n\nBorrower profile by province: bureau score, income, debt-to-income and default rate.\n\n\n\n\n\nLoan volume by partner channel."
   },
   {
     "objectID": "projects/credit-lending-pipeline/credit-risk-pipeline.html#what-i-learned",
@@ -340,14 +340,7 @@
     "href": "projects.html",
     "title": "Data Science Projects",
     "section": "",
-    "text": "Differential Evaluation of TB Biomarker Profiles\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\nGlobal Retractions of Scientific Publications\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nCovid 19 Dataset\n\n\n\n\n\n\nDevon Allies, BSc. Honours: Bioinformatics & Computational Biology\n\n\n\n\n\n\n\n\n\n\n\n\n\nTBTrends:\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nCompartmental TB Diagnostics: A Simulated BAL Cytokine cohort\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nDifferential Expression Analysis of Chromosome X RNA-seq Data\n\n\n\n\n\n\nDevon Allies\n\n\nNov 12, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nCredit Risk Pipeline on Databricks\n\n\nA bronze/silver/gold lakehouse pipeline on Databricks that cleans messy lending data, builds a leakage-free loan table and trains MLflow-tracked default models, with a…\n\n\n\nDevon-Lee Allies\n\n\nOct 29, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nDatabricks data pipeline: simulated BAL study\n\n\nBronze, silver and gold Delta tables, tested cleaning functions, MLflow model tracking and a Streamlit demo, built on simulated clinical data.\n\n\n\nDevon Allies\n\n\nOct 27, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe use of R & Python in data science\n\n\n\n\n\n\nDevon Allies\n\n\nFeb 8, 2026\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "index.html#recent-projects",
-    "href": "index.html#recent-projects",
-    "title": "Devon Allies",
-    "section": "Recent projects",
-    "text": "Recent projects\n\n\n\n\n\n\n\n\nDifferential Evaluation of TB Biomarker Profiles\n\n\n\n\n\n\n\n\n\n\n\n\n\nGlobal Retractions of Scientific Publications\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCovid 19 Dataset\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Global Retractions of Scientific Publications\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nCovid 19 Dataset\n\n\n\n\n\n\nDevon Allies, BSc. Honours: Bioinformatics & Computational Biology\n\n\n\n\n\n\n\n\n\n\n\n\n\nTBTrends:\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nCompartmental TB Diagnostics: A Simulated BAL Cytokine cohort\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nDifferential Expression Analysis of Chromosome X RNA-seq Data\n\n\n\n\n\n\nDevon Allies\n\n\nNov 12, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nCredit Risk Pipeline on Databricks\n\n\nA bronze/silver/gold lakehouse pipeline on Databricks that cleans messy lending data, builds a leakage-free loan table and trains MLflow-tracked default models, with a…\n\n\n\nDevon-Lee Allies\n\n\nOct 29, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nDatabricks data pipeline: simulated BAL study\n\n\nBronze, silver and gold Delta tables, tested cleaning functions, MLflow model tracking and a Streamlit demo, built on simulated clinical data.\n\n\n\nDevon Allies\n\n\nOct 27, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe use of R & Python in data science\n\n\n\n\n\n\nDevon Allies\n\n\nFeb 8, 2026\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html#what-i-work-with",

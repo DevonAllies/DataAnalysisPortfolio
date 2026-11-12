@@ -141,9 +141,13 @@ The dashboard is built in Databricks AI/BI on the gold tables and gives a credit
 
 ![Portfolio overview: applications, loans disbursed, principal lent, default rate, approval decisions and the monthly disbursement trend.](images/dashboard_overview.png)
 
-![Loans brought in by each marketing campaign, and default rate by province.](images/campaigns_and_provinces.png)
+![Loans brought in by each marketing campaign.](images/loans_by_campaign.png)
 
-![Borrower profile by province (bureau score, income, debt-to-income, default rate) and loan volume by partner channel.](images/borrower_profile_and_channels.png)
+![Default rate by province.](images/default_rate_by_province.png)
+
+![Borrower profile by province: bureau score, income, debt-to-income and default rate.](images/borrower_profile_by_province.png)
+
+![Loan volume by partner channel.](images/loans_by_channel.png)
 
 ## What I learned
 
