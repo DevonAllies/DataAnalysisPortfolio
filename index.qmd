@@ -1,5 +1,50 @@
 ---
-title: "Devon Allies - Portfolio of Data Science Projects"
+title: "Devon Allies"
+subtitle: "Bioinformatics, computational biology & data science"
+page-layout: full
+title-block-banner: true
+toc: false
+listing:
+  id: recent-projects
+  contents:
+    - projects/credit-lending-pipeline/credit-risk-pipeline.qmd
+    - projects/databricks_mlflow/bal_pipeline.qmd
+    - projects/rnaseq_analysis/rna_seq_analysis.qmd
+  type: grid
+  sort: false
+  fields: [image, title, description, categories]
+  image-height: 180px
 ---
 
-# Page under construction
+::: {.home-intro}
+I'm a bioinformatician with over 10 years of experience in immunology and tuberculosis research. I've worked on everything from wet-lab assay development to clinical study coordination and data pipelines.
+
+This site collects my data science work: exploratory analyses of public health data, RNA-seq differential expression, biomarker studies and end-to-end pipelines on Databricks with MLflow.
+
+[Browse all projects](projects.qmd){.btn .btn-primary}
+[About me](about.qmd){.btn .btn-outline-primary}
+:::
+
+## Featured projects
+
+::: {#recent-projects}
+:::
+
+## What I work with
+
+::: {.grid}
+::: {.g-col-12 .g-col-md-4}
+#### Languages & analysis
+R (tidyverse, gtsummary, Bioconductor), Python (pandas, scikit-learn, statsmodels) and SQL.
+:::
+
+::: {.g-col-12 .g-col-md-4}
+#### Pipelines & MLOps
+Databricks, PySpark, Delta Lake, MLflow and Nextflow.
+:::
+
+::: {.g-col-12 .g-col-md-4}
+#### Domain
+Tuberculosis immunology, clinical data management, genomics and transcriptomics.
+:::
+:::

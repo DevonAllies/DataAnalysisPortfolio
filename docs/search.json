@@ -88,7 +88,7 @@
     "href": "projects/credit-lending-pipeline/credit-risk-pipeline.html#architecture",
     "title": "Credit Risk Pipeline on Databricks",
     "section": "Architecture",
-    "text": "Architecture\n\n\n\n\n\nflowchart LR\n    A[Source files] --&gt; B[Bronze&lt;br/&gt;raw + lineage]\n    B --&gt; C[Silver&lt;br/&gt;cleaned and validated]\n    C --&gt; D[Gold&lt;br/&gt;model-ready tables]\n    D --&gt; E[Models&lt;br/&gt;MLflow]\n    D --&gt; F[Dashboard and&lt;br/&gt;risk report]\n    E --&gt; F\n\n\n\n\n\n\n\n\n\n\n\n\n\nLayer\nWhat happens\n\n\n\n\nBronze\nSource files loaded as-is, with lineage columns recording the source file, sheet and ingestion time\n\n\nSilver\nIDs standardised, money, numbers and dates parsed, categories mapped, out-of-range values nulled, duplicates removed, quality checks enforced\n\n\nGold\nOne row per loan with application-time features and a default label, plus campaign attribution and efficiency tables\n\n\nModel\nTime-based train/test split, two models compared, metrics and models logged to MLflow\n\n\n\nOne notebook, 00_run_all, runs every stage in order and prints a summary of the gold table and the latest model results."
+    "text": "Architecture\n\n\n\n\n\n\nflowchart LR\n    A[Source files] --&gt; B[Bronze&lt;br/&gt;raw + lineage]\n    B --&gt; C[Silver&lt;br/&gt;cleaned and validated]\n    C --&gt; D[Gold&lt;br/&gt;model-ready tables]\n    D --&gt; E[Models&lt;br/&gt;MLflow]\n    D --&gt; F[Dashboard and&lt;br/&gt;risk report]\n    E --&gt; F\n\n\n\n\n\n\n\n\n\n\n\n\n\nLayer\nWhat happens\n\n\n\n\nBronze\nSource files loaded as-is, with lineage columns recording the source file, sheet and ingestion time\n\n\nSilver\nIDs standardised, money, numbers and dates parsed, categories mapped, out-of-range values nulled, duplicates removed, quality checks enforced\n\n\nGold\nOne row per loan with application-time features and a default label, plus campaign attribution and efficiency tables\n\n\nModel\nTime-based train/test split, two models compared, metrics and models logged to MLflow\n\n\n\nOne notebook, 00_run_all, runs every stage in order and prints a summary of the gold table and the latest model results."
   },
   {
     "objectID": "projects/credit-lending-pipeline/credit-risk-pipeline.html#cleaning-messy-data",
@@ -135,9 +135,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Devon Allies - Portfolio of Data Science Projects",
+    "title": "Devon Allies",
     "section": "",
-    "text": "Page under construction"
+    "text": "I’m a bioinformatician with over 10 years of experience in immunology and tuberculosis research. I’ve worked on everything from wet-lab assay development to clinical study coordination and data pipelines.\nThis site collects my data science work: exploratory analyses of public health data, RNA-seq differential expression, biomarker studies and end-to-end pipelines on Databricks with MLflow.\nBrowse all projects About me"
   },
   {
     "objectID": "about.html",
@@ -340,6 +340,27 @@
     "href": "projects.html",
     "title": "Data Science Projects",
     "section": "",
-    "text": "Covid 19 Dataset\n\n\n\n\n\n\nDevon Allies, BSc. Honours: Bioinformatics & Computational Biology\n\n\n\n\n\n\n\n\n\n\n\nDifferential Evaluation of TB Biomarker Profiles\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\nGlobal Retractions of Scientific Publications\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTBTrends:\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nCompartmental TB Diagnostics: A Simulated BAL Cytokine cohort\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nCredit Risk Pipeline on Databricks\n\n\nA bronze/silver/gold lakehouse pipeline on Databricks that cleans messy lending data, builds a leakage-free loan table and trains MLflow-tracked default models, with a…\n\n\n\nDevon-Lee Allies\n\n\nOct 29, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nDifferential Expression Analysis of Chromosome X RNA-seq Data\n\n\n\n\n\n\nDevon Allies\n\n\nOct 29, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nDatabricks data pipeline: simulated BAL study\n\n\nBronze, silver and gold Delta tables, tested cleaning functions, MLflow model tracking and a Streamlit demo, built on simulated clinical data.\n\n\n\nDevon Allies\n\n\nOct 27, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe use of R & Python in data science\n\n\n\n\n\n\nDevon Allies\n\n\nFeb 8, 2026\n\n\n\n\n\n\nNo matching items"
+    "text": "Differential Evaluation of TB Biomarker Profiles\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\nGlobal Retractions of Scientific Publications\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nCovid 19 Dataset\n\n\n\n\n\n\nDevon Allies, BSc. Honours: Bioinformatics & Computational Biology\n\n\n\n\n\n\n\n\n\n\n\n\n\nTBTrends:\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nCompartmental TB Diagnostics: A Simulated BAL Cytokine cohort\n\n\n\n\n\n\nDevon Allies\n\n\n\n\n\n\n\n\n\n\n\n\n\nDifferential Expression Analysis of Chromosome X RNA-seq Data\n\n\n\n\n\n\nDevon Allies\n\n\nNov 12, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nCredit Risk Pipeline on Databricks\n\n\nA bronze/silver/gold lakehouse pipeline on Databricks that cleans messy lending data, builds a leakage-free loan table and trains MLflow-tracked default models, with a…\n\n\n\nDevon-Lee Allies\n\n\nOct 29, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nDatabricks data pipeline: simulated BAL study\n\n\nBronze, silver and gold Delta tables, tested cleaning functions, MLflow model tracking and a Streamlit demo, built on simulated clinical data.\n\n\n\nDevon Allies\n\n\nOct 27, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe use of R & Python in data science\n\n\n\n\n\n\nDevon Allies\n\n\nFeb 8, 2026\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html#recent-projects",
+    "href": "index.html#recent-projects",
+    "title": "Devon Allies",
+    "section": "Recent projects",
+    "text": "Recent projects\n\n\n\n\n\n\n\n\nDifferential Evaluation of TB Biomarker Profiles\n\n\n\n\n\n\n\n\n\n\n\n\n\nGlobal Retractions of Scientific Publications\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCovid 19 Dataset\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html#what-i-work-with",
+    "href": "index.html#what-i-work-with",
+    "title": "Devon Allies",
+    "section": "What I work with",
+    "text": "What I work with\n\n\nLanguages & analysis\nR (tidyverse, gtsummary, Bioconductor), Python (pandas, scikit-learn, statsmodels) and SQL.\n\n\nPipelines & MLOps\nDatabricks, PySpark, Delta Lake, MLflow and Nextflow.\n\n\nDomain\nTuberculosis immunology, clinical data management, genomics and transcriptomics."
+  },
+  {
+    "objectID": "index.html#featured-projects",
+    "href": "index.html#featured-projects",
+    "title": "Devon Allies",
+    "section": "Featured projects",
+    "text": "Featured projects\n\n\n\n\n\n\n\n\n\n\nCredit Risk Pipeline on Databricks\n\n\n\nDatabricks\n\nPySpark\n\nMLflow\n\nCredit Risk\n\nMachine Learning\n\nData Engineering\n\n\n\nA bronze/silver/gold lakehouse pipeline on Databricks that cleans messy lending data, builds a leakage-free loan table and trains MLflow-tracked default models, with a…\n\n\n\n\n\n\n\n\n\n\n\n\nDatabricks data pipeline: simulated BAL study\n\n\n\nDatabricks\n\nPySpark\n\nMLflow\n\nPython\n\n\n\nBronze, silver and gold Delta tables, tested cleaning functions, MLflow model tracking and a Streamlit demo, built on simulated clinical data.\n\n\n\n\n\n\n\n\n\n\n\n\nDifferential Expression Analysis of Chromosome X RNA-seq Data\n\n\n\n\n\n\n\n\nNo matching items"
   }
 ]

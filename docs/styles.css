@@ -1,1 +1,12 @@
 /* css styles */
+
+.home-intro {
+  max-width: 48rem;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.home-intro .btn {
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
+}

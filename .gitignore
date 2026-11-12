@@ -16,3 +16,7 @@ data/
 *.bam
 *.fastq
 *.gz
+
+# Python (uv)
+.venv/
+__pycache__/

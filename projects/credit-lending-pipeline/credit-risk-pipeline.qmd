@@ -5,7 +5,7 @@ author: "Devon-Lee Allies"
 date: "2026-10-29"
 description: "A bronze/silver/gold lakehouse pipeline on Databricks that cleans messy lending data, builds a leakage-free loan table and trains MLflow-tracked default models, with a portfolio risk dashboard."
 categories: [Databricks, PySpark, MLflow, Credit Risk, Machine Learning, Data Engineering]
-image: images/dashboard_overview.png
+image: images/thumbnail.png
 format:
   html:
     toc: true
