@@ -61,6 +61,62 @@
   color: var(--bs-secondary-color, #495057);
 }
 
+/* About page: education timeline */
+.edu-list {
+  text-align: left;
+  border-left: 3px solid var(--bs-primary, #2780e3);
+  margin: 1rem 0 2rem 0.5rem;
+  padding-left: 1.25rem;
+}
+
+.edu-item {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+/* dot on the timeline line */
+.edu-item::before {
+  content: "";
+  position: absolute;
+  left: calc(-1.25rem - 8px);
+  top: 0.35rem;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--bs-body-bg, #fff);
+  border: 3px solid var(--bs-primary, #2780e3);
+}
+
+.edu-item p {
+  margin-bottom: 0.15rem;
+}
+
+.edu-years {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--bs-primary, #2780e3);
+}
+
+.edu-title {
+  display: block;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.edu-title .bi {
+  color: var(--bs-primary, #2780e3);
+  margin-right: 0.35rem;
+}
+
+.cert-list {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.cert-list li {
+  margin-bottom: 0.3rem;
+}
+
 /* About page: skill cards */
 .skills-grid {
   margin-top: 1rem;

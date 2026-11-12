@@ -31,6 +31,57 @@ Key Highlights:
 
 I’m passionate about integrating bioinformatics and computational biology to drive scientific innovation and improve healthcare outcomes. Let’s connect!
 
+## Education
+
+::: {.edu-list}
+
+::: {.edu-item}
+[2025 – 2027 (expected)]{.edu-years}
+
+[<i class="bi bi-mortarboard"></i> MSc Computational Biology]{.edu-title}
+
+Stellenbosch University
+
+[Research focus: cytokine phenotyping and pQTL mapping in tuberculosis cohorts]{.skill-detail}
+:::
+
+::: {.edu-item}
+[2024]{.edu-years}
+
+[<i class="bi bi-mortarboard"></i> BSc Honours, Bioinformatics & Computational Biology]{.edu-title}
+
+Stellenbosch University
+:::
+
+::: {.edu-item}
+[2012]{.edu-years}
+
+[<i class="bi bi-patch-check"></i> Immunology Board Exam]{.edu-title}
+
+Health Professions Council of South Africa (HPCSA)
+
+[Professional licensing exam for medical technologists, passed with 81% (A+)]{.skill-detail}
+:::
+
+::: {.edu-item}
+[2006 – 2010]{.edu-years}
+
+[<i class="bi bi-mortarboard"></i> Higher National Diploma, Biomedical Technology]{.edu-title}
+
+Cape Peninsula University of Technology
+:::
+
+:::
+
+### Certifications
+
+::: {.cert-list}
+- **Databricks** (2026): Fundamentals Accreditation; AI/BI for Data Analysts; SQL Analytics on Databricks
+- **365 Data Science** (2026): Data Scientist and Data Analyst career tracks
+- **Coursera** (2024): Google Project Management Specialization; Data Analyst with R
+- **FutureLearn** (2024): Bioinformatics for Biologists, including Analysing and Interpreting Genomics Datasets
+:::
+
 ## Skills
 
 ::: {.grid .skills-grid}
