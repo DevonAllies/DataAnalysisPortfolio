@@ -17,14 +17,25 @@ about:
       href: mailto:alliesdl@gmail.com
 ---
 
-With over 10 years of experience in immunology, bioinformatics, and computational biology, I specialise in tuberculosis research, clinical study coordination, and data-driven bioinformatics solutions.
+I'm a bioinformatician and computational biologist with over 10 years of experience in immunology and tuberculosis research. I specialise in clinical genomics and building the data pipelines that turn raw biological data into publication-ready results.
 
-As a Project Coordinator at the Division of Molecular Biology and Human Genetics, I manage clinical research projects, streamline operations, and enhance data integrity while ensuring seamless stakeholder collaboration.
+In my current role as a Data Analyst at the Division of Molecular Biology and Human Genetics, Stellenbosch University, I work with whole genome sequencing data and clinical metadata on HPC clusters and Databricks. I'm also completing an MSc in Computational Biology at Stellenbosch University, focusing on cytokine phenotyping and pQTL mapping in tuberculosis cohorts.
+
+I started my career at the bench, processing clinical samples and running flow cytometry for TB immunology trials, and later coordinated multi-site clinical research studies. That means I understand the data because I was there when it was created.
 
 Key Highlights:
-- Contributed to peer-reviewed research published in PubMed, BMC Infectious Diseases, with 62+ citations in the past five years.
-- Developed an automated dashboard to improve data logging and retrieval for clinical studies.
-- Expertise in flow cytometry, PBMC isolation, and immunological assay development in ISO-accredited labs.
-- Skilled in Python, R, Power BI, SQL, Nextflow, and clinical data management.
+- Contributed to peer-reviewed TB diagnostics and vaccine immunogenicity research cited 60+ times.
+- Built Nextflow pipelines for WGS and RNA-seq, and medallion-architecture pipelines on Databricks with MLflow.
+- Developed an automated data-logging dashboard for clinical trial field operations.
+- 7+ years in ISO-accredited laboratories with flow cytometry, PBMC processing, and assay validation.
 
 I’m passionate about integrating bioinformatics and computational biology to drive scientific innovation and improve healthcare outcomes. Let’s connect!
+
+## Skills
+
+- **Languages:** Python (pandas, NumPy, scikit-learn), R (tidyverse, ggplot2, gtsummary), SQL, Bash
+- **Bioinformatics:** Nextflow DSL2, GATK, BWA-MEM2, samtools, HISAT2, StringTie, Ballgown; WGS and RNA-seq
+- **Data engineering:** Databricks (PySpark, Delta Lake, MLflow), HPC / PBS, Docker / Singularity, Git
+- **Statistics & ML:** regression, PCA, random forest, cross-validation, SHAP, ROC/AUC
+- **Reporting & BI:** Quarto, RMarkdown, Power BI, Tableau, Databricks AI/BI
+- **Laboratory & clinical:** flow cytometry (FACSCantoII, FlowJo), PBMC processing, ISO-accredited QA, clinical trial coordination

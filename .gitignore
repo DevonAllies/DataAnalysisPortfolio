@@ -20,3 +20,6 @@ data/
 # Python (uv)
 .venv/
 __pycache__/
+
+# Personal source docs (resumes, LinkedIn export) - keep local
+linkedin/
