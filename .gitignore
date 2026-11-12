@@ -27,3 +27,5 @@ linkedin/
 # Small simulated dataset used by the tutorials (published on purpose)
 !tutorials/data/
 !tutorials/data/*.csv
+!docs/tutorials/data/
+!docs/tutorials/data/*.csv
