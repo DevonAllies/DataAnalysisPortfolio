@@ -38,64 +38,16 @@ I’m passionate about integrating bioinformatics and computational biology to d
 
 ## My journey
 
-From the diagnostic lab to data pipelines: each step built on the last. The project pages show how my work has grown, and the older ones include a short "Looking back" note on what I'd do differently today.
+From the diagnostic lab to data pipelines, most recent first: each step built on the one below it. The project pages show how my work has grown, and the older ones include a short "Looking back" note on what I'd do differently today.
 
 ::: {.edu-list .journey-list}
 
 ::: {.edu-item}
-[2010 – 2015]{.edu-years}
+[November 2026]{.edu-years}
 
-[<i class="bi bi-eyedropper"></i> Diagnostic and quality laboratories]{.edu-title}
+[<i class="bi bi-mortarboard"></i> Teaching]{.edu-title}
 
-Medical technologist training at the NHLS (Tygerberg Hospital), immunoassay development at Synexa Life Sciences, and quality control at Biovac
-:::
-
-::: {.edu-item}
-[2016 – 2023]{.edu-years}
-
-[<i class="bi bi-virus"></i> TB immunology research]{.edu-title}
-
-Technical Laboratory Officer at Stellenbosch University: clinical sample processing and flow cytometry for TB and vaccine studies
-:::
-
-::: {.edu-item}
-[2023 – 2025]{.edu-years}
-
-[<i class="bi bi-people"></i> Clinical research coordination]{.edu-title}
-
-Project Coordinator for multiple concurrent clinical research studies
-:::
-
-::: {.edu-item}
-[2024]{.edu-years}
-
-[<i class="bi bi-diagram-3"></i> Into bioinformatics]{.edu-title}
-
-BSc Honours: a [whole-genome variant-calling pipeline](projects/wgs-variant-calling-pipeline/index.qmd) in Nextflow and GATK on an HPC cluster
-:::
-
-::: {.edu-item}
-[February 2026]{.edu-years}
-
-[<i class="bi bi-bar-chart-line"></i> First portfolio analyses]{.edu-title}
-
-Exploratory analysis in Python and R: [COVID-19 blood counts](projects/covid19-blood-counts/index.qmd), [global TB trends](projects/tb-global-trends/index.qmd) and [R and Python together](projects/r-python-workflow/index.qmd)
-:::
-
-::: {.edu-item}
-[May 2026]{.edu-years}
-
-[<i class="bi bi-diagram-3"></i> Transcriptomics]{.edu-title}
-
-[Chromosome X RNA-seq](projects/chrx-rnaseq/index.qmd): a Nextflow pipeline feeding differential expression in Bioconductor
-:::
-
-::: {.edu-item}
-[July 2026]{.edu-years}
-
-[<i class="bi bi-database-check"></i> Data Analyst]{.edu-title}
-
-Data Analyst at Stellenbosch University, alongside my MSc in Computational Biology
+A [tutorial series](tutorials.qmd) in R and Python, built on one simulated TB dataset
 :::
 
 ::: {.edu-item}
@@ -107,11 +59,59 @@ Databricks lakehouse pipelines with MLflow: the [credit risk pipeline](projects/
 :::
 
 ::: {.edu-item}
-[November 2026]{.edu-years}
+[July 2026]{.edu-years}
 
-[<i class="bi bi-mortarboard"></i> Teaching]{.edu-title}
+[<i class="bi bi-database-check"></i> Data Analyst]{.edu-title}
 
-A [tutorial series](tutorials.qmd) in R and Python, built on one simulated TB dataset
+Data Analyst at Stellenbosch University, alongside my MSc in Computational Biology
+:::
+
+::: {.edu-item}
+[May 2026]{.edu-years}
+
+[<i class="bi bi-diagram-3"></i> Transcriptomics]{.edu-title}
+
+[Chromosome X RNA-seq](projects/chrx-rnaseq/index.qmd): a Nextflow pipeline feeding differential expression in Bioconductor
+:::
+
+::: {.edu-item}
+[February 2026]{.edu-years}
+
+[<i class="bi bi-bar-chart-line"></i> First portfolio analyses]{.edu-title}
+
+Exploratory analysis in Python and R: [COVID-19 blood counts](projects/covid19-blood-counts/index.qmd), [global TB trends](projects/tb-global-trends/index.qmd) and [R and Python together](projects/r-python-workflow/index.qmd)
+:::
+
+::: {.edu-item}
+[2024]{.edu-years}
+
+[<i class="bi bi-diagram-3"></i> Into bioinformatics]{.edu-title}
+
+BSc Honours: a [whole-genome variant-calling pipeline](projects/wgs-variant-calling-pipeline/index.qmd) in Nextflow and GATK on an HPC cluster
+:::
+
+::: {.edu-item}
+[2023 – 2025]{.edu-years}
+
+[<i class="bi bi-people"></i> Clinical research coordination]{.edu-title}
+
+Project Coordinator for multiple concurrent clinical research studies
+:::
+
+::: {.edu-item}
+[2016 – 2023]{.edu-years}
+
+[<i class="bi bi-virus"></i> TB immunology research]{.edu-title}
+
+Technical Laboratory Officer at Stellenbosch University: clinical sample processing and flow cytometry for TB and vaccine studies
+:::
+
+::: {.edu-item}
+[2010 – 2015]{.edu-years}
+
+[<i class="bi bi-eyedropper"></i> Diagnostic and quality laboratories]{.edu-title}
+
+Medical technologist training at the NHLS (Tygerberg Hospital), immunoassay development at Synexa Life Sciences, and quality control at Biovac
 :::
 
 :::
