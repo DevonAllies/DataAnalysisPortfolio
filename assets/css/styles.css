@@ -11,6 +11,85 @@
   margin-top: 0.5rem;
 }
 
+/* Home page: "at a glance" numbers */
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  max-width: 960px;
+  margin: 0.5rem 0 2.5rem 0;
+}
+
+@media (max-width: 767.98px) {
+  .stats-strip { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat {
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-top: 3px solid var(--bs-primary, #2780e3);
+  border-radius: 0.5rem;
+  padding: 0.9rem 1rem;
+  text-align: center;
+}
+
+.stat p { margin: 0; }
+
+.stat-number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--bs-primary, #2780e3);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--bs-secondary-color, #6c757d);
+}
+
+/* Home page: "Latest" cards */
+.latest-grid { margin-bottom: 2rem; }
+
+.latest-card {
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+}
+
+.latest-card p { margin-bottom: 0.4rem; }
+
+.latest-kind {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--bs-primary, #2780e3);
+}
+
+.latest-kind .bi { margin-right: 0.3rem; }
+
+.latest-title {
+  display: block;
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.latest-meta {
+  font-size: 0.85rem;
+  color: var(--bs-secondary-color, #6c757d);
+}
+
+/* Home page: "Get in touch" */
+.contact-strip { margin-bottom: 2rem; }
+
+.contact-strip .btn {
+  margin: 0.25rem 0.4rem 0.25rem 0;
+}
+
+.contact-strip .bi { margin-right: 0.3rem; }
+
 /* Publications page */
 .pub-intro {
   margin-bottom: 1.5rem;

@@ -9,6 +9,11 @@ include-in-header:                 # Google Search Console ownership check
 page-layout: full
 title-block-banner: true
 toc: false
+engine: knitr
+execute:
+  echo: false
+  warning: false
+  message: false
 listing:
   id: recent-projects
   contents:
@@ -23,15 +28,62 @@ listing:
   image-height: 180px
 ---
 
+```{r}
+#| label: site-data
+# Everything below is computed from the site's own content, so the numbers
+# and "Latest" cards stay current as projects, tutorials and papers are added.
+library(jsonlite)
+pubs <- fromJSON(here::here("_data", "publications.json"), simplifyVector = FALSE)
+
+n_papers   <- length(pubs$publications)
+n_cites    <- sum(vapply(pubs$publications, \(p) if (is.null(p$cited_by)) 0 else p$cited_by, numeric(1)))
+n_projects <- length(Sys.glob(here::here("projects", "*", "index.qmd")))
+cites_label <- if (n_cites >= 10) paste0(floor(n_cites / 10) * 10, "+") else as.character(n_cites)
+
+# Newest tutorial (highest `order`)
+tut_files <- list.files(here::here("tutorials"), pattern = "\\.qmd$", recursive = TRUE, full.names = TRUE)
+tuts <- lapply(tut_files, \(f) c(rmarkdown::yaml_front_matter(f), path = f))
+latest_tut <- tuts[[which.max(vapply(tuts, \(t) as.numeric(t$order), numeric(1)))]]
+latest_tut$href <- sub(paste0("^", here::here(), "/"), "", latest_tut$path)
+
+latest_article <- pubs$articles[[1]]          # sorted newest first by the fetch script
+latest_paper   <- pubs$publications[[1]]      # sorted newest first by the fetch script
+
+shorten <- function(x, n = 22) {
+  w <- strsplit(x, "\\s+")[[1]]
+  if (length(w) > n) paste0(paste(head(w, n), collapse = " "), "…") else x
+}
+```
+
 ::: {.home-intro}
-I'm a bioinformatician with over 10 years of experience in immunology and tuberculosis research. I've worked on everything from wet-lab assay development to clinical study coordination and data pipelines.
+I'm a bioinformatician and computational biologist with over 10 years in tuberculosis research. I started at the lab bench, processing clinical samples and running flow cytometry, went on to coordinate multi-site clinical studies, and now build the pipelines and analyses that turn genomic and clinical data into results. I'm currently a Data Analyst at Stellenbosch University and completing an MSc in Computational Biology.
 
-This site is my data portfolio: exploratory analyses of public health data, RNA-seq differential expression, biomarker studies and end-to-end pipelines on Databricks with MLflow. It also has practical tutorials in R and Python, the peer-reviewed research I've contributed to, and articles I've written on reproducible science.
-
-[Browse all projects](projects.qmd){.btn .btn-primary}
-[Tutorials](tutorials.qmd){.btn .btn-outline-primary}
-[Publications & writing](publications.qmd){.btn .btn-outline-primary}
+[View projects](projects.qmd){.btn .btn-primary}
 [About me](about.qmd){.btn .btn-outline-primary}
+:::
+
+::: {.stats-strip}
+
+::: {.stat}
+[10+]{.stat-number}
+[years in TB research]{.stat-label}
+:::
+
+::: {.stat}
+[`r n_papers`]{.stat-number}
+[peer-reviewed papers]{.stat-label}
+:::
+
+::: {.stat}
+[`r cites_label`]{.stat-number}
+[citations]{.stat-label}
+:::
+
+::: {.stat}
+[`r n_projects`]{.stat-number}
+[portfolio projects]{.stat-label}
+:::
+
 :::
 
 ## Featured projects
@@ -39,21 +91,41 @@ This site is my data portfolio: exploratory analyses of public health data, RNA-
 ::: {#recent-projects}
 :::
 
-## What I work with
+## Latest
 
-::: {.grid}
-::: {.g-col-12 .g-col-md-4}
-#### Languages & analysis
-R (tidyverse, gtsummary, Bioconductor), Python (pandas, scikit-learn, statsmodels) and SQL.
-:::
+```{r}
+#| label: latest
+#| output: asis
+card <- function(kind, icon, title, href, meta, text) {
+  cat(
+    "::: {.g-col-12 .g-col-md-4 .latest-card}\n",
+    sprintf('[<i class="bi %s"></i> %s]{.latest-kind}\n\n', icon, kind),
+    sprintf("[[%s](%s)]{.latest-title}\n\n", title, href),
+    sprintf("[%s]{.latest-meta}\n\n", meta),
+    sprintf("%s\n", text),
+    ":::\n\n", sep = ""
+  )
+}
+cat("::: {.grid .latest-grid}\n\n")
+card("Tutorial", "bi-mortarboard", latest_tut$title, latest_tut$href,
+     sprintf("Tutorial %s", latest_tut$order), shorten(latest_tut$description))
+card("Article", "bi-pencil-square", latest_article$title, latest_article$url,
+     sprintf("Medium · %s", format(as.Date(latest_article$date), "%d %B %Y")),
+     shorten(latest_article$excerpt))
+card("Paper", "bi-journal-text", latest_paper$title,
+     if (!is.null(latest_paper$doi)) paste0("https://doi.org/", latest_paper$doi) else "publications.qmd",
+     sprintf("*%s* · %s", latest_paper$journal, latest_paper$year),
+     sprintf("Co-authored, cited %s times. [All publications →](publications.qmd)", latest_paper$cited_by))
+cat(":::\n")
+```
 
-::: {.g-col-12 .g-col-md-4}
-#### Pipelines & MLOps
-Databricks, PySpark, Delta Lake, MLflow and Nextflow.
-:::
+## Get in touch
 
-::: {.g-col-12 .g-col-md-4}
-#### Domain
-Tuberculosis immunology, clinical data management, genomics and transcriptomics.
-:::
+::: {.contact-strip}
+I'm always happy to talk about bioinformatics, data science and TB research.
+
+[<i class="bi bi-linkedin"></i> LinkedIn](https://www.linkedin.com/in/devonallies/){.btn .btn-outline-primary}
+[<i class="bi bi-github"></i> GitHub](https://github.com/DevonAllies){.btn .btn-outline-primary}
+[<i class="bi bi-envelope"></i> Email](mailto:alliesdl@gmail.com){.btn .btn-outline-primary}
+[<i class="bi bi-discord"></i> Discord](https://discord.com/users/492592734805164044){.btn .btn-outline-primary}
 :::
