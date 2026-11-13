@@ -8,7 +8,7 @@
 
 <meta name="description" content="Practical R and Python tutorials using a simulated TB study dataset, from importing data in RStudio to working with the same data in pandas.">
 
-<title>Data Science Tutorials – Devon Allies</title>
+<title>Tutorials – Devon Allies</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -80,20 +80,20 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    const listingTargetEl = window.document.querySelector('#listing-tutorial-series .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
     }
 
     const options = {
-      valueNames: ['listing-image','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-title','listing-subtitle','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
+      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+    window['quarto-listings']['listing-tutorial-series'] = new List('listing-tutorial-series', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -132,15 +132,15 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="assets/css/styles.css">
-<meta property="og:title" content="Data Science Tutorials – Devon Allies">
+<meta property="og:title" content="Tutorials – Devon Allies">
 <meta property="og:description" content="Practical R and Python tutorials using a simulated TB study dataset, from importing data in RStudio to working with the same data in pandas.">
-<meta property="og:image" content="https://devonallies.github.io/DataAnalysisPortfolio/assets/images/me.jpeg">
+<meta property="og:image" content="https://devonallies.github.io/DataAnalysisPortfolio/tutorials/images/tutorial-series.jpg">
 <meta property="og:site_name" content="Devon Allies">
-<meta property="og:image:height" content="800">
-<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="768">
+<meta property="og:image:width" content="1376">
 </head>
 
-<body class="nav-fixed hide-description quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+<body class="nav-fixed hide-description fullcontent quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -188,16 +188,14 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content" tabindex="-1">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data Science Tutorials</h1>
-<p class="subtitle lead">Short, practical guides using a simulated TB research dataset</p>
+<h1 class="title">Tutorials</h1>
+<p class="subtitle lead">A hands-on series on one simulated TB study, from importing data to machine learning, in R and Python</p>
 </div>
 
 <div>
@@ -219,69 +217,89 @@ window.Quarto = {
 </header>
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="list grid quarto-listing-cols-2">
-<div class="g-col-1" data-index="0" data-categories="VHV0b3JpYWwlMkNSJTJDcmVhZHIlMkNyZWFkeGwlMkNEYXRhJTIwaW1wb3J0" data-listing-date-sort="1794434400000" data-listing-file-modified-sort="1794488387090" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1417">
-<a href="./tutorials/01-import-data-in-r/import-data-in-r.html" class="quarto-grid-link no-external-icon">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img loading='lazy' src="tutorials/01-import-data-in-r/import-data-in-r_files/figure-html/fig-age-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Importing data into RStudio with R
-</h5>
+<p><img src="tutorials/images/tutorial-series.jpg" class="series-banner img-fluid" alt="Illustration of CSV files flowing into an R cube and across to a Python cube"></p>
+<section id="about-the-series" class="level4 series-about">
+<h4 class="anchored" data-anchor-id="about-the-series"><i class="bi bi-info-circle"></i> About the series</h4>
+<p><strong>The dataset:</strong> 500 fictional participants from a simulated bronchoalveolar lavage (BAL) study, with participant metadata and cell counts for each study visit. The raw files are deliberately messy, like real study data. No row describes a real person.</p>
+<p><a href="tutorials/data/bal_metadata.xlsx" class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i> bal_metadata.xlsx</a> <a href="tutorials/data/bal_cell_counts.xlsx" class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i> bal_cell_counts.xlsx</a> <a href="tutorials/data/bal_baseline.csv" class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i> bal_baseline.csv</a></p>
+<p><strong>You’ll need:</strong> R and RStudio for every tutorial, plus Python from Tutorial 2 onwards. Work through them in order: each one builds on the last.</p>
+</section>
+<div id="listing-tutorial-series" class="quarto-listing quarto-listing-container-default">
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="UiUyQ0RhdGElMjBpbXBvcnQ=" data-listing-date-sort="1794434400000" data-listing-file-modified-sort="1794560381360" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1417">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./tutorials/01-import-data-in-r/import-data-in-r.html" class="no-external-icon">Importing data into RStudio with R</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./tutorials/01-import-data-in-r/import-data-in-r.html" class="no-external-icon">Tutorial 1: CSV and Excel files, multiple sheets, and checking what you loaded</a>
+</div>
 <div class="listing-categories">
 
-<div class="listing-category" onclick="window.quartoListingCategory('VHV0b3JpYWw='); return false;">Tutorial</div>
-
 <div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cmVhZHI='); return false;">readr</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cmVhZHhs'); return false;">readxl</div>
 
 <div class="listing-category" onclick="window.quartoListingCategory('RGF0YSUyMGltcG9ydA=='); return false;">Data import</div>
 
 </div>
-<div class="card-text listing-description">
+<div class="listing-description">
+<a href="./tutorials/01-import-data-in-r/import-data-in-r.html" class="no-external-icon">
 <p>Load CSV and Excel files into R with readr and readxl, combine one sheet per study visit into a single table, and check the import before you analyse anything.</p>
+</a>
 </div>
 </div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="VHV0b3JpYWwlMkNSJTJDUHl0aG9uJTJDcmV0aWN1bGF0ZSUyQ3BhbmRhcw==" data-listing-date-sort="1794434400000" data-listing-file-modified-sort="1794551192228" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1125">
-<a href="./tutorials/02-r-and-python/r-and-python-dataframes.html" class="quarto-grid-link no-external-icon">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top"><img loading='lazy' src="tutorials/02-r-and-python/r-and-python-dataframes_files/figure-html/fig-lymphocytes-1.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Using one dataset in both R and Python
-</h5>
-<div class="listing-categories">
+<div class="metadata">
 
-<div class="listing-category" onclick="window.quartoListingCategory('VHV0b3JpYWw='); return false;">Tutorial</div>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="UiUyQ1B5dGhvbiUyQ0ludGVyb3BlcmFiaWxpdHk=" data-listing-date-sort="1794434400000" data-listing-file-modified-sort="1794560381360" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1125">
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./tutorials/02-r-and-python/r-and-python-dataframes.html" class="no-external-icon">Using one dataset in both R and Python</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./tutorials/02-r-and-python/r-and-python-dataframes.html" class="no-external-icon">Tutorial 2: pass an R data frame to pandas and back with reticulate</a>
+</div>
+<div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
 
 <div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
 
-<div class="listing-category" onclick="window.quartoListingCategory('cmV0aWN1bGF0ZQ=='); return false;">reticulate</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cGFuZGFz'); return false;">pandas</div>
+<div class="listing-category" onclick="window.quartoListingCategory('SW50ZXJvcGVyYWJpbGl0eQ=='); return false;">Interoperability</div>
 
 </div>
-<div class="card-text listing-description">
-<p>Use reticulate to turn an R data frame into a pandas DataFrame and back, so R and Python can work on the same data in one document, and learn what changes when the data…</p>
+<div class="listing-description">
+<a href="./tutorials/02-r-and-python/r-and-python-dataframes.html" class="no-external-icon">
+<p>Use reticulate to turn an R data frame into a pandas DataFrame and back, so R and Python can work on the same data in one document, and learn what changes when the data crosses over.</p>
+</a>
 </div>
 </div>
-</div></a>
+<div class="metadata">
+
+</div>
 </div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</div>
+<section id="coming-next" class="level2">
+<h2 class="anchored" data-anchor-id="coming-next">Coming next</h2>
+<div class="series-upcoming">
+<div class="upcoming-item">
+<p><span class="upcoming-number">3</span> <span class="upcoming-text"><strong>Cleaning the data</strong>: fixing inconsistent categories, duplicates and missing values</span></p>
+</div>
+<div class="upcoming-item">
+<p><span class="upcoming-number">4</span> <span class="upcoming-text"><strong>Statistics</strong>: comparing groups and testing associations</span></p>
+</div>
+<div class="upcoming-item">
+<p><span class="upcoming-number">5</span> <span class="upcoming-text"><strong>Machine learning</strong>: building and evaluating a predictive model in Python</span></p>
+</div>
+</div>
+
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

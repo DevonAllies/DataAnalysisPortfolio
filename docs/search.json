@@ -579,5 +579,12 @@
     "title": "A Nextflow Pipeline for Whole-Genome Variant Calling",
     "section": "The code",
     "text": "The code\nThe pipeline code is on GitHub as it was used for the project, with cluster-specific paths and the project code replaced by placeholders. No sample sheet or data is included. Its README lists how to run it and the known issues in this snapshot."
+  },
+  {
+    "objectID": "tutorials.html#coming-next",
+    "href": "tutorials.html#coming-next",
+    "title": "Tutorials",
+    "section": "Coming next",
+    "text": "Coming next\n\n\n3 Cleaning the data: fixing inconsistent categories, duplicates and missing values\n\n\n4 Statistics: comparing groups and testing associations\n\n\n5 Machine learning: building and evaluating a predictive model in Python"
   }
 ]

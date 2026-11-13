@@ -1,12 +1,50 @@
 ---
-title: "Data Science Tutorials"
-subtitle: "Short, practical guides using a simulated TB research dataset"
+title: "Tutorials"
+subtitle: "A hands-on series on one simulated TB study, from importing data to machine learning, in R and Python"
 description: "Practical R and Python tutorials using a simulated TB study dataset, from importing data in RStudio to working with the same data in pandas."
 body-classes: hide-description   # description is for search/link previews only
+image: tutorials/images/tutorial-series.jpg   # link-preview image
+toc: false
 listing:
+  id: tutorial-series
   contents: tutorials
-  type: grid
+  type: default
   sort: "order"
-  fields: [image, title, description, categories]
-  grid-columns: 2
+  fields: [title, subtitle, description, categories]
 ---
+
+![](tutorials/images/tutorial-series.jpg){.series-banner fig-alt="Illustration of CSV files flowing into an R cube and across to a Python cube"}
+
+::: {.series-about}
+#### <i class="bi bi-info-circle"></i> About the series
+
+**The dataset:** 500 fictional participants from a simulated bronchoalveolar lavage (BAL) study, with participant metadata and cell counts for each study visit. The raw files are deliberately messy, like real study data. No row describes a real person.
+
+[<i class="bi bi-download"></i> bal_metadata.xlsx](tutorials/data/bal_metadata.xlsx){.btn .btn-sm .btn-outline-primary}
+[<i class="bi bi-download"></i> bal_cell_counts.xlsx](tutorials/data/bal_cell_counts.xlsx){.btn .btn-sm .btn-outline-primary}
+[<i class="bi bi-download"></i> bal_baseline.csv](tutorials/data/bal_baseline.csv){.btn .btn-sm .btn-outline-primary}
+
+**You'll need:** R and RStudio for every tutorial, plus Python from Tutorial 2 onwards. Work through them in order: each one builds on the last.
+:::
+
+::: {#tutorial-series}
+:::
+
+## Coming next
+
+::: {.series-upcoming}
+::: {.upcoming-item}
+[3]{.upcoming-number}
+[**Cleaning the data**: fixing inconsistent categories, duplicates and missing values]{.upcoming-text}
+:::
+
+::: {.upcoming-item}
+[4]{.upcoming-number}
+[**Statistics**: comparing groups and testing associations]{.upcoming-text}
+:::
+
+::: {.upcoming-item}
+[5]{.upcoming-number}
+[**Machine learning**: building and evaluating a predictive model in Python]{.upcoming-text}
+:::
+:::

@@ -5,7 +5,7 @@ author: "Devon Allies"
 date: 2026-11-12
 order: 2
 description: "Use reticulate to turn an R data frame into a pandas DataFrame and back, so R and Python can work on the same data in one document, and learn what changes when the data crosses over."
-categories: [Tutorial, R, Python, reticulate, pandas]
+categories: [R, Python, Interoperability]
 ---
 
 ::: {.callout-note}

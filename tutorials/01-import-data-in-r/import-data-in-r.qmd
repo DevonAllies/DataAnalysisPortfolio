@@ -5,7 +5,7 @@ author: "Devon Allies"
 date: 2026-11-12
 order: 1
 description: "Load CSV and Excel files into R with readr and readxl, combine one sheet per study visit into a single table, and check the import before you analyse anything."
-categories: [Tutorial, R, readr, readxl, Data import]
+categories: [R, Data import]
 ---
 
 ::: {.callout-note}

@@ -28,12 +28,16 @@ On the site, the Projects page lists these newest first and can be filtered by t
 
 ## Tutorials
 
-A series built on one small extract of a simulated TB study (BAL cell counts and participant metadata; every participant is fictional). The data is in [`tutorials/data/`](tutorials/data/) and can be downloaded from each tutorial.
+A numbered, hands-on series built on one small extract of a simulated TB study (BAL participant metadata and cell counts per visit; every participant is fictional, and the raw files are deliberately messy like real study data). The [Tutorials page](https://devonallies.github.io/DataAnalysisPortfolio/tutorials.html) introduces the series, offers the three data files for download, and lists what you need: R and RStudio, plus Python from Tutorial 2. The data is in [`tutorials/data/`](tutorials/data/).
 
 1. [Importing data into RStudio with R](https://devonallies.github.io/DataAnalysisPortfolio/tutorials/01-import-data-in-r/import-data-in-r.html): CSV and Excel files, multiple sheets, missing-value codes and numbers stored as text.
 2. [Using one dataset in both R and Python](https://devonallies.github.io/DataAnalysisPortfolio/tutorials/02-r-and-python/r-and-python-dataframes.html): passing data frames between R and pandas with reticulate, and the conversions that quietly corrupt data.
 
-Later tutorials will continue with the same data: cleaning, statistics and machine learning.
+**Coming next**, using the same data:
+
+3. Cleaning the data: fixing inconsistent categories, duplicates and missing values
+4. Statistics: comparing groups and testing associations
+5. Machine learning: building and evaluating a predictive model in Python
 
 ## Publications & Writing
 
@@ -51,7 +55,7 @@ _quarto.yml            site configuration (navbar, theme, layout, search/SEO)
 index.qmd              home page, with hand-picked featured projects
 about.qmd              About page
 projects.qmd           project listing: newest first, with tag filters and search
-tutorials.qmd          tutorial listing, ordered by each tutorial's `order` field
+tutorials.qmd          tutorial series page: banner, data downloads, numbered list (by each tutorial's `order` field), roadmap
 publications.qmd       Publications & Writing page
 projects/<name>/       one folder per project, all with the same layout:
     index.qmd            the page (URL: /projects/<name>/)
@@ -59,7 +63,7 @@ projects/<name>/       one folder per project, all with the same layout:
     images/              thumbnail and figures
     data/                input data (committed only when small and public)
     pipeline/            (WGS project only) the Nextflow pipeline code
-tutorials/             numbered tutorials, plus their dataset in tutorials/data/
+tutorials/             numbered tutorials, their dataset in tutorials/data/ and the series banner in tutorials/images/
 assets/                shared files: css/styles.css, images/, csl/ (citation style)
 scripts/               helper scripts: refresh publications, rebuild tutorial data
 _data/                 publications.json, built by scripts/fetch_publications.py
