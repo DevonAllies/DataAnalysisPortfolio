@@ -21,7 +21,6 @@ The site has four sections:
 | [Compartmental TB Diagnostics](https://devonallies.github.io/DataAnalysisPortfolio/projects/tb-bal-cytokines/) | Simulated BAL cytokine cohort for TB diagnosis | R, gtsummary, factoextra | in this repo |
 | [Global Tuberculosis Trends, 2000–2024](https://devonallies.github.io/DataAnalysisPortfolio/projects/tb-global-trends/) | Exploratory analysis of global TB indicators, 2000–2024 | Python, pandas, statsmodels | in this repo |
 | [COVID-19 Blood Counts and Patient Outcomes](https://devonallies.github.io/DataAnalysisPortfolio/projects/covid19-blood-counts/) | Exploratory analysis of blood count data and patient outcomes | Python, R | in this repo |
-| [Global Retractions of Scientific Publications](https://devonallies.github.io/DataAnalysisPortfolio/projects/publication-retractions/) | Trends in retracted publications | R, SQL (MySQL) | in this repo |
 | [The use of R & Python in data science](https://devonallies.github.io/DataAnalysisPortfolio/projects/r-python-workflow/) | A cross-language PCA workflow on gene expression data | R, Python, reticulate, scikit-learn | in this repo |
 
 ## Tutorials
@@ -85,7 +84,7 @@ uv run python scripts/fetch_publications.py
 quarto render publications.qmd
 ```
 
-**Which pages render from a fresh clone:** the home, listing, About and Publications pages, both tutorials, and the Covid-19, TB Trends and Databricks projects all render from the repo alone. *The use of R & Python* downloads its data from Kaggle. Three pages need data that isn't in the repo: the RNA-seq and TB diagnostics projects read local files (`data/` is gitignored), and the retractions project queries a MySQL database. That's why the plain `quarto preview` (which re-renders everything first) fails without them; use `--no-render`. The rendered versions in `docs/` are always current.
+**Which pages render from a fresh clone:** the home, listing, About and Publications pages, both tutorials, and the COVID-19, TB trends, credit risk and BAL Databricks projects render from the repo alone. *The use of R & Python* downloads its data from Kaggle. The chrX RNA-seq and TB BAL cytokine projects read local data that isn't in the repo (`data/` is gitignored), so render pages one at a time with `quarto render projects/<name>/index.qmd` and preview with `quarto preview --no-render`. The rendered versions in `docs/` are always current.
 
 ## Contact
 

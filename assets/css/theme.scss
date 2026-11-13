@@ -1,0 +1,88 @@
+/*-- scss:defaults --*/
+
+// Site palette (option A): deep teal with a warm orange accent.
+// Contrast on white: teal 9.5:1, dark orange 5.4:1. The bright orange is
+// 3.4:1, so it is used only for decoration (rules, dots, bars), never text.
+$teal:        #0F4C5C;
+$teal-dark:   #0A3540;
+$orange:      #E36414;
+$orange-dark: #B34A0C;
+$orange-soft: #F7B267;
+
+$primary:         $teal;
+$link-color:      $teal;
+$link-hover-color: $orange-dark;
+$headings-color:  $teal;
+
+// Navbar and the home page title banner
+$navbar-bg: $teal;
+$navbar-fg: #FFFFFF;
+$navbar-hl: $orange-soft;
+
+/*-- scss:rules --*/
+
+// Section headings: teal with a short orange accent bar underneath.
+main h2:not(.listing-title):not(.no-anchor) {
+  padding-bottom: 0.3rem;
+  border-bottom: none;
+  position: relative;
+}
+
+main h2:not(.listing-title):not(.no-anchor)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 3rem;
+  height: 3px;
+  border-radius: 2px;
+  background: $orange;
+}
+
+// Page title
+.quarto-title .title {
+  color: $teal;
+}
+
+// Home page banner: keep the title and subtitle white on teal
+.quarto-title-banner .quarto-title .title,
+.quarto-title-banner .subtitle {
+  color: #FFFFFF;
+}
+
+.quarto-title-banner {
+  border-bottom: 4px solid $orange;
+}
+
+// Navbar: orange underline on the current page
+.navbar .nav-link.active {
+  box-shadow: inset 0 -3px 0 $orange;
+}
+
+// Buttons: teal fill, dark teal on hover
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: $teal-dark;
+  border-color: $teal-dark;
+}
+
+.btn-outline-primary:hover {
+  background-color: $teal;
+  border-color: $teal;
+  color: #FFFFFF;
+}
+
+// Card and timeline accents: orange details
+.skill-card {
+  border-top-color: $orange !important;
+}
+
+.edu-item::before {
+  border-color: $orange !important;
+}
+
+// Listing cards: subtle teal lift on hover
+.quarto-grid-item:hover {
+  border-color: $teal;
+  box-shadow: 0 0.25rem 0.75rem rgba(15, 76, 92, 0.15);
+}

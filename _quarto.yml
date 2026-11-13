@@ -31,6 +31,7 @@ format:
     theme:
       - cosmo
       - brand
+      - assets/css/theme.scss
     css: assets/css/styles.css
     toc: true
     grid:

@@ -14,7 +14,6 @@ format:
     toc-depth: 3
     toc-title: "Contents"
     toc-location: left
-    theme: flatly
     self-contained: true
   pdf:
     toc: true

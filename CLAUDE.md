@@ -22,7 +22,7 @@ uv run python scripts/fetch_publications.py   # refresh _data/publications.json
 uv run python scripts/build_tutorial_data.py  # rebuild tutorials/data/ from local full data
 ```
 
-Never run a bare `quarto render` / `quarto preview`: `projects/publication-retractions` needs a MySQL database that usually isn't running, so a full render fails. Render pages one at a time instead. Rendered output in `docs/` is what gets deployed, so re-render and commit `docs/` alongside any `.qmd` change.
+Prefer rendering pages one at a time over a bare `quarto render`: `chrx-rnaseq` and `tb-bal-cytokines` need local-only data, and `r-python-workflow` downloads from Kaggle, so a full render fails anywhere that data is missing. Rendered output in `docs/` is what gets deployed, so re-render and commit `docs/` alongside any `.qmd` change.
 
 ## Structure
 
@@ -34,14 +34,13 @@ Never run a bare `quarto render` / `quarto preview`: `projects/publication-retra
 - `tutorials.qmd` — listing over `tutorials/`, sorted by each tutorial's `order` field. Tutorials live in numbered folders; `tutorials/_metadata.yml` sets shared options.
 - `tutorials/data/` — small simulated BAL dataset, committed on purpose (`!tutorials/data/` and `!docs/tutorials/data/` exceptions) and copied into `docs/` via `project.resources` for the download buttons. Built by `scripts/build_tutorial_data.py` from the local, gitignored full study in `data/bal/bal-project/data/` (drops names/birth dates; `Age` comes from the cleaned baseline table). The raw Excel files are deliberately messy and the tutorial text describes those quirks, so regenerate with care.
 - `publications.qmd` ("Publications & Writing") — renders `_data/publications.json` (no network at render time). `scripts/fetch_publications.py` builds it from ORCID (0000-0001-8928-4334), Crossref and the Medium RSS feed (@alliesdl); `OVERRIDES` corrects bad ORCID metadata. The page matches the user by surname (`Allies D` / `Allies DL`).
-- `assets/` — shared `css/styles.css`, `images/me.jpeg` (About photo, home link preview), `csl/`.
+- `assets/` — shared `css/theme.scss` (site colours: deep teal `#0F4C5C` with orange accent `#E36414`; Bootstrap variables plus navbar, banner and heading rules), `css/styles.css` (component styles: cards, timeline, publications), `images/me.jpeg` (About photo, home link preview), `csl/`. The bright orange fails text contrast on white (3.4:1), so use it only for decoration; use `$orange-dark` `#B34A0C` for orange text. No page should set its own `theme:`, so every page shares the palette.
 - `scripts/` — helper scripts (not rendered). `data/` (root) — local-only full datasets and `data/archive/`; gitignored. `linkedin/` — local resumes; gitignored, never commit.
 - `_extensions/rchaput/acronyms/` — vendored Lua filter. Shared acronyms live in `acronyms.yml`; pages can add their own under `acronyms.keys` (see `tb-bal-cytokines`). Use `{{< acr KEY >}}` in text.
 
 ## Rendering caveats
 
 - The navbar and stylesheet links are baked into every page's HTML, so changing `website:` or `format:` in `_quarto.yml` means re-rendering every page.
-- `projects/publication-retractions` can't re-render without MySQL. Its `docs/` HTML was moved by hand, and its redirect from `projects/retractions/retraction.html` and its sitemap entry were written by hand. When the navbar changes, copy the `<header id="quarto-header">` block into its HTML from another page at the same depth. It uses its own `flatly` theme: keep it on `bootstrap-6707649cb45bfb11357a05143ff88da0.min.css`, never the site's cosmo stylesheet.
 - Each render with changed theme/layout settings writes a new hashed `docs/site_libs/bootstrap/bootstrap-*.min.css`; delete ones no `docs/**/*.html` references.
 - Every page should have a `description`. On the main pages it's hidden visually via `body-classes: hide-description` (CSS in `assets/css/styles.css`) and used only for search and previews.
 - Most projects have no `date` field and `chrx-rnaseq` uses `date: today`, so the `date desc` sort on the projects listing is unreliable.
