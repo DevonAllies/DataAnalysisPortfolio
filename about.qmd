@@ -1,6 +1,6 @@
 ---
 title: "About Me"
-description: "About Devon Allies: bioinformatician and computational biologist with 10+ years in TB immunology, now a Data Analyst at Stellenbosch University. Education, certifications and skills."
+description: "About Devon Allies: bioinformatician and computational biologist with 15+ years in biomedical science, including 10 in TB immunology, now a Data Analyst at Stellenbosch University. Education, certifications and skills."
 body-classes: hide-description   # description is for search/link previews only
 about:
   template: jolla
@@ -22,7 +22,7 @@ about:
       href: https://discord.com/users/492592734805164044
 ---
 
-I'm a bioinformatician and computational biologist with over 10 years of experience in immunology and tuberculosis research. I specialise in clinical genomics and building the data pipelines that turn raw biological data into publication-ready results.
+I'm a bioinformatician and computational biologist with over 15 years of experience in biomedical science, including 10 years in immunology and tuberculosis research. I specialise in clinical genomics and building the data pipelines that turn raw biological data into publication-ready results.
 
 In my current role as a Data Analyst at the Division of Molecular Biology and Human Genetics, Stellenbosch University, I work with whole genome sequencing data and clinical metadata on HPC clusters and Databricks. I'm also completing an MSc in Computational Biology at Stellenbosch University, focusing on cytokine phenotyping and pQTL mapping in tuberculosis cohorts.
 
@@ -98,7 +98,7 @@ NGS pipelines · Variant calling · RNA-seq · pQTL mapping
 
 [Nextflow DSL2, BWA-MEM2, GATK, bcftools, samtools, HISAT2, StringTie, Ballgown; host genetics and multi-omics]{.skill-detail}
 
-[See it in: [chrX RNA-seq](projects/chrx-rnaseq/index.qmd)]{.skill-proof}
+[See it in: [WGS variant-calling pipeline](projects/wgs-variant-calling-pipeline/index.qmd) · [chrX RNA-seq](projects/chrx-rnaseq/index.qmd)]{.skill-proof}
 :::
 
 ::: {.g-col-12 .g-col-md-6 .skill-card}

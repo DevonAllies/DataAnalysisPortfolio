@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://devonallies.github.io/DataAnalysisPortfolio/index.html</loc>
-    <lastmod>2026-11-13T07:56:56.749Z</lastmod>
+    <lastmod>2026-11-13T08:31:46.476Z</lastmod>
   </url>
   <url>
     <loc>https://devonallies.github.io/DataAnalysisPortfolio/about.html</loc>
-    <lastmod>2026-11-13T07:54:00.517Z</lastmod>
+    <lastmod>2026-11-13T08:26:44.619Z</lastmod>
   </url>
   <url>
     <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects.html</loc>
@@ -55,5 +55,9 @@
   <url>
     <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/r-python-workflow/index.html</loc>
     <lastmod>2026-11-13T06:25:52.768Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/wgs-variant-calling-pipeline/index.html</loc>
+    <lastmod>2026-11-13T08:37:20.769Z</lastmod>
   </url>
 </urlset>

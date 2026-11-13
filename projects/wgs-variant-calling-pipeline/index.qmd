@@ -1,0 +1,216 @@
+---
+title: "A Nextflow Pipeline for Whole-Genome Variant Calling"
+description: "A modular Nextflow DSL2 pipeline that takes paired-end whole-genome sequencing reads to joint-called, filtered variants with BWA-MEM, SAMtools and GATK, built to run on a PBS cluster and to compare two reference genomes."
+image: images/pipeline-overview.png
+categories: [Nextflow, GATK, WGS, HPC, Bioinformatics]
+bibliography: references.bib
+csl: ../../assets/csl/harvard-anglia-ruskin-university.csl
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-copy: true
+---
+
+::: {.callout-note}
+## At a glance
+
+- **What:** a modular Nextflow DSL2 pipeline that turns raw paired-end whole-genome sequencing (WGS) reads into a joint-called, quality-filtered set of variants
+- **Tools:** Nextflow, BWA-MEM, SAMtools and GATK4, with FastQC and MultiQC for read quality control
+- **Where:** built for my BSc Honours project at Stellenbosch University (2024) and run on the Centre for High Performance Computing (CHPC) cluster
+- **Scope of this page:** how the pipeline is designed and how it works. It contains no study data and no results.
+
+[View the code on GitHub](https://github.com/DevonAllies/DataAnalysisPortfolio/tree/main/projects/wgs-variant-calling-pipeline/pipeline){.btn .btn-primary}
+:::
+
+## Why I built it
+
+My honours project compared variant calls made against the standard human reference genome, GRCh38 [@schneider2017grch38], with calls made against a population-specific reference genome.
+
+That comparison set three requirements:
+
+1. **Reproducible:** every sample goes through exactly the same steps, with the same tools and settings.
+2. **Reference-agnostic:** the same pipeline runs against either reference with a single switch, keeping the outputs apart.
+3. **HPC-friendly:** whole genomes produce very large intermediate files, so the pipeline has to fit a shared cluster's storage, memory and wall-time limits.
+
+Nextflow [@ditommaso2017nextflow] fits all three: each step is an isolated process, runs are resumable, and the same code can run on a laptop or a PBS cluster.
+
+## How it works
+
+```{mermaid}
+flowchart LR
+    A[Paired-end<br/>FASTQ] --> B[Align<br/>BWA-MEM]
+    B --> C[SAM → BAM<br/>sort, index<br/>SAMtools]
+    C --> D[Base quality<br/>recalibration<br/>GATK BQSR]
+    D --> E[Per-sample<br/>GVCF<br/>HaplotypeCaller]
+    E --> F[Joint genotyping<br/>GenomicsDBImport<br/>GenotypeGVCFs]
+    F --> G[Variant filtering<br/>VQSR<br/>SNPs + indels]
+    G --> H[Filtered<br/>cohort VCF]
+```
+
+Read quality was checked with FastQC [@andrews2010fastqc] and summarised across samples with MultiQC [@ewels2016multiqc] before reads entered the pipeline. The pipeline then follows GATK's best-practice workflow for germline short variants [@vanderauwera2020genomics]:
+
+| Step | Tool (version) | What it does |
+|---|---|---|
+| Align | BWA-MEM 0.7.7 [@li2013bwamem; @li2009bwa] | Maps each sample's read pairs to the chosen reference, adding a read group (sample, library, MGI platform) that GATK needs downstream |
+| Convert, sort, index | SAMtools 1.9 [@danecek2021samtools] | Converts the text SAM output to compressed BAM, sorts reads by position and indexes them |
+| Recalibrate base qualities | GATK 4.6 BaseRecalibrator and ApplyBQSR [@mckenna2010gatk; @depristo2011framework] | Corrects systematic errors in the sequencer's base quality scores, using dbSNP [@sherry1999dbsnp] as known variant sites |
+| Call variants per sample | GATK 4.6 HaplotypeCaller, GVCF mode [@poplin2017scaling] | Calls variants by local re-assembly and records every position, so samples can be genotyped together later |
+| Joint genotyping | GATK 4.6 GenomicsDBImport and GenotypeGVCFs [@poplin2017scaling] | Combines all samples' GVCFs, chromosome by chromosome (1–22, X, Y), and genotypes them as one cohort |
+| Filter variants | GATK 4.2.6 VariantRecalibrator and ApplyVQSR [@depristo2011framework] | Learns what true variants look like from trusted resources and filters the rest at 99% truth sensitivity, with separate models for SNPs and indels |
+
+The variant filtering step trains on well-established resources: HapMap 3.3 [@hapmap2010] and the 1000 Genomes Omni 2.5 genotypes [@genomes2015global] for SNPs, the Mills and 1000 Genomes gold-standard indels [@mills2011indels] for indels, and dbSNP [@sherry1999dbsnp] as known sites. The filtered SNPs and indels are then merged into a single indexed cohort VCF.
+
+## Engineering details
+
+### One module per step
+
+Each step is a separate DSL2 module (`modules/local/<step>/main.nf`), and the main workflow only wires them together. That keeps each step small, testable and easy to swap out:
+
+```{.groovy filename="script.nf (excerpt)"}
+workflow {
+    aligned_sams = ALIGN(samples_ch, reference_ch)
+    aligned_bams = SAM_TO_BAM(aligned_sams)
+    sorted_bams  = SORT_BAM(aligned_bams)
+    indexed_bams = INDEX_BAM(sorted_bams.sorted_bam)
+
+    bqsr_bams = BQSR(indexed_bams, reference_ch, reference_index_ch,
+                     reference_dict_ch, dbsnp_ch, dbsnp_index_ch)
+
+    gvcfs = HAPLOTYPECALLER(bqsr_bams, reference_ch,
+                            reference_index_ch, reference_dict_ch)
+    // ... joint genotyping and variant filtering
+}
+```
+
+### One switch for the reference genome
+
+A single parameter chooses the reference. Outputs are named and stored separately per reference, so a GRCh38 run and a population-reference run never overwrite each other:
+
+```{.groovy filename="modules/local/haplotypecaller/main.nf (excerpt)"}
+publishDir "${params.outdir}/haplotypecaller/${params.use_sac_ref ? 'sac' : 'grch38'}",
+           mode: 'symlink'
+```
+
+### Dry runs without data
+
+Every module has a `stub:` block that creates empty placeholder outputs. Running `nextflow run script.nf -stub` checks that all the channels connect correctly in seconds, without real data and without using cluster time:
+
+```{.groovy filename="modules/local/bqsr/main.nf (excerpt)"}
+stub:
+"""
+touch ${sampleId}.recal.bam
+touch ${sampleId}.recal.bai
+"""
+```
+
+### Fitting a shared cluster
+
+- **Storage:** an aligned whole genome in SAM format can be tens of gigabytes. Intermediate outputs are published as symbolic links (`mode: 'symlink'`) rather than copies, and only the final filtered VCF is copied.
+- **Resources:** memory and CPUs are set per process, so heavy steps such as alignment get what they need without over-allocating light ones.
+- **Software:** each process loads its own pinned tool version through the cluster's environment modules.
+
+```{.groovy filename="nextflow.config (excerpt, cluster details replaced)"}
+process {
+    queue          = 'normal'
+    clusterOptions = '-P <project-code>'
+
+    withName: 'ALIGN' {
+        beforeScript = 'module load BWA/0.7.7'
+        memory = '38 GB'
+    }
+    withName: 'HAPLOTYPECALLER' {
+        beforeScript = 'module load gatk/4.6.0.0'
+        memory = '8 GB'
+        cpus   = 5
+    }
+}
+```
+
+### Joint calling that scales
+
+Calling each sample to a GVCF first, then genotyping the cohort together, means that adding samples later only needs the new samples to be called. It also improves genotype accuracy at sites with low coverage in some samples [@poplin2017scaling].
+
+## What I'd do differently
+
+Looking back, these are the changes I would make:
+
+- **Mark duplicates before recalibration.** GATK's best practices include `MarkDuplicates` between alignment and BQSR [@vanderauwera2020genomics]; the pipeline goes straight from sorting to BQSR.
+- **Stream instead of writing SAM files.** Piping `bwa mem` directly into `samtools sort` would skip the large intermediate SAM files entirely.
+- **Make quality control part of the pipeline.** FastQC and MultiQC were configured but run separately; wiring them in would make each run fully self-contained.
+- **Use containers and profiles.** Docker or Singularity containers and Nextflow configuration profiles, instead of cluster-specific modules and paths, would let the pipeline run unchanged on any system.
+- **Use one GATK version throughout.** Variant filtering ran on GATK 4.2.6 while the other GATK steps used 4.6.
+- **Compare references against a truth set.** Counting shared and unique variants between two references shows that the call sets differ, but not which is more accurate: a reference that already contains a population's common alleles will report fewer variants at those sites by design. A fair comparison needs a truth set, such as array genotypes for the same samples.
+
+## The code
+
+The pipeline code is [on GitHub](https://github.com/DevonAllies/DataAnalysisPortfolio/tree/main/projects/wgs-variant-calling-pipeline/pipeline) as it was used for the project, with cluster-specific paths and the project code replaced by placeholders. No sample sheet or data is included. Its README lists how to run it and the known issues in this snapshot.
+
+## Acknowledgements
+
+This work was done for my BSc Honours in Bioinformatics and Computational Biology. I'm grateful to the people and institutions that made it possible:
+
+::: {.grid .ack-grid}
+
+::: {.g-col-12 .g-col-md-6 .ack-card}
+[<i class="bi bi-people"></i>]{.ack-icon}
+
+[My supervisors]{.ack-name}
+
+[Dr C. Uren, Prof M. Möller, Prof D.C. Petersen and Dr Y. Swart, for their guidance throughout the project]{.ack-role}
+:::
+
+::: {.g-col-12 .g-col-md-6 .ack-card}
+[<i class="bi bi-bank"></i>]{.ack-icon}
+
+[Stellenbosch University]{.ack-name}
+
+[Host institution for my BSc Honours]{.ack-role}
+:::
+
+::: {.g-col-12 .g-col-md-6 .ack-card}
+[<i class="bi bi-heart-pulse"></i>]{.ack-icon}
+
+[Faculty of Medicine and Health Sciences]{.ack-name}
+
+[Stellenbosch University, for supporting the project]{.ack-role}
+:::
+
+::: {.g-col-12 .g-col-md-6 .ack-card}
+[<i class="bi bi-virus"></i>]{.ack-icon}
+
+[Division of Molecular Biology and Human Genetics]{.ack-name}
+
+[Stellenbosch University, where the project was based]{.ack-role}
+:::
+
+::: {.g-col-12 .g-col-md-6 .ack-card}
+[<i class="bi bi-diagram-3"></i>]{.ack-icon}
+
+[Centre for Bioinformatics and Computational Biology (CBCB)]{.ack-name}
+
+[Stellenbosch University, for bioinformatics support]{.ack-role}
+:::
+
+::: {.g-col-12 .g-col-md-6 .ack-card}
+[<i class="bi bi-upc-scan"></i>]{.ack-icon}
+
+[South African Medical Research Council (SAMRC)]{.ack-name}
+
+[The SAMRC Genomics Platform, for sequencing the data]{.ack-role}
+:::
+
+::: {.g-col-12 .g-col-md-6 .ack-card}
+[<i class="bi bi-cpu"></i>]{.ack-icon}
+
+[Centre for High Performance Computing (CHPC)]{.ack-name}
+
+[Computations were performed using facilities provided by the CHPC, South Africa]{.ack-role}
+:::
+
+:::
+
+## References
+
+::: {#refs}
+:::

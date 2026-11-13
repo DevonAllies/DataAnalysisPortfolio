@@ -35,3 +35,8 @@ linkedin/
 !projects/covid19-blood-counts/data/COVID-19_CBC_Data.csv
 !projects/tb-global-trends/data/
 !projects/tb-global-trends/data/Tuberculosis_Trends.csv
+
+# Local copy of the honours pipeline (contains sample IDs and CHPC paths); the
+# portfolio only describes it, with sanitised excerpts
+BSc_Honours-main/
+!projects/wgs-variant-calling-pipeline/pipeline/samplesheet.example.csv

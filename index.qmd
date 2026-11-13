@@ -17,10 +17,10 @@ execute:
 listing:
   id: recent-projects
   contents:
+    - projects/wgs-variant-calling-pipeline/index.qmd
     - projects/credit-risk-pipeline/index.qmd
     - projects/bal-databricks-pipeline/index.qmd
     - projects/chrx-rnaseq/index.qmd
-    - projects/r-python-workflow/index.qmd
   type: grid
   grid-columns: 2
   sort: false
@@ -56,7 +56,7 @@ shorten <- function(x, n = 22) {
 ```
 
 ::: {.home-intro}
-I'm a bioinformatician and computational biologist with over 10 years in tuberculosis research. I started at the lab bench, processing clinical samples and running flow cytometry, went on to coordinate multi-site clinical studies, and now build the pipelines and analyses that turn genomic and clinical data into results. I'm currently a Data Analyst at Stellenbosch University and completing an MSc in Computational Biology.
+I'm a bioinformatician and computational biologist with over 15 years in biomedical science, including 10 in tuberculosis research. I started at the lab bench, processing clinical samples and running flow cytometry, went on to coordinate multi-site clinical studies, and now build the pipelines and analyses that turn genomic and clinical data into results. I'm currently a Data Analyst at Stellenbosch University and completing an MSc in Computational Biology.
 
 [View projects](projects.qmd){.btn .btn-primary}
 [About me](about.qmd){.btn .btn-outline-primary}
@@ -65,8 +65,8 @@ I'm a bioinformatician and computational biologist with over 10 years in tubercu
 ::: {.stats-strip}
 
 ::: {.stat}
-[10+]{.stat-number}
-[years in TB research]{.stat-label}
+[15+]{.stat-number}
+[years in biomedical science]{.stat-label}
 :::
 
 ::: {.stat}

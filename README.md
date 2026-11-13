@@ -2,7 +2,7 @@
 
 **Live site: <https://devonallies.github.io/DataAnalysisPortfolio/>**
 
-The personal website and data portfolio of a bioinformatician and computational biologist, currently a Data Analyst at Stellenbosch University. I've worked in immunology and tuberculosis research for over 10 years, from the lab bench to clinical study coordination and data pipelines.
+The personal website and data portfolio of a bioinformatician and computational biologist, currently a Data Analyst at Stellenbosch University. I've worked in biomedical science for over 15 years, including 10 in immunology and tuberculosis research, from the lab bench to clinical study coordination and data pipelines.
 
 The site has four sections:
 
@@ -15,6 +15,7 @@ The site has four sections:
 
 | Project | Focus | Tools | Code |
 |---|---|---|---|
+| [A Nextflow Pipeline for Whole-Genome Variant Calling](https://devonallies.github.io/DataAnalysisPortfolio/projects/wgs-variant-calling-pipeline/) | Modular WGS pipeline from raw reads to joint-called, VQSR-filtered variants on an HPC cluster (BSc Honours) | Nextflow, BWA-MEM, SAMtools, GATK4, PBS | [code](https://github.com/DevonAllies/DataAnalysisPortfolio/tree/main/projects/wgs-variant-calling-pipeline/pipeline) |
 | [Credit Risk Pipeline on Databricks](https://devonallies.github.io/DataAnalysisPortfolio/projects/credit-risk-pipeline/) | Bronze/silver/gold lakehouse and default prediction for a simulated lender | Databricks, PySpark, MLflow, scikit-learn | [repo](https://github.com/DevonAllies/credit-pipeline-databricks) |
 | [Databricks data pipeline: simulated BAL study](https://devonallies.github.io/DataAnalysisPortfolio/projects/bal-databricks-pipeline/) | Delta table pipeline and MLflow-tracked models on simulated clinical data | Databricks, PySpark, MLflow | [repo](https://github.com/DevonAllies/MLops_bal_pipeline) |
 | [Differential Expression of Chromosome X RNA-seq Data](https://devonallies.github.io/DataAnalysisPortfolio/projects/chrx-rnaseq/) | Sex-based differential expression on chrX | R, Bioconductor (ballgown) | in this repo |

@@ -9,6 +9,7 @@
   {
     "listing": "/projects.html",
     "items": [
+      "/projects/wgs-variant-calling-pipeline/index.html",
       "/projects/tb-global-trends/index.html",
       "/projects/tb-bal-cytokines/index.html",
       "/projects/covid19-blood-counts/index.html",
@@ -21,10 +22,10 @@
   {
     "listing": "/index.html",
     "items": [
+      "/projects/wgs-variant-calling-pipeline/index.html",
       "/projects/credit-risk-pipeline/index.html",
       "/projects/bal-databricks-pipeline/index.html",
-      "/projects/chrx-rnaseq/index.html",
-      "/projects/r-python-workflow/index.html"
+      "/projects/chrx-rnaseq/index.html"
     ]
   }
 ]
