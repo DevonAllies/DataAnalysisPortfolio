@@ -1,11 +1,12 @@
 ---
-title: "The use of R & Python in data science"
+title: "Using R and Python Together in Data Science"
 aliases:
   - "../R & Python/R & Python.html"   # old address; Quarto leaves a redirect there
 description: "A cross-language workflow on high-dimensional gene expression data: PCA with Python's scikit-learn and statistical tables with R's gtsummary, linked by reticulate."
 format: html
 author: "Devon Allies"
-date: last-modified
+date: 2026-02-01
+categories: [Bioinformatics, Machine learning, R, Python]
 bibliography: references.bib
 csl: ../../assets/csl/harvard-anglia-ruskin-university.csl
 image: 'images/r.png'

@@ -8,7 +8,7 @@
 
 <meta name="description" content="Data science and bioinformatics projects by Devon Allies: RNA-seq, TB biomarkers, public health analyses and Databricks pipelines in R and Python.">
 
-<title>Data Science Projects – Devon Allies</title>
+<title>Projects – Devon Allies</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -87,9 +87,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-title','listing-author','listing-date','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-image','listing-date','listing-title','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -132,12 +132,12 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="assets/css/styles.css">
-<meta property="og:title" content="Data Science Projects – Devon Allies">
+<meta property="og:title" content="Projects – Devon Allies">
 <meta property="og:description" content="Data science and bioinformatics projects by Devon Allies: RNA-seq, TB biomarkers, public health analyses and Databricks pipelines in R and Python.">
-<meta property="og:image" content="https://devonallies.github.io/DataAnalysisPortfolio/projects/covid19-blood-counts/images/thumbnail.png">
+<meta property="og:image" content="https://devonallies.github.io/DataAnalysisPortfolio/projects/credit-risk-pipeline/images/thumbnail.png">
 <meta property="og:site_name" content="Devon Allies">
-<meta property="og:image:height" content="1024">
-<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="675">
+<meta property="og:image:width" content="1200">
 </head>
 
 <body class="nav-fixed hide-description quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
@@ -188,15 +188,15 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    </div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(8)</span></div><div class="category" data-category="QmlvaW5mb3JtYXRpY3M=">Bioinformatics <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Q2xpbmljYWwlMjByZXNlYXJjaA==">Clinical research <span class="quarto-category-count">(2)</span></div><div class="category" data-category="RGF0YSUyMGVuZ2luZWVyaW5n">Data engineering <span class="quarto-category-count">(3)</span></div><div class="category" data-category="RGF0YWJyaWNrcw==">Databricks <span class="quarto-category-count">(2)</span></div><div class="category" data-category="RXhwbG9yYXRvcnklMjBhbmFseXNpcw==">Exploratory analysis <span class="quarto-category-count">(2)</span></div><div class="category" data-category="RmluYW5jZQ==">Finance <span class="quarto-category-count">(1)</span></div><div class="category" data-category="TWFjaGluZSUyMGxlYXJuaW5n">Machine learning <span class="quarto-category-count">(4)</span></div><div class="category" data-category="TmV4dGZsb3c=">Nextflow <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UHVibGljJTIwaGVhbHRo">Public health <span class="quarto-category-count">(2)</span></div><div class="category" data-category="UHl0aG9u">Python <span class="quarto-category-count">(5)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(4)</span></div><div class="category" data-category="U3RhdGlzdGljcw==">Statistics <span class="quarto-category-count">(3)</span></div></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content" tabindex="-1">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data Science Projects</h1>
+<h1 class="title">Projects</h1>
 </div>
 
 <div>
@@ -218,187 +218,270 @@ window.Quarto = {
 </header>
 
 
+<p>Analyses, pipelines and models across genomics, clinical research, public health and finance. Use the tags on the right to filter by topic or tool, or search above the cards.</p>
 
 
 
 
 <div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="TmV4dGZsb3clMkNHQVRLJTJDV0dTJTJDSFBDJTJDQmlvaW5mb3JtYXRpY3M=" data-listing-file-modified-sort="1794559040769" data-listing-reading-time-sort="7" data-listing-word-count-sort="1336">
-<a href="./projects/wgs-variant-calling-pipeline/index.html" class="quarto-grid-link no-external-icon">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./projects/wgs-variant-calling-pipeline/images/pipeline-overview.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-A Nextflow Pipeline for Whole-Genome Variant Calling
-</h5>
-<div class="card-text listing-description">
-<p>A modular Nextflow DSL2 pipeline that takes paired-end whole-genome sequencing reads to joint-called, filtered variants with BWA-MEM, SAMtools and GATK, built to run on a…</p>
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
 </div>
-<div class="card-attribution card-text-small start">
-<div class="listing-author">
-
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1794551163423" data-listing-reading-time-sort="12" data-listing-word-count-sort="2216">
-<a href="./projects/tb-global-trends/index.html" class="quarto-grid-link no-external-icon">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./projects/tb-global-trends/images/tb.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Global Tuberculosis Trends, 2000–2024
-</h5>
-<div class="card-text listing-description">
-<p>Exploratory analysis of global tuberculosis indicators from 2000 to 2024: South Africa’s trends, drivers of TB burden, and a forecast against the End TB 2030 targets.</p>
-</div>
-<div class="card-attribution card-text-small start">
-<div class="listing-author">
-Devon Allies
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="2" data-listing-file-modified-sort="1794551163423" data-listing-reading-time-sort="8" data-listing-word-count-sort="1429">
-<a href="./projects/tb-bal-cytokines/index.html" class="quarto-grid-link no-external-icon">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./projects/tb-bal-cytokines/images/tb.jpeg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Compartmental TB Diagnostics: A Simulated BAL Cytokine cohort
-</h5>
-<div class="card-text listing-description">
-<p>Compartmental TB diagnostics on a simulated BAL cytokine cohort: cleaning and statistics in R, building towards a 3-class classifier for active TB, LTBI and uninfected.</p>
-</div>
-<div class="card-attribution card-text-small start">
-<div class="listing-author">
-Devon Allies
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="3" data-listing-file-modified-sort="1794551152768" data-listing-reading-time-sort="7" data-listing-word-count-sort="1367">
-<a href="./projects/covid19-blood-counts/index.html" class="quarto-grid-link no-external-icon">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./projects/covid19-blood-counts/images/thumbnail.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-COVID-19 Blood Counts and Patient Outcomes
-</h5>
-<div class="card-text listing-description">
-<p>Exploratory data analysis of complete blood count data from COVID-19 patients in Bangladesh, comparing patient outcomes by age, sex and blood markers in Python and R.</p>
-</div>
-<div class="card-attribution card-text-small start">
-<div class="listing-author">
-Devon Allies, BSc. Honours: Bioinformatics &amp; Computational Biology
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="4" data-listing-date-sort="1794551152000" data-listing-file-modified-sort="1794551152768" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1124">
-<a href="./projects/r-python-workflow/index.html" class="quarto-grid-link no-external-icon">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./projects/r-python-workflow/images/r.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-The use of R &amp; Python in data science
-</h5>
-<div class="card-text listing-description">
-<p>A cross-language workflow on high-dimensional gene expression data: PCA with Python’s scikit-learn and statistical tables with R’s gtsummary, linked by reticulate.</p>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Devon Allies
-</div>
-<div class="listing-date">
-Nov 13, 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="5" data-listing-date-sort="1794520800000" data-listing-file-modified-sort="1794554648512" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2470">
-<a href="./projects/chrx-rnaseq/index.html" class="quarto-grid-link no-external-icon">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img loading="lazy" src="./projects/chrx-rnaseq/images/rnaseq.jpeg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Differential Expression Analysis of Chromosome X RNA-seq Data
-</h5>
-<div class="card-text listing-description">
-<p>Sex-based differential expression on chromosome X from 12 paired-end RNA-seq samples, using a Nextflow pipeline with HISAT2 and StringTie, and Ballgown in R.</p>
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Devon Allies
-</div>
-<div class="listing-date">
-Nov 13, 2026
-</div>
-</div>
-</div>
-</div></a>
-</div>
-<div class="g-col-1" data-index="6" data-categories="RGF0YWJyaWNrcyUyQ1B5U3BhcmslMkNNTGZsb3clMkNDcmVkaXQlMjBSaXNrJTJDTWFjaGluZSUyMExlYXJuaW5nJTJDRGF0YSUyMEVuZ2luZWVyaW5n" data-listing-date-sort="1793224800000" data-listing-file-modified-sort="1794551152768" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1188">
+<div class="list grid quarto-listing-cols-2">
+<div class="g-col-1" data-index="0" data-categories="RmluYW5jZSUyQ01hY2hpbmUlMjBsZWFybmluZyUyQ0RhdGElMjBlbmdpbmVlcmluZyUyQ0RhdGFicmlja3MlMkNQeXRob24=" data-listing-date-sort="1793224800000" data-listing-file-modified-sort="1794559480312" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1188">
 <a href="./projects/credit-risk-pipeline/index.html" class="quarto-grid-link no-external-icon">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img loading="lazy" src="./projects/credit-risk-pipeline/images/thumbnail.png" class="thumbnail-image card-img" style="height: 150px;">
+<img loading="lazy" src="./projects/credit-risk-pipeline/images/thumbnail.png" class="thumbnail-image card-img" style="height: 180px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Credit Risk Pipeline on Databricks
 </h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('RmluYW5jZQ=='); return false;">Finance</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMGxlYXJuaW5n'); return false;">Machine learning</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YSUyMGVuZ2luZWVyaW5n'); return false;">Data engineering</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJyaWNrcw=='); return false;">Databricks</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
+
+</div>
 <div class="card-text listing-description">
 <p>A bronze/silver/gold lakehouse pipeline on Databricks that cleans messy lending data, builds a leakage-free loan table and trains MLflow-tracked default models, with a…</p>
 </div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Devon-Lee Allies
-</div>
+<div class="card-attribution card-text-small end">
 <div class="listing-date">
-Oct 29, 2026
+2026
 </div>
 </div>
 </div>
 </div></a>
 </div>
-<div class="g-col-1" data-index="7" data-categories="RGF0YWJyaWNrcyUyQ1B5U3BhcmslMkNNTGZsb3clMkNQeXRob24=" data-listing-date-sort="1793052000000" data-listing-file-modified-sort="1794551152768" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="106">
+<div class="g-col-1" data-index="1" data-categories="Q2xpbmljYWwlMjByZXNlYXJjaCUyQ01hY2hpbmUlMjBsZWFybmluZyUyQ0RhdGElMjBlbmdpbmVlcmluZyUyQ0RhdGFicmlja3MlMkNQeXRob24=" data-listing-date-sort="1793052000000" data-listing-file-modified-sort="1794559480312" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="106">
 <a href="./projects/bal-databricks-pipeline/index.html" class="quarto-grid-link no-external-icon">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img loading="lazy" src="./projects/bal-databricks-pipeline/images/bal-pipeline.png" class="thumbnail-image card-img" style="height: 150px;">
+<img loading="lazy" src="./projects/bal-databricks-pipeline/images/bal-pipeline.png" class="thumbnail-image card-img" style="height: 180px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
-Databricks data pipeline: simulated BAL study
+Databricks Data Pipeline: Simulated BAL Study
 </h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q2xpbmljYWwlMjByZXNlYXJjaA=='); return false;">Clinical research</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMGxlYXJuaW5n'); return false;">Machine learning</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YSUyMGVuZ2luZWVyaW5n'); return false;">Data engineering</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YWJyaWNrcw=='); return false;">Databricks</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
+
+</div>
 <div class="card-text listing-description">
 <p>Bronze, silver and gold Delta tables, tested cleaning functions, MLflow model tracking and a Streamlit demo, built on simulated clinical data.</p>
 </div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-Devon Allies
-</div>
+<div class="card-attribution card-text-small end">
 <div class="listing-date">
-Oct 27, 2026
+2026
+</div>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="2" data-categories="Q2xpbmljYWwlMjByZXNlYXJjaCUyQ1N0YXRpc3RpY3MlMkNS" data-listing-date-sort="1790805600000" data-listing-file-modified-sort="1794559480312" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1429">
+<a href="./projects/tb-bal-cytokines/index.html" class="quarto-grid-link no-external-icon">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./projects/tb-bal-cytokines/images/tb.jpeg" class="thumbnail-image card-img" style="height: 180px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Compartmental TB Diagnostics: A Simulated BAL Cytokine Cohort
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('Q2xpbmljYWwlMjByZXNlYXJjaA=='); return false;">Clinical research</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U3RhdGlzdGljcw=='); return false;">Statistics</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
+
+</div>
+<div class="card-text listing-description">
+<p>Compartmental TB diagnostics on a simulated BAL cytokine cohort: cleaning and statistics in R, building towards a 3-class classifier for active TB, LTBI and uninfected.</p>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+2026
+</div>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="3" data-categories="QmlvaW5mb3JtYXRpY3MlMkNTdGF0aXN0aWNzJTJDUg==" data-listing-date-sort="1777586400000" data-listing-file-modified-sort="1794559480312" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2470">
+<a href="./projects/chrx-rnaseq/index.html" class="quarto-grid-link no-external-icon">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./projects/chrx-rnaseq/images/rnaseq.jpeg" class="thumbnail-image card-img" style="height: 180px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Differential Expression Analysis of Chromosome X RNA-seq Data
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('QmlvaW5mb3JtYXRpY3M='); return false;">Bioinformatics</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U3RhdGlzdGljcw=='); return false;">Statistics</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
+
+</div>
+<div class="card-text listing-description">
+<p>Sex-based differential expression on chromosome X from 12 paired-end RNA-seq samples, using a Nextflow pipeline with HISAT2 and StringTie, and Ballgown in R.</p>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+2026
+</div>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="4" data-categories="UHVibGljJTIwaGVhbHRoJTJDRXhwbG9yYXRvcnklMjBhbmFseXNpcyUyQ01hY2hpbmUlMjBsZWFybmluZyUyQ1B5dGhvbg==" data-listing-date-sort="1769896800000" data-listing-file-modified-sort="1794559480313" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2216">
+<a href="./projects/tb-global-trends/index.html" class="quarto-grid-link no-external-icon">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./projects/tb-global-trends/images/tb.png" class="thumbnail-image card-img" style="height: 180px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Global Tuberculosis Trends, 2000–2024
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('UHVibGljJTIwaGVhbHRo'); return false;">Public health</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('RXhwbG9yYXRvcnklMjBhbmFseXNpcw=='); return false;">Exploratory analysis</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMGxlYXJuaW5n'); return false;">Machine learning</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
+
+</div>
+<div class="card-text listing-description">
+<p>Exploratory analysis of global tuberculosis indicators from 2000 to 2024: South Africa’s trends, drivers of TB burden, and a forecast against the End TB 2030 targets.</p>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+2026
+</div>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="5" data-categories="QmlvaW5mb3JtYXRpY3MlMkNNYWNoaW5lJTIwbGVhcm5pbmclMkNSJTJDUHl0aG9u" data-listing-date-sort="1769896800000" data-listing-file-modified-sort="1794559480313" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1124">
+<a href="./projects/r-python-workflow/index.html" class="quarto-grid-link no-external-icon">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./projects/r-python-workflow/images/r.png" class="thumbnail-image card-img" style="height: 180px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Using R and Python Together in Data Science
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('QmlvaW5mb3JtYXRpY3M='); return false;">Bioinformatics</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('TWFjaGluZSUyMGxlYXJuaW5n'); return false;">Machine learning</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
+
+</div>
+<div class="card-text listing-description">
+<p>A cross-language workflow on high-dimensional gene expression data: PCA with Python’s scikit-learn and statistical tables with R’s gtsummary, linked by reticulate.</p>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+2026
+</div>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="6" data-categories="UHVibGljJTIwaGVhbHRoJTJDRXhwbG9yYXRvcnklMjBhbmFseXNpcyUyQ1N0YXRpc3RpY3MlMkNQeXRob24lMkNS" data-listing-date-sort="1769896800000" data-listing-file-modified-sort="1794559480313" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1367">
+<a href="./projects/covid19-blood-counts/index.html" class="quarto-grid-link no-external-icon">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./projects/covid19-blood-counts/images/thumbnail.png" class="thumbnail-image card-img" style="height: 180px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+COVID-19 Blood Counts and Patient Outcomes
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('UHVibGljJTIwaGVhbHRo'); return false;">Public health</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('RXhwbG9yYXRvcnklMjBhbmFseXNpcw=='); return false;">Exploratory analysis</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('U3RhdGlzdGljcw=='); return false;">Statistics</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('UHl0aG9u'); return false;">Python</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">R</div>
+
+</div>
+<div class="card-text listing-description">
+<p>Exploratory data analysis of complete blood count data from COVID-19 patients in Bangladesh, comparing patient outcomes by age, sex and blood markers in Python and R.</p>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+2026
+</div>
+</div>
+</div>
+</div></a>
+</div>
+<div class="g-col-1" data-index="7" data-categories="QmlvaW5mb3JtYXRpY3MlMkNEYXRhJTIwZW5naW5lZXJpbmclMkNOZXh0Zmxvdw==" data-listing-date-sort="1733004000000" data-listing-file-modified-sort="1794559768801" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1336">
+<a href="./projects/wgs-variant-calling-pipeline/index.html" class="quarto-grid-link no-external-icon">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./projects/wgs-variant-calling-pipeline/images/thumbnail.jpg" class="thumbnail-image card-img" style="height: 180px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+A Nextflow Pipeline for Whole-Genome Variant Calling
+</h5>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('QmlvaW5mb3JtYXRpY3M='); return false;">Bioinformatics</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('RGF0YSUyMGVuZ2luZWVyaW5n'); return false;">Data engineering</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('TmV4dGZsb3c='); return false;">Nextflow</div>
+
+</div>
+<div class="card-text listing-description">
+<p>A modular Nextflow DSL2 pipeline that takes paired-end whole-genome sequencing reads to joint-called, filtered variants with BWA-MEM, SAMtools and GATK, built to run on a…</p>
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+2024
 </div>
 </div>
 </div>

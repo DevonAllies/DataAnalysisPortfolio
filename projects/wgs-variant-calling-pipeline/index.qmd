@@ -1,8 +1,10 @@
 ---
 title: "A Nextflow Pipeline for Whole-Genome Variant Calling"
 description: "A modular Nextflow DSL2 pipeline that takes paired-end whole-genome sequencing reads to joint-called, filtered variants with BWA-MEM, SAMtools and GATK, built to run on a PBS cluster and to compare two reference genomes."
-image: images/pipeline-overview.png
-categories: [Nextflow, GATK, WGS, HPC, Bioinformatics]
+date: 2024-12-01
+date-format: "YYYY"   # BSc Honours year; exact month not shown
+image: images/thumbnail.jpg
+categories: [Bioinformatics, Data engineering, Nextflow]
 bibliography: references.bib
 csl: ../../assets/csl/harvard-anglia-ruskin-university.csl
 format:

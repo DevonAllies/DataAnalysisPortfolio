@@ -1,11 +1,11 @@
 ---
-title: "Databricks data pipeline: simulated BAL study"
+title: "Databricks Data Pipeline: Simulated BAL Study"
 aliases:
   - "../databricks_mlflow/bal_pipeline.html"   # old address; Quarto leaves a redirect there
 author: "Devon Allies"
 description: "Bronze, silver and gold Delta tables, tested cleaning functions, MLflow model tracking and a Streamlit demo, built on simulated clinical data."
 image: images/bal-pipeline.png
-categories: [Databricks, PySpark, MLflow, Python]
+categories: [Clinical research, Machine learning, Data engineering, Databricks, Python]
 date: 2026-10-27
 ---
 

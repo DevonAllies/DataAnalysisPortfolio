@@ -1,9 +1,18 @@
 ---
-title: "Data Science Projects"
+title: "Projects"
 description: "Data science and bioinformatics projects by Devon Allies: RNA-seq, TB biomarkers, public health analyses and Databricks pipelines in R and Python."
 body-classes: hide-description   # description is for search/link previews only
 listing:
-  contents: projects # This looks inside your 'projects' folder
-  type: grid         # Creates a professional card layout
+  contents: projects
+  type: grid
+  grid-columns: 2
   sort: "date desc"
+  date-format: "YYYY"
+  fields: [image, date, title, description, categories]
+  categories: true      # tag list in the sidebar; click a tag to filter the cards
+  filter-ui: true       # search box above the cards
+  sort-ui: false
+  image-height: 180px
 ---
+
+Analyses, pipelines and models across genomics, clinical research, public health and finance. Use the tags on the right to filter by topic or tool, or search above the cards.

@@ -13,16 +13,18 @@ The site has four sections:
 
 ## Projects
 
-| Project | Focus | Tools | Code |
-|---|---|---|---|
-| [A Nextflow Pipeline for Whole-Genome Variant Calling](https://devonallies.github.io/DataAnalysisPortfolio/projects/wgs-variant-calling-pipeline/) | Modular WGS pipeline from raw reads to joint-called, VQSR-filtered variants on an HPC cluster (BSc Honours) | Nextflow, BWA-MEM, SAMtools, GATK4, PBS | [code](https://github.com/DevonAllies/DataAnalysisPortfolio/tree/main/projects/wgs-variant-calling-pipeline/pipeline) |
-| [Credit Risk Pipeline on Databricks](https://devonallies.github.io/DataAnalysisPortfolio/projects/credit-risk-pipeline/) | Bronze/silver/gold lakehouse and default prediction for a simulated lender | Databricks, PySpark, MLflow, scikit-learn | [repo](https://github.com/DevonAllies/credit-pipeline-databricks) |
-| [Databricks data pipeline: simulated BAL study](https://devonallies.github.io/DataAnalysisPortfolio/projects/bal-databricks-pipeline/) | Delta table pipeline and MLflow-tracked models on simulated clinical data | Databricks, PySpark, MLflow | [repo](https://github.com/DevonAllies/MLops_bal_pipeline) |
-| [Differential Expression of Chromosome X RNA-seq Data](https://devonallies.github.io/DataAnalysisPortfolio/projects/chrx-rnaseq/) | Sex-based differential expression on chrX | R, Bioconductor (ballgown) | in this repo |
-| [Compartmental TB Diagnostics](https://devonallies.github.io/DataAnalysisPortfolio/projects/tb-bal-cytokines/) | Simulated BAL cytokine cohort for TB diagnosis | R, gtsummary, factoextra | in this repo |
-| [Global Tuberculosis Trends, 2000–2024](https://devonallies.github.io/DataAnalysisPortfolio/projects/tb-global-trends/) | Exploratory analysis of global TB indicators, 2000–2024 | Python, pandas, statsmodels | in this repo |
-| [COVID-19 Blood Counts and Patient Outcomes](https://devonallies.github.io/DataAnalysisPortfolio/projects/covid19-blood-counts/) | Exploratory analysis of blood count data and patient outcomes | Python, R | in this repo |
-| [The use of R & Python in data science](https://devonallies.github.io/DataAnalysisPortfolio/projects/r-python-workflow/) | A cross-language PCA workflow on gene expression data | R, Python, reticulate, scikit-learn | in this repo |
+| Project | Year | Focus | Tools | Code |
+|---|---|---|---|---|
+| [Credit Risk Pipeline on Databricks](https://devonallies.github.io/DataAnalysisPortfolio/projects/credit-risk-pipeline/) | 2026 | Bronze/silver/gold lakehouse and default prediction for a simulated lender | Databricks, PySpark, MLflow, scikit-learn | [repo](https://github.com/DevonAllies/credit-pipeline-databricks) |
+| [Databricks Data Pipeline: Simulated BAL Study](https://devonallies.github.io/DataAnalysisPortfolio/projects/bal-databricks-pipeline/) | 2026 | Delta table pipeline and MLflow-tracked models on simulated clinical data | Databricks, PySpark, MLflow | [repo](https://github.com/DevonAllies/MLops_bal_pipeline) |
+| [Compartmental TB Diagnostics: A Simulated BAL Cytokine Cohort](https://devonallies.github.io/DataAnalysisPortfolio/projects/tb-bal-cytokines/) | 2026 | Cytokine profiles for TB diagnosis in a simulated BAL cohort | R, gtsummary, factoextra | in this repo |
+| [Differential Expression Analysis of Chromosome X RNA-seq Data](https://devonallies.github.io/DataAnalysisPortfolio/projects/chrx-rnaseq/) | 2026 | Sex-based differential expression on chromosome X | Nextflow, HISAT2, StringTie, R (Ballgown) | [pipeline](https://github.com/DevonAllies/rnaseq_pipeline); analysis in this repo |
+| [Global Tuberculosis Trends, 2000–2024](https://devonallies.github.io/DataAnalysisPortfolio/projects/tb-global-trends/) | 2026 | Exploratory analysis and forecasting of global TB indicators | Python, pandas, scikit-learn, statsmodels | in this repo |
+| [Using R and Python Together in Data Science](https://devonallies.github.io/DataAnalysisPortfolio/projects/r-python-workflow/) | 2026 | A cross-language PCA workflow on gene expression data | R, Python, reticulate, scikit-learn | in this repo |
+| [COVID-19 Blood Counts and Patient Outcomes](https://devonallies.github.io/DataAnalysisPortfolio/projects/covid19-blood-counts/) | 2026 | Exploratory analysis of blood count data and patient outcomes | Python, R | in this repo |
+| [A Nextflow Pipeline for Whole-Genome Variant Calling](https://devonallies.github.io/DataAnalysisPortfolio/projects/wgs-variant-calling-pipeline/) | 2024 | Modular WGS pipeline from raw reads to joint-called, VQSR-filtered variants on an HPC cluster (BSc Honours) | Nextflow, BWA-MEM, SAMtools, GATK4, PBS | [code](https://github.com/DevonAllies/DataAnalysisPortfolio/tree/main/projects/wgs-variant-calling-pipeline/pipeline) |
+
+On the site, the Projects page lists these newest first and can be filtered by tag (area, method or tool) or searched.
 
 ## Tutorials
 
@@ -48,7 +50,7 @@ The site is a [Quarto](https://quarto.org) website. `quarto render` writes the s
 _quarto.yml            site configuration (navbar, theme, layout, search/SEO)
 index.qmd              home page, with hand-picked featured projects
 about.qmd              About page
-projects.qmd           project listing
+projects.qmd           project listing: newest first, with tag filters and search
 tutorials.qmd          tutorial listing, ordered by each tutorial's `order` field
 publications.qmd       Publications & Writing page
 projects/<name>/       one folder per project, all with the same layout:
@@ -56,6 +58,7 @@ projects/<name>/       one folder per project, all with the same layout:
     references.bib       its bibliography
     images/              thumbnail and figures
     data/                input data (committed only when small and public)
+    pipeline/            (WGS project only) the Nextflow pipeline code
 tutorials/             numbered tutorials, plus their dataset in tutorials/data/
 assets/                shared files: css/styles.css, images/, csl/ (citation style)
 scripts/               helper scripts: refresh publications, rebuild tutorial data
@@ -85,7 +88,7 @@ uv run python scripts/fetch_publications.py
 quarto render publications.qmd
 ```
 
-**Which pages render from a fresh clone:** the home, listing, About and Publications pages, both tutorials, and the COVID-19, TB trends, credit risk and BAL Databricks projects render from the repo alone. *The use of R & Python* downloads its data from Kaggle. The chrX RNA-seq and TB BAL cytokine projects read local data that isn't in the repo (`data/` is gitignored), so render pages one at a time with `quarto render projects/<name>/index.qmd` and preview with `quarto preview --no-render`. The rendered versions in `docs/` are always current.
+**Which pages render from a fresh clone:** the home, listing, About and Publications pages, both tutorials, and the COVID-19, TB trends, credit risk, BAL Databricks and WGS pipeline projects render from the repo alone. *Using R and Python Together* downloads its data from Kaggle. The chrX RNA-seq and TB BAL cytokine projects read local data that isn't in the repo (`data/` is gitignored), so render pages one at a time with `quarto render projects/<name>/index.qmd` and preview with `quarto preview --no-render`. The rendered versions in `docs/` are always current.
 
 ## Contact
 

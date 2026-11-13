@@ -3,6 +3,8 @@ title: "Global Tuberculosis Trends, 2000–2024"
 aliases:
   - "../tbTrends/TBTrendsEDA.html"   # old address; Quarto leaves a redirect there
 description: "Exploratory analysis of global tuberculosis indicators from 2000 to 2024: South Africa's trends, drivers of TB burden, and a forecast against the End TB 2030 targets."
+date: 2026-02-01
+categories: [Public health, Exploratory analysis, Machine learning, Python]
 author: 'Devon Allies'
 bibliography: references.bib
 csl: ../../assets/csl/harvard-anglia-ruskin-university.csl

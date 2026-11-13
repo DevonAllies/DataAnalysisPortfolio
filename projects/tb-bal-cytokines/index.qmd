@@ -1,8 +1,10 @@
 ---
-title: "Compartmental TB Diagnostics: A Simulated BAL Cytokine cohort"
+title: "Compartmental TB Diagnostics: A Simulated BAL Cytokine Cohort"
 aliases:
   - "../tb_diagnosis/tb_diagnostics.html"   # old address; Quarto leaves a redirect there
 description: "Compartmental TB diagnostics on a simulated BAL cytokine cohort: cleaning and statistics in R, building towards a 3-class classifier for active TB, LTBI and uninfected."
+date: 2026-10-01
+categories: [Clinical research, Statistics, R]
 author:
   - name: "Devon Allies"
     email: "alliesdl@gmail.com"

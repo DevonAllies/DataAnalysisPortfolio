@@ -1,0 +1,4 @@
+# Shared settings for every project page.
+# Project dates are approximate (month the work was done), so show month and
+# year rather than an exact day.
+date-format: "MMMM YYYY"
