@@ -15,14 +15,14 @@ The site has four sections:
 
 | Project | Focus | Tools | Code |
 |---|---|---|---|
-| [Credit Risk Pipeline on Databricks](https://devonallies.github.io/DataAnalysisPortfolio/projects/credit-lending-pipeline/credit-risk-pipeline.html) | Bronze/silver/gold lakehouse and default prediction for a simulated lender | Databricks, PySpark, MLflow, scikit-learn | [repo](https://github.com/DevonAllies/credit-pipeline-databricks) |
-| [Databricks data pipeline: simulated BAL study](https://devonallies.github.io/DataAnalysisPortfolio/projects/databricks_mlflow/bal_pipeline.html) | Delta table pipeline and MLflow-tracked models on simulated clinical data | Databricks, PySpark, MLflow | [repo](https://github.com/DevonAllies/MLops_bal_pipeline) |
-| [Differential Expression of Chromosome X RNA-seq Data](https://devonallies.github.io/DataAnalysisPortfolio/projects/rnaseq_analysis/rna_seq_analysis.html) | Sex-based differential expression on chrX | R, Bioconductor (ballgown) | in this repo |
-| [Compartmental TB Diagnostics](https://devonallies.github.io/DataAnalysisPortfolio/projects/tb_diagnosis/tb_diagnostics.html) | Simulated BAL cytokine cohort for TB diagnosis | R, gtsummary, factoextra | in this repo |
-| [TB Trends](https://devonallies.github.io/DataAnalysisPortfolio/projects/tbTrends/TBTrendsEDA.html) | Exploratory analysis of global TB indicators, 2000–2024 | Python, pandas, statsmodels | in this repo |
-| [Covid-19 CBC Dataset](https://devonallies.github.io/DataAnalysisPortfolio/projects/covid/covid19_eda.html) | Exploratory analysis of blood count data and patient outcomes | Python, R | in this repo |
-| [Global Retractions of Scientific Publications](https://devonallies.github.io/DataAnalysisPortfolio/projects/retractions/retraction.html) | Trends in retracted publications | R, SQL (MySQL) | in this repo |
-| [The use of R & Python in data science](https://devonallies.github.io/DataAnalysisPortfolio/projects/R%20%26%20Python/R%20%26%20Python.html) | A cross-language PCA workflow on gene expression data | R, Python, reticulate, scikit-learn | in this repo |
+| [Credit Risk Pipeline on Databricks](https://devonallies.github.io/DataAnalysisPortfolio/projects/credit-risk-pipeline/) | Bronze/silver/gold lakehouse and default prediction for a simulated lender | Databricks, PySpark, MLflow, scikit-learn | [repo](https://github.com/DevonAllies/credit-pipeline-databricks) |
+| [Databricks data pipeline: simulated BAL study](https://devonallies.github.io/DataAnalysisPortfolio/projects/bal-databricks-pipeline/) | Delta table pipeline and MLflow-tracked models on simulated clinical data | Databricks, PySpark, MLflow | [repo](https://github.com/DevonAllies/MLops_bal_pipeline) |
+| [Differential Expression of Chromosome X RNA-seq Data](https://devonallies.github.io/DataAnalysisPortfolio/projects/chrx-rnaseq/) | Sex-based differential expression on chrX | R, Bioconductor (ballgown) | in this repo |
+| [Compartmental TB Diagnostics](https://devonallies.github.io/DataAnalysisPortfolio/projects/tb-bal-cytokines/) | Simulated BAL cytokine cohort for TB diagnosis | R, gtsummary, factoextra | in this repo |
+| [Global Tuberculosis Trends, 2000–2024](https://devonallies.github.io/DataAnalysisPortfolio/projects/tb-global-trends/) | Exploratory analysis of global TB indicators, 2000–2024 | Python, pandas, statsmodels | in this repo |
+| [COVID-19 Blood Counts and Patient Outcomes](https://devonallies.github.io/DataAnalysisPortfolio/projects/covid19-blood-counts/) | Exploratory analysis of blood count data and patient outcomes | Python, R | in this repo |
+| [Global Retractions of Scientific Publications](https://devonallies.github.io/DataAnalysisPortfolio/projects/publication-retractions/) | Trends in retracted publications | R, SQL (MySQL) | in this repo |
+| [The use of R & Python in data science](https://devonallies.github.io/DataAnalysisPortfolio/projects/r-python-workflow/) | A cross-language PCA workflow on gene expression data | R, Python, reticulate, scikit-learn | in this repo |
 
 ## Tutorials
 
@@ -45,17 +45,22 @@ The page is generated from `_data/publications.json`, which a script builds from
 The site is a [Quarto](https://quarto.org) website. `quarto render` writes the static site to `docs/`, and GitHub Pages serves it from `docs/` on the `main` branch.
 
 ```
-_quarto.yml          site configuration (navbar, theme, layout, filters)
-index.qmd            home page, with hand-picked featured projects
-projects.qmd         project listing
-projects/<name>/     one folder per project: .qmd, references, images
-tutorials.qmd        tutorial listing, ordered by each tutorial's `order` field
-tutorials/           numbered tutorials, plus their dataset in tutorials/data/
-publications.qmd     Publications & Writing page
-_data/               publications data and the script that refreshes it
-about.qmd            About page
-styles.css           site-wide custom styles (cards, home page, publications)
-docs/                rendered site (committed; served by GitHub Pages)
+_quarto.yml            site configuration (navbar, theme, layout, search/SEO)
+index.qmd              home page, with hand-picked featured projects
+about.qmd              About page
+projects.qmd           project listing
+tutorials.qmd          tutorial listing, ordered by each tutorial's `order` field
+publications.qmd       Publications & Writing page
+projects/<name>/       one folder per project, all with the same layout:
+    index.qmd            the page (URL: /projects/<name>/)
+    references.bib       its bibliography
+    images/              thumbnail and figures
+    data/                input data (committed only when small and public)
+tutorials/             numbered tutorials, plus their dataset in tutorials/data/
+assets/                shared files: css/styles.css, images/, csl/ (citation style)
+scripts/               helper scripts: refresh publications, rebuild tutorial data
+_data/                 publications.json, built by scripts/fetch_publications.py
+docs/                  rendered site (committed; served by GitHub Pages)
 ```
 
 ## Running it locally
@@ -73,10 +78,10 @@ uv sync
 quarto preview --no-render
 
 # Render a single page after editing it
-quarto render projects/covid/covid19_eda.qmd
+quarto render projects/covid19-blood-counts/index.qmd
 
 # Refresh publications and articles from ORCID, Crossref and Medium
-uv run python _data/fetch_publications.py
+uv run python scripts/fetch_publications.py
 quarto render publications.qmd
 ```
 

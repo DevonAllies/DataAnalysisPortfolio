@@ -3,7 +3,7 @@ title: "Devon Allies"
 subtitle: "Bioinformatician & Computational Biologist · Data Analyst at Stellenbosch University"
 description: "Devon Allies, bioinformatician and computational biologist in Cape Town: data science portfolio, R and Python tutorials, and TB research publications."
 body-classes: hide-description   # description is for search/link previews only
-image: images/me.jpeg              # link-preview image
+image: assets/images/me.jpeg              # link-preview image
 include-in-header:                 # Google Search Console ownership check
   text: '<meta name="google-site-verification" content="s5AWjJtQcNCZ2RpgMs8we9ohx_Ee-ymZb1QfG1iaeqI" />'
 page-layout: full
@@ -12,10 +12,10 @@ toc: false
 listing:
   id: recent-projects
   contents:
-    - projects/credit-lending-pipeline/credit-risk-pipeline.qmd
-    - projects/databricks_mlflow/bal_pipeline.qmd
-    - projects/rnaseq_analysis/rna_seq_analysis.qmd
-    - "projects/R & Python/R & Python.qmd"
+    - projects/credit-risk-pipeline/index.qmd
+    - projects/bal-databricks-pipeline/index.qmd
+    - projects/chrx-rnaseq/index.qmd
+    - projects/r-python-workflow/index.qmd
   type: grid
   grid-columns: 2
   sort: false

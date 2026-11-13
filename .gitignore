@@ -29,3 +29,9 @@ linkedin/
 !tutorials/data/*.csv
 !docs/tutorials/data/
 !docs/tutorials/data/*.csv
+
+# Public datasets committed on purpose (they render the published pages)
+!projects/covid19-blood-counts/data/
+!projects/covid19-blood-counts/data/COVID-19_CBC_Data.csv
+!projects/tb-global-trends/data/
+!projects/tb-global-trends/data/Tuberculosis_Trends.csv

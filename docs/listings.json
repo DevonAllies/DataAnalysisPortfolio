@@ -9,23 +9,23 @@
   {
     "listing": "/projects.html",
     "items": [
-      "/projects/retractions/retraction.html",
-      "/projects/covid/covid19_eda.html",
-      "/projects/tbTrends/TBTrendsEDA.html",
-      "/projects/tb_diagnosis/tb_diagnostics.html",
-      "/projects/R & Python/R & Python.html",
-      "/projects/rnaseq_analysis/rna_seq_analysis.html",
-      "/projects/credit-lending-pipeline/credit-risk-pipeline.html",
-      "/projects/databricks_mlflow/bal_pipeline.html"
+      "/projects/tb-global-trends/index.html",
+      "/projects/tb-bal-cytokines/index.html",
+      "/projects/publication-retractions/index.html",
+      "/projects/covid19-blood-counts/index.html",
+      "/projects/r-python-workflow/index.html",
+      "/projects/chrx-rnaseq/index.html",
+      "/projects/credit-risk-pipeline/index.html",
+      "/projects/bal-databricks-pipeline/index.html"
     ]
   },
   {
     "listing": "/index.html",
     "items": [
-      "/projects/credit-lending-pipeline/credit-risk-pipeline.html",
-      "/projects/databricks_mlflow/bal_pipeline.html",
-      "/projects/rnaseq_analysis/rna_seq_analysis.html",
-      "/projects/R & Python/R & Python.html"
+      "/projects/credit-risk-pipeline/index.html",
+      "/projects/bal-databricks-pipeline/index.html",
+      "/projects/chrx-rnaseq/index.html",
+      "/projects/r-python-workflow/index.html"
     ]
   }
 ]

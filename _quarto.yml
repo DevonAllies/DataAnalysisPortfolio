@@ -11,7 +11,7 @@ website:
   # Search and sharing: site-url makes Quarto write docs/sitemap.xml;
   # open-graph adds link-preview tags to every page.
   site-url: "https://devonallies.github.io/DataAnalysisPortfolio/"
-  image: images/me.jpeg
+  image: assets/images/me.jpeg
   open-graph: true
   navbar:
     left:
@@ -31,7 +31,7 @@ format:
     theme:
       - cosmo
       - brand
-    css: styles.css
+    css: assets/css/styles.css
     toc: true
     grid:
       body-width: 960px   # Quarto default is 800px

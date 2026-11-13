@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://devonallies.github.io/DataAnalysisPortfolio/index.html</loc>
-    <lastmod>2026-11-12T14:17:46.665Z</lastmod>
+    <lastmod>2026-11-13T06:26:32.223Z</lastmod>
   </url>
   <url>
     <loc>https://devonallies.github.io/DataAnalysisPortfolio/about.html</loc>
-    <lastmod>2026-11-12T14:08:35.578Z</lastmod>
+    <lastmod>2026-11-13T06:23:10.661Z</lastmod>
   </url>
   <url>
     <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects.html</loc>
@@ -21,43 +21,43 @@
     <lastmod>2026-11-12T14:05:31.371Z</lastmod>
   </url>
   <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/credit-lending-pipeline/credit-risk-pipeline.html</loc>
-    <lastmod>2026-11-12T13:24:56.156Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/databricks_mlflow/bal_pipeline.html</loc>
-    <lastmod>2026-10-27T16:42:04.328Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/covid/covid19_eda.html</loc>
-    <lastmod>2026-11-12T14:04:53.455Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/rnaseq_analysis/rna_seq_analysis.html</loc>
-    <lastmod>2026-11-12T14:04:53.455Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/tb_diagnosis/tb_diagnostics.html</loc>
-    <lastmod>2026-11-12T14:04:53.460Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/R &amp; Python/R &amp; Python.html</loc>
-    <lastmod>2026-11-12T14:04:53.461Z</lastmod>
-  </url>
-  <url>
     <loc>https://devonallies.github.io/DataAnalysisPortfolio/tutorials/01-import-data-in-r/import-data-in-r.html</loc>
     <lastmod>2026-11-12T12:59:47.090Z</lastmod>
   </url>
   <url>
     <loc>https://devonallies.github.io/DataAnalysisPortfolio/tutorials/02-r-and-python/r-and-python-dataframes.html</loc>
-    <lastmod>2026-11-12T13:06:14.440Z</lastmod>
+    <lastmod>2026-11-13T06:26:32.228Z</lastmod>
   </url>
   <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/tbTrends/TBTrendsEDA.html</loc>
-    <lastmod>2026-11-12T14:04:53.455Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/retractions/retraction.html</loc>
+    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/publication-retractions/index.html</loc>
     <lastmod>2026-11-12T14:05:31.371Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/credit-risk-pipeline/index.html</loc>
+    <lastmod>2026-11-13T06:25:52.768Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/bal-databricks-pipeline/index.html</loc>
+    <lastmod>2026-11-13T06:25:52.768Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/covid19-blood-counts/index.html</loc>
+    <lastmod>2026-11-13T06:25:52.768Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/tb-global-trends/index.html</loc>
+    <lastmod>2026-11-13T06:26:03.423Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/chrx-rnaseq/index.html</loc>
+    <lastmod>2026-11-13T06:25:52.769Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/tb-bal-cytokines/index.html</loc>
+    <lastmod>2026-11-13T06:26:03.423Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/r-python-workflow/index.html</loc>
+    <lastmod>2026-11-13T06:25:52.768Z</lastmod>
   </url>
 </urlset>

@@ -251,6 +251,6 @@ Going the other way, pandas datetimes come back to R as date-times (`POSIXct`), 
 
 ## Going further
 
-For a larger worked example (dimensionality reduction with scikit-learn on 22,000 gene features, then statistical tables in R), see the project [The use of R & Python in data science](../../projects/R%20&%20Python/R%20&%20Python.qmd).
+For a larger worked example (dimensionality reduction with scikit-learn on 22,000 gene features, then statistical tables in R), see the project [The use of R & Python in data science](../../projects/r-python-workflow/index.qmd).
 
 ← Back to [Tutorial 1: Importing data into RStudio with R](../01-import-data-in-r/import-data-in-r.qmd)

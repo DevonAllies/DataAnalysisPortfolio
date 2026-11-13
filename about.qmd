@@ -4,7 +4,7 @@ description: "About Devon Allies: bioinformatician and computational biologist w
 body-classes: hide-description   # description is for search/link previews only
 about:
   template: jolla
-  image: images/me.jpeg
+  image: assets/images/me.jpeg
   image-width: 15em
   image-shape: round
   links:
