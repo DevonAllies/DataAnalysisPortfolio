@@ -152,6 +152,16 @@
   font-size: 0.9rem;
 }
 
+/* "See it in: <project>" evidence line at the bottom of each skill card */
+.skill-proof {
+  display: block;
+  margin-top: 0.5rem;
+  padding-top: 0.45rem;
+  border-top: 1px dashed var(--bs-border-color, #dee2e6);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
 /* Pages with body-classes: hide-description keep their description for
    search engines and link previews, but don't show it under the title. */
 .hide-description #title-block-header .description,

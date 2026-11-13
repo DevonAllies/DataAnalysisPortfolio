@@ -92,27 +92,13 @@ Cape Peninsula University of Technology
 ::: {.grid .skills-grid}
 
 ::: {.g-col-12 .g-col-md-6 .skill-card}
-[<i class="bi bi-code-slash"></i> Programming & Analysis]{.skill-title}
+[<i class="bi bi-diagram-3"></i> Bioinformatics & Genomics]{.skill-title}
 
-Python · R · SQL · Bash
+NGS pipelines · Variant calling · RNA-seq · pQTL mapping
 
-[pandas, NumPy, scikit-learn, tidyverse, ggplot2, gtsummary]{.skill-detail}
-:::
+[Nextflow DSL2, BWA-MEM2, GATK, bcftools, samtools, HISAT2, StringTie, Ballgown; host genetics and multi-omics]{.skill-detail}
 
-::: {.g-col-12 .g-col-md-6 .skill-card}
-[<i class="bi bi-diagram-3"></i> Bioinformatics]{.skill-title}
-
-Nextflow DSL2 · GATK · BWA-MEM2 · samtools
-
-[HISAT2, StringTie, Ballgown; WGS and RNA-seq workflows]{.skill-detail}
-:::
-
-::: {.g-col-12 .g-col-md-6 .skill-card}
-[<i class="bi bi-database"></i> Data Engineering & MLOps]{.skill-title}
-
-Databricks · PySpark · Delta Lake · MLflow
-
-[HPC / PBS, Docker / Singularity, Git; medallion (bronze/silver/gold) pipelines]{.skill-detail}
+[See it in: [chrX RNA-seq](projects/chrx-rnaseq/index.qmd)]{.skill-proof}
 :::
 
 ::: {.g-col-12 .g-col-md-6 .skill-card}
@@ -120,23 +106,49 @@ Databricks · PySpark · Delta Lake · MLflow
 
 Regression · PCA · Random forest · SHAP
 
-[Cross-validation, ROC/AUC, FDR correction, association testing]{.skill-detail}
+[Association testing, Wilcoxon and FDR correction, cross-validation, ROC/AUC; scikit-learn]{.skill-detail}
+
+[See it in: [Credit risk pipeline](projects/credit-risk-pipeline/index.qmd) · [BAL Databricks pipeline](projects/bal-databricks-pipeline/index.qmd)]{.skill-proof}
 :::
 
 ::: {.g-col-12 .g-col-md-6 .skill-card}
-[<i class="bi bi-bar-chart-line"></i> Reporting & BI]{.skill-title}
+[<i class="bi bi-database-check"></i> Data Engineering & Data Quality]{.skill-title}
 
-Quarto · RMarkdown · Power BI · Tableau
+Databricks · PySpark · Delta Lake · MLflow
 
-[Databricks AI/BI dashboards, LaTeX, publication-ready figures]{.skill-detail}
+[Bronze/silver/gold pipelines, SQL, validation checks, unit-tested cleaning functions, PII removal]{.skill-detail}
+
+[See it in: [Credit risk pipeline](projects/credit-risk-pipeline/index.qmd) · [BAL Databricks pipeline](projects/bal-databricks-pipeline/index.qmd)]{.skill-proof}
 :::
 
 ::: {.g-col-12 .g-col-md-6 .skill-card}
-[<i class="bi bi-clipboard2-pulse"></i> Laboratory & Clinical]{.skill-title}
+[<i class="bi bi-code-slash"></i> Programming & Reproducibility]{.skill-title}
 
-Flow cytometry · PBMC processing · ISO QA
+Python · R · SQL · Bash
 
-[FACSCantoII, FlowJo, assay validation, clinical trial coordination]{.skill-detail}
+[pandas, NumPy, tidyverse; Git, Docker / Singularity, mamba; Linux and HPC (PBS)]{.skill-detail}
+
+[See it in: [Tutorials](tutorials.qmd) · [this site's source](https://github.com/DevonAllies/DataAnalysisPortfolio)]{.skill-proof}
+:::
+
+::: {.g-col-12 .g-col-md-6 .skill-card}
+[<i class="bi bi-bar-chart-line"></i> Visualisation & Reporting]{.skill-title}
+
+ggplot2 · Power BI · Tableau · Quarto
+
+[matplotlib, seaborn, Databricks AI/BI dashboards, RMarkdown, LaTeX, Excel]{.skill-detail}
+
+[See it in: [Global TB trends](projects/tb-global-trends/index.qmd) · [COVID-19 blood counts](projects/covid19-blood-counts/index.qmd)]{.skill-proof}
+:::
+
+::: {.g-col-12 .g-col-md-6 .skill-card}
+[<i class="bi bi-clipboard2-pulse"></i> Lab, Clinical & Project Management]{.skill-title}
+
+Flow cytometry · PBMC processing · ISO-accredited QA
+
+[FACSCantoII, FlowJo, assay validation, clinical trial coordination, budgets and stakeholder management]{.skill-detail}
+
+[See it in: [Publications](publications.qmd)]{.skill-proof}
 :::
 
 :::
