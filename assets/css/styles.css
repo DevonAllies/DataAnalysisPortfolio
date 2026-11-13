@@ -358,3 +358,10 @@
 .hide-description .quarto-title-block .description {
   display: none;
 }
+
+/* Older project pages: "Looking back" reflection, and "Work in progress" */
+.callout.looking-back,
+.callout.in-progress {
+  border-left-color: var(--bs-primary, #2780e3) !important;
+  margin-bottom: 1.75rem;
+}

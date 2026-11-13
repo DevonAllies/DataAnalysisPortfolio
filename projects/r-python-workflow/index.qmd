@@ -18,6 +18,11 @@ license:
   url: https://creativecommons.org/licenses/by-nc-sa/4.0/
 ---
 
+::: {.callout-tip .looking-back appearance="simple"}
+## Looking back (November 2026)
+I wrote this in February 2026, early in learning to combine R and Python. Looking back, I scaled the data before splitting it into training and test sets, which lets information from the test set leak into training; scaling inside a scikit-learn `Pipeline` avoids that. With only 64 samples, a single 70/30 split also gives an unstable accuracy estimate, so cross-validation would be more reliable. And with over 22,000 genes, comparisons between groups need correcting for multiple testing. My [second tutorial](../../tutorials/02-r-and-python/r-and-python-dataframes.qmd) covers passing data between R and Python more carefully.
+:::
+
 ## Introduction:
 
 The age old debate, which is better, R or Python? The answer is, it depends. Both languages have their strengths and weaknesses, and the best choice for a data scientist will depend on their specific needs and preferences. In this tutorial, we will explore the use of R and Python in data science.
@@ -173,7 +178,7 @@ In the code above, we use the stratify=y parameter during our split. In clinical
 ```{r}
 #| label: tbl-r_classification_report
 #| code-fold: true
-#| code-summary: "Classification Report Table"
+#| code-summary: "Leukemia types table"
 #| tbl-cap: 'Types of leukemia in the dataset.'
 #| warning: false
 #| message: false

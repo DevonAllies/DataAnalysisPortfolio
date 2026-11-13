@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Devon Allies, BSc. Honours: Bioinformatics &amp; Computational Biology">
+<meta name="author" content="Devon Allies">
 <meta name="description" content="Exploratory data analysis of complete blood count data from COVID-19 patients in Bangladesh, comparing patient outcomes by age, sex and blood markers in Python and R.">
 
 <title>COVID-19 Blood Counts and Patient Outcomes – Devon Allies</title>
@@ -238,7 +238,7 @@ window.Quarto = {
   <li><a href="#gender-composition" id="toc-gender-composition" class="nav-link" data-scroll-target="#gender-composition">Gender Composition:</a></li>
   <li><a href="#survival-pattern-analysis" id="toc-survival-pattern-analysis" class="nav-link" data-scroll-target="#survival-pattern-analysis">Survival Pattern Analysis:</a></li>
   <li><a href="#clinical-outcomes-by-gender" id="toc-clinical-outcomes-by-gender" class="nav-link" data-scroll-target="#clinical-outcomes-by-gender">Clinical Outcomes by Gender:</a></li>
-  <li><a href="#clinical-trajectory-metics" id="toc-clinical-trajectory-metics" class="nav-link" data-scroll-target="#clinical-trajectory-metics">Clinical Trajectory Metics:</a></li>
+  <li><a href="#clinical-trajectory-metrics" id="toc-clinical-trajectory-metrics" class="nav-link" data-scroll-target="#clinical-trajectory-metrics">Clinical Trajectory Metrics:</a></li>
   <li><a href="#statistical-hypothesis-testing" id="toc-statistical-hypothesis-testing" class="nav-link" data-scroll-target="#statistical-hypothesis-testing">Statistical Hypothesis Testing:</a></li>
   </ul></li>
   <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key Takeaways:</a>
@@ -270,30 +270,16 @@ window.Quarto = {
   </div>
 </div>
 
-<div class="quarto-title-meta-author">
-  <div class="quarto-title-meta-heading">Author</div>
-  <div class="quarto-title-meta-heading">Affiliations</div>
-  
-    <div class="quarto-title-meta-contents">
-    <p class="author">Devon Allies, BSc. Honours: Bioinformatics &amp; Computational Biology </p>
-  </div>
-  <div class="quarto-title-meta-contents">
-        <p class="affiliation">
-            <a href="https://github.com/DevonAllies">
-            Github: DevonAllies
-            </a>
-          </p>
-        <p class="affiliation">
-            <a href="https://www.linkedin.com/in/devonallies/">
-            Connect on LinkedIn
-            </a>
-          </p>
-      </div>
-  </div>
 
 <div class="quarto-title-meta">
 
-      
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Devon Allies </p>
+          </div>
+  </div>
+    
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
@@ -309,16 +295,29 @@ window.Quarto = {
 </header>
 
 
+<div class="looking-back callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Looking back (November 2026)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This was one of my first portfolio analyses, written in February 2026. If I did it again, I would calculate the key takeaways directly from the data rather than typing them in, and use Welch’s t-test, which doesn’t assume the two groups have equal variances. I would also fit a logistic regression so that age, sex and ventilation are considered together: ventilated patients were probably sicker to begin with, so comparing them directly overstates ventilation’s link with mortality. With 103 patients from one hospital, I would frame the findings more cautiously too. My <a href="../../projects/credit-risk-pipeline/index.html">credit risk pipeline</a> shows how my approach has changed since.</p>
+</div>
+</div>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction:</h2>
 <p>Coronavirus Disease 2019 (Covid-19) is a highly contagious infectious disease caused by the <em>SARS-CoV-2</em> virus, which emerged as a global pandemic in early 2020. It primarily spreads through respiratory particles and has impacted global health, economics and societies worldwide.</p>
 <section id="project-context-and-motivation" class="level3">
 <h3 class="anchored" data-anchor-id="project-context-and-motivation">Project Context and Motivation:</h3>
-<p>This Quarto document serves as a exercise in Exploratory Data Analysis (EDA), focusing on a critical public health data-set related to the Covid-19 pandemic. The data, sourced from a collaborative research effort, provides clinical insights into patient outcomes based on complete blood count (CBC) metrics <span class="citation" data-cites="Rahman2020COVID">(<a href="#ref-Rahman2020COVID" role="doc-biblioref">Rahman et al., 2020</a>)</span> .</p>
+<p>This Quarto document serves as an exercise in Exploratory Data Analysis (EDA), focusing on a critical public health data-set related to the Covid-19 pandemic. The data, sourced from a collaborative research effort, provides clinical insights into patient outcomes based on complete blood count (CBC) metrics <span class="citation" data-cites="Rahman2020COVID">(<a href="#ref-Rahman2020COVID" role="doc-biblioref">Rahman et al., 2020</a>)</span> .</p>
 </section>
 <section id="data-source-and-collection-methodology" class="level3">
 <h3 class="anchored" data-anchor-id="data-source-and-collection-methodology">Data Source and Collection Methodology:</h3>
-<p>The data-set was compiled by a team of researches and medical professionals from Qatar University and Dhaka Medical College Hospital, Bangladesh. Data collection occurred between April 12 and August 31, 2020, at the Dhaka Medical College Hospital, following approval from the local Hospital Ethical Committee. This specific time frame places the data collection during a significant early phase of the pandemic <span class="citation" data-cites="Rahman2020COVID">(<a href="#ref-Rahman2020COVID" role="doc-biblioref">Rahman et al., 2020</a>)</span>.</p>
+<p>The data-set was compiled by a team of researchers and medical professionals from Qatar University and Dhaka Medical College Hospital, Bangladesh. Data collection occurred between April 12 and August 31, 2020, at the Dhaka Medical College Hospital, following approval from the local Hospital Ethical Committee. This specific time frame places the data collection during a significant early phase of the pandemic <span class="citation" data-cites="Rahman2020COVID">(<a href="#ref-Rahman2020COVID" role="doc-biblioref">Rahman et al., 2020</a>)</span>.</p>
 </section>
 </section>
 <section id="import-modules-packages" class="level2">
@@ -502,8 +501,8 @@ Figure&nbsp;4: Survival by Gender
 <p><a href="#fig-gender-survival" class="quarto-xref">Figure&nbsp;4</a> shows proportional recovery rates (<span class="math inline">\(\pm\)</span> 59% overall) identical across genders despite higher raw non-recovery counts among males.</p>
 </section>
 </section>
-<section id="clinical-trajectory-metics" class="level3">
-<h3 class="anchored" data-anchor-id="clinical-trajectory-metics">Clinical Trajectory Metics:</h3>
+<section id="clinical-trajectory-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="clinical-trajectory-metrics">Clinical Trajectory Metrics:</h3>
 <section id="hospital-length-stay" class="level4">
 <h4 class="anchored" data-anchor-id="hospital-length-stay">Hospital Length Stay:</h4>
 <p>Length of Stay (LOS), <a href="#fig-los" class="quarto-xref">Figure&nbsp;5</a>, reveal shorter median stays for recovered patients versus prolonged stays for non-recovered cases, reflecting disease severity.</p>
@@ -574,8 +573,8 @@ Figure&nbsp;6: Correlation Heatmap
 <section id="chi-square-test-for-gender-survival-association" class="level4">
 <h4 class="anchored" data-anchor-id="chi-square-test-for-gender-survival-association">Chi-square test for gender-survival association:</h4>
 <p>A <code>Chi-square</code> test of independence was performed to examine the relationship between patient gender and survival outcome.</p>
-<p>The analysis produced <span class="math inline">\(x^2\)</span> statistic of 2.68 with a corresponding p-value of 0.1016. Since the p-value is greater than the standard significance level of 0.05, we fail to reject the <code>null hyporhesis</code>, that gender and survival are independent.</p>
-<p>The statistical evidence suggests there is <strong>no significant association</strong> between a patient’s gender and their likelyhood of recovery within this specific data-set. This supports the visual observation from <a href="#fig-gender-distribution" class="quarto-xref">Figure&nbsp;2</a> , indicating similar proportional outcomes for both males and females.</p>
+<p>The analysis produced <span class="math inline">\(x^2\)</span> statistic of 2.68 with a corresponding p-value of 0.1016. Since the p-value is greater than the standard significance level of 0.05, we fail to reject the <code>null hypothesis</code>, that gender and survival are independent.</p>
+<p>The statistical evidence suggests there is <strong>no significant association</strong> between a patient’s gender and their likelihood of recovery within this specific data-set. This supports the visual observation from <a href="#fig-gender-distribution" class="quarto-xref">Figure&nbsp;2</a> , indicating similar proportional outcomes for both males and females.</p>
 </section>
 <section id="t-test-for-age-difference-by-outcome" class="level4">
 <h4 class="anchored" data-anchor-id="t-test-for-age-difference-by-outcome">T-Test for age difference by outcome:</h4>

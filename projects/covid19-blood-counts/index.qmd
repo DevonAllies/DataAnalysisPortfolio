@@ -5,18 +5,17 @@ aliases:
 description: "Exploratory data analysis of complete blood count data from COVID-19 patients in Bangladesh, comparing patient outcomes by age, sex and blood markers in Python and R."
 date: 2026-02-01
 categories: [Public health, Exploratory analysis, Statistics, Python, R]
-author:
-  - name: 'Devon Allies, BSc. Honours: Bioinformatics & Computational Biology'
-    affiliations:
-      - name: 'Github: DevonAllies'
-        url: 'https://github.com/DevonAllies'
-      - name: 'Connect on LinkedIn'
-        url: 'https://www.linkedin.com/in/devonallies/'
+author: "Devon Allies"
 bibliography: references.bib
 csl: ../../assets/csl/harvard-anglia-ruskin-university.csl
 image: 'images/thumbnail.png'
 license: 'CC BY 4.0'
 ---
+
+::: {.callout-tip .looking-back appearance="simple"}
+## Looking back (November 2026)
+This was one of my first portfolio analyses, written in February 2026. If I did it again, I would calculate the key takeaways directly from the data rather than typing them in, and use Welch's t-test, which doesn't assume the two groups have equal variances. I would also fit a logistic regression so that age, sex and ventilation are considered together: ventilated patients were probably sicker to begin with, so comparing them directly overstates ventilation's link with mortality. With 103 patients from one hospital, I would frame the findings more cautiously too. My [credit risk pipeline](../credit-risk-pipeline/index.qmd) shows how my approach has changed since.
+:::
 
 ## Introduction:
 
@@ -24,11 +23,11 @@ Coronavirus Disease 2019 (Covid-19) is a highly contagious infectious disease ca
 
 ### Project Context and Motivation:
 
-This Quarto document serves as a exercise in Exploratory Data Analysis (EDA), focusing on a critical public health data-set related to the Covid-19 pandemic. The data, sourced from a collaborative research effort, provides clinical insights into patient outcomes based on complete blood count (CBC) metrics [@Rahman2020COVID] .
+This Quarto document serves as an exercise in Exploratory Data Analysis (EDA), focusing on a critical public health data-set related to the Covid-19 pandemic. The data, sourced from a collaborative research effort, provides clinical insights into patient outcomes based on complete blood count (CBC) metrics [@Rahman2020COVID] .
 
 ### Data Source and Collection Methodology:
 
-The data-set was compiled by a team of researches and medical professionals from Qatar University and Dhaka Medical College Hospital, Bangladesh. Data collection occurred between April 12 and August 31, 2020, at the Dhaka Medical College Hospital, following approval from the local Hospital Ethical Committee. This specific time frame places the data collection during a significant early phase of the pandemic [@Rahman2020COVID].
+The data-set was compiled by a team of researchers and medical professionals from Qatar University and Dhaka Medical College Hospital, Bangladesh. Data collection occurred between April 12 and August 31, 2020, at the Dhaka Medical College Hospital, following approval from the local Hospital Ethical Committee. This specific time frame places the data collection during a significant early phase of the pandemic [@Rahman2020COVID].
 
 ## Import modules & packages:
 
@@ -223,7 +222,7 @@ _ = plt.show()
 
 @fig-gender-survival shows proportional recovery rates ($\pm$ 59% overall) identical across genders despite higher raw non-recovery counts among males.
 
-### Clinical Trajectory Metics:
+### Clinical Trajectory Metrics:
 
 #### Hospital Length Stay:
 
@@ -329,9 +328,9 @@ print(f"Age by Outcome T-test: t={t_stat:.2f}, p={p_age:.4f}")
 
 A `Chi-square` test of independence was performed to examine the relationship between patient gender and survival outcome.
 
-The analysis produced $x^2$ statistic of 2.68 with a corresponding p-value of 0.1016. Since the p-value is greater than the standard significance level of 0.05, we fail to reject the `null hyporhesis`, that gender and survival are independent.
+The analysis produced $x^2$ statistic of 2.68 with a corresponding p-value of 0.1016. Since the p-value is greater than the standard significance level of 0.05, we fail to reject the `null hypothesis`, that gender and survival are independent.
 
-The statistical evidence suggests there is **no significant association** between a patient's gender and their likelyhood of recovery within this specific data-set. This supports the visual observation from @fig-gender-distribution , indicating similar proportional outcomes for both males and females.
+The statistical evidence suggests there is **no significant association** between a patient's gender and their likelihood of recovery within this specific data-set. This supports the visual observation from @fig-gender-distribution , indicating similar proportional outcomes for both males and females.
 
 #### T-Test for age difference by outcome:
 

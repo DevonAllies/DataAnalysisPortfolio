@@ -257,6 +257,19 @@ div.csl-indent {
 </header>
 
 
+<div class="looking-back callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Looking back (November 2026)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This was one of my first predictive models, built in February 2026. Today I would split the data by time, training on earlier years and testing on later ones, instead of splitting it randomly: a random split lets the model learn from the very years it is meant to predict. I would also describe the correlations as associations rather than “drivers”, and check the findings against the official WHO Global TB Report data before drawing conclusions. The time-based holdout in my <a href="../../projects/credit-risk-pipeline/index.html">credit risk pipeline</a> is how I would approach it now.</p>
+</div>
+</div>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction:</h2>
 <p>Tuberculosis (TB) remains a significant global health challenge, affecting millions of people worldwide, particularly in Africa, Asia, and Latin America. The World Health Organization (WHO) adopted a blueprint in 2014, the <code>End TB Strategy</code>, which aims to reduce incidence by 80% by the year 2030, using the year 2015 as a baseline.</p>
@@ -1613,7 +1626,7 @@ available in the ``cv_results_`` dict at the keys ending with that<br>
 scorer's name (``'_&lt;scorer_name&gt;'``) instead of ``'_score'`` shown<br>
 above. ('split0_test_precision', 'mean_train_precision' etc.)</span></a></td>
 <td class="fitted-att-type">dict</td>
-<td>{'me...me': array([0.0795..., 0.23508067]), 'me...me': array([0.0055..., 0.01593561]), 'me...re': array([-2.172...15999987e+08]), 'pa...th': masked_array(... dtype=object), ...}</td>
+<td>{'me...me': array([0.0743..., 0.25120134]), 'me...me': array([0.0053..., 0.01706352]), 'me...re': array([-2.172...15999987e+08]), 'pa...th': masked_array(... dtype=object), ...}</td>
 </tr>
 <tr class="default odd">
 <td class="param"><a href="https://scikit-learn.org/1.9/modules/generated/sklearn.model_selection.GridSearchCV.html#:~:text=feature_names_in_,-ndarray%20of%20shape%20%28n_features_in_%2C%29" class="param-doc-link" style="anchor-name: --doc-link-feature_names_in_;" rel="noreferrer" target="_blank">feature_names_in_ <span class="param-doc-description" style="position-anchor: --doc-link-feature_names_in_;"> feature_names_in_: ndarray of shape (`n_features_in_`,)<br>
@@ -1662,7 +1675,7 @@ This is present only if ``refit`` is not False.<br>
 <br>
 .. versionadded:: 0.20</span></a></td>
 <td class="fitted-att-type">float</td>
-<td>0.06746</td>
+<td>0.08431</td>
 </tr>
 <tr class="default even">
 <td class="param"><a href="https://scikit-learn.org/1.9/modules/generated/sklearn.model_selection.GridSearchCV.html#:~:text=scorer_,-function%20or%20a%20dict" class="param-doc-link" style="anchor-name: --doc-link-scorer_;" rel="noreferrer" target="_blank">scorer_ <span class="param-doc-description" style="position-anchor: --doc-link-scorer_;"> scorer_: function or a dict<br>

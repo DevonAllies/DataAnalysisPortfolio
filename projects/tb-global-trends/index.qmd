@@ -11,6 +11,11 @@ csl: ../../assets/csl/harvard-anglia-ruskin-university.csl
 image: 'images/tb.png'
 ---
 
+::: {.callout-tip .looking-back appearance="simple"}
+## Looking back (November 2026)
+This was one of my first predictive models, built in February 2026. Today I would split the data by time, training on earlier years and testing on later ones, instead of splitting it randomly: a random split lets the model learn from the very years it is meant to predict. I would also describe the correlations as associations rather than "drivers", and check the findings against the official WHO Global TB Report data before drawing conclusions. The time-based holdout in my [credit risk pipeline](../credit-risk-pipeline/index.qmd) is how I would approach it now.
+:::
+
 ## Introduction:
 
 Tuberculosis (TB) remains a significant global health challenge, affecting millions of people worldwide, particularly in Africa, Asia, and Latin America. The World Health Organization (WHO) adopted a blueprint in 2014, the `End TB Strategy`, which aims to reduce incidence by 80% by the year 2030, using the year 2015 as a baseline.

@@ -8,7 +8,7 @@ categories: [Clinical research, Statistics, R]
 author:
   - name: "Devon Allies"
     email: "alliesdl@gmail.com"
-    affiliations: "BSc. Hons: Bioinformatics & Computational Biology"
+    affiliations: "Stellenbosch University"
 
 format:
   html:
@@ -55,6 +55,11 @@ acronyms:
     - shortname: csv
       longname: comma-separated-value
 ---
+
+::: {.callout-note .in-progress appearance="simple"}
+## Work in progress
+This project is still under way. So far it covers data cleaning, descriptive statistics and visualisation of the six BAL cytokines. Next comes the three-class classifier (active TB, latent TB infection and uninfected) described in the objective below.
+:::
 
 :::{.callout-note}
 All patient records in the accompanying {{< acr csv >}} are entirely simulated. No real patient data, real assay measurements, or identifiable information were used at any stage. Concentrations, correlation structure, and group effects were generated computationally to be broadly consistent with published patterns in the TB immunology literature (cited below), not copied or fitted from any specific dataset. This project is intended purely as a methods/skills demonstration.
@@ -321,9 +326,7 @@ df_log <- log_transformation(df, selected_cytokines)
 df_log <- factor_transformation(df_log, selected_factors)
 ```
 
-\printacronyms
 
-\listoftables
 
 # References
 :::{#refs}

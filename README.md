@@ -24,7 +24,7 @@ The site has four sections:
 | [COVID-19 Blood Counts and Patient Outcomes](https://devonallies.github.io/DataAnalysisPortfolio/projects/covid19-blood-counts/) | 2026 | Exploratory analysis of blood count data and patient outcomes | Python, R | in this repo |
 | [A Nextflow Pipeline for Whole-Genome Variant Calling](https://devonallies.github.io/DataAnalysisPortfolio/projects/wgs-variant-calling-pipeline/) | 2024 | Modular WGS pipeline from raw reads to joint-called, VQSR-filtered variants on an HPC cluster (BSc Honours) | Nextflow, BWA-MEM, SAMtools, GATK4, PBS | [code](https://github.com/DevonAllies/DataAnalysisPortfolio/tree/main/projects/wgs-variant-calling-pipeline/pipeline) |
 
-On the site, the Projects page lists these newest first and can be filtered by tag (area, method or tool) or searched.
+On the site, the Projects page lists these newest first and can be filtered by tag (area, method or tool) or searched. The older projects are kept as originally written to show how my work has developed, each with a short "Looking back" note on what I'd do differently today; the About page's "My journey" timeline ties them together.
 
 ## Tutorials
 
