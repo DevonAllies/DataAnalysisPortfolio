@@ -64,10 +64,14 @@ div.csl-indent {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-72f67970c96102126c3e120138f9d421.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-6cf16a0ce48188bf19ff39fb87ef469d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-4800f2f39713b35c031b8bdca31a8173.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-6cf16a0ce48188bf19ff39fb87ef469d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -135,7 +139,187 @@ window.Quarto = {
 <meta property="og:image:width" content="1376">
 </head>
 
-<body class="floating nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+<body class="floating nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      refreshSafariScrollbar();
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -174,6 +358,7 @@ window.Quarto = {
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
 </div>
             <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
@@ -203,6 +388,7 @@ window.Quarto = {
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content" tabindex="-1">
+
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -301,23 +487,23 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
 </figcaption>
 <div aria-describedby="tbl-column-names-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="djvuzmrhxj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#djvuzmrhxj table {
+<div id="mmaolbfbyi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mmaolbfbyi table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#djvuzmrhxj thead, #djvuzmrhxj tbody, #djvuzmrhxj tfoot, #djvuzmrhxj tr, #djvuzmrhxj td, #djvuzmrhxj th {
+#mmaolbfbyi thead, #mmaolbfbyi tbody, #mmaolbfbyi tfoot, #mmaolbfbyi tr, #mmaolbfbyi td, #mmaolbfbyi th {
   border-style: none;
 }
 
-#djvuzmrhxj p {
+#mmaolbfbyi p {
   margin: 0;
   padding: 0;
 }
 
-#djvuzmrhxj .gt_table {
+#mmaolbfbyi .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -343,12 +529,12 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-left-color: #D3D3D3;
 }
 
-#djvuzmrhxj .gt_caption {
+#mmaolbfbyi .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#djvuzmrhxj .gt_title {
+#mmaolbfbyi .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -360,7 +546,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-bottom-width: 0;
 }
 
-#djvuzmrhxj .gt_subtitle {
+#mmaolbfbyi .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -372,7 +558,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-top-width: 0;
 }
 
-#djvuzmrhxj .gt_heading {
+#mmaolbfbyi .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -384,13 +570,13 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-right-color: #D3D3D3;
 }
 
-#djvuzmrhxj .gt_bottom_border {
+#mmaolbfbyi .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#djvuzmrhxj .gt_col_headings {
+#mmaolbfbyi .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -405,7 +591,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-right-color: #D3D3D3;
 }
 
-#djvuzmrhxj .gt_col_heading {
+#mmaolbfbyi .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -425,7 +611,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   overflow-x: hidden;
 }
 
-#djvuzmrhxj .gt_column_spanner_outer {
+#mmaolbfbyi .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -437,15 +623,15 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 4px;
 }
 
-#djvuzmrhxj .gt_column_spanner_outer:first-child {
+#mmaolbfbyi .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#djvuzmrhxj .gt_column_spanner_outer:last-child {
+#mmaolbfbyi .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#djvuzmrhxj .gt_column_spanner {
+#mmaolbfbyi .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -457,11 +643,11 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   width: 100%;
 }
 
-#djvuzmrhxj .gt_spanner_row {
+#mmaolbfbyi .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#djvuzmrhxj .gt_group_heading {
+#mmaolbfbyi .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -487,7 +673,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   text-align: left;
 }
 
-#djvuzmrhxj .gt_empty_group_heading {
+#mmaolbfbyi .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -502,15 +688,15 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   vertical-align: middle;
 }
 
-#djvuzmrhxj .gt_from_md > :first-child {
+#mmaolbfbyi .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#djvuzmrhxj .gt_from_md > :last-child {
+#mmaolbfbyi .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#djvuzmrhxj .gt_row {
+#mmaolbfbyi .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -529,7 +715,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   overflow-x: hidden;
 }
 
-#djvuzmrhxj .gt_stub {
+#mmaolbfbyi .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -542,7 +728,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#djvuzmrhxj .gt_stub_row_group {
+#mmaolbfbyi .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -556,15 +742,15 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   vertical-align: top;
 }
 
-#djvuzmrhxj .gt_row_group_first td {
+#mmaolbfbyi .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#djvuzmrhxj .gt_row_group_first th {
+#mmaolbfbyi .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#djvuzmrhxj .gt_summary_row {
+#mmaolbfbyi .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -574,16 +760,16 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#djvuzmrhxj .gt_first_summary_row {
+#mmaolbfbyi .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#djvuzmrhxj .gt_first_summary_row.thick {
+#mmaolbfbyi .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#djvuzmrhxj .gt_last_summary_row {
+#mmaolbfbyi .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -593,7 +779,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-bottom-color: #D3D3D3;
 }
 
-#djvuzmrhxj .gt_grand_summary_row {
+#mmaolbfbyi .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -603,7 +789,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#djvuzmrhxj .gt_first_grand_summary_row {
+#mmaolbfbyi .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -613,7 +799,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-top-color: #D3D3D3;
 }
 
-#djvuzmrhxj .gt_last_grand_summary_row_top {
+#mmaolbfbyi .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -623,11 +809,11 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-bottom-color: #D3D3D3;
 }
 
-#djvuzmrhxj .gt_striped {
+#mmaolbfbyi .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#djvuzmrhxj .gt_table_body {
+#mmaolbfbyi .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -636,7 +822,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-bottom-color: #D3D3D3;
 }
 
-#djvuzmrhxj .gt_footnotes {
+#mmaolbfbyi .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -650,7 +836,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-right-color: #D3D3D3;
 }
 
-#djvuzmrhxj .gt_footnote {
+#mmaolbfbyi .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -659,7 +845,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#djvuzmrhxj .gt_sourcenotes {
+#mmaolbfbyi .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -673,7 +859,7 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   border-right-color: #D3D3D3;
 }
 
-#djvuzmrhxj .gt_sourcenote {
+#mmaolbfbyi .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -681,72 +867,72 @@ Table&nbsp;1: Variables and column names present within the simulated BAL cytoki
   padding-right: 5px;
 }
 
-#djvuzmrhxj .gt_left {
+#mmaolbfbyi .gt_left {
   text-align: left;
 }
 
-#djvuzmrhxj .gt_center {
+#mmaolbfbyi .gt_center {
   text-align: center;
 }
 
-#djvuzmrhxj .gt_right {
+#mmaolbfbyi .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#djvuzmrhxj .gt_font_normal {
+#mmaolbfbyi .gt_font_normal {
   font-weight: normal;
 }
 
-#djvuzmrhxj .gt_font_bold {
+#mmaolbfbyi .gt_font_bold {
   font-weight: bold;
 }
 
-#djvuzmrhxj .gt_font_italic {
+#mmaolbfbyi .gt_font_italic {
   font-style: italic;
 }
 
-#djvuzmrhxj .gt_super {
+#mmaolbfbyi .gt_super {
   font-size: 65%;
 }
 
-#djvuzmrhxj .gt_footnote_marks {
+#mmaolbfbyi .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#djvuzmrhxj .gt_asterisk {
+#mmaolbfbyi .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#djvuzmrhxj .gt_indent_1 {
+#mmaolbfbyi .gt_indent_1 {
   text-indent: 5px;
 }
 
-#djvuzmrhxj .gt_indent_2 {
+#mmaolbfbyi .gt_indent_2 {
   text-indent: 10px;
 }
 
-#djvuzmrhxj .gt_indent_3 {
+#mmaolbfbyi .gt_indent_3 {
   text-indent: 15px;
 }
 
-#djvuzmrhxj .gt_indent_4 {
+#mmaolbfbyi .gt_indent_4 {
   text-indent: 20px;
 }
 
-#djvuzmrhxj .gt_indent_5 {
+#mmaolbfbyi .gt_indent_5 {
   text-indent: 25px;
 }
 
-#djvuzmrhxj .katex-display {
+#mmaolbfbyi .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#djvuzmrhxj div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#mmaolbfbyi div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -828,23 +1014,23 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
 </figcaption>
 <div aria-describedby="tbl-summary-statistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="yavsfozdxj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#yavsfozdxj table {
+<div id="wyvikwkxhb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#wyvikwkxhb table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#yavsfozdxj thead, #yavsfozdxj tbody, #yavsfozdxj tfoot, #yavsfozdxj tr, #yavsfozdxj td, #yavsfozdxj th {
+#wyvikwkxhb thead, #wyvikwkxhb tbody, #wyvikwkxhb tfoot, #wyvikwkxhb tr, #wyvikwkxhb td, #wyvikwkxhb th {
   border-style: none;
 }
 
-#yavsfozdxj p {
+#wyvikwkxhb p {
   margin: 0;
   padding: 0;
 }
 
-#yavsfozdxj .gt_table {
+#wyvikwkxhb .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -870,12 +1056,12 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-left-color: #D3D3D3;
 }
 
-#yavsfozdxj .gt_caption {
+#wyvikwkxhb .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#yavsfozdxj .gt_title {
+#wyvikwkxhb .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -887,7 +1073,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-bottom-width: 0;
 }
 
-#yavsfozdxj .gt_subtitle {
+#wyvikwkxhb .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -899,7 +1085,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-top-width: 0;
 }
 
-#yavsfozdxj .gt_heading {
+#wyvikwkxhb .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -911,13 +1097,13 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-right-color: #D3D3D3;
 }
 
-#yavsfozdxj .gt_bottom_border {
+#wyvikwkxhb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yavsfozdxj .gt_col_headings {
+#wyvikwkxhb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -932,7 +1118,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-right-color: #D3D3D3;
 }
 
-#yavsfozdxj .gt_col_heading {
+#wyvikwkxhb .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -952,7 +1138,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   overflow-x: hidden;
 }
 
-#yavsfozdxj .gt_column_spanner_outer {
+#wyvikwkxhb .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -964,15 +1150,15 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 4px;
 }
 
-#yavsfozdxj .gt_column_spanner_outer:first-child {
+#wyvikwkxhb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yavsfozdxj .gt_column_spanner_outer:last-child {
+#wyvikwkxhb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yavsfozdxj .gt_column_spanner {
+#wyvikwkxhb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -984,11 +1170,11 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   width: 100%;
 }
 
-#yavsfozdxj .gt_spanner_row {
+#wyvikwkxhb .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#yavsfozdxj .gt_group_heading {
+#wyvikwkxhb .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1014,7 +1200,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   text-align: left;
 }
 
-#yavsfozdxj .gt_empty_group_heading {
+#wyvikwkxhb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1029,15 +1215,15 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   vertical-align: middle;
 }
 
-#yavsfozdxj .gt_from_md > :first-child {
+#wyvikwkxhb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yavsfozdxj .gt_from_md > :last-child {
+#wyvikwkxhb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yavsfozdxj .gt_row {
+#wyvikwkxhb .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1056,7 +1242,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   overflow-x: hidden;
 }
 
-#yavsfozdxj .gt_stub {
+#wyvikwkxhb .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1069,7 +1255,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#yavsfozdxj .gt_stub_row_group {
+#wyvikwkxhb .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1083,15 +1269,15 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   vertical-align: top;
 }
 
-#yavsfozdxj .gt_row_group_first td {
+#wyvikwkxhb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#yavsfozdxj .gt_row_group_first th {
+#wyvikwkxhb .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#yavsfozdxj .gt_summary_row {
+#wyvikwkxhb .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1101,16 +1287,16 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#yavsfozdxj .gt_first_summary_row {
+#wyvikwkxhb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#yavsfozdxj .gt_first_summary_row.thick {
+#wyvikwkxhb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#yavsfozdxj .gt_last_summary_row {
+#wyvikwkxhb .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1120,7 +1306,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-bottom-color: #D3D3D3;
 }
 
-#yavsfozdxj .gt_grand_summary_row {
+#wyvikwkxhb .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1130,7 +1316,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#yavsfozdxj .gt_first_grand_summary_row {
+#wyvikwkxhb .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1140,7 +1326,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-top-color: #D3D3D3;
 }
 
-#yavsfozdxj .gt_last_grand_summary_row_top {
+#wyvikwkxhb .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1150,11 +1336,11 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-bottom-color: #D3D3D3;
 }
 
-#yavsfozdxj .gt_striped {
+#wyvikwkxhb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yavsfozdxj .gt_table_body {
+#wyvikwkxhb .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1163,7 +1349,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-bottom-color: #D3D3D3;
 }
 
-#yavsfozdxj .gt_footnotes {
+#wyvikwkxhb .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1177,7 +1363,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-right-color: #D3D3D3;
 }
 
-#yavsfozdxj .gt_footnote {
+#wyvikwkxhb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1186,7 +1372,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#yavsfozdxj .gt_sourcenotes {
+#wyvikwkxhb .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1200,7 +1386,7 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   border-right-color: #D3D3D3;
 }
 
-#yavsfozdxj .gt_sourcenote {
+#wyvikwkxhb .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1208,72 +1394,72 @@ Table&nbsp;2: Baseline patient demographics and compartmental bronchoalveolar la
   padding-right: 5px;
 }
 
-#yavsfozdxj .gt_left {
+#wyvikwkxhb .gt_left {
   text-align: left;
 }
 
-#yavsfozdxj .gt_center {
+#wyvikwkxhb .gt_center {
   text-align: center;
 }
 
-#yavsfozdxj .gt_right {
+#wyvikwkxhb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yavsfozdxj .gt_font_normal {
+#wyvikwkxhb .gt_font_normal {
   font-weight: normal;
 }
 
-#yavsfozdxj .gt_font_bold {
+#wyvikwkxhb .gt_font_bold {
   font-weight: bold;
 }
 
-#yavsfozdxj .gt_font_italic {
+#wyvikwkxhb .gt_font_italic {
   font-style: italic;
 }
 
-#yavsfozdxj .gt_super {
+#wyvikwkxhb .gt_super {
   font-size: 65%;
 }
 
-#yavsfozdxj .gt_footnote_marks {
+#wyvikwkxhb .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#yavsfozdxj .gt_asterisk {
+#wyvikwkxhb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#yavsfozdxj .gt_indent_1 {
+#wyvikwkxhb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#yavsfozdxj .gt_indent_2 {
+#wyvikwkxhb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#yavsfozdxj .gt_indent_3 {
+#wyvikwkxhb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#yavsfozdxj .gt_indent_4 {
+#wyvikwkxhb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#yavsfozdxj .gt_indent_5 {
+#wyvikwkxhb .gt_indent_5 {
   text-indent: 25px;
 }
 
-#yavsfozdxj .katex-display {
+#wyvikwkxhb .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#yavsfozdxj div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#wyvikwkxhb div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1519,6 +1705,54 @@ Cytokine Cohort</em>. [online] Available at: &lt;<a href="https://devonallies.co
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {

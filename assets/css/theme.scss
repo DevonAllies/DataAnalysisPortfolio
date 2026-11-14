@@ -3,21 +3,32 @@
 // Site palette (option A): deep teal with a warm orange accent.
 // Contrast on white: teal 9.5:1, dark orange 5.4:1. The bright orange is
 // 3.4:1, so it is used only for decoration (rules, dots, bars), never text.
-$teal:        #0F4C5C;
-$teal-dark:   #0A3540;
-$orange:      #E36414;
-$orange-dark: #B34A0C;
-$orange-soft: #F7B267;
+//
+// Everything here is !default so the dark theme (theme-dark.scss, layered
+// on top of this file in _quarto.yml) can replace any value.
+$teal:        #0F4C5C !default;
+$teal-dark:   #0A3540 !default;
+$orange:      #E36414 !default;
+$orange-dark: #B34A0C !default;
+$orange-soft: #F7B267 !default;
 
-$primary:         $teal;
-$link-color:      $teal;
-$link-hover-color: $orange-dark;
-$headings-color:  $teal;
+$primary:          $teal !default;
+$link-color:       $teal !default;
+$link-hover-color: $orange-dark !default;
+$headings-color:   $teal !default;
 
 // Navbar and the home page title banner
-$navbar-bg: $teal;
-$navbar-fg: #FFFFFF;
-$navbar-hl: $orange-soft;
+$navbar-bg: $teal !default;
+$navbar-fg: #FFFFFF !default;
+$navbar-hl: $orange-soft !default;
+
+// Roles used by the rules below (the dark theme sets its own)
+$title-color:        $teal !default;
+$accent-color:       $orange !default;   // decorative bars, dots, underlines
+$btn-hover-bg:       $teal-dark !default;
+$btn-hover-color:    #FFFFFF !default;
+$card-hover-border:  $teal !default;
+$card-hover-shadow:  rgba(15, 76, 92, 0.15) !default;
 
 /*-- scss:rules --*/
 
@@ -36,12 +47,12 @@ main h2:not(.listing-title):not(.no-anchor)::after {
   width: 3rem;
   height: 3px;
   border-radius: 2px;
-  background: $orange;
+  background: $accent-color;
 }
 
 // Page title
 .quarto-title .title {
-  color: $teal;
+  color: $title-color;
 }
 
 // Home page banner: keep the title and subtitle white on teal
@@ -51,38 +62,39 @@ main h2:not(.listing-title):not(.no-anchor)::after {
 }
 
 .quarto-title-banner {
-  border-bottom: 4px solid $orange;
+  border-bottom: 4px solid $accent-color;
 }
 
 // Navbar: orange underline on the current page
 .navbar .nav-link.active {
-  box-shadow: inset 0 -3px 0 $orange;
+  box-shadow: inset 0 -3px 0 $accent-color;
 }
 
 // Buttons: teal fill, dark teal on hover
 .btn-primary:hover,
 .btn-primary:focus {
-  background-color: $teal-dark;
-  border-color: $teal-dark;
+  background-color: $btn-hover-bg;
+  border-color: $btn-hover-bg;
+  color: $btn-hover-color;
 }
 
 .btn-outline-primary:hover {
-  background-color: $teal;
-  border-color: $teal;
-  color: #FFFFFF;
+  background-color: $primary;
+  border-color: $primary;
+  color: $btn-hover-color;
 }
 
 // Card and timeline accents: orange details
 .skill-card {
-  border-top-color: $orange !important;
+  border-top-color: $accent-color !important;
 }
 
 .edu-item::before {
-  border-color: $orange !important;
+  border-color: $accent-color !important;
 }
 
 // Listing cards: subtle teal lift on hover
 .quarto-grid-item:hover {
-  border-color: $teal;
-  box-shadow: 0 0.25rem 0.75rem rgba(15, 76, 92, 0.15);
+  border-color: $card-hover-border;
+  box-shadow: 0 0.25rem 0.75rem $card-hover-shadow;
 }

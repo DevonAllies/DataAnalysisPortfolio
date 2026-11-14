@@ -1,7 +1,8 @@
 ---
 title: "Projects"
 description: "Data science and bioinformatics projects by Devon Allies: RNA-seq, TB biomarkers, public health analyses and Databricks pipelines in R and Python."
-body-classes: hide-description   # description is for search/link previews only
+body-classes: hide-description categories-left   # description: search/link previews only; categories-left: tag list in the left column (styles.css)
+toc-location: left      # gives the page a left column for the tag list
 listing:
   contents: projects
   type: grid
@@ -15,4 +16,4 @@ listing:
   image-height: 180px
 ---
 
-Analyses, pipelines and models across genomics, clinical research, public health and finance. Use the tags on the right to filter by topic or tool, or search above the cards.
+Analyses, pipelines and models across genomics, clinical research, public health and finance. Filter by topic or tool with the Categories list or the tags on each card, or search above the cards.

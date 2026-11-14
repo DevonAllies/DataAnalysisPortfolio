@@ -29,10 +29,20 @@ website:
       
 format:
   html:
+    # Light and dark themes: Quarto adds a toggle to the navbar and remembers
+    # each visitor's choice; respect-user-color-scheme starts from their
+    # system setting.
     theme:
-      - cosmo
-      - brand
-      - assets/css/theme.scss
+      light:
+        - cosmo
+        - brand
+        - assets/css/theme.scss
+      dark:
+        - cosmo
+        - brand
+        - assets/css/theme.scss
+        - assets/css/theme-dark.scss
+    respect-user-color-scheme: true
     css: assets/css/styles.css
     toc: true
     grid:

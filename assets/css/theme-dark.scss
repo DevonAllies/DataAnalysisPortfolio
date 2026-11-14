@@ -1,0 +1,64 @@
+/*-- scss:defaults --*/
+
+// Dark theme: layered on top of theme.scss in _quarto.yml, so it only
+// replaces values. Same teal and orange identity, lightened for a dark
+// background. Contrast on the body background (#121A1E):
+//   body text #DCE4E7 13.9:1, light teal #6FC1D1 8.6:1,
+//   soft orange #F7B267 9.9:1, muted text #9AA9AF 6.9:1.
+
+$body-bg:    #121A1E;
+$body-color: #DCE4E7;
+
+$teal:        #6FC1D1;   // light teal: text, links, accents
+$teal-dark:   #A5DCE6;   // button hover (lighter on dark)
+$orange-dark: #F7B267;   // orange text (links on hover)
+
+$primary:          #6FC1D1;
+$link-color:       #6FC1D1;
+$link-hover-color: #F7B267;
+$headings-color:   #8FD0DD;
+
+$secondary-color:  #9AA9AF;
+
+// Inline code: pink on a slightly raised panel (9.6:1)
+$code-bg:    #1C272C;
+$code-color: #E9A6D2;
+$border-color:     #2C3A40;
+
+// Keep the deep teal for the navbar and banner: it reads as the brand
+// and white text on it is 9.5:1.
+$navbar-bg: #0F4C5C;
+$navbar-fg: #FFFFFF;
+$navbar-hl: #F7B267;
+
+$title-color:       #8FD0DD;
+$accent-color:      #E36414;   // decoration only, fine on dark
+$btn-hover-bg:      #A5DCE6;
+$btn-hover-color:   #121A1E;
+$card-hover-border: #6FC1D1;
+$card-hover-shadow: rgba(0, 0, 0, 0.45);
+
+/*-- scss:rules --*/
+
+// Primary buttons: dark text on the light teal fill (white would be 2.3:1)
+.btn-primary,
+.btn-primary:active {
+  color: #121A1E;
+}
+
+// Figures are rendered on white; soften the edge so they don't glare
+main img:not(.navbar-logo) {
+  border-radius: 0.35rem;
+}
+
+// Search box icon and listing card borders: visible on the dark background
+.input-group-text {
+  background-color: #1B262B;
+  border-color: #34454C;
+  color: #9AA9AF;
+}
+
+.quarto-grid-item,
+.quarto-grid-item .card-footer {
+  border-color: #34454C;
+}

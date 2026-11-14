@@ -111,7 +111,7 @@
   height: 2.25rem;
   border-radius: 50%;
   background: var(--bs-primary, #2780e3);
-  color: #fff;
+  color: var(--bs-body-bg, #fff);   /* white in light mode, dark in dark mode */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -169,7 +169,7 @@
   height: 2.6rem;
   border-radius: 50%;
   background: var(--bs-primary, #2780e3);
-  color: #fff;
+  color: var(--bs-body-bg, #fff);   /* white in light mode, dark in dark mode */
   font-weight: 700;
   font-size: 1.2rem;
   display: flex;
@@ -364,4 +364,19 @@
 .callout.in-progress {
   border-left-color: var(--bs-primary, #2780e3) !important;
   margin-bottom: 1.75rem;
+}
+
+/* Projects page: show the category (tag) list in the left column instead of
+   the right margin. Quarto always puts listing categories in the margin
+   sidebar, so projects.qmd sets toc-location: left (which reserves a left
+   column) and body-classes: categories-left, and these rules move the margin
+   sidebar into that column on wide screens. */
+@media (min-width: 992px) {
+  .categories-left #quarto-sidebar { display: none; }
+  .categories-left #quarto-margin-sidebar {
+    grid-column: page-start / body-start;
+    grid-row: content-top / page-bottom;
+    justify-self: end;      /* sit next to the cards, not at the screen edge */
+    padding-right: 2rem;
+  }
 }
