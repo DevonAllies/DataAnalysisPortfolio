@@ -2,7 +2,7 @@
 
 The Nextflow pipeline I built for my BSc Honours (Stellenbosch University, 2024): paired-end whole-genome sequencing reads in, a joint-called and VQSR-filtered cohort VCF out, following GATK best practices. It ran on the Centre for High Performance Computing (CHPC) PBS cluster.
 
-**Write-up:** <https://devonallies.github.io/DataAnalysisPortfolio/projects/wgs-variant-calling-pipeline/> explains the design, each step, the tools and their citations.
+**Write-up:** <https://devonallies.co.za/projects/wgs-variant-calling-pipeline/> explains the design, each step, the tools and their citations.
 
 ## Steps
 

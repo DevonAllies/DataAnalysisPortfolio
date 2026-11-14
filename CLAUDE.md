@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A Quarto website (Devon Allies' personal site and data portfolio) published via GitHub Pages from the committed `docs/` folder (`.nojekyll` present) at https://devonallies.github.io/DataAnalysisPortfolio/. There is no build system beyond Quarto and no test suite.
+A Quarto website (Devon Allies' personal site and data portfolio) published via GitHub Pages from the committed `docs/` folder (`.nojekyll` present) at https://devonallies.co.za/ (custom domain; `CNAME` in the project root is copied into `docs/` via `project.resources`, and GitHub redirects the old devonallies.github.io/DataAnalysisPortfolio/ address). There is no build system beyond Quarto and no test suite.
 
 ## Environments
 

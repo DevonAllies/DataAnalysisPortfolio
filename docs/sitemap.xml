@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/index.html</loc>
-    <lastmod>2026-11-13T08:31:46.476Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/about.html</loc>
+    <loc>https://devonallies.co.za/about.html</loc>
     <lastmod>2026-11-13T14:13:11.633Z</lastmod>
   </url>
   <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects.html</loc>
+    <loc>https://devonallies.co.za/index.html</loc>
+    <lastmod>2026-11-13T08:31:46.476Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/projects.html</loc>
     <lastmod>2026-11-13T08:45:09.152Z</lastmod>
   </url>
   <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/tutorials.html</loc>
-    <lastmod>2026-11-13T09:01:52.766Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/publications.html</loc>
-    <lastmod>2026-11-12T14:05:31.371Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/tutorials/01-import-data-in-r/import-data-in-r.html</loc>
-    <lastmod>2026-11-13T08:59:41.360Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/tutorials/02-r-and-python/r-and-python-dataframes.html</loc>
-    <lastmod>2026-11-13T08:59:41.360Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/credit-risk-pipeline/index.html</loc>
+    <loc>https://devonallies.co.za/projects/bal-databricks-pipeline/index.html</loc>
     <lastmod>2026-11-13T08:44:40.312Z</lastmod>
   </url>
   <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/bal-databricks-pipeline/index.html</loc>
+    <loc>https://devonallies.co.za/projects/chrx-rnaseq/index.html</loc>
     <lastmod>2026-11-13T08:44:40.312Z</lastmod>
   </url>
   <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/covid19-blood-counts/index.html</loc>
+    <loc>https://devonallies.co.za/projects/covid19-blood-counts/index.html</loc>
     <lastmod>2026-11-13T09:18:01.986Z</lastmod>
   </url>
   <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/tb-global-trends/index.html</loc>
+    <loc>https://devonallies.co.za/projects/credit-risk-pipeline/index.html</loc>
+    <lastmod>2026-11-13T08:44:40.312Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/projects/r-python-workflow/index.html</loc>
+    <lastmod>2026-11-13T09:18:01.986Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/projects/tb-bal-cytokines/index.html</loc>
+    <lastmod>2026-11-13T09:18:01.986Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/projects/tb-global-trends/index.html</loc>
     <lastmod>2026-11-13T09:09:46.551Z</lastmod>
   </url>
   <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/chrx-rnaseq/index.html</loc>
-    <lastmod>2026-11-13T08:44:40.312Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/tb-bal-cytokines/index.html</loc>
-    <lastmod>2026-11-13T09:18:01.986Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/r-python-workflow/index.html</loc>
-    <lastmod>2026-11-13T09:18:01.986Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.github.io/DataAnalysisPortfolio/projects/wgs-variant-calling-pipeline/index.html</loc>
+    <loc>https://devonallies.co.za/projects/wgs-variant-calling-pipeline/index.html</loc>
     <lastmod>2026-11-13T08:49:28.801Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/publications.html</loc>
+    <lastmod>2026-11-12T14:05:31.371Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/tutorials.html</loc>
+    <lastmod>2026-11-13T09:01:52.766Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/tutorials/01-import-data-in-r/import-data-in-r.html</loc>
+    <lastmod>2026-11-13T08:59:41.360Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/tutorials/02-r-and-python/r-and-python-dataframes.html</loc>
+    <lastmod>2026-11-13T08:59:41.360Z</lastmod>
   </url>
 </urlset>

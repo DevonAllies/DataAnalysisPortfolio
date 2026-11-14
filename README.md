@@ -1,37 +1,37 @@
 # Devon Allies
 
-**Live site: <https://devonallies.github.io/DataAnalysisPortfolio/>**
+**Live site: <https://devonallies.co.za/>**
 
 The personal website and data portfolio of a bioinformatician and computational biologist, currently a Data Analyst at Stellenbosch University. I've worked in biomedical science for over 15 years, including 10 in immunology and tuberculosis research, from the lab bench to clinical study coordination and data pipelines.
 
 The site has four sections:
 
-- **[Projects](https://devonallies.github.io/DataAnalysisPortfolio/projects.html):** data analyses and pipelines in R and Python
-- **[Tutorials](https://devonallies.github.io/DataAnalysisPortfolio/tutorials.html):** a practical series on a simulated TB dataset
-- **[Publications & Writing](https://devonallies.github.io/DataAnalysisPortfolio/publications.html):** peer-reviewed papers and articles on reproducible science
-- **[About](https://devonallies.github.io/DataAnalysisPortfolio/about.html):** background and skills
+- **[Projects](https://devonallies.co.za/projects.html):** data analyses and pipelines in R and Python
+- **[Tutorials](https://devonallies.co.za/tutorials.html):** a practical series on a simulated TB dataset
+- **[Publications & Writing](https://devonallies.co.za/publications.html):** peer-reviewed papers and articles on reproducible science
+- **[About](https://devonallies.co.za/about.html):** background and skills
 
 ## Projects
 
 | Project | Year | Focus | Tools | Code |
 |---|---|---|---|---|
-| [Credit Risk Pipeline on Databricks](https://devonallies.github.io/DataAnalysisPortfolio/projects/credit-risk-pipeline/) | 2026 | Bronze/silver/gold lakehouse and default prediction for a simulated lender | Databricks, PySpark, MLflow, scikit-learn | [repo](https://github.com/DevonAllies/credit-pipeline-databricks) |
-| [Databricks Data Pipeline: Simulated BAL Study](https://devonallies.github.io/DataAnalysisPortfolio/projects/bal-databricks-pipeline/) | 2026 | Delta table pipeline and MLflow-tracked models on simulated clinical data | Databricks, PySpark, MLflow | [repo](https://github.com/DevonAllies/MLops_bal_pipeline) |
-| [Compartmental TB Diagnostics: A Simulated BAL Cytokine Cohort](https://devonallies.github.io/DataAnalysisPortfolio/projects/tb-bal-cytokines/) | 2026 | Cytokine profiles for TB diagnosis in a simulated BAL cohort | R, gtsummary, factoextra | in this repo |
-| [Differential Expression Analysis of Chromosome X RNA-seq Data](https://devonallies.github.io/DataAnalysisPortfolio/projects/chrx-rnaseq/) | 2026 | Sex-based differential expression on chromosome X | Nextflow, HISAT2, StringTie, R (Ballgown) | [pipeline](https://github.com/DevonAllies/rnaseq_pipeline); analysis in this repo |
-| [Global Tuberculosis Trends, 2000–2024](https://devonallies.github.io/DataAnalysisPortfolio/projects/tb-global-trends/) | 2026 | Exploratory analysis and forecasting of global TB indicators | Python, pandas, scikit-learn, statsmodels | in this repo |
-| [Using R and Python Together in Data Science](https://devonallies.github.io/DataAnalysisPortfolio/projects/r-python-workflow/) | 2026 | A cross-language PCA workflow on gene expression data | R, Python, reticulate, scikit-learn | in this repo |
-| [COVID-19 Blood Counts and Patient Outcomes](https://devonallies.github.io/DataAnalysisPortfolio/projects/covid19-blood-counts/) | 2026 | Exploratory analysis of blood count data and patient outcomes | Python, R | in this repo |
-| [A Nextflow Pipeline for Whole-Genome Variant Calling](https://devonallies.github.io/DataAnalysisPortfolio/projects/wgs-variant-calling-pipeline/) | 2024 | Modular WGS pipeline from raw reads to joint-called, VQSR-filtered variants on an HPC cluster (BSc Honours) | Nextflow, BWA-MEM, SAMtools, GATK4, PBS | [code](https://github.com/DevonAllies/DataAnalysisPortfolio/tree/main/projects/wgs-variant-calling-pipeline/pipeline) |
+| [Credit Risk Pipeline on Databricks](https://devonallies.co.za/projects/credit-risk-pipeline/) | 2026 | Bronze/silver/gold lakehouse and default prediction for a simulated lender | Databricks, PySpark, MLflow, scikit-learn | [repo](https://github.com/DevonAllies/credit-pipeline-databricks) |
+| [Databricks Data Pipeline: Simulated BAL Study](https://devonallies.co.za/projects/bal-databricks-pipeline/) | 2026 | Delta table pipeline and MLflow-tracked models on simulated clinical data | Databricks, PySpark, MLflow | [repo](https://github.com/DevonAllies/MLops_bal_pipeline) |
+| [Compartmental TB Diagnostics: A Simulated BAL Cytokine Cohort](https://devonallies.co.za/projects/tb-bal-cytokines/) | 2026 | Cytokine profiles for TB diagnosis in a simulated BAL cohort | R, gtsummary, factoextra | in this repo |
+| [Differential Expression Analysis of Chromosome X RNA-seq Data](https://devonallies.co.za/projects/chrx-rnaseq/) | 2026 | Sex-based differential expression on chromosome X | Nextflow, HISAT2, StringTie, R (Ballgown) | [pipeline](https://github.com/DevonAllies/rnaseq_pipeline); analysis in this repo |
+| [Global Tuberculosis Trends, 2000–2024](https://devonallies.co.za/projects/tb-global-trends/) | 2026 | Exploratory analysis and forecasting of global TB indicators | Python, pandas, scikit-learn, statsmodels | in this repo |
+| [Using R and Python Together in Data Science](https://devonallies.co.za/projects/r-python-workflow/) | 2026 | A cross-language PCA workflow on gene expression data | R, Python, reticulate, scikit-learn | in this repo |
+| [COVID-19 Blood Counts and Patient Outcomes](https://devonallies.co.za/projects/covid19-blood-counts/) | 2026 | Exploratory analysis of blood count data and patient outcomes | Python, R | in this repo |
+| [A Nextflow Pipeline for Whole-Genome Variant Calling](https://devonallies.co.za/projects/wgs-variant-calling-pipeline/) | 2024 | Modular WGS pipeline from raw reads to joint-called, VQSR-filtered variants on an HPC cluster (BSc Honours) | Nextflow, BWA-MEM, SAMtools, GATK4, PBS | [code](https://github.com/DevonAllies/DataAnalysisPortfolio/tree/main/projects/wgs-variant-calling-pipeline/pipeline) |
 
 On the site, the Projects page lists these newest first and can be filtered by tag (area, method or tool) or searched. The older projects are kept as originally written to show how my work has developed, each with a short "Looking back" note on what I'd do differently today; the About page's "My journey" timeline ties them together. Both timelines on the About page (My journey and Education) list the most recent entry first.
 
 ## Tutorials
 
-A numbered, hands-on series built on one small extract of a simulated TB study (BAL participant metadata and cell counts per visit; every participant is fictional, and the raw files are deliberately messy like real study data). The [Tutorials page](https://devonallies.github.io/DataAnalysisPortfolio/tutorials.html) introduces the series, offers the three data files for download, and lists what you need: R and RStudio, plus Python from Tutorial 2. The data is in [`tutorials/data/`](tutorials/data/).
+A numbered, hands-on series built on one small extract of a simulated TB study (BAL participant metadata and cell counts per visit; every participant is fictional, and the raw files are deliberately messy like real study data). The [Tutorials page](https://devonallies.co.za/tutorials.html) introduces the series, offers the three data files for download, and lists what you need: R and RStudio, plus Python from Tutorial 2. The data is in [`tutorials/data/`](tutorials/data/).
 
-1. [Importing data into RStudio with R](https://devonallies.github.io/DataAnalysisPortfolio/tutorials/01-import-data-in-r/import-data-in-r.html): CSV and Excel files, multiple sheets, missing-value codes and numbers stored as text.
-2. [Using one dataset in both R and Python](https://devonallies.github.io/DataAnalysisPortfolio/tutorials/02-r-and-python/r-and-python-dataframes.html): passing data frames between R and pandas with reticulate, and the conversions that quietly corrupt data.
+1. [Importing data into RStudio with R](https://devonallies.co.za/tutorials/01-import-data-in-r/import-data-in-r.html): CSV and Excel files, multiple sheets, missing-value codes and numbers stored as text.
+2. [Using one dataset in both R and Python](https://devonallies.co.za/tutorials/02-r-and-python/r-and-python-dataframes.html): passing data frames between R and pandas with reticulate, and the conversions that quietly corrupt data.
 
 **Coming next**, using the same data:
 
@@ -48,10 +48,11 @@ The page is generated from `_data/publications.json`, which a script builds from
 
 ## How the site is built
 
-The site is a [Quarto](https://quarto.org) website. `quarto render` writes the static site to `docs/`, and GitHub Pages serves it from `docs/` on the `main` branch.
+The site is a [Quarto](https://quarto.org) website. `quarto render` writes the static site to `docs/`, and GitHub Pages serves it from `docs/` on the `main` branch at the custom domain [devonallies.co.za](https://devonallies.co.za/). The `CNAME` file in the project root holds the domain; `_quarto.yml` lists it under `project.resources` so every render copies it into `docs/`, and `site-url` sets the address used in the sitemap and link previews. The old address (`devonallies.github.io/DataAnalysisPortfolio/`) redirects to the new one.
 
 ```
 _quarto.yml            site configuration (navbar, theme, layout, search/SEO)
+CNAME                  custom domain for GitHub Pages (copied into docs/)
 index.qmd              home page, with hand-picked featured projects
 about.qmd              About page
 projects.qmd           project listing: newest first, with tag filters and search
