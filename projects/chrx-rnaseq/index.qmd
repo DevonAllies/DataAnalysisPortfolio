@@ -61,7 +61,7 @@ image: 'images/rnaseq.jpeg'
 
 ## Overview
 
-This analysis evaluates transcriptional variations on {{< acr chrX >}} between male and female individuals to uncover sex-specific dynamics. This study utilizes a cohort of 12 paired-end {{< acr RNAseq >}} samples obtained from distinct geographical populations. By adjusting for population structure, this analysis isolates robust sex-linked genetic expression underlying chromosome-wide regulation mechanisms.
+This analysis evaluates transcriptional variations on {{< acr chrX >}} between male and female individuals to uncover sex-specific dynamics. This study utilises a cohort of 12 paired-end {{< acr RNAseq >}} samples obtained from distinct geographical populations. By adjusting for population structure, this analysis isolates robust sex-linked genetic expression underlying chromosome-wide regulation mechanisms.
 
 ## Methods
 
@@ -86,7 +86,7 @@ nextflow run rnaseq.nf -profile local --hisat2_prefix indexes/chrX_tran
 ```
 ### Differential Expression
 
-Downstream {{< acr DE >}} modeling was performed at the gene level using the [Ballgown](https://bioconductor.org/packages/release/bioc/html/ballgown.html) R package. To isolate sexual differences, phenotypic sex was treated as the primary covariate. Population origin was strictly embedded as a confounding adjustment variable to account for ancestry-driven batch effects. Statistical significance was controlled using {{< acr FDR >}} threshold of $q-value < 0.05$.
+Downstream {{< acr DE >}} modelling was performed at the gene level using the [Ballgown](https://bioconductor.org/packages/release/bioc/html/ballgown.html) R package. To isolate sexual differences, phenotypic sex was treated as the primary covariate. Population origin was strictly embedded as a confounding adjustment variable to account for ancestry-driven batch effects. Statistical significance was controlled using {{< acr FDR >}} threshold of $q-value < 0.05$.
 
 ## Setup and Sample Phenotypes
 
@@ -340,7 +340,7 @@ An initial set of `r format(nrow(texpr(bg)), big.mark = ",")` transcripts was ex
 
 To understand global relationship structures within the filtered datasets, a {{< acr PCA >}} was calculated on transcript-level {{< acr FPKM >}} expression data.
 
-As plotted in @fig-pca, the first two principal components explained `r var_exp[1] + var_exp[2]`% of total variance (PC1: `r var_exp[1]`%, PC2: `r var_exp[2]`%). The distribution patterns reveal a modest separation based on biological sex along the axis trajectories. Concurrently, clear macro-clusters demonstrate underlying population structure, showing distinct spatial partitioning between European (GBR) and African (YRI) cohorts. This population grouping confirms the necessity of utilizing nested model adjustments within the F-test framework to avoid ancestry-driven false-positive discoveries.
+As plotted in @fig-pca, the first two principal components explained `r var_exp[1] + var_exp[2]`% of total variance (PC1: `r var_exp[1]`%, PC2: `r var_exp[2]`%). The distribution patterns reveal a modest separation based on biological sex along the axis trajectories. Concurrently, clear macro-clusters demonstrate underlying population structure, showing distinct spatial partitioning between European (GBR) and African (YRI) cohorts. This population grouping confirms the necessity of utilising nested model adjustments within the F-test framework to avoid ancestry-driven false-positive discoveries.
 
 ### Differential Expression
 
@@ -378,7 +378,7 @@ sig_genes |>
   )
 ```
 
-Statistical testing on the curated genomic features revealed a highly localized set of differentially expressed targets. As mapped out in @fig-volcano, only three specific genes crossed the designated horizontal significance threshold of $q = 0.05$. Fold-change computations reflect expression levels of males relative to females; consequently, negative log~2~ fold-change parameters pinpoint strong female-biased gene expression patterns.
+Statistical testing on the curated genomic features revealed a highly localised set of differentially expressed targets. As mapped out in @fig-volcano, only three specific genes crossed the designated horizontal significance threshold of $q = 0.05$. Fold-change computations reflect expression levels of males relative to females; consequently, negative log~2~ fold-change parameters pinpoint strong female-biased gene expression patterns.
 
 The three significant genes identified are:
 
@@ -415,7 +415,7 @@ To validate individual candidate patterns, expression profiles were plotted usin
 
 ### Biological Implications of Female-Biased Expression
 
-The differential expression analysis of human Chromosome X transcripts revealed a highly localized regulatory signature. Only three genes - _XIST_, _TSIX_, and _KDM6A_ - exhibited statistically  significant expression differences between sexes ($q < 0.05$). All three candidates demonstrated explicit female-biased abundance. This tight localization underscores the stringent evolutionary conservation governing sex-chromosome dosage mechanisms in humans.
+The differential expression analysis of human Chromosome X transcripts revealed a highly localised regulatory signature. Only three genes - _XIST_, _TSIX_, and _KDM6A_ - exhibited statistically  significant expression differences between sexes ($q < 0.05$). All three candidates demonstrated explicit female-biased abundance. This tight localisation underscores the stringent evolutionary conservation governing sex-chromosome dosage mechanisms in humans.
 
 ### Mechanistic Synergy of XIST and TSIX
 

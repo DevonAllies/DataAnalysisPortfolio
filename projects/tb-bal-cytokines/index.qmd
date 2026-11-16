@@ -67,7 +67,7 @@ All patient records in the accompanying {{< acr csv >}} are entirely simulated. 
 
 # Introduction
 
-This dataset represents a computationally simulated cohort designed to model compartmental immune responses in human pulmonary {{< acr TB >}}. Most host-biomarker {{< acr TB >}} research relies on peripheral blood samples, which are minimally invasive but primarily reflect systemic immunity rather than local site-of-infection responses. In contrast, {{< acr BAL >}} samples the lung compartment directly, offering a distinct and less thoroughly mined immune signature characterized by heightened local {{< acr Th1 >}} activity.
+This dataset represents a computationally simulated cohort designed to model compartmental immune responses in human pulmonary {{< acr TB >}}. Most host-biomarker {{< acr TB >}} research relies on peripheral blood samples, which are minimally invasive but primarily reflect systemic immunity rather than local site-of-infection responses. In contrast, {{< acr BAL >}} samples the lung compartment directly, offering a distinct and less thoroughly mined immune signature characterised by heightened local {{< acr Th1 >}} activity.
 
 ## Analytical and Clinical Objective
 
@@ -75,9 +75,9 @@ The primary objective of this project is to build and evaluate a 3-class machine
 
 ## Library import
 
-This project implements a multilingual data science workflow, utilizing R for data engineering and statistical analysis, and Python for predictive modeling. Data ingestion, programmatic cleaning, and parsing are executed using the R tidyverse core ecosystem, specifically **dplyr** [@dplyr], **tidyr** [@tidyr], **stringr** [@stringr], and **janitor** [@janitor]. Descriptive clinical tables and baseline group statistics are compiled using the R packages **gtsummary** [@gtsummary] and **broom** [@broom], while exploratory data visualization and dimensional reduction are conducted via **ggplot2** [@ggplot] and **factoextra** [@factoextra].
+This project implements a multilingual data science workflow, utilising R for data engineering and statistical analysis, and Python for predictive modelling. Data ingestion, programmatic cleaning, and parsing are executed using the R tidyverse core ecosystem, specifically **dplyr** [@dplyr], **tidyr** [@tidyr], **stringr** [@stringr], and **janitor** [@janitor]. Descriptive clinical tables and baseline group statistics are compiled using the R packages **gtsummary** [@gtsummary] and **broom** [@broom], while exploratory data visualisation and dimensional reduction are conducted via **ggplot2** [@ggplot] and **factoextra** [@factoextra].
 
-If the analytical scope expands to predictive modeling, the workflow transitions to Python via the **reticulate** [@reticulate] interface. This pipeline leverages Python's machine learning libraries, including **scikit-learn** for cross-validation and evaluation metrics, **xgboost** for gradient-boosted decision tree architecture, and **shap** for model feature attribution.
+If the analytical scope expands to predictive modelling, the workflow transitions to Python via the **reticulate** [@reticulate] interface. This pipeline leverages Python's machine learning libraries, including **scikit-learn** for cross-validation and evaluation metrics, **xgboost** for gradient-boosted decision tree architecture, and **shap** for model feature attribution.
 
 ```{r}
 #| label: load-libraries
@@ -104,7 +104,7 @@ invisible(lapply(packages, library, character.only = TRUE))
 
 ## Data Ingestion & Setup
 
-The analytical workflow begins by establishing a reproducible environment and importing the simulated clinical dataset. The cohort data, stored in a flat-file {{< acr csv >}} format (`bal_cytokine_tb_cohort.csv`), is read into the R session using the optimized `read_csv()` parsing engine from the readr package. This approach automatically detects column types and guarantees consistent data frame structures for downstream operations.
+The analytical workflow begins by establishing a reproducible environment and importing the simulated clinical dataset. The cohort data, stored in a flat-file {{< acr csv >}} format (`bal_cytokine_tb_cohort.csv`), is read into the R session using the optimised `read_csv()` parsing engine from the readr package. This approach automatically detects column types and guarantees consistent data frame structures for downstream operations.
 
 ```{r}
 #| label: data-import
@@ -282,7 +282,7 @@ ggplot(df_cleaned, aes(group, concentration, fill = group)) +
   )
 ```
 
-To visualize the variations in biomarker concentrations across the diagnostic groups, we plot the log10-transformed concentrations of the six {{< acr BAL >}} cytokines (@fig-cytokine-boxplots). Active {{< acr TB >}} patients display distinct up-regulation across all measured markers—particularly IFN-γ, IL-1β, and IP-10, separating them from both the latent infection and uninfected control groups.
+To visualise the variations in biomarker concentrations across the diagnostic groups, we plot the log10-transformed concentrations of the six {{< acr BAL >}} cytokines (@fig-cytokine-boxplots). Active {{< acr TB >}} patients display distinct up-regulation across all measured markers—particularly IFN-γ, IL-1β, and IP-10, separating them from both the latent infection and uninfected control groups.
 
 ```{r}
 
