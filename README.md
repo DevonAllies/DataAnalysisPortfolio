@@ -67,7 +67,8 @@ projects/<name>/       one folder per project, all with the same layout:
     data/                input data (committed only when small and public)
     pipeline/            (WGS project only) the Nextflow pipeline code
 tutorials/             numbered tutorials, their dataset in tutorials/data/ and the series banner in tutorials/images/
-assets/                shared files: css/styles.css, images/, csl/ (citation style)
+assets/                shared files: css/ (theme.scss, theme-dark.scss for dark mode, styles.css),
+                         images/ (me.jpeg About photo, og-card.jpg link-preview card), csl/ (citation style)
 scripts/               helper scripts: refresh publications, rebuild tutorial data
 _data/                 publications.json, built by scripts/fetch_publications.py
 docs/                  rendered site (committed; served by GitHub Pages)
@@ -95,7 +96,7 @@ uv run python scripts/fetch_publications.py
 quarto render publications.qmd
 ```
 
-**Which pages render from a fresh clone:** the home, listing, About and Publications pages, both tutorials, and the COVID-19, TB trends, credit risk, BAL Databricks and WGS pipeline projects render from the repo alone. *Using R and Python Together* downloads its data from Kaggle. The chrX RNA-seq and TB BAL cytokine projects read local data that isn't in the repo (`data/` is gitignored), so render pages one at a time with `quarto render projects/<name>/index.qmd` and preview with `quarto preview --no-render`. The rendered versions in `docs/` are always current.
+**Which pages render from a fresh clone:** the home, listing, About, Contact and Publications pages, both tutorials, and the COVID-19, TB trends, credit risk, BAL Databricks and WGS pipeline projects render from the repo alone. *Using R and Python Together* downloads its data from Kaggle. The chrX RNA-seq and TB BAL cytokine projects read local data that isn't in the repo (`data/` is gitignored), so render pages one at a time with `quarto render projects/<name>/index.qmd` and preview with `quarto preview --no-render`. The rendered versions in `docs/` are always current.
 
 ## Contact
 

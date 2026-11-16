@@ -409,6 +409,18 @@
 .form-status { margin: 0.25rem 0 0; }
 .form-status:empty { display: none; }
 .form-status.is-success { color: var(--bs-primary); font-size: 1.15rem; font-weight: 600; }
-.form-status.is-error { color: var(--bs-danger-text-emphasis, var(--bs-danger)); }
+/* Error: normal text colour (readable in light and dark), marked by a red bar and icon.
+   --bs-danger-text-emphasis is a dark red in both themes, so it's unreadable on dark. */
+.form-status.is-error {
+  color: var(--bs-body-color);
+  border-left: 4px solid var(--bs-danger);
+  padding: 0.35rem 0 0.35rem 0.75rem;
+}
+.form-status.is-error::before {
+  content: "\F33A";            /* bootstrap-icons exclamation-triangle-fill */
+  font-family: "bootstrap-icons";
+  color: var(--bs-danger);
+  margin-right: 0.45rem;
+}
 .form-privacy { font-size: 0.82rem; color: var(--bs-secondary-color); margin-top: 0.75rem; }
 .contact-form.is-sent .row, .contact-form.is-sent .form-privacy { display: none; }
