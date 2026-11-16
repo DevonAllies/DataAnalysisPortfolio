@@ -28,6 +28,10 @@ $body-tertiary-bg:  #1A2429;
 // Inline code: pink on a slightly raised panel (9.6:1)
 $code-bg:    #1C272C;
 $code-color: #E9A6D2;
+
+// Code output blocks (R/Python print-outs): cosmo sets these to black,
+// which vanished on the dark background
+$pre-color:  #DCE4E7;
 $border-color:     #2C3A40;
 
 // Keep the deep teal for the navbar and banner: it reads as the brand

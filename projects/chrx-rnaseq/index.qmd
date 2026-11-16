@@ -100,7 +100,7 @@ packages <- c("tidyverse", "dplyr", "ggplot2", "ballgown", "genefilter", "ggrepe
 lapply(packages, library, character.only = TRUE)
 ```
 
-::: {.content-visble when-format="pdf"}
+::: {.content-visible when-format="pdf"}
 \newpage
 :::
 
@@ -444,7 +444,7 @@ By controlling for confounding population structures via Ballgown's nested F-tes
 
 \printacronyms
 
-::: {.content-visble when-format="pdf"}
+::: {.content-visible when-format="pdf"}
 \newpage
 :::
 
