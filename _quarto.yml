@@ -1,6 +1,11 @@
 project:
   type: website
   output-dir: docs
+  # Only .qmd files are pages. data/ is local-only (gitignored) and can hold
+  # .md/.qmd files from other projects and archives that must not be published.
+  render:
+    - "*.qmd"
+    - "!data/"
   resources:
     - CNAME   # custom domain for GitHub Pages; must be copied into docs/
     - "tutorials/data/*.xlsx"

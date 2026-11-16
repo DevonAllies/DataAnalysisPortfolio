@@ -20,6 +20,11 @@ $headings-color:   #8FD0DD;
 
 $secondary-color:  #9AA9AF;
 
+// Raised surfaces (tags, badges, code panels). Bootstrap's defaults for
+// these are light grey, which made tags unreadable on the dark background.
+$body-secondary-bg: #233038;
+$body-tertiary-bg:  #1A2429;
+
 // Inline code: pink on a slightly raised panel (9.6:1)
 $code-bg:    #1C272C;
 $code-color: #E9A6D2;
@@ -61,4 +66,9 @@ main img:not(.navbar-logo) {
 .quarto-grid-item,
 .quarto-grid-item .card-footer {
   border-color: #34454C;
+}
+
+// Native scrollbars and form controls follow the dark theme
+:root {
+  color-scheme: dark;
 }
