@@ -331,7 +331,7 @@ random_forest = RandomForestRegressor(
   random_state = 12345
   )
   
-random_forest.fit(X_train, y_train)
+random_forest.fit(X_train, y_train);
 
 importances = random_forest.feature_importances_
 sorted_idx = importances.argsort()
@@ -442,7 +442,7 @@ print(f"Target Achieved Status (1 = Achieved, 0 = Not Achieved): {final_status_l
 #| label: fig-forecasting
 #| echo: false
 #| fig-pos: 'H'
-#| fig-cap: 'Time Series Forecase determining whether South Africa would reach the 80% reduction.'
+#| fig-cap: 'Time Series Forecast determining whether South Africa would reach the 80% reduction.'
 
 # Display the graph
 plot_forecast(sa_data_ts, model_fit_sa, forecast_series_sa, baseline_sa_2015, predicted_incidence_2030_sa)
