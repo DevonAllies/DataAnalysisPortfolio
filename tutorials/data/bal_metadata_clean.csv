@@ -1,0 +1,501 @@
+pt_id,date_seen,sex,age,ethnicity,height_cm,weight_kg,bmi,tb_diagnosis,hiv_status,cd4_count,viral_load_cp_ml,art,art_regimen,art_start_date,smoking_status,drug_use,drug_type,vaping,vaping_type,gene_xpert_res,gene_xpert_rif,smear_grade,cxr_finding,igra_result,igra_value_iu_ml,referral_site,review_hiv,review_bmi
+SP00013,2018-08-18,Female,17,White,176.5,49.2,15.8,Indeterminate,Positive,275,740,No,,,Former,Yes,,No,,Invalid,Not applicable,Negative,Normal,Indeterminate,1.26,Woodstock CHC,FALSE,FALSE
+SP00169,2016-08-14,Male,24,Asian,166.1,62.2,22.5,Indeterminate,Negative,,,,,,Never,Yes,Mandrax,Yes,Pod,Invalid,Not applicable,Scanty,Normal,Indeterminate,1.5,Claremont CHC,FALSE,FALSE
+SP00211,2019-02-16,Female,35,White,164.5,67.7,25,Active TB,Negative,,,,,,Current,Yes,Mandrax,Yes,Vape pen,MTB detected,Sensitive,2+,Infiltrate/consolidation,Positive,2.79,Claremont CHC,FALSE,FALSE
+SP00403,2018-07-06,Male,13,Black African,174.3,69.6,22.9,LTBI,Negative,,,,,,Never,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,8.47,Elsies River CHC,FALSE,FALSE
+SP00419,2018-08-31,Male,16,Mixed race,157.1,70.6,28.6,Active TB,Negative,,,,,,Never,Yes,,No,,MTB detected,Sensitive,3+,Infiltrate/consolidation,Positive,7.51,Bellville CHC,FALSE,FALSE
+SP00431,2020-06-26,Female,19,White,178.9,46.2,14.4,Indeterminate,Negative,,,,,,Former,Yes,Multiple,No,,Invalid,Not applicable,Negative,Normal,Borderline,1.36,Ottery CHC,FALSE,FALSE
+SP00731,2019-06-27,Male,52,Coloured,172.8,102.5,34.3,Active TB,Positive,373,1034,No,,,Never,No,,Yes,Pod,MTB detected,Resistant,Negative,Infiltrate/consolidation,Positive,,Ottery CHC,FALSE,FALSE
+SP00747,2017-07-02,Male,35,Asian,175.6,74.2,24.1,Active TB,Negative,,,,,,Never,No,,Yes,Vape pen,MTB detected,Resistant,2+,Infiltrate/consolidation,Negative,5.73,Mitchells Plain District Hospital,FALSE,FALSE
+SP00809,2017-07-07,Male,51,Coloured,189.4,48.1,13.4,Active TB,Positive,377,21365,No,,,Former,No,,No,,MTB detected,Indeterminate,Negative,Infiltrate/consolidation,Positive,5.94,Khayelitsha District Hospital,FALSE,FALSE
+SP00876,2020-08-26,Male,29,Mixed race,162.7,77.9,29.4,LTBI,Positive,469,5942,Yes,TLD,2019-08-16,Former,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Positive,8.06,Mitchells Plain District Hospital,FALSE,FALSE
+SP00897,2019-06-02,Male,31,Black African,163,76.9,28.9,LTBI,Positive,479,155333,No,,,Former,Yes,Cannabis,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,4.23,Somerset Hospital,FALSE,FALSE
+SP01150,2017-07-16,Female,38,Black African,138.7,79.2,41.2,Indeterminate,Negative,,,,,,Current,Yes,Crystal meth,No,,MTB not detected,Not applicable,Scanty,Pleural effusion,Negative,1.82,Bellville CHC,FALSE,FALSE
+SP01175,2017-08-02,Male,13,Black African,159.4,93.3,36.7,Indeterminate,Negative,,,,,,Never,No,,No,,Invalid,Not applicable,Negative,Normal,Indeterminate,1.63,Mitchells Plain District Hospital,FALSE,FALSE
+SP01200,2016-07-30,Female,29,Coloured,165,77.3,28.4,Active TB,Positive,343,333751,Yes,Efavirenz-based,2016-09-21,Current,No,,No,,MTB detected,Indeterminate,2+,Other abnormality,Positive,3.38,Mitchells Plain District Hospital,FALSE,FALSE
+SP01298,2017-01-14,Female,14,Coloured,188.2,71.9,20.3,LTBI,Negative,,,,,,Former,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Infiltrate/consolidation,Positive,9.49,Delft CHC,FALSE,FALSE
+SP01400,2017-08-29,Male,42,Black African,159.6,62.5,24.5,Active TB,Positive,518,219198,Yes,Efavirenz-based,2017-10-12,Former,Yes,Heroin,Yes,Vape pen,MTB detected,Sensitive,Scanty,Fibrosis,Positive,9.32,Woodstock CHC,FALSE,FALSE
+SP01565,2016-06-16,Male,55,Black African,168.2,87.3,30.9,Indeterminate,Negative,,,,,,Never,Yes,Multiple,Yes,E-cigarette,Error,Not applicable,2+,Infiltrate/consolidation,Negative,0.54,Woodstock CHC,FALSE,FALSE
+SP01744,2017-06-11,Female,15,Coloured,163.7,47,17.5,Active TB,Positive,425,686,Yes,Efavirenz-based,2017-08-14,Former,Yes,Crystal meth,No,,MTB detected,Sensitive,Scanty,Normal,Positive,7.92,Khayelitsha District Hospital,FALSE,FALSE
+SP01748,2017-06-02,Female,54,Black African,177.6,54.2,17.2,Indeterminate,Positive,286,33,No,,,Never,Yes,Mandrax,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Negative,1.54,Khayelitsha District Hospital,FALSE,FALSE
+SP01860,2019-08-28,Female,18,Asian,166.5,81.4,29.4,Active TB,Negative,,,,,,Current,Yes,Crystal meth,Yes,E-cigarette,MTB detected,Sensitive,2+,Cavitation,Positive,0.21,Elsies River CHC,FALSE,FALSE
+SP01932,2016-03-27,Male,37,Mixed race,167.8,61,21.7,LTBI,Negative,,,,,,Current,Yes,Crystal meth,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,8.69,Elsies River CHC,FALSE,FALSE
+SP01972,2017-09-24,Male,16,Mixed race,167.7,73.7,26.2,Active TB,Negative,,,,,,Former,No,,No,,MTB detected,Indeterminate,2+,Cavitation,Positive,7.42,Elsies River CHC,FALSE,FALSE
+SP02010,2019-08-03,Female,28,Mixed race,161.3,59,22.7,Active TB,Negative,,,,,,Never,No,,No,,MTB detected,Sensitive,2+,Infiltrate/consolidation,Negative,4.9,Elsies River CHC,FALSE,FALSE
+SP02077,2018-08-06,Female,41,Black African,160.5,47.4,18.4,Control,Positive,254,3817,No,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,,Elsies River CHC,FALSE,FALSE
+SP02126,2019-03-16,Female,42,White,170.2,64.3,22.2,LTBI,Positive,701,364859,No,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,5.94,Mitchells Plain District Hospital,FALSE,FALSE
+SP02140,2016-06-19,Female,36,Coloured,182.4,53.6,16.1,LTBI,Negative,,,,,,Current,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,9.47,Khayelitsha District Hospital,FALSE,FALSE
+SP02145,2020-12-08,Male,27,Black African,157.3,62.3,25.2,Control,Negative,,,,,,Former,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.1,Retreat CHC,FALSE,FALSE
+SP02242,2016-10-10,Female,14,Black African,160.5,71.2,27.6,Active TB,Positive,293,374623,Yes,TLD,2016-12-01,Never,Yes,Crystal meth,Yes,,MTB detected,Indeterminate,2+,Normal,Negative,2.92,Delft CHC,FALSE,FALSE
+SP02359,2020-07-10,Female,35,White,153.2,52,22.2,Indeterminate,Negative,,,,,,Current,No,,No,,MTB not detected,Not applicable,Negative,Cavitation,Indeterminate,1.14,Khayelitsha District Hospital,FALSE,FALSE
+SP02400,2020-08-30,Male,19,Mixed race,164,56.9,21.2,LTBI,Negative,,,,,,Current,Yes,Crystal meth,Yes,Pod,MTB not detected,Not applicable,Negative,Other abnormality,Positive,2.25,Eerste River Hospital,FALSE,FALSE
+SP02450,2019-07-15,Male,16,Asian,139.2,74,38.2,Active TB,Negative,385,117,Yes,Efavirenz-based,2019-09-09,Never,Yes,Mandrax,No,,MTB detected,Sensitive,1+,Cavitation,Positive,,Elsies River CHC,TRUE,FALSE
+SP02701,2018-10-17,Female,30,White,175.2,72.4,23.6,Control,Positive,713,713,Yes,Efavirenz-based,2017-11-25,Current,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Other abnormality,Negative,0.11,Eerste River Hospital,FALSE,FALSE
+SP02757,2017-04-27,Male,25,Coloured,167.1,60.5,21.7,Control,Positive,408,37718,Yes,Efavirenz-based,2013-07-09,Former,Yes,Multiple,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.14,Eerste River Hospital,FALSE,FALSE
+SP02791,2017-08-22,Female,36,Coloured,167.4,61.2,21.8,LTBI,Positive,196,28615,No,,,Former,Yes,Crystal meth,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Indeterminate,3.55,Retreat CHC,FALSE,FALSE
+SP03008,2020-07-22,Female,20,Asian,175.2,64.7,21.1,Active TB,Negative,,,,,,Never,Yes,Multiple,No,,MTB detected,Sensitive,2+,Infiltrate/consolidation,Positive,3.35,Khayelitsha District Hospital,FALSE,FALSE
+SP03015,2019-01-15,Male,22,Black African,164.4,97.6,36.1,LTBI,Positive,278,414,Yes,TLD,2015-08-01,Former,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,2.45,Elsies River CHC,FALSE,FALSE
+SP03052,2017-06-19,Female,44,Asian,153,71.1,30.4,Active TB,Positive,361,8002,Yes,Efavirenz-based,2017-08-28,Never,Yes,Cannabis,No,,MTB detected,Indeterminate,2+,Cavitation,Positive,8.33,Claremont CHC,FALSE,FALSE
+SP03372,2019-08-06,Female,53,Asian,170.6,55.2,19,Indeterminate,Positive,689,68,No,,,Never,No,,Yes,Vape pen,Invalid,Not applicable,Negative,Normal,Indeterminate,1.19,Claremont CHC,FALSE,FALSE
+SP03593,2020-07-24,Male,56,Coloured,165.2,88,32.2,Active TB,Negative,,,,,,Current,Yes,Crystal meth,No,,MTB detected,Indeterminate,1+,Infiltrate/consolidation,Negative,0.11,Elsies River CHC,FALSE,FALSE
+SP03636,2020-07-01,Female,54,Black African,168.3,39.3,13.9,Active TB,Negative,,,,,,Current,No,,No,,MTB detected,Sensitive,3+,Normal,Positive,0.16,Ottery CHC,FALSE,FALSE
+SP03926,2019-01-16,Male,33,Asian,160.8,50.8,19.6,Active TB,Negative,,,,,,Never,Yes,Crystal meth,No,,MTB detected,Sensitive,1+,Normal,Positive,3.17,Ottery CHC,FALSE,FALSE
+SP03961,2019-06-18,Female,16,White,165.8,72.9,26.5,Active TB,Negative,,,,,,Never,Yes,Crystal meth,No,,MTB detected,Resistant,2+,Other abnormality,Positive,8.82,Somerset Hospital,FALSE,FALSE
+SP04167,2016-07-21,Female,56,Coloured,163.1,52.5,19.7,Control,Negative,,,,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.16,Bellville CHC,FALSE,FALSE
+SP04562,2020-02-28,Female,14,Coloured,159.5,75.2,29.6,LTBI,Positive,205,8196,Yes,TLD,2017-06-15,Current,Yes,Mandrax,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,7.58,Bellville CHC,FALSE,FALSE
+SP04576,2016-08-16,Male,11,Coloured,180.6,54.9,16.8,Indeterminate,Negative,,,,,,Never,Yes,Cannabis,No,,Indeterminate,Not applicable,Negative,Normal,Indeterminate,1.67,Somerset Hospital,FALSE,FALSE
+SP04669,2016-08-02,Male,49,Mixed race,154.3,82.8,34.8,LTBI,Negative,,,,,,Never,Yes,Mandrax,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,3.73,Somerset Hospital,FALSE,FALSE
+SP04724,2020-07-08,Female,34,Coloured,170.2,88.2,30.4,Active TB,Negative,,,,,,Current,Yes,Mandrax,No,,MTB detected,Sensitive,1+,Cavitation,Negative,11.09,Woodstock CHC,FALSE,FALSE
+SP04779,2019-07-30,Female,19,Asian,167.9,67.2,23.8,Control,Negative,,,,,,Former,Yes,Crystal meth,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Negative,0.13,Eerste River Hospital,FALSE,FALSE
+SP04907,2016-07-11,Male,21,Black African,162.3,61.7,23.4,Active TB,Negative,,,,,,Former,No,,No,,MTB detected,Sensitive,1+,Cavitation,Positive,11.04,Retreat CHC,FALSE,FALSE
+SP04942,2020-07-09,Male,55,Asian,148,67.7,30.9,Indeterminate,Positive,446,84791,No,,,Current,Yes,Crystal meth,No,,Error,Not applicable,Negative,Fibrosis,Negative,1.8,Somerset Hospital,FALSE,FALSE
+SP05148,2020-07-29,Female,39,Mixed race,152.9,82.7,35.4,Indeterminate,Positive,36,3730,Yes,TLD,2018-03-02,Former,Yes,Heroin,No,,Error,Not applicable,Scanty,Infiltrate/consolidation,Borderline,0.61,Claremont CHC,FALSE,FALSE
+SP05182,2019-06-25,Female,15,Asian,150.8,56.9,25,Active TB,Positive,482,515,No,,,Former,No,,No,,MTB detected,Indeterminate,Scanty,Other abnormality,Positive,7,Ottery CHC,FALSE,FALSE
+SP05209,2019-06-16,Male,51,Asian,147.4,70.9,32.6,LTBI,Negative,,,,,,Former,Yes,Mandrax,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,2.22,Mitchells Plain District Hospital,FALSE,FALSE
+SP05255,2019-07-22,Female,34,Black African,178.9,90.8,28.4,LTBI,Positive,340,182393,No,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Fibrosis,Positive,1.91,Mitchells Plain District Hospital,FALSE,FALSE
+SP05627,2018-06-20,Male,34,Black African,132.8,64.7,36.7,LTBI,Negative,,,,,,Current,No,,Yes,,MTB not detected,Not applicable,Negative,Normal,Positive,8.97,Delft CHC,FALSE,FALSE
+SP05679,2018-07-26,Female,52,Mixed race,162.6,71.6,27.1,Control,Negative,,,,,,Never,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.07,Khayelitsha District Hospital,FALSE,FALSE
+SP05942,2016-07-12,Female,47,Black African,177.3,40.5,12.9,LTBI,Negative,,,,,,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,9.19,Retreat CHC,FALSE,TRUE
+SP05964,2020-05-01,Female,36,White,160.7,52.8,20.4,LTBI,Positive,352,552695,Yes,TLD,2017-10-14,Never,No,,Yes,,MTB not detected,Not applicable,Negative,Normal,Positive,8.91,Woodstock CHC,FALSE,FALSE
+SP06180,2020-09-09,Female,30,Black African,174.2,80.2,26.4,LTBI,Positive,529,171,No,,,Never,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Positive,5,Delft CHC,FALSE,FALSE
+SP06325,2017-05-16,Male,48,Mixed race,178.3,83.8,26.4,LTBI,Negative,,,,,,Former,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,2.82,Khayelitsha District Hospital,FALSE,FALSE
+SP06487,2016-07-30,Female,38,White,156.3,79.9,32.7,Indeterminate,Positive,442,149,No,,,Former,Yes,Multiple,Yes,E-cigarette,MTB not detected,Not applicable,Scanty,Normal,Negative,0.43,Delft CHC,FALSE,FALSE
+SP06603,2019-07-08,Female,26,Black African,150.2,73.7,32.7,Indeterminate,Negative,,,,,,Never,Yes,Multiple,Yes,E-cigarette,Error,Not applicable,Negative,Normal,Negative,0.23,Eerste River Hospital,FALSE,FALSE
+SP06629,2018-07-10,Male,28,Coloured,178.4,71.1,22.3,Indeterminate,Positive,391,207193,Yes,Efavirenz-based,,Never,No,,Yes,Pod,Indeterminate,Not applicable,Scanty,Normal,Positive,0.59,Ottery CHC,FALSE,FALSE
+SP06722,2017-08-08,Male,22,Black African,167.1,58.5,21,Control,Positive,465,52641,Yes,Efavirenz-based,2015-01-05,Never,Yes,Mandrax,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Negative,0.07,Claremont CHC,FALSE,FALSE
+SP06732,2018-11-08,Male,33,Mixed race,165,53.1,19.5,LTBI,Positive,444,1239,Yes,TLD,2018-06-24,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Cavitation,Positive,8.94,Delft CHC,FALSE,FALSE
+SP06812,2016-02-15,Female,13,White,176.9,72,23,LTBI,Negative,,,,,,Former,Yes,Crystal meth,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,8.49,Khayelitsha District Hospital,FALSE,FALSE
+SP07016,2019-07-25,Female,27,Coloured,186.8,60.2,17.3,LTBI,Negative,,,,,,Current,Yes,Mandrax,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,4.6,Retreat CHC,FALSE,FALSE
+SP07175,2017-01-11,Male,13,Mixed race,172.2,72.1,24.3,Indeterminate,Positive,459,103025,Yes,TLD,2013-10-22,Former,No,,Yes,Pod,Indeterminate,Not applicable,Negative,Infiltrate/consolidation,Indeterminate,1.78,Somerset Hospital,FALSE,FALSE
+SP07194,2017-01-15,Female,20,Black African,165.9,80.2,29.1,LTBI,Negative,,,,,,Never,Yes,Mandrax,Yes,,MTB not detected,Not applicable,Negative,Normal,Positive,2.27,Ottery CHC,FALSE,FALSE
+SP07270,2018-08-13,Female,39,Black African,152,79.8,34.5,LTBI,Negative,,,,,,Former,Yes,Cannabis,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,8.26,Woodstock CHC,FALSE,FALSE
+SP07420,2018-03-23,Male,13,Black African,175.5,69.9,22.7,Control,Positive,552,52,Yes,Efavirenz-based,2017-04-09,Former,No,,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Negative,0.02,Ottery CHC,FALSE,FALSE
+SP07482,2018-06-19,Male,22,Asian,175.7,84.8,27.5,Indeterminate,Negative,,,,,,Former,No,,No,,Error,Not applicable,Negative,Normal,Indeterminate,1.14,Mitchells Plain District Hospital,FALSE,FALSE
+SP07522,2018-08-25,Male,32,Coloured,174.3,92.4,30.4,Indeterminate,Negative,,,,,,Former,No,,Yes,E-cigarette,Indeterminate,Not applicable,1+,Cavitation,Negative,0.41,Elsies River CHC,FALSE,FALSE
+SP07584,2017-06-30,Male,34,White,175.8,66.9,21.6,Control,Negative,,,,,,Never,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.16,Mitchells Plain District Hospital,FALSE,FALSE
+SP07606,2020-05-14,Male,35,White,149.6,74.4,33.2,Active TB,Negative,,,,,,Never,No,,No,,MTB detected,Sensitive,1+,Infiltrate/consolidation,Positive,2.03,Delft CHC,FALSE,FALSE
+SP07711,2020-08-07,Male,23,White,168.4,63.8,22.5,LTBI,Positive,522,52029,No,,,Never,Yes,Heroin,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,4.86,Retreat CHC,FALSE,FALSE
+SP07716,2019-07-25,Female,48,Coloured,181.8,48.4,14.6,LTBI,Positive,111,36,No,,,Never,Yes,Crystal meth,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,2.17,Somerset Hospital,FALSE,FALSE
+SP07725,2020-06-24,Male,53,Coloured,170.4,76.8,26.4,Control,Negative,,,,,,Former,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Other abnormality,Negative,0.18,Eerste River Hospital,FALSE,FALSE
+SP07833,2018-08-12,Male,37,Asian,167.9,66.8,23.7,Active TB,Negative,,,,,,Current,Yes,Multiple,No,,MTB detected,Indeterminate,1+,Infiltrate/consolidation,Indeterminate,9.94,Claremont CHC,FALSE,FALSE
+SP07855,2019-02-08,Female,49,Black African,158.3,56.4,22.5,Control,Positive,320,17126,No,,,Former,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.2,Claremont CHC,FALSE,FALSE
+SP08030,2020-11-02,Female,25,Mixed race,145.9,94.3,44.3,Active TB,Positive,,,,,,Former,Yes,Crystal meth,Yes,E-cigarette,MTB detected,Sensitive,2+,Infiltrate/consolidation,Positive,6.2,Mitchells Plain District Hospital,FALSE,FALSE
+SP08087,2017-06-25,Female,56,Coloured,163.9,74.7,27.8,Indeterminate,Negative,,,,,,Former,No,,No,,Invalid,Not applicable,Negative,Normal,Indeterminate,0.97,Retreat CHC,FALSE,FALSE
+SP08183,2019-08-13,Male,58,White,180.6,51.5,15.8,Control,Negative,,,,,,Never,Yes,Crystal meth,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Negative,0.19,Mitchells Plain District Hospital,FALSE,FALSE
+SP08193,2018-08-22,Female,49,Black African,156.4,79.5,32.5,LTBI,Negative,,,,,,Never,Yes,,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Positive,0.84,Woodstock CHC,FALSE,FALSE
+SP08398,2017-06-26,Male,44,Asian,141.9,80,39.7,Indeterminate,Negative,,,,,,Current,No,,Yes,Pod,Error,Not applicable,Negative,Normal,Indeterminate,1.36,Elsies River CHC,FALSE,FALSE
+SP08512,2016-08-15,Male,33,Asian,193.8,88.6,23.6,Active TB,Negative,,,,,,Current,Yes,Cannabis,Yes,Pod,MTB detected,Sensitive,2+,Cavitation,Positive,5.66,Delft CHC,FALSE,FALSE
+SP08514,2017-07-03,Female,43,Mixed race,161.4,83.7,32.1,Active TB,Positive,310,2239,Yes,Efavirenz-based,2017-08-30,Former,No,,No,,MTB detected,Sensitive,Negative,Infiltrate/consolidation,Positive,4.93,Mitchells Plain District Hospital,FALSE,FALSE
+SP08533,2020-08-07,Female,21,White,169.6,63.9,22.2,LTBI,Positive,424,14905,No,,,Never,No,,Yes,,MTB not detected,Not applicable,Negative,Normal,Positive,3.47,Claremont CHC,FALSE,FALSE
+SP08638,2020-08-18,Female,19,Coloured,165.8,59,21.5,Active TB,Positive,321,15722,Yes,TLD,2020-10-17,Former,Yes,Cannabis,No,,MTB detected,Indeterminate,1+,Normal,Positive,10.7,Retreat CHC,FALSE,FALSE
+SP08876,2018-07-14,Female,46,Coloured,182.1,60.9,18.4,Control,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.27,Eerste River Hospital,FALSE,FALSE
+SP08954,2019-08-14,Female,53,Black African,156.4,80.9,33.1,LTBI,Positive,249,122,No,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,2,Ottery CHC,FALSE,FALSE
+SP09082,2018-08-08,Female,25,White,171,64.7,22.1,Active TB,Negative,218,1454,No,,,Former,No,,No,,MTB detected,Sensitive,Scanty,Other abnormality,Positive,7.9,Somerset Hospital,TRUE,FALSE
+SP09389,2018-08-11,Female,24,Coloured,156.4,69.9,28.6,LTBI,Negative,,,,,,Never,Yes,Multiple,No,,MTB not detected,Not applicable,Negative,Normal,Positive,0.85,Claremont CHC,FALSE,FALSE
+SP09410,2018-06-02,Male,51,White,167.3,69.6,24.9,Active TB,Negative,,,,,,Former,Yes,Multiple,No,,MTB detected,Sensitive,Scanty,Infiltrate/consolidation,Positive,8.96,Bellville CHC,FALSE,FALSE
+SP09455,2019-10-09,Female,34,Mixed race,182.5,73,21.9,Active TB,Negative,,,,,,Former,Yes,Crystal meth,No,,MTB detected,Indeterminate,1+,Fibrosis,Positive,10.71,Ottery CHC,FALSE,FALSE
+SP09480,2016-04-04,Male,12,Asian,156.6,80.1,32.7,Control,Negative,,,,,,Former,Yes,Crystal meth,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Negative,0.19,Somerset Hospital,FALSE,FALSE
+SP09522,2017-08-18,Male,16,Coloured,174.6,73.8,24.2,Active TB,Negative,,,,,,Current,No,,Yes,Pod,MTB detected,Sensitive,2+,Infiltrate/consolidation,Positive,0.99,Delft CHC,FALSE,FALSE
+SP09573,2020-08-02,Female,49,Asian,161.7,80.7,30.9,Active TB,Negative,,,,,,Former,No,,Yes,Vape pen,MTB detected,Sensitive,3+,Infiltrate/consolidation,Positive,7.6,Mitchells Plain District Hospital,FALSE,FALSE
+SP09600,2016-07-31,Male,26,Coloured,154.4,69,28.9,Control,Negative,,,,,,Never,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.14,Woodstock CHC,FALSE,FALSE
+SP09669,2018-06-09,Female,39,Mixed race,165.8,68.2,24.8,LTBI,Negative,,,,,,Former,Yes,Multiple,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,1.9,Khayelitsha District Hospital,FALSE,FALSE
+SP09713,2016-08-09,Female,51,Asian,145.2,42.3,20.1,LTBI,Positive,,,,,,Former,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Positive,5.23,Delft CHC,FALSE,FALSE
+SP09721,2019-06-07,Female,15,Coloured,183.3,86.9,25.9,LTBI,Positive,344,425841,No,,,Former,Yes,Mandrax,Yes,,MTB not detected,Not applicable,Negative,Normal,Positive,2.72,Mitchells Plain District Hospital,FALSE,FALSE
+SP09756,2019-07-11,Male,42,Asian,169.6,62,21.6,Indeterminate,Positive,448,1602,Yes,TLD,2015-12-01,Former,Yes,,No,,Indeterminate,Not applicable,Negative,Infiltrate/consolidation,Borderline,1.48,Claremont CHC,FALSE,FALSE
+SP09782,2016-10-16,Male,51,Coloured,159.1,61.2,24.2,LTBI,Positive,359,774451,Yes,Efavirenz-based,2013-11-01,Former,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,8.86,Claremont CHC,FALSE,FALSE
+SP09801,2019-03-03,Female,36,Coloured,165.2,59.8,21.9,LTBI,Negative,,,,,,Current,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,2.74,Mitchells Plain District Hospital,FALSE,FALSE
+SP09819,2020-08-04,Female,53,White,174.6,89.5,29.4,Control,Positive,465,10005,No,,,Never,Yes,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.04,Woodstock CHC,FALSE,FALSE
+SP09837,2016-08-22,Male,24,White,147.4,58.1,26.7,Indeterminate,Negative,,,,,,Current,Yes,Heroin,No,,MTB not detected,Not applicable,1+,Other abnormality,Negative,1.81,Eerste River Hospital,FALSE,FALSE
+SP09852,2020-07-22,Male,25,White,168.3,53.9,19,Active TB,Negative,,,,,,Never,No,,Yes,Pod,MTB detected,Sensitive,Negative,Pleural effusion,Positive,2.26,Bellville CHC,FALSE,FALSE
+SP09992,2016-09-20,Male,32,Black African,167.7,40.9,14.5,Active TB,Negative,,,,,,Never,No,,No,,MTB detected,Sensitive,1+,Infiltrate/consolidation,Positive,4.33,Somerset Hospital,FALSE,FALSE
+SP10015,2018-05-08,Female,14,Asian,164.7,59.8,22,Control,Positive,267,900,No,,,Former,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Negative,0.17,Elsies River CHC,FALSE,FALSE
+SP10059,2020-08-28,Male,28,Coloured,155.2,65.4,27.2,Control,Negative,,,,,,Never,Yes,Multiple,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0,Bellville CHC,FALSE,FALSE
+SP10077,2017-04-18,Male,41,Black African,175.9,55.6,18,LTBI,Negative,,,,,,Never,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Infiltrate/consolidation,Positive,4.84,Ottery CHC,FALSE,FALSE
+SP10127,2019-06-26,Male,20,Asian,158.2,73.6,29.4,Active TB,Negative,,,,,,Former,Yes,Multiple,No,,MTB detected,Sensitive,2+,Infiltrate/consolidation,Positive,0.26,Elsies River CHC,FALSE,FALSE
+SP10213,2018-08-19,Female,22,Asian,158.1,70,28,Active TB,Positive,354,14766,Yes,Efavirenz-based,2018-10-02,Current,Yes,Crystal meth,Yes,E-cigarette,MTB detected,Sensitive,Scanty,Cavitation,Positive,6.29,Somerset Hospital,FALSE,FALSE
+SP10228,2017-07-29,Male,21,Asian,169.9,66.9,23.2,Indeterminate,Negative,,,,,,Former,Yes,,No,,Error,Not applicable,Scanty,Normal,Indeterminate,0.89,Eerste River Hospital,FALSE,FALSE
+SP10344,2020-06-02,Female,20,White,167.1,84.6,30.3,Control,Negative,,,,,,Former,Yes,Mandrax,Yes,,MTB not detected,Not applicable,Negative,Normal,Negative,0,Ottery CHC,FALSE,FALSE
+SP10400,2016-08-11,Male,44,Mixed race,171.4,65.2,22.2,Active TB,Positive,513,8274,Yes,TLD,2016-09-28,Former,Yes,Crystal meth,No,,MTB detected,Sensitive,Scanty,Infiltrate/consolidation,Negative,1.09,Eerste River Hospital,FALSE,FALSE
+SP10525,2016-06-11,Male,18,White,144.5,67.7,32.4,Control,Negative,,,,,,Never,Yes,Crystal meth,Yes,,MTB not detected,Not applicable,Negative,Normal,Negative,0.02,Khayelitsha District Hospital,FALSE,FALSE
+SP10683,2017-04-23,Female,44,Asian,163.7,98.9,36.9,Active TB,Negative,,,,,,Former,Yes,Cannabis,Yes,Pod,MTB detected,Resistant,3+,Cavitation,Positive,7.07,Elsies River CHC,FALSE,FALSE
+SP10748,2019-06-25,Female,28,Mixed race,194.6,78.9,20.8,Active TB,Negative,,,,,,Former,Yes,Crystal meth,Yes,Pod,MTB detected,Sensitive,1+,Cavitation,Positive,6.8,Delft CHC,FALSE,FALSE
+SP10772,2018-08-30,Female,52,Black African,165.2,68.3,25,LTBI,Negative,,,,,,Never,Yes,Crystal meth,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,9.17,Elsies River CHC,FALSE,FALSE
+SP10968,2020-07-22,Female,36,Coloured,153.8,92.2,39,LTBI,Negative,,,,,,Never,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,5.53,Mitchells Plain District Hospital,FALSE,FALSE
+SP10983,2019-06-29,Female,34,Black African,191.6,68.2,18.6,LTBI,Negative,,,,,,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,8.08,Bellville CHC,FALSE,FALSE
+SP11047,2020-04-17,Male,56,White,149.2,84.4,37.9,LTBI,Positive,,,,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,6.1,Woodstock CHC,FALSE,FALSE
+SP11220,2020-06-20,Male,59,Black African,196.7,,,Control,Negative,,,,,,Never,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.21,Khayelitsha District Hospital,FALSE,FALSE
+SP11323,2016-07-01,Female,28,Mixed race,165.7,77.4,28.2,Active TB,Negative,,,,,,Current,No,,No,,MTB detected,Sensitive,2+,Infiltrate/consolidation,Positive,3.3,Bellville CHC,FALSE,FALSE
+SP11364,2018-07-20,Female,55,Black African,177.6,72.8,23.1,Control,Positive,333,212635,No,,,Current,Yes,Multiple,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Negative,0.05,Delft CHC,FALSE,FALSE
+SP11433,2019-05-21,Male,56,Black African,147.8,60.5,27.7,Active TB,Positive,367,258732,No,,,Current,Yes,Multiple,Yes,Pod,MTB detected,Sensitive,1+,Infiltrate/consolidation,Negative,6.72,Elsies River CHC,FALSE,FALSE
+SP11511,2017-01-07,Male,50,Coloured,165.7,58.8,21.4,Active TB,Negative,,,,,,Former,No,,Yes,Vape pen,MTB detected,Sensitive,3+,Cavitation,Positive,9.45,Ottery CHC,FALSE,FALSE
+SP11575,2019-11-13,Female,44,White,160.4,77.2,30,LTBI,Negative,,,,,,Current,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Positive,2.36,Elsies River CHC,FALSE,FALSE
+SP11648,2018-10-17,Female,30,Coloured,159.3,58.2,22.9,Control,Negative,,,,,,Current,Yes,Multiple,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.06,Elsies River CHC,FALSE,FALSE
+SP11751,2019-08-11,Female,44,Mixed race,156.5,60.8,24.8,Control,Positive,211,12151,Yes,Efavirenz-based,2018-12-15,Current,Yes,Crystal meth,Yes,Pod,MTB not detected,Not applicable,Negative,Other abnormality,Negative,0.04,Elsies River CHC,FALSE,FALSE
+SP11792,2020-08-18,Female,48,Coloured,170.7,72.2,24.8,Active TB,Positive,561,260174,Yes,TLD,2020-10-25,Never,Yes,Heroin,Yes,,MTB detected,Sensitive,Negative,Cavitation,Negative,7.12,Bellville CHC,FALSE,FALSE
+SP11853,2019-08-03,Male,38,Black African,185.9,78.9,22.8,Control,Positive,172,578,Yes,TLD,,Current,Yes,Heroin,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.08,Elsies River CHC,FALSE,FALSE
+SP12026,2017-08-14,Male,26,Coloured,152.4,60.1,25.9,LTBI,Positive,405,491444,Yes,TLD,2015-08-19,Current,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Negative,1.5,Bellville CHC,FALSE,FALSE
+SP12262,2018-11-02,Male,33,Black African,176.8,76.6,24.5,Indeterminate,Negative,,,,,,Never,Yes,Crystal meth,Yes,,Error,Not applicable,1+,Normal,Borderline,0.4,Elsies River CHC,FALSE,FALSE
+SP12266,2020-06-22,Female,31,Black African,179.4,94.6,29.4,Control,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.04,Bellville CHC,FALSE,FALSE
+SP12281,2016-05-08,Male,35,Asian,175.6,74.4,24.1,LTBI,Negative,,,,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,5.85,Bellville CHC,FALSE,FALSE
+SP12294,2017-07-14,Male,44,Black African,177.1,73.2,23.3,Indeterminate,Positive,535,84059,Yes,Efavirenz-based,2014-12-10,Former,Yes,Crystal meth,Yes,,Error,Not applicable,Negative,Normal,Indeterminate,1.52,Elsies River CHC,FALSE,FALSE
+SP12334,2019-08-24,Female,58,White,174.9,75.4,24.6,Indeterminate,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Indeterminate,0.14,Khayelitsha District Hospital,FALSE,FALSE
+SP12492,2020-08-10,Male,33,White,170.2,95.2,32.9,Indeterminate,Positive,564,1877,No,,,Former,Yes,,No,,Invalid,Not applicable,Negative,Normal,Positive,1.77,Mitchells Plain District Hospital,FALSE,FALSE
+SP12585,2020-08-11,Male,53,Mixed race,184.6,70.2,20.6,Active TB,Positive,313,2119,Yes,TLD,2020-10-18,Never,Yes,Heroin,No,,MTB detected,Indeterminate,2+,Infiltrate/consolidation,Positive,8.52,Retreat CHC,FALSE,FALSE
+SP12618,2017-08-29,Female,21,White,148.2,62.2,28.3,Control,Negative,,,,,,Current,Yes,Crystal meth,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.11,Khayelitsha District Hospital,FALSE,FALSE
+SP12778,2019-06-26,Female,14,White,153.1,57.5,24.5,Control,Negative,,,,,,Never,Yes,Crystal meth,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.32,Claremont CHC,FALSE,FALSE
+SP12808,2017-03-31,Female,46,Coloured,177.6,67.6,21.4,Active TB,Negative,,,,,,Current,Yes,Cannabis,Yes,Pod,MTB detected,Sensitive,1+,Infiltrate/consolidation,Positive,2.87,Mitchells Plain District Hospital,FALSE,FALSE
+SP12896,2018-08-21,Female,53,Mixed race,162.8,80.4,30.3,LTBI,Positive,537,1025,No,,,Never,Yes,Multiple,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,9.73,Eerste River Hospital,FALSE,FALSE
+SP12960,2017-06-22,Male,19,Coloured,163.2,63,23.7,LTBI,Positive,454,682,No,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,,Elsies River CHC,FALSE,FALSE
+SP12965,2018-08-16,Male,50,Black African,154.6,63.4,26.5,LTBI,Negative,,,,,,Never,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Positive,2.53,Claremont CHC,FALSE,FALSE
+SP13072,2020-08-31,Male,42,Mixed race,172.5,70.1,23.6,LTBI,Positive,238,5313,No,,,Never,Yes,Crystal meth,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Positive,7.44,Retreat CHC,FALSE,FALSE
+SP13353,2017-08-30,Female,47,Black African,170.1,74.4,25.7,Indeterminate,Positive,539,124178,No,,,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Indeterminate,0.33,Ottery CHC,FALSE,FALSE
+SP13547,2018-07-06,Male,16,White,151.1,102.9,45.1,LTBI,Negative,,,,,,Former,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,7.59,Retreat CHC,FALSE,FALSE
+SP13552,2020-08-09,Male,32,White,155.2,86.3,35.8,Active TB,Positive,391,41952,No,,,Current,No,,Yes,Pod,MTB detected,Sensitive,Negative,Cavitation,Positive,3.96,Eerste River Hospital,FALSE,FALSE
+SP13589,2020-06-17,Female,56,Asian,167.9,43.9,15.6,Control,Negative,,,,,,Current,No,,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Pleural effusion,Negative,0.17,Khayelitsha District Hospital,FALSE,FALSE
+SP13698,2019-01-07,Male,50,Black African,183.2,51.4,15.3,Control,Negative,,,,,,Current,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.03,Delft CHC,FALSE,FALSE
+SP13735,2019-06-01,Female,24,White,142.1,50.4,25,LTBI,Negative,,,,,,Never,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Positive,9.74,Somerset Hospital,FALSE,FALSE
+SP13753,2016-02-02,Female,26,Mixed race,159,49,19.4,Control,Negative,,,,,,Former,No,,Yes,,MTB not detected,Not applicable,Negative,Normal,Negative,0.02,Somerset Hospital,FALSE,FALSE
+SP13841,2019-06-25,Female,24,Coloured,166.4,78,28.2,Active TB,Positive,441,2347,Yes,TLD,2019-08-18,Current,No,,No,,MTB detected,Resistant,Negative,Infiltrate/consolidation,Negative,2.66,Delft CHC,FALSE,FALSE
+SP13963,2017-06-03,Female,45,White,167.4,81,28.9,Control,Negative,,,,,,Never,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.06,Claremont CHC,FALSE,FALSE
+SP13975,2019-08-21,Male,58,Coloured,163.8,47.4,17.7,Indeterminate,Negative,,,,,,Former,No,,No,,Indeterminate,Not applicable,Negative,Pleural effusion,Indeterminate,0.39,Mitchells Plain District Hospital,FALSE,FALSE
+SP14150,2019-07-02,Female,13,Mixed race,172.8,75.7,25.4,Control,Negative,,,,,,Current,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.04,Somerset Hospital,FALSE,FALSE
+SP14163,2018-06-05,Female,50,White,166.9,73.1,26.2,LTBI,Positive,397,19529,No,,,Current,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,8.93,Bellville CHC,FALSE,FALSE
+SP14371,2017-07-29,Female,39,White,168.5,88.4,31.1,Control,Positive,6,900580,Yes,TLD,2014-09-05,Former,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.31,Claremont CHC,FALSE,FALSE
+SP14432,2016-07-23,Male,46,White,147.3,70.8,32.6,Indeterminate,Negative,,,,,,Former,No,,Yes,E-cigarette,Error,Not applicable,Negative,Normal,Negative,0.53,Delft CHC,FALSE,FALSE
+SP14452,2020-07-25,Female,26,White,166.1,43.8,15.9,Active TB,Negative,,,,,,Former,No,,No,,MTB detected,Sensitive,2+,Cavitation,Positive,4.1,Somerset Hospital,FALSE,FALSE
+SP14556,2019-06-12,Female,45,White,177.1,63.5,20.2,LTBI,Positive,406,33,No,,,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Negative,4.53,Bellville CHC,FALSE,FALSE
+SP14586,2018-06-15,Male,17,Black African,144,70.3,33.9,LTBI,Negative,,,,,,Former,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,1.53,Mitchells Plain District Hospital,FALSE,FALSE
+SP14695,2018-08-11,Female,49,Mixed race,171.8,66.2,22.4,Active TB,Negative,,,,,,Former,Yes,Crystal meth,No,,MTB detected,Indeterminate,Scanty,Infiltrate/consolidation,Positive,8.39,Woodstock CHC,FALSE,FALSE
+SP14723,2016-06-20,Female,42,Asian,169.3,92,32.1,Active TB,Positive,754,3340,Yes,TLD,2016-08-23,Current,Yes,Crystal meth,No,,MTB detected,Resistant,Scanty,Normal,Negative,3.99,Eerste River Hospital,FALSE,FALSE
+SP14775,2017-07-12,Male,24,Coloured,160.4,63.5,24.7,Indeterminate,Positive,115,3110,No,,,Former,No,,Yes,Vape pen,Invalid,Not applicable,1+,Normal,Indeterminate,0.22,Somerset Hospital,FALSE,FALSE
+SP14784,2018-07-26,Female,54,Black African,167.8,67.7,24,Active TB,Negative,,,,,,Never,No,,No,,MTB detected,Sensitive,2+,Normal,Positive,8.16,Elsies River CHC,FALSE,FALSE
+SP14859,2016-04-08,Male,33,White,168.8,57.9,20.3,Active TB,Negative,,,,,,Former,No,,Yes,Pod,MTB detected,Indeterminate,Scanty,Other abnormality,Negative,3.68,Retreat CHC,FALSE,FALSE
+SP15248,2018-07-02,Male,19,White,151.7,67.2,29.2,Active TB,Positive,21,9260,No,,,Former,Yes,Crystal meth,No,,MTB detected,Indeterminate,1+,Infiltrate/consolidation,Negative,2.76,Mitchells Plain District Hospital,FALSE,FALSE
+SP15306,2019-07-24,Female,43,Black African,167.7,80.4,28.6,Active TB,Positive,169,87794,No,,,Former,Yes,Crystal meth,Yes,Vape pen,MTB detected,Sensitive,Negative,Cavitation,Positive,4.48,Delft CHC,FALSE,FALSE
+SP15369,2019-07-18,Male,29,White,136.1,52.5,28.3,Control,Positive,147,1070,No,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.1,Somerset Hospital,FALSE,FALSE
+SP15391,2017-07-28,Female,48,Coloured,182.9,84.2,25.2,LTBI,Negative,,,,,,Former,Yes,Heroin,No,,MTB not detected,Not applicable,Negative,Normal,Positive,8.41,Woodstock CHC,FALSE,FALSE
+SP15443,2017-07-21,Male,30,Black African,156.9,90.9,36.9,Control,Negative,,,,,,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.16,Delft CHC,FALSE,FALSE
+SP15540,2017-07-22,Male,17,Coloured,186.4,60.6,17.4,LTBI,Positive,196,273,Yes,TLD,2015-10-25,Current,No,,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Indeterminate,4.77,Khayelitsha District Hospital,FALSE,FALSE
+SP15598,2016-07-28,Female,13,Coloured,159.2,45.7,18,Active TB,Negative,,,,,,Former,Yes,Crystal meth,Yes,Pod,MTB detected,Indeterminate,2+,Cavitation,Positive,11.7,Khayelitsha District Hospital,FALSE,FALSE
+SP15682,2020-07-10,Male,20,Coloured,186.4,50,14.4,Active TB,Negative,,,,,,Former,Yes,Crystal meth,Yes,E-cigarette,MTB detected,Sensitive,1+,Normal,Positive,5.84,Mitchells Plain District Hospital,FALSE,FALSE
+SP15793,2018-02-21,Female,15,Black African,172.3,93.6,31.5,Active TB,Positive,,,,,,Former,Yes,Crystal meth,Yes,Pod,MTB detected,Sensitive,2+,Infiltrate/consolidation,Positive,10.3,Woodstock CHC,FALSE,FALSE
+SP16138,2020-08-19,Male,18,Black African,178.4,52.4,16.5,Active TB,Negative,,,,,,Never,No,,No,,MTB detected,Resistant,1+,Cavitation,Negative,9.35,Delft CHC,FALSE,FALSE
+SP16354,2018-06-11,Male,53,Coloured,174.7,66.3,21.7,LTBI,Negative,,,,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,5.24,Delft CHC,FALSE,FALSE
+SP16372,2020-08-07,Female,57,Coloured,172.9,54.9,18.4,Indeterminate,Negative,,,,,,Former,No,,Yes,E-cigarette,Error,Not applicable,Negative,Pleural effusion,Negative,0.26,Delft CHC,FALSE,FALSE
+SP16582,2018-07-06,Female,57,White,148.1,40.6,18.5,LTBI,Positive,352,72162,Yes,TLD,2017-07-06,Current,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Negative,6.88,Elsies River CHC,FALSE,FALSE
+SP16720,2018-07-31,Male,52,Mixed race,173.9,66.8,22.1,Control,Positive,,,,,,Former,Yes,Crystal meth,Yes,,MTB not detected,Not applicable,Negative,Normal,Negative,0.14,Delft CHC,FALSE,FALSE
+SP16734,2016-10-05,Female,56,Coloured,152.2,82.1,35.4,Active TB,Negative,,,,,,Former,Yes,,Yes,Vape pen,MTB detected,Indeterminate,2+,Infiltrate/consolidation,Positive,8.04,Bellville CHC,FALSE,FALSE
+SP16824,2017-07-05,Female,36,White,167.8,66.3,23.5,Indeterminate,Negative,,,,,,Current,No,,Yes,Vape pen,Indeterminate,Not applicable,Negative,Normal,Indeterminate,0.79,Delft CHC,FALSE,FALSE
+SP16903,2020-07-22,Male,22,White,160.4,53.1,20.6,LTBI,Negative,390,9607,Yes,TLD,2019-04-23,Current,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Positive,4.37,Somerset Hospital,TRUE,FALSE
+SP16941,2016-10-28,Male,56,Coloured,169.8,59.8,20.7,Control,Positive,323,123,No,,,Former,Yes,Crystal meth,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Negative,0.31,Khayelitsha District Hospital,FALSE,FALSE
+SP16987,2020-07-04,Female,47,Black African,182.7,59.1,17.7,Control,Negative,,,,,,Former,Yes,Crystal meth,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Negative,0.15,Bellville CHC,FALSE,FALSE
+SP17091,2019-07-31,Male,31,Coloured,162.6,68.2,25.8,LTBI,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,6.44,Delft CHC,FALSE,FALSE
+SP17158,2016-08-24,Female,39,White,165.5,49,17.9,Active TB,Negative,,,,,,Never,Yes,Multiple,Yes,Pod,MTB detected,Sensitive,1+,Normal,Positive,1.6,Claremont CHC,FALSE,FALSE
+SP17219,2018-06-10,Male,55,Mixed race,153.1,89.3,38.1,Active TB,Positive,486,376903,Yes,Efavirenz-based,2018-07-31,Current,No,,Yes,Vape pen,MTB detected,Sensitive,Negative,Other abnormality,Positive,0.77,Ottery CHC,FALSE,FALSE
+SP17336,2018-08-20,Female,43,White,169.6,72,25,Control,Negative,,,,,,Never,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Negative,0.17,Delft CHC,FALSE,FALSE
+SP17408,2020-07-28,Female,22,White,160.7,58.2,22.5,Indeterminate,Positive,268,129,Yes,TLD,2017-12-10,Former,Yes,Multiple,No,,Error,Not applicable,Negative,Other abnormality,Indeterminate,1.13,Claremont CHC,FALSE,FALSE
+SP17447,2017-02-12,Male,25,Mixed race,159.2,43,17,Active TB,Negative,,,,,,Former,Yes,Cannabis,Yes,,MTB detected,Indeterminate,2+,Cavitation,Positive,,Claremont CHC,FALSE,FALSE
+SP17515,2016-06-30,Female,29,White,146.3,52.7,24.6,LTBI,Negative,,,,,,Current,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,9.24,Claremont CHC,FALSE,FALSE
+SP17656,2020-09-03,Female,39,Coloured,158.7,73.2,29.1,LTBI,Negative,,,,,,Never,Yes,Multiple,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Positive,2.35,Eerste River Hospital,FALSE,FALSE
+SP17835,2019-01-09,Female,51,Coloured,159.2,72.7,28.7,LTBI,Positive,235,8046,Yes,Efavirenz-based,2018-09-06,Former,No,,No,,MTB not detected,Not applicable,Negative,Infiltrate/consolidation,Positive,8.43,Elsies River CHC,FALSE,FALSE
+SP17888,2016-07-31,Female,18,Coloured,147.5,74.6,34.3,Indeterminate,Negative,,,,,,Never,No,,Yes,Vape pen,Error,Not applicable,2+,Normal,Borderline,1.5,Bellville CHC,FALSE,FALSE
+SP18065,2016-08-23,Female,11,Asian,186.7,57,16.4,Active TB,Negative,,,,,,Former,No,,Yes,Pod,MTB detected,Sensitive,Negative,Normal,Positive,3.86,Elsies River CHC,FALSE,FALSE
+SP18130,2018-06-17,Female,37,Coloured,183.9,46.1,13.6,LTBI,Positive,753,1963,No,,,Former,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,9.18,Mitchells Plain District Hospital,FALSE,FALSE
+SP18175,2017-06-15,Female,22,Asian,174.4,67.2,22.1,Active TB,Negative,,,,,,Never,Yes,Multiple,Yes,Pod,MTB detected,Sensitive,Negative,Normal,Positive,9.06,Claremont CHC,FALSE,FALSE
+SP18236,2017-08-01,Female,47,Black African,161.1,89.9,34.6,Active TB,Negative,,,,,,Current,Yes,Mandrax,Yes,Vape pen,MTB detected,Indeterminate,2+,Infiltrate/consolidation,Positive,0.84,Bellville CHC,FALSE,FALSE
+SP18317,2018-08-13,Male,55,Black African,161.1,74.4,28.7,Active TB,Negative,,,,,,Former,No,,No,,MTB detected,Sensitive,Negative,Infiltrate/consolidation,Positive,3.05,Ottery CHC,FALSE,FALSE
+SP18622,2020-06-24,Female,32,Black African,162.4,71.8,27.2,Active TB,Negative,,,,,,Current,No,,No,,MTB detected,Sensitive,2+,Cavitation,Positive,1.18,Somerset Hospital,FALSE,FALSE
+SP18651,2019-12-29,Male,26,Black African,,80.7,,Indeterminate,Positive,,,,,,Former,No,,No,,Invalid,Not applicable,Negative,Pleural effusion,Indeterminate,0.73,Elsies River CHC,FALSE,FALSE
+SP18851,2017-08-31,Male,32,Black African,148.7,64.3,29.1,LTBI,Positive,579,686,No,,,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,9,Mitchells Plain District Hospital,FALSE,FALSE
+SP19169,2020-07-20,Male,37,White,172.8,93.8,31.4,Active TB,Positive,116,11750,Yes,TLD,2020-09-16,Former,No,,No,,MTB detected,Sensitive,3+,Other abnormality,Positive,0.36,Delft CHC,FALSE,FALSE
+SP19235,2017-07-17,Male,20,Asian,173.9,57.6,19,Control,Positive,364,24018,No,,,Never,No,,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Negative,,Mitchells Plain District Hospital,FALSE,FALSE
+SP19257,2020-08-28,Male,41,Black African,182.7,77.4,23.2,Active TB,Negative,,,,,,Former,Yes,Heroin,Yes,Pod,MTB detected,Sensitive,1+,Infiltrate/consolidation,Positive,2.52,Elsies River CHC,FALSE,FALSE
+SP19493,2020-08-19,Male,36,Asian,170.1,80.4,27.8,Active TB,Positive,54,171698,Yes,TLD,2020-10-10,Former,No,,No,,MTB detected,Sensitive,Negative,Infiltrate/consolidation,Indeterminate,2.55,Elsies River CHC,FALSE,FALSE
+SP19534,2016-04-19,Male,34,Mixed race,173.3,49.5,16.5,Indeterminate,Negative,,,,,,Never,No,,No,,Error,Not applicable,Negative,Normal,Negative,0.96,Mitchells Plain District Hospital,FALSE,FALSE
+SP19543,2018-07-26,Male,45,Coloured,155,74,30.8,Active TB,Positive,482,52,Yes,Efavirenz-based,2018-10-04,Current,Yes,Crystal meth,No,,MTB detected,Sensitive,Scanty,Cavitation,Positive,0.1,Delft CHC,FALSE,FALSE
+SP19591,2016-03-19,Male,11,Black African,186,63.3,18.3,LTBI,Positive,262,2798,No,,,Former,Yes,Heroin,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,4.15,Delft CHC,FALSE,FALSE
+SP19760,2018-09-27,Male,53,White,148.4,48.2,21.9,LTBI,Negative,,,,,,Never,Yes,Mandrax,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Positive,3.23,Mitchells Plain District Hospital,FALSE,FALSE
+SP19813,2017-06-25,Male,11,Mixed race,164.8,86,31.7,Active TB,Positive,309,354263,Yes,TLD,2017-08-24,Former,No,,Yes,E-cigarette,MTB detected,Sensitive,Negative,Cavitation,Positive,9.07,Ottery CHC,FALSE,FALSE
+SP19890,2018-07-02,Female,31,Black African,173.6,63,20.9,Indeterminate,Negative,,,,,,Never,Yes,Multiple,Yes,E-cigarette,MTB not detected,Not applicable,Scanty,Infiltrate/consolidation,Indeterminate,,Somerset Hospital,FALSE,FALSE
+SP20008,2018-08-17,Female,24,Coloured,181.9,83.2,25.1,Indeterminate,Positive,397,375,Yes,Efavirenz-based,2017-07-05,Former,Yes,,No,,Invalid,Not applicable,Scanty,Infiltrate/consolidation,Borderline,1.07,Mitchells Plain District Hospital,FALSE,FALSE
+SP20020,2019-07-25,Female,37,Asian,162.3,60.8,23.1,LTBI,Negative,,,,,,Former,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Other abnormality,Positive,7.22,Ottery CHC,FALSE,FALSE
+SP20160,2016-06-25,Female,22,Asian,170,70.7,24.5,Control,Negative,,,,,,Former,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Other abnormality,Negative,0.34,Elsies River CHC,FALSE,FALSE
+SP20209,2016-08-27,Female,28,Black African,157.1,62.2,25.2,Active TB,Positive,384,205904,Yes,Efavirenz-based,2016-10-09,Former,No,,Yes,E-cigarette,MTB detected,Sensitive,3+,Other abnormality,Positive,10.07,Delft CHC,FALSE,FALSE
+SP20257,2017-12-21,Female,20,Mixed race,173.6,87.2,28.9,LTBI,Positive,326,1282,Yes,Efavirenz-based,2015-10-07,Current,Yes,Crystal meth,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,9.95,Delft CHC,FALSE,FALSE
+SP20342,2019-07-28,Male,55,Coloured,162.5,82.2,31.1,LTBI,Positive,,,,,,Never,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,4.84,Ottery CHC,FALSE,FALSE
+SP20407,2019-06-09,Female,59,Black African,174.9,57,18.6,Active TB,Positive,475,24777,Yes,TLD,2019-07-26,Never,Yes,Crystal meth,No,,MTB detected,Sensitive,Negative,Cavitation,Negative,6.56,Elsies River CHC,FALSE,FALSE
+SP20422,2019-06-03,Male,37,Coloured,180.1,81.4,25.1,Active TB,Negative,,,,,,Former,Yes,Crystal meth,Yes,Pod,MTB detected,Sensitive,Scanty,Other abnormality,Positive,0.21,Delft CHC,FALSE,FALSE
+SP20429,2017-07-17,Male,31,White,177.4,74.6,23.7,Active TB,Negative,,,,,,Never,No,,No,,MTB detected,Sensitive,2+,Infiltrate/consolidation,Indeterminate,9.48,Delft CHC,FALSE,FALSE
+SP20434,2016-07-28,Female,11,Asian,160.2,48.1,18.7,Control,Negative,,,,,,Former,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.21,Khayelitsha District Hospital,FALSE,FALSE
+SP20445,2017-07-13,Female,34,White,189.9,67,18.6,Control,Negative,227,47,No,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.18,Retreat CHC,TRUE,FALSE
+SP20507,2016-03-06,Female,21,Coloured,177.4,31.4,10,Active TB,Positive,718,268,No,,,Never,No,,Yes,Vape pen,MTB detected,Sensitive,2+,Infiltrate/consolidation,Positive,4.81,Ottery CHC,FALSE,TRUE
+SP20515,2017-04-26,Female,11,Mixed race,172.9,55.3,18.5,LTBI,Positive,310,687567,No,,,Current,Yes,Crystal meth,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,9.89,Woodstock CHC,FALSE,FALSE
+SP20517,2016-06-22,Female,27,Asian,154.3,51.6,21.7,Active TB,Negative,,,,,,Former,No,,Yes,Vape pen,MTB detected,Sensitive,Negative,Infiltrate/consolidation,Negative,11.77,Bellville CHC,FALSE,FALSE
+SP20582,2016-07-19,Male,27,Coloured,164.2,45.6,16.9,Active TB,Positive,206,59014,Yes,TLD,,Never,No,,Yes,E-cigarette,MTB detected,Indeterminate,2+,Other abnormality,Indeterminate,10.96,Ottery CHC,FALSE,FALSE
+SP20627,2020-06-08,Female,35,Black African,168.2,40.8,14.4,LTBI,Positive,381,785352,Yes,TLD,2017-01-15,Never,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Positive,5.13,Mitchells Plain District Hospital,FALSE,FALSE
+SP20673,2016-07-21,Male,19,Black African,164.3,78.8,29.2,Indeterminate,Negative,,,,,,Current,Yes,,Yes,Vape pen,Error,Not applicable,Negative,Normal,Borderline,1.87,Retreat CHC,FALSE,FALSE
+SP20689,2020-06-28,Female,42,Black African,177.3,42.5,13.5,Control,Positive,41,191,Yes,TLD,2017-08-25,Former,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.27,Mitchells Plain District Hospital,FALSE,FALSE
+SP20714,2016-08-28,Male,13,Black African,183.1,81.2,24.2,LTBI,Negative,,,,,,Former,Yes,Crystal meth,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Positive,,Claremont CHC,FALSE,FALSE
+SP20717,2016-06-04,Male,32,Coloured,178.8,75,23.5,Active TB,Negative,,,,,,Former,Yes,Multiple,No,,MTB detected,Sensitive,1+,Normal,Positive,1.49,Delft CHC,FALSE,FALSE
+SP20736,2017-01-19,Female,13,Mixed race,151.2,59.8,26.2,Control,Negative,,,,,,Former,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.26,Woodstock CHC,FALSE,FALSE
+SP20758,2016-06-17,Male,18,White,152.9,75.6,32.3,LTBI,Negative,,,,,,Former,Yes,Multiple,No,,MTB not detected,Not applicable,Negative,Normal,Positive,8.4,Retreat CHC,FALSE,FALSE
+SP21051,2020-01-01,Male,54,Coloured,167.7,62,22,Indeterminate,Positive,237,96,Yes,TLD,2019-10-18,Former,Yes,,Yes,Pod,MTB not detected,Not applicable,Negative,Other abnormality,Positive,1.88,Ottery CHC,FALSE,FALSE
+SP21119,2017-06-25,Male,23,Mixed race,158.7,78.4,31.1,LTBI,Negative,,,,,,Former,Yes,Mandrax,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Positive,3.37,Woodstock CHC,FALSE,FALSE
+SP21229,2017-06-24,Female,41,White,173.2,60.4,20.1,Active TB,Negative,305,15781,No,,,Former,Yes,Cannabis,Yes,Pod,MTB detected,Indeterminate,Negative,Cavitation,Negative,0.22,Bellville CHC,TRUE,FALSE
+SP21301,2020-08-14,Female,46,Coloured,160.2,89.8,35,Active TB,Positive,767,1673,No,,,Never,Yes,Multiple,No,,MTB detected,Sensitive,1+,Cavitation,Negative,1.92,Retreat CHC,FALSE,FALSE
+SP21303,2019-12-12,Female,45,Black African,156.3,63.7,26.1,LTBI,Positive,339,386,No,,,Never,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,0.78,Woodstock CHC,FALSE,FALSE
+SP21590,2019-07-10,Female,42,Black African,160.4,75.3,29.3,Control,Positive,395,16683,No,,,Current,No,,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Negative,0.22,Elsies River CHC,FALSE,FALSE
+SP21645,2020-06-25,Female,42,Mixed race,171.7,91.7,31.1,Active TB,Negative,639,691,Yes,TLD,2020-06-08,Former,No,,Yes,,MTB detected,Indeterminate,2+,Cavitation,Negative,,Woodstock CHC,TRUE,FALSE
+SP21968,2019-10-11,Female,23,Coloured,177.8,66.4,21,Active TB,Negative,,,,,,Current,Yes,,Yes,Vape pen,MTB detected,Sensitive,Scanty,Infiltrate/consolidation,Negative,8.13,Bellville CHC,FALSE,FALSE
+SP22113,2016-06-29,Female,44,Mixed race,175.8,82.8,26.8,LTBI,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,5.41,Delft CHC,FALSE,FALSE
+SP22133,2019-07-14,Female,41,Black African,160.4,,,Active TB,Positive,350,20857,Yes,TLD,,Never,Yes,Cannabis,Yes,Vape pen,MTB detected,Sensitive,Negative,Cavitation,Indeterminate,,Eerste River Hospital,FALSE,FALSE
+SP22136,2018-08-04,Female,53,Coloured,172.7,48.7,16.3,LTBI,Positive,344,316,No,,,Former,No,,Yes,,MTB not detected,Not applicable,Negative,Normal,Indeterminate,8.99,Bellville CHC,FALSE,FALSE
+SP22251,2018-08-09,Male,55,Coloured,173.1,78.8,26.3,Active TB,Negative,,,,,,Current,Yes,Crystal meth,Yes,Vape pen,MTB detected,Indeterminate,2+,Cavitation,Positive,10.56,Delft CHC,FALSE,FALSE
+SP22290,2017-06-15,Male,53,White,158.6,69.6,27.7,Control,Negative,,,,,,Current,Yes,Crystal meth,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Negative,0,Elsies River CHC,FALSE,FALSE
+SP22322,2016-06-14,Male,29,White,160.2,72.7,28.3,Active TB,Positive,746,14073,No,,,Former,Yes,Mandrax,No,,MTB detected,Indeterminate,1+,Normal,Negative,11.92,Woodstock CHC,FALSE,FALSE
+SP22341,2017-07-06,Male,18,White,172.1,87.7,29.6,Active TB,Negative,,,,,,Former,Yes,Cannabis,No,,MTB detected,Resistant,3+,Infiltrate/consolidation,Positive,11.48,Somerset Hospital,FALSE,FALSE
+SP22441,2020-07-29,Male,45,Asian,166.4,87.2,31.5,Control,Negative,,,,,,Never,Yes,Multiple,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.34,Woodstock CHC,FALSE,FALSE
+SP22461,2020-06-29,Male,39,Asian,164.3,69.4,25.7,Active TB,Positive,393,427,No,,,Former,Yes,Heroin,No,,MTB detected,Indeterminate,1+,Cavitation,Positive,8.13,Elsies River CHC,FALSE,FALSE
+SP22520,2018-12-30,Male,43,Black African,158.3,66.2,26.4,Indeterminate,Positive,174,1112,Yes,TLD,2018-04-28,Current,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Positive,1.36,Woodstock CHC,FALSE,FALSE
+SP22547,2020-10-18,Male,25,Coloured,153.7,77,32.6,Active TB,Positive,166,1659,Yes,TLD,2020-12-25,Former,No,,Yes,,MTB detected,Sensitive,1+,Cavitation,Positive,1.74,Delft CHC,FALSE,FALSE
+SP22627,2016-08-03,Female,51,Black African,176.8,84.2,26.9,LTBI,Positive,407,91750,No,,,Never,Yes,Cannabis,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,5.62,Ottery CHC,FALSE,FALSE
+SP22655,2016-07-07,Female,15,White,168.2,69.8,24.7,LTBI,Positive,86,43920,No,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Indeterminate,1.66,Claremont CHC,FALSE,FALSE
+SP22704,2018-06-02,Female,48,Coloured,155.4,80.7,33.4,Control,Negative,,,,,,Current,No,,Yes,,MTB not detected,Not applicable,Negative,Normal,Negative,0.29,Somerset Hospital,FALSE,FALSE
+SP22845,2017-07-25,Female,30,Mixed race,160.2,50.8,19.8,Control,Positive,354,1346,No,,,Former,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.01,Eerste River Hospital,FALSE,FALSE
+SP23033,2017-01-05,Male,39,Coloured,169.3,95.8,33.4,Indeterminate,Negative,,,,,,Former,Yes,Crystal meth,Yes,E-cigarette,Indeterminate,Not applicable,3+,Normal,Negative,0.59,Eerste River Hospital,FALSE,FALSE
+SP23219,2016-01-04,Female,51,White,150.3,54.7,24.2,Active TB,Negative,,,,,,Current,Yes,Cannabis,Yes,Pod,MTB detected,Sensitive,1+,Infiltrate/consolidation,Positive,7.01,Ottery CHC,FALSE,FALSE
+SP23284,2018-07-06,Male,26,Mixed race,160.6,88.3,34.2,Control,Negative,,,,,,Current,Yes,Mandrax,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.11,Somerset Hospital,FALSE,FALSE
+SP23309,2018-06-24,Female,26,Asian,167.9,80.9,28.7,Active TB,Negative,,,,,,Current,No,,No,,MTB detected,Resistant,1+,Infiltrate/consolidation,Positive,6.48,Khayelitsha District Hospital,FALSE,FALSE
+SP23406,2018-07-02,Female,57,Mixed race,154.1,90.5,38.1,Active TB,Positive,476,4611,No,,,Never,No,,Yes,Pod,MTB detected,Sensitive,Negative,Cavitation,Positive,3.93,Retreat CHC,FALSE,FALSE
+SP23493,2019-06-04,Male,56,Asian,175.6,58.5,19,Control,Negative,530,857,No,,,Never,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.15,Woodstock CHC,TRUE,FALSE
+SP23563,2017-08-09,Male,54,Coloured,149.1,56,25.2,Control,Negative,,,,,,Never,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.08,Delft CHC,FALSE,FALSE
+SP23608,2016-07-13,Female,24,White,159.2,41.6,16.4,Control,Negative,,,,,,Current,No,,Yes,,MTB not detected,Not applicable,Negative,Normal,Negative,0.09,Woodstock CHC,FALSE,FALSE
+SP23667,2019-07-06,Female,51,White,169.5,87.4,30.4,LTBI,Positive,447,2233,No,,,Former,Yes,Mandrax,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Positive,2.57,Somerset Hospital,FALSE,FALSE
+SP23742,2019-10-24,Male,59,White,170.1,90.4,31.2,Indeterminate,Positive,359,62,Yes,TLD,2017-08-13,Former,Yes,Mandrax,Yes,Pod,Invalid,Not applicable,Scanty,Normal,Borderline,1.44,Woodstock CHC,FALSE,FALSE
+SP23808,2018-08-15,Male,28,Coloured,168.3,57.8,20.4,Active TB,Positive,246,10538,Yes,Efavirenz-based,2018-10-07,Current,No,,Yes,E-cigarette,MTB detected,Sensitive,Scanty,Cavitation,Negative,1.38,Claremont CHC,FALSE,FALSE
+SP23833,2018-04-14,Female,49,Asian,167.2,84.3,30.2,LTBI,Negative,,,,,,Never,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,7.21,Claremont CHC,FALSE,FALSE
+SP23975,2020-06-23,Male,44,Black African,177,62.4,19.9,LTBI,Negative,,,,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,0.96,Mitchells Plain District Hospital,FALSE,FALSE
+SP23983,2018-08-08,Female,33,White,166.5,69.4,25,Active TB,Negative,646,460,No,,,Former,Yes,Multiple,No,,MTB detected,Resistant,Negative,Cavitation,Positive,9.46,Somerset Hospital,TRUE,FALSE
+SP24092,2016-07-29,Male,25,Coloured,131.9,78.2,44.9,Indeterminate,Positive,410,323248,Yes,Efavirenz-based,2013-03-04,Current,No,,No,,Invalid,Not applicable,Negative,Normal,Indeterminate,0.22,Woodstock CHC,FALSE,FALSE
+SP24107,2017-06-07,Male,53,Black African,164.9,36.8,13.5,LTBI,Positive,34,57281,Yes,Efavirenz-based,,Former,Yes,Crystal meth,Yes,Pod,MTB not detected,Not applicable,Negative,Pleural effusion,Negative,2.94,Somerset Hospital,FALSE,FALSE
+SP24115,2016-08-30,Male,13,White,153.1,68.7,29.3,Control,Negative,,,,,,Current,No,,Yes,,MTB not detected,Not applicable,Negative,Normal,Negative,0.09,Khayelitsha District Hospital,FALSE,FALSE
+SP24166,2016-08-27,Female,11,Black African,204.5,71.5,17.1,LTBI,Negative,246,33582,No,,,Current,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,3.88,Bellville CHC,TRUE,FALSE
+SP24188,2018-07-30,Male,31,Black African,161.1,48,18.5,Control,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.16,Ottery CHC,FALSE,FALSE
+SP24197,2019-10-29,Male,42,Asian,166.8,42.2,15.2,Indeterminate,Negative,,,,,,Former,Yes,,No,,Error,Not applicable,Scanty,Normal,Positive,1.57,Mitchells Plain District Hospital,FALSE,FALSE
+SP24198,2020-07-29,Female,23,Mixed race,151.4,35,15.3,Control,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.19,Delft CHC,FALSE,FALSE
+SP24218,2018-07-08,Female,40,Coloured,166.3,53.4,19.3,Active TB,Negative,,,,,,Former,No,,Yes,E-cigarette,MTB detected,Sensitive,3+,Infiltrate/consolidation,Positive,3.76,Somerset Hospital,FALSE,FALSE
+SP24296,2020-04-27,Male,48,Asian,165.4,62.6,22.9,LTBI,Positive,63,77317,No,,,Current,Yes,Multiple,No,,MTB not detected,Not applicable,Negative,Normal,Positive,0.15,Ottery CHC,FALSE,FALSE
+SP24337,2018-07-19,Male,28,Black African,160.3,60.9,23.7,Control,Negative,,,,,,Never,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.21,Khayelitsha District Hospital,FALSE,FALSE
+SP24410,2019-07-11,Male,18,Black African,144,55.8,26.9,Control,Negative,,,,,,Never,Yes,Crystal meth,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Negative,0.11,Eerste River Hospital,FALSE,FALSE
+SP24484,2018-06-02,Female,19,White,176.1,75.8,24.4,LTBI,Negative,,,,,,Current,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,3.48,Mitchells Plain District Hospital,FALSE,FALSE
+SP24526,2016-05-27,Male,48,Asian,192.6,61.3,16.5,LTBI,Positive,,,,,,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Infiltrate/consolidation,Positive,1.26,Retreat CHC,FALSE,FALSE
+SP24571,2020-06-05,Female,34,Coloured,152.3,68.9,29.7,LTBI,Negative,,,,,,Former,Yes,Multiple,No,,MTB not detected,Not applicable,Negative,Normal,Positive,6.82,Woodstock CHC,FALSE,FALSE
+SP24791,2016-10-15,Male,43,Black African,191.2,82.4,22.5,Control,Positive,617,1646,No,,,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.12,Bellville CHC,FALSE,FALSE
+SP24917,2018-07-14,Male,23,Mixed race,145.4,83.7,39.6,Control,Positive,254,15184,No,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.28,Somerset Hospital,FALSE,FALSE
+SP24965,2017-07-14,Male,55,Asian,140.3,86.3,43.8,LTBI,Negative,,,,,,Current,Yes,Crystal meth,Yes,,MTB not detected,Not applicable,Negative,Normal,Positive,0.96,Elsies River CHC,FALSE,FALSE
+SP24969,2017-09-11,Female,52,Mixed race,159.1,38.2,15.1,LTBI,Negative,,,,,,Former,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Infiltrate/consolidation,Positive,7.86,Bellville CHC,FALSE,FALSE
+SP24985,2018-08-12,Female,33,Coloured,180.3,78.1,24,LTBI,Positive,297,81307,No,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Indeterminate,7.88,Bellville CHC,FALSE,FALSE
+SP25087,2017-07-19,Male,32,Coloured,160.1,72.5,28.3,Indeterminate,Positive,28,39,Yes,TLD,2013-11-08,Former,Yes,Heroin,No,,Error,Not applicable,Negative,Normal,Indeterminate,1.01,Claremont CHC,FALSE,FALSE
+SP25151,2018-06-15,Male,13,Coloured,153.1,59.8,25.5,Active TB,Positive,315,48259,Yes,Efavirenz-based,2018-08-15,Former,No,,No,,MTB detected,Resistant,Negative,Cavitation,Positive,,Retreat CHC,FALSE,FALSE
+SP25168,2017-12-12,Male,41,Asian,135.7,58.8,31.9,Active TB,Positive,264,207,No,,,Former,No,,Yes,Pod,MTB detected,Sensitive,Negative,Cavitation,Positive,7.17,Retreat CHC,FALSE,FALSE
+SP25235,2020-06-21,Female,54,Black African,169.6,71.8,25,Active TB,Positive,,,,,,Current,No,,Yes,Pod,MTB detected,Sensitive,2+,Fibrosis,Positive,1.48,Eerste River Hospital,FALSE,FALSE
+SP25236,2018-06-11,Female,23,Coloured,147.3,69.9,32.2,Active TB,Positive,202,974627,Yes,Efavirenz-based,2018-07-25,Former,Yes,Heroin,Yes,Pod,MTB detected,Sensitive,Scanty,Pleural effusion,Positive,7.53,Ottery CHC,FALSE,FALSE
+SP25237,2016-06-25,Male,15,Mixed race,190.8,69,19,Control,Negative,605,1059,Yes,TLD,2013-07-18,Current,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.06,Mitchells Plain District Hospital,TRUE,FALSE
+SP25332,2019-03-03,Female,17,Coloured,149.8,89.5,39.9,Indeterminate,Negative,,,,,,Never,No,,No,,Error,Not applicable,Negative,Cavitation,Indeterminate,1.12,Claremont CHC,FALSE,FALSE
+SP25352,2020-08-26,Male,26,Coloured,165.9,60.1,21.8,Control,Negative,,,,,,Former,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.18,Ottery CHC,FALSE,FALSE
+SP25502,2020-07-06,Male,23,White,170.7,43.6,15,Indeterminate,Positive,366,483,Yes,TLD,2020-02-23,Current,Yes,Multiple,Yes,Pod,Invalid,Not applicable,2+,Other abnormality,Negative,0.76,Mitchells Plain District Hospital,FALSE,FALSE
+SP25531,2018-05-22,Female,15,White,141.4,55.2,27.6,Indeterminate,Negative,,,,,,Former,No,,No,,Indeterminate,Not applicable,Negative,Normal,Indeterminate,0.1,Eerste River Hospital,FALSE,FALSE
+SP25732,2019-07-10,Female,55,Coloured,167.6,39.1,13.9,Active TB,Positive,111,1371,No,,,Never,No,,No,,MTB detected,Resistant,1+,Pleural effusion,Indeterminate,0.93,Elsies River CHC,FALSE,FALSE
+SP25752,2019-06-09,Male,45,Coloured,161.2,52.6,20.2,LTBI,Negative,,,,,,Never,Yes,Heroin,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Positive,0.49,Ottery CHC,FALSE,FALSE
+SP26021,2019-10-02,Female,49,White,169.4,62.9,21.9,Control,Negative,,,,,,Former,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.12,Woodstock CHC,FALSE,FALSE
+SP26042,2018-12-18,Female,26,Black African,178.2,79.8,25.1,LTBI,Negative,,,,,,Former,Yes,Crystal meth,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,7.99,Somerset Hospital,FALSE,FALSE
+SP26149,2016-06-05,Female,18,Coloured,172.5,64.6,21.7,Active TB,Negative,,,,,,Current,No,,Yes,E-cigarette,MTB detected,Resistant,2+,Infiltrate/consolidation,Positive,9.49,Claremont CHC,FALSE,FALSE
+SP26252,2016-07-15,Male,41,Asian,160.8,95.5,36.9,Active TB,Positive,96,207988,No,,,Current,No,,Yes,Vape pen,MTB detected,Indeterminate,1+,Cavitation,Positive,3.69,Elsies River CHC,FALSE,FALSE
+SP26261,2018-07-07,Male,14,Coloured,139.1,64.9,33.5,Active TB,Negative,458,62,No,,,Never,No,,Yes,Pod,MTB detected,Sensitive,Scanty,Infiltrate/consolidation,Positive,10.9,Bellville CHC,TRUE,FALSE
+SP26363,2016-08-13,Female,50,Mixed race,177,57.3,18.3,Active TB,Positive,149,589,No,,,Former,Yes,Multiple,No,,MTB detected,Sensitive,1+,Cavitation,Indeterminate,,Retreat CHC,FALSE,FALSE
+SP26503,2018-08-16,Female,36,Black African,168.8,79.9,28,Active TB,Positive,714,3770,Yes,TLD,2018-10-21,Current,Yes,Crystal meth,Yes,Pod,MTB detected,Sensitive,Scanty,Infiltrate/consolidation,Positive,10.09,Mitchells Plain District Hospital,FALSE,FALSE
+SP26551,2018-06-13,Female,55,Coloured,180,45.8,14.1,LTBI,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,,Mitchells Plain District Hospital,FALSE,FALSE
+SP26561,2016-05-28,Male,35,Black African,173.8,56.3,18.6,Active TB,Positive,213,108,Yes,TLD,2016-07-21,Current,Yes,Cannabis,No,,MTB detected,Sensitive,1+,Cavitation,Positive,3.79,Elsies River CHC,FALSE,FALSE
+SP26604,2016-06-24,Male,54,White,162.4,66.3,25.1,LTBI,Positive,575,38162,No,,,Current,Yes,Mandrax,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,8.12,Somerset Hospital,FALSE,FALSE
+SP26715,2017-07-22,Male,18,Mixed race,172.9,57.8,19.3,Active TB,Positive,289,49389,Yes,TLD,2017-09-25,Never,Yes,Cannabis,Yes,Pod,MTB detected,Resistant,Negative,Other abnormality,Negative,4.63,Retreat CHC,FALSE,FALSE
+SP26738,2020-07-17,Female,16,Mixed race,171.1,88.4,30.2,Control,Negative,,,,,,Former,Yes,Crystal meth,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.15,Delft CHC,FALSE,FALSE
+SP26835,2016-08-08,Male,37,Black African,153.1,63.9,27.3,Control,Positive,537,8264,No,,,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.16,Khayelitsha District Hospital,FALSE,FALSE
+SP26854,2018-07-14,Male,16,Black African,175.2,69.9,22.8,Active TB,Positive,2,331,No,,,Current,Yes,Heroin,No,,MTB detected,Indeterminate,Negative,Infiltrate/consolidation,Indeterminate,0.17,Eerste River Hospital,FALSE,FALSE
+SP26873,2016-12-26,Male,49,White,180.1,71.4,22,Active TB,Negative,,,,,,Never,No,,Yes,Pod,MTB detected,Sensitive,Scanty,Cavitation,Positive,6.25,Ottery CHC,FALSE,FALSE
+SP26975,2016-08-16,Male,15,Asian,183.6,40.2,11.9,LTBI,Positive,334,2351,No,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,5.48,Woodstock CHC,FALSE,TRUE
+SP27003,2020-07-10,Female,25,White,154.2,51.2,21.5,LTBI,Positive,,,,,,Current,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Infiltrate/consolidation,Positive,9.16,Retreat CHC,FALSE,FALSE
+SP27030,2019-08-30,Male,20,Mixed race,168.2,76.9,27.2,LTBI,Positive,152,458,Yes,Efavirenz-based,2018-11-23,Never,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,5.45,Claremont CHC,FALSE,FALSE
+SP27129,2017-08-02,Male,45,Coloured,171.5,96.7,32.9,Control,Positive,625,13590,Yes,TLD,2015-05-29,Former,Yes,,No,,MTB not detected,Not applicable,Negative,Infiltrate/consolidation,Negative,0.2,Woodstock CHC,FALSE,FALSE
+SP27145,2016-03-16,Male,24,Mixed race,157.6,33.8,13.6,Active TB,Negative,,,,,,Never,No,,No,,MTB detected,Resistant,3+,Pleural effusion,Positive,4.25,Delft CHC,FALSE,FALSE
+SP27163,2020-06-13,Male,30,Black African,163.1,64,24.1,LTBI,Positive,555,784,No,,,Former,No,,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Positive,7.97,Mitchells Plain District Hospital,FALSE,FALSE
+SP27166,2018-10-10,Female,23,Asian,171.3,59.4,20.2,Active TB,Positive,230,193,No,,,Former,Yes,Crystal meth,No,,MTB detected,Sensitive,2+,Cavitation,Indeterminate,11.03,Mitchells Plain District Hospital,FALSE,FALSE
+SP27189,2019-06-01,Female,56,Asian,163.3,72.2,27.1,Control,Positive,606,668938,No,,,Never,Yes,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.22,Retreat CHC,FALSE,FALSE
+SP27231,2018-07-30,Male,53,Black African,177.7,30.5,9.7,LTBI,Positive,153,1662,Yes,TLD,2017-01-22,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,3.47,Elsies River CHC,FALSE,TRUE
+SP27238,2020-08-09,Male,54,Black African,165.3,66.4,24.3,Control,Negative,,,,,,Never,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.21,Eerste River Hospital,FALSE,FALSE
+SP27344,2019-06-01,Female,45,Coloured,184.9,61.5,18,Control,Negative,,,,,,Current,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Negative,0.2,Woodstock CHC,FALSE,FALSE
+SP27368,2016-07-03,Female,37,Mixed race,179.8,64.9,20.1,Indeterminate,Positive,158,1456,No,,,Current,Yes,Crystal meth,Yes,,Error,Not applicable,Negative,Normal,Indeterminate,1.38,Bellville CHC,FALSE,FALSE
+SP27461,2016-08-08,Male,51,White,185.9,66.2,19.2,Active TB,Negative,,,,,,Current,No,,No,,MTB detected,Sensitive,2+,Infiltrate/consolidation,Positive,,Woodstock CHC,FALSE,FALSE
+SP27723,2017-09-07,Male,43,Coloured,159.6,74.2,29.1,Indeterminate,Negative,,,,,,Never,No,,No,,Error,Not applicable,Negative,Normal,Borderline,1.5,Eerste River Hospital,FALSE,FALSE
+SP28061,2019-02-09,Female,40,White,151.7,61.8,26.9,Active TB,Negative,,,,,,Never,Yes,Crystal meth,Yes,Pod,MTB detected,Sensitive,Scanty,Infiltrate/consolidation,Negative,8.35,Bellville CHC,FALSE,FALSE
+SP28134,2020-08-26,Male,42,Black African,172.1,74.3,25.1,LTBI,Negative,,,,,,Former,Yes,Crystal meth,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,9.02,Bellville CHC,FALSE,FALSE
+SP28224,2016-08-20,Female,52,Black African,162.1,49,18.6,LTBI,Positive,345,6073,Yes,Efavirenz-based,2012-12-25,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,8.08,Claremont CHC,FALSE,FALSE
+SP28456,2018-06-16,Female,19,Coloured,163.3,73.1,27.4,Active TB,Positive,355,31825,Yes,Efavirenz-based,2018-07-29,Current,No,,Yes,E-cigarette,MTB detected,Indeterminate,Negative,Cavitation,Positive,4.73,Mitchells Plain District Hospital,FALSE,FALSE
+SP28565,2018-12-31,Female,24,Coloured,174.6,63.2,20.7,Active TB,Negative,,,,,,Former,Yes,Crystal meth,Yes,Pod,MTB detected,Sensitive,1+,Cavitation,Positive,10.97,Delft CHC,FALSE,FALSE
+SP28582,2018-06-20,Female,12,Black African,153.8,64.7,27.4,LTBI,Negative,313,2955,Yes,Efavirenz-based,2014-05-13,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Indeterminate,1.95,Delft CHC,TRUE,FALSE
+SP28597,2018-07-04,Female,36,Coloured,161.2,97.2,37.4,Active TB,Negative,,,,,,Current,Yes,Heroin,No,,MTB detected,Sensitive,3+,Infiltrate/consolidation,Positive,9.91,Bellville CHC,FALSE,FALSE
+SP28717,2018-02-12,Female,21,Mixed race,165.6,69.8,25.5,Control,Negative,,,,,,Never,Yes,Multiple,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.09,Mitchells Plain District Hospital,FALSE,FALSE
+SP28735,2016-07-17,Male,42,Black African,177.1,78.7,25.1,Control,Positive,296,214725,No,,,Current,Yes,Mandrax,Yes,,MTB not detected,Not applicable,Negative,Normal,Negative,0.04,Delft CHC,FALSE,FALSE
+SP28811,2019-07-23,Female,25,Black African,143.1,67,32.7,LTBI,Negative,,,,,,Former,Yes,Mandrax,Yes,Pod,MTB not detected,Not applicable,Negative,Fibrosis,Positive,1.37,Retreat CHC,FALSE,FALSE
+SP29038,2019-08-07,Male,39,Black African,151.1,76.8,33.6,LTBI,Positive,,,,,,Current,No,,Yes,,MTB not detected,Not applicable,Negative,Normal,Positive,2.86,Elsies River CHC,FALSE,FALSE
+SP29084,2019-04-02,Male,47,Mixed race,158.2,47.2,18.9,LTBI,Positive,133,59563,No,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Pleural effusion,Indeterminate,2.64,Retreat CHC,FALSE,FALSE
+SP29111,2016-10-27,Female,35,White,173.3,92.2,30.7,LTBI,Positive,474,35092,No,,,Current,Yes,Mandrax,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,4.52,Eerste River Hospital,FALSE,FALSE
+SP29222,2016-06-05,Male,34,Black African,169,47,16.5,Active TB,Negative,,,,,,Former,No,,Yes,E-cigarette,MTB detected,Sensitive,1+,Cavitation,Positive,1.1,Eerste River Hospital,FALSE,FALSE
+SP29278,2018-06-22,Male,30,Asian,173.6,68.2,22.6,Control,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.07,Delft CHC,FALSE,FALSE
+SP29673,2017-08-27,Female,35,Asian,180.3,43.2,13.3,LTBI,Negative,,,,,,Former,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,2.16,Mitchells Plain District Hospital,FALSE,FALSE
+SP29709,2017-08-28,Female,29,White,191.6,73.2,19.9,LTBI,Negative,,,,,,Former,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,2.28,Retreat CHC,FALSE,FALSE
+SP29715,2019-05-07,Female,25,Asian,157.8,93.8,37.7,LTBI,Positive,527,1883,Yes,TLD,2018-04-02,Former,Yes,Heroin,Yes,,MTB not detected,Not applicable,Negative,Normal,Positive,3.17,Bellville CHC,FALSE,FALSE
+SP29724,2019-08-13,Male,15,Black African,171.4,56.7,19.3,Active TB,Negative,,,,,,Never,No,,No,,MTB detected,Indeterminate,2+,Cavitation,Positive,,Mitchells Plain District Hospital,FALSE,FALSE
+SP29777,2020-08-21,Male,32,Coloured,164.2,43.1,16,LTBI,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,8.27,Eerste River Hospital,FALSE,FALSE
+SP29796,2019-08-29,Male,22,Black African,137.5,56.5,29.9,Active TB,Positive,,,,,,Former,Yes,Crystal meth,Yes,,MTB detected,Indeterminate,Scanty,Normal,Positive,1.04,Ottery CHC,FALSE,FALSE
+SP29987,2018-08-02,Female,44,Coloured,183.6,100,29.7,Indeterminate,Negative,,,,,,Never,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Other abnormality,Negative,1.4,Delft CHC,FALSE,FALSE
+SP30222,2020-07-24,Female,31,White,160.3,102.3,39.8,LTBI,Negative,,,,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Other abnormality,Positive,9.27,Eerste River Hospital,FALSE,FALSE
+SP30253,2016-07-08,Female,33,Asian,181.3,34.4,10.5,Control,Negative,,,,,,Never,Yes,Cannabis,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Infiltrate/consolidation,Negative,0.23,Woodstock CHC,FALSE,TRUE
+SP30319,2017-03-30,Male,43,Black African,176.5,72.6,23.3,Control,Negative,,,,,,Former,Yes,Cannabis,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.17,Delft CHC,FALSE,FALSE
+SP30367,2016-07-20,Female,27,Black African,166,80.7,29.3,Active TB,Negative,,,,,,Former,No,,Yes,Vape pen,MTB detected,Indeterminate,3+,Cavitation,Positive,0.26,Ottery CHC,FALSE,FALSE
+SP30389,2019-06-09,Male,59,Black African,170.7,75.4,25.9,Indeterminate,Positive,324,312,Yes,TLD,2017-01-29,Current,No,,No,,MTB not detected,Not applicable,Negative,Other abnormality,Positive,1.22,Claremont CHC,FALSE,FALSE
+SP30393,2017-08-27,Male,23,Coloured,158.8,55.2,21.9,LTBI,Negative,,,,,,Current,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,1.73,Ottery CHC,FALSE,FALSE
+SP30423,2017-08-11,Female,56,Coloured,164.6,85.6,31.6,Indeterminate,Negative,,,,,,Never,No,,Yes,Vape pen,MTB not detected,Not applicable,Scanty,Cavitation,Indeterminate,1.14,Bellville CHC,FALSE,FALSE
+SP30438,2017-08-20,Female,17,Asian,146.6,69.9,32.5,Indeterminate,Negative,,,,,,Current,No,,Yes,E-cigarette,Indeterminate,Not applicable,Scanty,Normal,Indeterminate,,Eerste River Hospital,FALSE,FALSE
+SP30542,2016-07-27,Male,39,Coloured,153.5,75.1,31.9,Control,Negative,,,,,,Former,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Negative,0.23,Eerste River Hospital,FALSE,FALSE
+SP30625,2020-07-07,Male,40,Black African,160.9,61.8,23.9,Active TB,Negative,,,,,,Never,No,,Yes,Vape pen,MTB detected,Resistant,1+,Infiltrate/consolidation,Positive,1.22,Mitchells Plain District Hospital,FALSE,FALSE
+SP30632,2017-10-04,Female,36,White,156.3,56.1,23,Active TB,Negative,,,,,,Never,Yes,Crystal meth,No,,MTB detected,Resistant,Scanty,Normal,Positive,,Elsies River CHC,FALSE,FALSE
+SP30729,2020-07-14,Female,17,Black African,177.4,90.9,28.9,Active TB,Negative,,,,,,Never,No,,Yes,Vape pen,MTB detected,Sensitive,Scanty,Other abnormality,Positive,1.71,Eerste River Hospital,FALSE,FALSE
+SP30823,2016-07-05,Male,25,Asian,174.9,55,18,LTBI,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,4.09,Bellville CHC,FALSE,FALSE
+SP31092,2020-07-30,Male,21,Asian,154.1,89.5,37.7,LTBI,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,,Ottery CHC,FALSE,FALSE
+SP31118,2018-07-30,Male,15,Asian,159.8,51.2,20.1,LTBI,Negative,,,,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,7.64,Bellville CHC,FALSE,FALSE
+SP31186,2020-06-21,Male,15,White,143.9,57.7,27.9,LTBI,Negative,,,,,,Former,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Positive,9.93,Retreat CHC,FALSE,FALSE
+SP31187,2020-07-26,Male,26,Asian,187.1,80.8,23.1,Control,Negative,,,,,,Current,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.21,Elsies River CHC,FALSE,FALSE
+SP31245,2018-08-20,Female,16,Black African,160.4,68.7,26.7,Active TB,Negative,,,,,,Former,Yes,Multiple,No,,MTB detected,Sensitive,2+,Infiltrate/consolidation,Positive,4.34,Bellville CHC,FALSE,FALSE
+SP31309,2016-07-20,Male,20,Coloured,160.8,87.1,33.7,Active TB,Positive,238,12560,No,,,Former,Yes,Cannabis,No,,MTB detected,Indeterminate,Negative,Normal,Positive,2.45,Retreat CHC,FALSE,FALSE
+SP31348,2020-06-19,Male,50,Black African,162.1,78,29.7,LTBI,Positive,186,192600,Yes,TLD,2016-08-19,Current,Yes,Multiple,No,,MTB not detected,Not applicable,Negative,Normal,Negative,1.33,Claremont CHC,FALSE,FALSE
+SP31373,2018-07-25,Female,54,Black African,157.7,64.2,25.8,Active TB,Positive,185,928157,No,,,Never,Yes,Multiple,Yes,Pod,MTB detected,Sensitive,3+,Normal,Indeterminate,1.25,Ottery CHC,FALSE,FALSE
+SP31518,2017-07-20,Female,22,Asian,146.8,94.7,43.9,Active TB,Negative,,,,,,Former,Yes,Mandrax,Yes,E-cigarette,MTB detected,Sensitive,3+,Infiltrate/consolidation,Positive,0.33,Delft CHC,FALSE,FALSE
+SP31556,2020-05-25,Male,44,Asian,160,58.2,22.7,Active TB,Negative,196,19068,Yes,TLD,,Former,No,,No,,MTB detected,Sensitive,2+,Cavitation,Positive,,Retreat CHC,TRUE,FALSE
+SP31558,2018-06-22,Female,38,White,156.2,56,23,LTBI,Positive,406,90239,Yes,TLD,2014-08-07,Never,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,2.84,Woodstock CHC,FALSE,FALSE
+SP31598,2018-05-06,Female,54,Asian,174.8,60.1,19.7,LTBI,Negative,,,,,,Never,No,,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Positive,7.27,Elsies River CHC,FALSE,FALSE
+SP31620,2018-06-16,Female,35,Black African,147.8,44.4,20.3,Indeterminate,Positive,442,278942,No,,,Never,Yes,Cannabis,No,,Invalid,Not applicable,Negative,Other abnormality,Indeterminate,1.35,Eerste River Hospital,FALSE,FALSE
+SP31668,2018-08-15,Female,28,Coloured,158.3,70.2,28,Control,Negative,,,,,,Never,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.05,Khayelitsha District Hospital,FALSE,FALSE
+SP31747,2017-06-10,Female,47,Asian,174.3,90.1,29.7,LTBI,Negative,,,,,,Never,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Infiltrate/consolidation,Positive,3.34,Retreat CHC,FALSE,FALSE
+SP31755,2017-07-26,Male,30,White,158.5,29.4,11.7,Indeterminate,Negative,,,,,,Never,Yes,,Yes,Pod,Indeterminate,Not applicable,Negative,Normal,Indeterminate,1.7,Mitchells Plain District Hospital,FALSE,TRUE
+SP31873,2016-08-17,Male,48,Mixed race,168.7,54.8,19.3,Control,Positive,215,307,No,,,Current,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.16,Elsies River CHC,FALSE,FALSE
+SP31914,2017-07-09,Female,43,Asian,177.5,89,28.2,Active TB,Negative,,,,,,Former,Yes,Cannabis,Yes,Vape pen,MTB detected,Indeterminate,Scanty,Cavitation,Positive,1.22,Retreat CHC,FALSE,FALSE
+SP31930,2018-02-11,Female,37,White,158.3,60.5,24.1,Control,Negative,,,,,,Former,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.12,Eerste River Hospital,FALSE,FALSE
+SP32012,2016-09-26,Female,14,Coloured,182.4,80.2,24.1,Active TB,Negative,,,,,,Former,No,,No,,MTB detected,Sensitive,2+,Cavitation,Positive,3.66,Retreat CHC,FALSE,FALSE
+SP32034,2016-06-28,Male,41,Coloured,166.2,86,31.1,Control,Positive,504,2225,No,,,Current,Yes,Multiple,Yes,,MTB not detected,Not applicable,Negative,Normal,Negative,,Khayelitsha District Hospital,FALSE,FALSE
+SP32155,2020-08-25,Male,35,Coloured,160.3,45.3,17.6,Active TB,Negative,558,535103,Yes,TLD,2020-10-31,Never,Yes,Mandrax,No,,MTB detected,Indeterminate,Negative,Cavitation,Positive,4.32,Bellville CHC,TRUE,FALSE
+SP32169,2019-08-15,Female,58,Coloured,169.2,62.1,21.7,LTBI,Positive,417,65415,No,,,Former,Yes,Crystal meth,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,1.06,Somerset Hospital,FALSE,FALSE
+SP32219,2017-06-27,Male,37,Mixed race,148.5,78.8,35.7,LTBI,Positive,219,3365,Yes,Efavirenz-based,2015-04-06,Never,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,5.07,Bellville CHC,FALSE,FALSE
+SP32221,2019-05-08,Female,53,Coloured,171.6,46.2,15.7,LTBI,Negative,,,,,,Former,Yes,Crystal meth,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Positive,2.39,Somerset Hospital,FALSE,FALSE
+SP32240,2019-05-03,Male,30,White,160.9,63,24.3,Active TB,Positive,211,766,Yes,Efavirenz-based,2019-04-23,Current,Yes,Crystal meth,No,,MTB detected,Sensitive,Negative,Cavitation,Positive,3.27,Delft CHC,FALSE,FALSE
+SP32257,2019-08-20,Male,58,Black African,138.2,32.5,17,LTBI,Positive,183,476182,No,,,Current,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Positive,4.18,Mitchells Plain District Hospital,FALSE,FALSE
+SP32503,2016-04-06,Male,31,Coloured,144.2,58,27.9,Indeterminate,Positive,398,631206,Yes,TLD,2012-04-16,Former,Yes,Crystal meth,No,,Invalid,Not applicable,Scanty,Other abnormality,Borderline,0.16,Woodstock CHC,FALSE,FALSE
+SP32680,2020-06-09,Male,40,Mixed race,162.2,76.2,29,Active TB,Negative,,,,,,Never,Yes,Crystal meth,Yes,Pod,MTB detected,Sensitive,2+,Cavitation,Negative,2.54,Khayelitsha District Hospital,FALSE,FALSE
+SP32774,2018-05-09,Female,16,Coloured,163.2,52,19.5,Active TB,Negative,,,,,,Current,No,,No,,MTB detected,Sensitive,2+,Infiltrate/consolidation,Positive,10.84,Woodstock CHC,FALSE,FALSE
+SP32799,2020-08-22,Female,32,Coloured,152.7,62.2,26.7,Indeterminate,Positive,312,202650,No,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Infiltrate/consolidation,Negative,1.64,Claremont CHC,FALSE,FALSE
+SP32837,2017-08-03,Female,26,Coloured,141.9,70.4,35,Indeterminate,Positive,409,115408,No,,,Current,Yes,Mandrax,No,,Invalid,Not applicable,Scanty,Normal,Indeterminate,1.37,Elsies River CHC,FALSE,FALSE
+SP32886,2020-08-24,Female,49,Coloured,186.8,51.8,14.8,LTBI,Negative,,,,,,Current,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,1.31,Claremont CHC,FALSE,FALSE
+SP33027,2017-04-10,Male,53,Asian,174.1,73.8,24.3,Control,Positive,444,190128,No,,,Never,Yes,Crystal meth,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.25,Khayelitsha District Hospital,FALSE,FALSE
+SP33082,2018-07-17,Female,52,Asian,154.9,73.4,30.6,Control,Negative,,,,,,Never,Yes,Multiple,Yes,,MTB not detected,Not applicable,Negative,Normal,Negative,0.16,Eerste River Hospital,FALSE,FALSE
+SP33207,2016-01-07,Female,19,Mixed race,175.3,57.9,18.8,Active TB,Negative,,,,,,Former,Yes,Mandrax,Yes,E-cigarette,MTB detected,Sensitive,3+,Cavitation,Positive,5.19,Somerset Hospital,FALSE,FALSE
+SP33405,2019-03-10,Male,26,Coloured,155,87.1,36.3,LTBI,Negative,,,,,,Never,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Positive,2.55,Retreat CHC,FALSE,FALSE
+SP33453,2020-08-18,Male,29,White,164.3,68.8,25.5,Active TB,Negative,,,,,,Never,No,,Yes,Vape pen,MTB detected,Sensitive,Negative,Infiltrate/consolidation,Positive,6.47,Elsies River CHC,FALSE,FALSE
+SP33651,2018-07-25,Female,48,White,164.5,58.6,21.7,LTBI,Negative,,,,,,Never,Yes,Crystal meth,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,4.34,Khayelitsha District Hospital,FALSE,FALSE
+SP33676,2016-07-09,Female,34,White,177.6,45.2,14.3,Active TB,Positive,655,393,Yes,TLD,2016-08-20,Current,No,,No,,MTB detected,Sensitive,Scanty,Fibrosis,Negative,4.67,Retreat CHC,FALSE,FALSE
+SP34063,2020-11-02,Male,16,White,157.9,59.2,23.7,LTBI,Positive,,,,,,Never,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,4.88,Bellville CHC,FALSE,FALSE
+SP34098,2019-08-19,Female,57,Asian,165.2,91.2,33.4,Active TB,Positive,,,,,,Current,Yes,Crystal meth,No,,MTB detected,Resistant,2+,Cavitation,Indeterminate,5.06,Elsies River CHC,FALSE,FALSE
+SP34125,2019-05-06,Female,36,Coloured,143.6,71.7,34.8,Indeterminate,Negative,,,,,,Former,Yes,Mandrax,No,,Indeterminate,Not applicable,Negative,Normal,Borderline,0.47,Eerste River Hospital,FALSE,FALSE
+SP34213,2017-07-06,Female,50,Mixed race,177.9,88.5,28,LTBI,Negative,,,,,,Current,Yes,Cannabis,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,3.41,Ottery CHC,FALSE,FALSE
+SP34258,2019-08-13,Male,16,Asian,165.3,61.5,22.5,Active TB,Positive,66,1186,Yes,TLD,2019-10-03,Former,No,,No,,MTB detected,Sensitive,3+,Other abnormality,Positive,0.44,Ottery CHC,FALSE,FALSE
+SP34340,2019-07-15,Male,28,Asian,170,63.5,22,Control,Negative,,,,,,Former,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Negative,0.32,Delft CHC,FALSE,FALSE
+SP34423,2019-12-19,Male,42,Coloured,167.2,92.5,33.1,LTBI,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,2.66,Bellville CHC,FALSE,FALSE
+SP34569,2019-07-15,Female,33,Coloured,159.2,55,21.7,Indeterminate,Negative,,,,,,Former,No,,Yes,Pod,Indeterminate,Not applicable,1+,Normal,Positive,1.53,Ottery CHC,FALSE,FALSE
+SP34575,2016-05-19,Female,35,Black African,164.6,65.8,24.3,Active TB,Negative,,,,,,Current,No,,Yes,,MTB detected,Sensitive,2+,Pleural effusion,Positive,3.8,Somerset Hospital,FALSE,FALSE
+SP34615,2017-07-17,Female,11,Black African,187.8,71,20.1,Active TB,Negative,,,,,,Current,No,,Yes,E-cigarette,MTB detected,Sensitive,Negative,Pleural effusion,Positive,9.56,Claremont CHC,FALSE,FALSE
+SP34673,2020-08-17,Male,35,Coloured,171.9,71.8,24.3,Control,Positive,459,383061,No,,,Current,Yes,Multiple,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.09,Mitchells Plain District Hospital,FALSE,FALSE
+SP34680,2016-07-31,Male,37,Coloured,157.9,67.4,27,Control,Positive,,,,,,Current,Yes,Multiple,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.11,Eerste River Hospital,FALSE,FALSE
+SP34696,2019-08-01,Female,53,White,181.6,54.9,16.6,LTBI,Negative,,,,,,Never,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,9.13,Elsies River CHC,FALSE,FALSE
+SP34722,2016-07-10,Male,27,Coloured,179.8,64.9,20.1,Indeterminate,Negative,,,,,,Current,No,,No,,MTB not detected,Not applicable,Negative,Normal,Borderline,0.06,Eerste River Hospital,FALSE,FALSE
+SP34758,2020-11-12,Male,28,Coloured,164.9,69.9,25.7,Active TB,Negative,,,,,,Former,No,,No,,MTB detected,Resistant,3+,Cavitation,Positive,3.24,Mitchells Plain District Hospital,FALSE,FALSE
+SP34802,2018-03-03,Male,31,Asian,162.7,67,25.3,LTBI,Positive,293,148514,No,,,Current,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,1.81,Ottery CHC,FALSE,FALSE
+SP34828,2017-08-21,Female,44,Asian,162.8,52.3,19.7,LTBI,Positive,493,23692,Yes,TLD,2017-03-20,Never,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Indeterminate,8.67,Elsies River CHC,FALSE,FALSE
+SP34998,2019-08-27,Female,49,Black African,170.8,62.5,21.4,LTBI,Negative,,,,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Other abnormality,Positive,7.15,Delft CHC,FALSE,FALSE
+SP35122,2018-05-29,Female,24,Coloured,171.2,80.2,27.4,Active TB,Negative,,,,,,Never,Yes,Crystal meth,No,,MTB detected,Sensitive,Scanty,Normal,Positive,3.62,Bellville CHC,FALSE,FALSE
+SP35140,2017-07-10,Female,23,Asian,150.2,72.8,32.3,Indeterminate,Negative,,,,,,Former,Yes,Mandrax,No,,Indeterminate,Not applicable,Negative,Normal,Borderline,1.22,Woodstock CHC,FALSE,FALSE
+SP35201,2019-08-21,Female,59,Black African,173.1,89.6,29.9,LTBI,Negative,,,,,,Current,No,,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Positive,7.41,Khayelitsha District Hospital,FALSE,FALSE
+SP35375,2019-06-18,Male,24,Black African,147.8,85.6,39.2,LTBI,Negative,,,,,,Former,Yes,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,4.35,Khayelitsha District Hospital,FALSE,FALSE
+SP35389,2017-06-24,Female,35,White,172.1,71.5,24.1,LTBI,Positive,147,8949,Yes,Efavirenz-based,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,4.65,Claremont CHC,FALSE,FALSE
+SP35457,2018-07-12,Male,16,Coloured,175.1,92.7,30.2,LTBI,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Fibrosis,Positive,7.72,Somerset Hospital,FALSE,FALSE
+SP35589,2020-05-04,Male,56,Asian,181.1,68.2,20.8,Control,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.12,Bellville CHC,FALSE,FALSE
+SP35637,2017-07-27,Female,21,Coloured,152.7,57.9,24.8,Active TB,Positive,205,5270,No,,,Current,Yes,Crystal meth,No,,MTB detected,Resistant,Negative,Infiltrate/consolidation,Positive,7.62,Claremont CHC,FALSE,FALSE
+SP35683,2020-07-31,Male,43,Black African,158.3,70.3,28.1,Active TB,Negative,,,,,,Never,No,,Yes,Pod,MTB detected,Indeterminate,Negative,Other abnormality,Positive,9.76,Ottery CHC,FALSE,FALSE
+SP35867,2016-07-16,Male,21,White,170.7,80.9,27.8,Active TB,Negative,,,,,,Former,No,,Yes,,MTB detected,Indeterminate,Negative,Other abnormality,Positive,8.12,Woodstock CHC,FALSE,FALSE
+SP35931,2016-10-13,Male,53,Black African,125.9,69.1,43.6,LTBI,Negative,,,,,,Never,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,9.51,Mitchells Plain District Hospital,FALSE,FALSE
+SP35964,2020-06-07,Female,17,White,189.4,69.9,19.5,Control,Negative,,,,,,Never,Yes,Multiple,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,,Delft CHC,FALSE,FALSE
+SP36087,2019-08-09,Male,30,Asian,172.6,50.4,16.9,LTBI,Positive,466,559,Yes,Efavirenz-based,2015-09-22,Former,No,,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Positive,8.35,Khayelitsha District Hospital,FALSE,FALSE
+SP36262,2016-08-21,Male,38,White,145.4,54.7,25.9,Control,Negative,,,,,,Never,Yes,Mandrax,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.16,Retreat CHC,FALSE,FALSE
+SP36265,2020-07-03,Male,45,White,161.8,79.7,30.4,Active TB,Positive,222,540,Yes,TLD,2020-09-11,Current,No,,No,,MTB detected,Sensitive,3+,Infiltrate/consolidation,Negative,0.17,Khayelitsha District Hospital,FALSE,FALSE
+SP36281,2020-06-04,Male,54,Black African,158,64.7,25.9,LTBI,Positive,456,486,No,,,Former,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Indeterminate,,Elsies River CHC,FALSE,FALSE
+SP36283,2020-06-08,Female,53,White,169.8,90.8,31.5,Active TB,Positive,18,142812,No,,,Never,Yes,Heroin,Yes,E-cigarette,MTB detected,Indeterminate,1+,Cavitation,Negative,3.96,Bellville CHC,FALSE,FALSE
+SP36332,2017-07-17,Female,19,Asian,181.1,58.4,17.8,Control,Positive,,,,,,Never,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.26,Woodstock CHC,FALSE,FALSE
+SP36473,2019-06-30,Male,27,Black African,185.2,61.8,18,LTBI,Positive,556,833774,No,,,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,8.01,Woodstock CHC,FALSE,FALSE
+SP36479,2017-07-13,Female,41,White,129.8,88.3,52.4,Indeterminate,Negative,,,,,,Former,Yes,Crystal meth,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Borderline,1.6,Mitchells Plain District Hospital,FALSE,FALSE
+SP36616,2018-08-03,Female,45,Mixed race,154,81.4,34.3,Control,Negative,,,,,,Never,Yes,Heroin,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.27,Eerste River Hospital,FALSE,FALSE
+SP36654,2017-01-14,Female,44,Coloured,170,71.6,24.8,Active TB,Negative,,,,,,Former,No,,No,,MTB detected,Sensitive,Negative,Infiltrate/consolidation,Positive,6.3,Claremont CHC,FALSE,FALSE
+SP36687,2020-07-08,Male,20,Coloured,164,79.5,29.6,Control,Negative,159,34,Yes,TLD,2018-07-12,Current,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.16,Elsies River CHC,TRUE,FALSE
+SP36764,2020-04-03,Male,43,Black African,171.5,70.9,24.1,Control,Negative,,,,,,Never,Yes,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.18,Bellville CHC,FALSE,FALSE
+SP36958,2017-06-20,Female,54,Asian,174.4,57.6,18.9,Active TB,Positive,425,204,Yes,TLD,2017-08-08,Current,No,,Yes,Vape pen,MTB detected,Indeterminate,Negative,Cavitation,Positive,7.09,Delft CHC,FALSE,FALSE
+SP37008,2016-08-25,Female,28,Coloured,167,56,20.1,LTBI,Negative,,,,,,Current,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,7.46,Eerste River Hospital,FALSE,FALSE
+SP37054,2016-08-21,Male,46,Mixed race,154.2,55.5,23.3,LTBI,Positive,232,111652,Yes,Efavirenz-based,2014-07-01,Former,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,2.47,Retreat CHC,FALSE,FALSE
+SP37071,2016-02-13,Female,44,Asian,148.4,76.1,34.6,LTBI,Negative,,,,,,Never,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Normal,Positive,1.66,Bellville CHC,FALSE,FALSE
+SP37157,2017-05-13,Female,26,Black African,179.3,84.4,26.3,Active TB,Negative,,,,,,Current,No,,No,,MTB detected,Sensitive,Negative,Cavitation,Positive,4.27,Eerste River Hospital,FALSE,FALSE
+SP37231,2020-08-21,Female,48,Black African,171.1,59.8,20.4,Active TB,Positive,318,14207,Yes,TLD,2020-10-10,Current,No,,Yes,,MTB detected,Sensitive,1+,Infiltrate/consolidation,Indeterminate,10.49,Claremont CHC,FALSE,FALSE
+SP37335,2016-08-24,Male,18,Asian,152.9,87.2,37.3,Indeterminate,Negative,,,,,,Former,Yes,Multiple,Yes,Pod,Error,Not applicable,Scanty,Normal,Positive,1.6,Ottery CHC,FALSE,FALSE
+SP37340,2018-08-01,Female,51,White,173.1,53.8,18,Active TB,Negative,,,,,,Former,Yes,Multiple,No,,MTB detected,Sensitive,3+,Cavitation,Negative,10.14,Elsies River CHC,FALSE,FALSE
+SP37497,2020-07-18,Male,43,White,169.1,77.6,27.1,Active TB,Negative,,,,,,Current,No,,No,,MTB detected,Sensitive,Scanty,Cavitation,Positive,7.61,Ottery CHC,FALSE,FALSE
+SP37530,2020-08-21,Female,16,White,166.3,68.2,24.7,Indeterminate,Positive,295,263562,No,,,Former,No,,No,,Invalid,Not applicable,Negative,Normal,Negative,0.3,Retreat CHC,FALSE,FALSE
+SP37613,2019-11-30,Male,23,Black African,168.1,61,21.6,Control,Negative,,,,,,Former,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Negative,0.22,Somerset Hospital,FALSE,FALSE
+SP37635,2016-11-18,Female,47,Mixed race,167.1,66.1,23.7,Active TB,Negative,,,,,,Former,Yes,Crystal meth,Yes,Vape pen,MTB detected,Sensitive,Negative,Fibrosis,Positive,0.62,Elsies River CHC,FALSE,FALSE
+SP37829,2017-07-12,Male,34,Black African,166.3,77.2,27.9,LTBI,Positive,,,,,,Current,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,0.5,Woodstock CHC,FALSE,FALSE
+SP37875,2019-10-28,Male,25,Asian,174.6,67.2,22,Indeterminate,Negative,,,,,,Current,Yes,,Yes,E-cigarette,Invalid,Not applicable,Negative,Infiltrate/consolidation,Negative,0.91,Mitchells Plain District Hospital,FALSE,FALSE
+SP37936,2017-08-14,Male,24,White,155.2,73,30.3,Active TB,Negative,,,,,,Former,No,,No,,MTB detected,Sensitive,3+,Infiltrate/consolidation,Positive,7.25,Eerste River Hospital,FALSE,FALSE
+SP38098,2017-10-01,Male,42,Black African,169.4,64.5,22.5,Control,Negative,,,,,,Former,Yes,Cannabis,No,,MTB not detected,Not applicable,Negative,Infiltrate/consolidation,Negative,0.22,Somerset Hospital,FALSE,FALSE
+SP38208,2018-06-07,Male,22,Asian,160.5,56.2,21.8,Indeterminate,Negative,,,,,,Former,Yes,Mandrax,Yes,Pod,Error,Not applicable,Scanty,Cavitation,Negative,0.79,Bellville CHC,FALSE,FALSE
+SP38216,2017-08-08,Male,20,Mixed race,158.1,81.7,32.7,LTBI,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,0.49,Woodstock CHC,FALSE,FALSE
+SP38239,2020-08-16,Female,40,Black African,174.3,53.1,17.5,Control,Negative,,,,,,Current,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.09,Woodstock CHC,FALSE,FALSE
+SP38322,2017-06-30,Male,21,White,164.6,53.1,19.6,Active TB,Positive,274,484,Yes,Efavirenz-based,2017-09-04,Never,No,,No,,MTB detected,Sensitive,Negative,Infiltrate/consolidation,Positive,11.43,Mitchells Plain District Hospital,FALSE,FALSE
+SP38408,2017-10-25,Female,43,Mixed race,173.3,64,21.3,Control,Negative,,,,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.32,Elsies River CHC,FALSE,FALSE
+SP38430,2019-09-20,Male,19,Coloured,166.6,85.4,30.8,LTBI,Positive,323,12502,No,,,Former,Yes,Heroin,No,,MTB not detected,Not applicable,Negative,Normal,Indeterminate,4.53,Woodstock CHC,FALSE,FALSE
+SP38602,2020-08-27,Male,17,White,142.5,59.5,29.3,LTBI,Positive,322,5584,Yes,TLD,2018-07-28,Current,No,,No,,MTB not detected,Not applicable,Negative,Normal,Positive,4.65,Khayelitsha District Hospital,FALSE,FALSE
+SP38654,2019-10-11,Female,48,White,148.2,51.7,23.5,LTBI,Negative,,,,,,Former,No,,Yes,Vape pen,MTB not detected,Not applicable,Negative,Normal,Positive,9.99,Retreat CHC,FALSE,FALSE
+SP38685,2020-06-08,Male,51,White,190.7,63.9,17.6,Indeterminate,Negative,,,,,,Former,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Infiltrate/consolidation,Positive,1.87,Woodstock CHC,FALSE,FALSE
+SP38792,2019-08-13,Male,58,Black African,166.6,79.2,28.5,Control,Negative,,,,,,Current,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.08,Retreat CHC,FALSE,FALSE
+SP38844,2017-06-17,Female,53,White,160.8,72.9,28.2,Control,Negative,255,2281,No,,,Never,Yes,Mandrax,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0,Elsies River CHC,TRUE,FALSE
+SP38888,2020-02-15,Male,54,Coloured,154.5,56.4,23.6,Active TB,Positive,223,1592,Yes,TLD,2020-04-12,Never,Yes,,No,,MTB detected,Indeterminate,Scanty,Cavitation,Positive,10.14,Retreat CHC,FALSE,FALSE
+SP38956,2018-08-23,Female,16,Mixed race,170.4,63.1,21.7,Control,Negative,,,,,,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Other abnormality,Negative,0.24,Retreat CHC,FALSE,FALSE
+SP38963,2017-08-31,Female,31,Asian,160.2,51.6,20.1,Control,Positive,187,195,No,,,Never,No,,Yes,E-cigarette,MTB not detected,Not applicable,Negative,Normal,Negative,0.33,Delft CHC,FALSE,FALSE
+SP39031,2017-10-07,Male,23,White,151.7,61.5,26.7,Indeterminate,Negative,,,,,,Never,No,,Yes,Vape pen,Indeterminate,Not applicable,Negative,Normal,Negative,1.19,Mitchells Plain District Hospital,FALSE,FALSE
+SP39068,2020-07-31,Female,59,Black African,176,85.9,27.7,Indeterminate,Positive,429,79,Yes,TLD,2018-07-13,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Indeterminate,0.88,Elsies River CHC,FALSE,FALSE
+SP39073,2019-07-12,Male,26,Mixed race,152.9,57.2,24.5,Control,Positive,421,112,Yes,Efavirenz-based,2017-12-16,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0,Woodstock CHC,FALSE,FALSE
+SP39076,2018-03-29,Female,23,Black African,154,54.1,22.8,Active TB,Negative,,,,,,Never,No,,Yes,E-cigarette,MTB detected,Resistant,Negative,Infiltrate/consolidation,Negative,7.67,Claremont CHC,FALSE,FALSE
+SP39161,2018-09-28,Female,50,White,165.8,59.1,21.5,Control,Positive,562,4213,No,,,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.16,Ottery CHC,FALSE,FALSE
+SP39216,2019-08-17,Male,51,White,165.1,64.8,23.8,LTBI,Negative,,,,,,Former,Yes,Heroin,No,,MTB not detected,Not applicable,Negative,Normal,Positive,2.13,Delft CHC,FALSE,FALSE
+SP39257,2019-08-29,Male,58,White,157.6,55.2,22.2,LTBI,Negative,,,,,,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Positive,,Delft CHC,FALSE,FALSE
+SP39275,2016-12-28,Male,30,Asian,138.7,35.8,18.6,Control,Negative,,,,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.18,Claremont CHC,FALSE,FALSE
+SP39325,2019-06-26,Female,56,Mixed race,169.7,94.3,32.7,Active TB,Positive,89,236,No,,,Former,Yes,Multiple,Yes,Pod,MTB detected,Resistant,Negative,Normal,Positive,7.23,Elsies River CHC,FALSE,FALSE
+SP39351,2017-09-28,Male,12,Coloured,172.7,67.7,22.7,LTBI,Negative,,,,,,Former,No,,Yes,Pod,MTB not detected,Not applicable,Negative,Normal,Positive,9.66,Woodstock CHC,FALSE,FALSE
+SP39551,2017-07-04,Female,46,White,139.1,78,40.3,Active TB,Negative,,,,,,Former,Yes,Cannabis,No,,MTB detected,Sensitive,Negative,Cavitation,Negative,6.4,Retreat CHC,FALSE,FALSE
+SP39581,2017-08-02,Male,46,Mixed race,171.7,86.1,29.2,Control,Positive,573,2736,No,,,Former,Yes,Crystal meth,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.07,Khayelitsha District Hospital,FALSE,FALSE
+SP39597,2019-06-16,Female,24,White,180.6,64.8,19.9,Active TB,Negative,,,,,,Former,Yes,Cannabis,Yes,Pod,MTB detected,Sensitive,3+,Infiltrate/consolidation,Positive,8.84,Somerset Hospital,FALSE,FALSE
+SP39675,2018-07-21,Female,19,White,162.8,63.9,24.1,Control,Positive,517,282463,No,,,Never,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.32,Woodstock CHC,FALSE,FALSE
+SP39683,2016-07-19,Female,13,Coloured,173.8,81.3,26.9,Control,Positive,396,106,Yes,Efavirenz-based,2012-10-25,Former,No,,No,,MTB not detected,Not applicable,Negative,Normal,Negative,0.22,Retreat CHC,FALSE,FALSE
+SP39822,2018-06-15,Female,52,White,160.4,66.6,25.9,Indeterminate,Negative,,,,,,Never,Yes,Cannabis,No,,Error,Not applicable,2+,Other abnormality,Indeterminate,1.84,Khayelitsha District Hospital,FALSE,FALSE
