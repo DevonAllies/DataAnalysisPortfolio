@@ -124,6 +124,7 @@ cat(":::\n")
 ::: {.contact-strip}
 I'm always happy to talk about bioinformatics, data science and TB research.
 
+[<i class="bi bi-send"></i> Send me a message](contact.qmd){.btn .btn-primary}
 [<i class="bi bi-linkedin"></i> LinkedIn](https://www.linkedin.com/in/devonallies/){.btn .btn-outline-primary}
 [<i class="bi bi-github"></i> GitHub](https://github.com/DevonAllies){.btn .btn-outline-primary}
 [<i class="bi bi-envelope"></i> Email](mailto:alliesdl@gmail.com){.btn .btn-outline-primary}

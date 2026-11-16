@@ -31,6 +31,8 @@ website:
         text: Publications & Writing
       - href: about.qmd
         text: About Me
+      - href: contact.qmd
+        text: Contact
       
 format:
   html:

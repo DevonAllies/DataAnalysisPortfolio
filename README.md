@@ -4,12 +4,13 @@
 
 The personal website and data portfolio of a bioinformatician and computational biologist, currently a Data Analyst at Stellenbosch University. I've worked in biomedical science for over 15 years, including 10 in immunology and tuberculosis research, from the lab bench to clinical study coordination and data pipelines.
 
-The site has four sections:
+The site has five sections:
 
 - **[Projects](https://devonallies.co.za/projects.html):** data analyses and pipelines in R and Python
 - **[Tutorials](https://devonallies.co.za/tutorials.html):** a practical series on a simulated TB dataset
 - **[Publications & Writing](https://devonallies.co.za/publications.html):** peer-reviewed papers and articles on reproducible science
 - **[About](https://devonallies.co.za/about.html):** background and skills
+- **[Contact](https://devonallies.co.za/contact.html):** a contact form, plus other ways to get in touch
 
 ## Projects
 
@@ -58,6 +59,7 @@ about.qmd              About page
 projects.qmd           project listing: newest first, with tag filters and search
 tutorials.qmd          tutorial series page: banner, data downloads, numbered list (by each tutorial's `order` field), roadmap
 publications.qmd       Publications & Writing page
+contact.qmd            Contact page: form sent by FormSubmit (formsubmit.co) to my inbox
 projects/<name>/       one folder per project, all with the same layout:
     index.qmd            the page (URL: /projects/<name>/)
     references.bib       its bibliography
@@ -97,6 +99,7 @@ quarto render publications.qmd
 
 ## Contact
 
+- Contact form: [devonallies.co.za/contact.html](https://devonallies.co.za/contact.html)
 - LinkedIn: [devonallies](https://www.linkedin.com/in/devonallies/)
 - GitHub: [DevonAllies](https://github.com/DevonAllies)
 - ORCID: [0000-0001-8928-4334](https://orcid.org/0000-0001-8928-4334)

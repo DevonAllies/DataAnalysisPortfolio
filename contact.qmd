@@ -1,0 +1,117 @@
+---
+title: "Contact"
+description: "Contact Devon Allies about bioinformatics and data science roles, collaborations, or questions about the R and Python tutorials."
+body-classes: hide-description   # description is for search/link previews only
+toc: false
+---
+
+::: {.contact-layout}
+
+::: {.contact-main}
+Whether it's a role, a collaboration, or a question about one of the tutorials, send me a message and I'll get back to you by email.
+
+```{=html}
+<!--
+  Contact form, delivered by FormSubmit (https://formsubmit.co) to the address in the action URL.
+  The script below posts to the /ajax/ endpoint and shows an inline status. Without JavaScript the
+  form posts normally and _next brings the visitor back here with ?sent=1.
+  The first submission sends an activation email to the inbox; nothing is delivered until it's confirmed.
+-->
+<form id="contact-form" class="contact-form" action="https://formsubmit.co/alliesdl@gmail.com" method="POST">
+  <input type="hidden" name="_subject" value="New message from devonallies.co.za">
+  <input type="hidden" name="_template" value="table">
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_next" value="https://devonallies.co.za/contact.html?sent=1">
+  <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+  <div class="row g-3">
+    <div class="col-sm-6">
+      <label for="cf-name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="cf-name" name="name" autocomplete="name" required>
+    </div>
+    <div class="col-sm-6">
+      <label for="cf-email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="cf-email" name="email" autocomplete="email" required>
+    </div>
+    <div class="col-12">
+      <label for="cf-topic" class="form-label">What's it about?</label>
+      <select class="form-select" id="cf-topic" name="topic">
+        <option>A job or collaboration</option>
+        <option>A question about a tutorial</option>
+        <option>Something else</option>
+      </select>
+    </div>
+    <div class="col-12">
+      <label for="cf-message" class="form-label">Message</label>
+      <textarea class="form-control" id="cf-message" name="message" rows="6" required></textarea>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary"><i class="bi bi-send"></i> Send message</button>
+    </div>
+  </div>
+  <p class="form-status" role="status" aria-live="polite"></p>
+  <p class="form-privacy">Your message is sent to my inbox through <a href="https://formsubmit.co">FormSubmit</a>. I only use your details to reply.</p>
+</form>
+
+<script>
+(function () {
+  const form = document.getElementById("contact-form");
+  const status = form.querySelector(".form-status");
+  const setStatus = (text, kind) => {
+    status.textContent = text;
+    status.className = "form-status" + (kind ? " is-" + kind : "");
+  };
+  const sent = () => {
+    form.classList.add("is-sent");
+    setStatus("Thank you! Your message has been sent. I'll reply by email soon.", "success");
+  };
+
+  // Back from FormSubmit's no-JavaScript fallback
+  if (new URLSearchParams(location.search).get("sent") === "1") sent();
+
+  // ?topic=tutorial pre-selects a topic (used by links from other pages)
+  const topic = new URLSearchParams(location.search).get("topic");
+  if (topic === "tutorial") form.topic.selectedIndex = 1;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form));
+    if (data._honey) return;   // a bot filled the hidden field
+    delete data._next;
+    const button = form.querySelector('button[type="submit"]');
+    button.disabled = true;
+    setStatus("Sending…");
+    try {
+      const res = await fetch(form.action.replace("formsubmit.co/", "formsubmit.co/ajax/"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (res.ok && String(json.success) === "true") { form.reset(); sent(); return; }
+      throw new Error(json.message || "HTTP " + res.status);
+    } catch (err) {
+      console.error("Contact form error:", err);
+      setStatus("Sorry, your message couldn't be sent. Please email me at alliesdl@gmail.com or message me on LinkedIn.", "error");
+    } finally {
+      button.disabled = false;
+    }
+  });
+})();
+</script>
+```
+:::
+
+::: {.contact-side}
+#### Other ways to reach me
+
+[<i class="bi bi-linkedin"></i> LinkedIn](https://www.linkedin.com/in/devonallies/){.btn .btn-outline-primary}
+[<i class="bi bi-github"></i> GitHub](https://github.com/DevonAllies){.btn .btn-outline-primary}
+[<i class="bi bi-envelope"></i> Email](mailto:alliesdl@gmail.com){.btn .btn-outline-primary}
+[<i class="bi bi-discord"></i> Discord](https://discord.com/users/492592734805164044){.btn .btn-outline-primary}
+[<i class="bi bi-journal-text"></i> ORCID](https://orcid.org/0000-0001-8928-4334){.btn .btn-outline-primary}
+
+Based in Cape Town, South Africa.
+:::
+
+:::
