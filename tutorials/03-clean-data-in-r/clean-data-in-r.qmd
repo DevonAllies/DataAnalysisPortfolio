@@ -12,8 +12,8 @@ categories: [R, Data cleaning]
 ## What you'll learn
 
 - Audit a dataset to find what needs cleaning
-- Make category spellings consistent with `stringr` and `case_when()`
-- Tell apart missing values that mean different things
+- Make category spellings consistent with `tolower()` and `case_when()`
+- Spot missing-value codes that are really an answer
 - Parse dates entered in mixed formats with `lubridate`
 - Replace impossible measurements without guessing
 - Check that columns agree with each other, and flag rows for review instead of silently changing them
@@ -55,6 +55,7 @@ metadata_path <- here("data", "bal_metadata.xlsx")
 #| echo: false
 # On this website, the files live in tutorials/data/
 metadata_path <- here("tutorials", "data", "bal_metadata.xlsx")
+options(width = 100)  # room for the before column in compare()
 ```
 
 Import the metadata the same way as in Tutorial 1:
@@ -83,20 +84,26 @@ Start by counting how many different values each text column holds. A column wit
 ```{r}
 #| label: audit
 metadata |>
-  summarise(across(where(is.character), n_distinct)) |>
+  summarise(across(where(is.character), \(x) n_distinct(x, na.rm = TRUE))) |>
   tidyr::pivot_longer(everything(), names_to = "column", values_to = "distinct_values") |>
   arrange(desc(distinct_values))
 ```
 
 `pt_id` and the dates are meant to have many values. But `sex` has 8 spellings of 2 values, `smoking_status` has 12, and `referral_source` has 49 versions of a handful of clinics. That list is the to-do list for this tutorial.
 
-As you clean, check every change against the original values. This small helper puts each original value next to its cleaned value, so you can see exactly what became what:
+As you clean, check every change against the original values. This small helper reads like a before-and-after: on each row, the original spellings (`before`), the clean value they became (`after`), and how many rows that covers (`n`):
 
 ```{r}
 #| label: compare-helper
 compare <- function(before, after) {
   tibble(before, after) |>
-    count(before, after)
+    summarise(
+      before = paste(sort(unique(before)), collapse = ", "),
+      n      = n(),
+      .by = after
+    ) |>
+    select(before, after, n) |>
+    arrange(after)
 }
 ```
 
@@ -116,7 +123,7 @@ One ID was typed in lower case. Fix the case and remove stray spaces, then deal 
 ```{r}
 #| label: fix-ids
 metadata_clean <- metadata |>
-  mutate(pt_id = str_to_upper(str_trim(pt_id))) |>
+  mutate(pt_id = toupper(str_trim(pt_id))) |>
   distinct()
 
 nrow(metadata_clean)
@@ -133,12 +140,12 @@ n_distinct(metadata_clean$pt_id)
 
 ### Two-value columns
 
-Most spelling problems are differences in capitals and abbreviations. Lower-case everything with `str_to_lower()`, then use `case_when()` to say which values mean what. Each line is a condition on the left of `~` and the value to use when it's true on the right:
+Most spelling problems are differences in capitals and abbreviations. Lower-case everything first with `tolower()`, so "FEMALE", "Female" and "female" all become "female" and you only have to list each answer once. Then use `case_when()` to say which values mean what. Each line is a condition on the left of `~` and the value to use when it's true on the right:
 
 ```{r}
 #| label: sex
 clean_sex <- function(x) {
-  x <- str_to_lower(x)
+  x <- tolower(x)
   case_when(
     x %in% c("f", "female") ~ "Female",
     x %in% c("m", "male")   ~ "Male"
@@ -148,14 +155,14 @@ clean_sex <- function(x) {
 compare(metadata_clean$sex, clean_sex(metadata_clean$sex))
 ```
 
-Every original value maps to one of two clean values. `case_when()` returns `NA` for any value that matches none of the conditions. That's a useful safety net: a spelling you didn't expect shows up as a new `NA` in the comparison rather than being quietly lumped in with something else. (You could add a catch-all last line, `TRUE ~ "Other"`, but then unexpected values would hide inside "Other".)
+Eight spellings become two clean values, one row each. `case_when()` returns `NA` for any value that matches none of the conditions. That's a useful safety net: a spelling you didn't expect shows up in an `NA` row of the comparison rather than being quietly lumped in with something else. (You could add a catch-all last line, `TRUE ~ "Other"`, but then unexpected values would hide inside "Other".)
 
 The yes/no columns (`drug_use`, `vaping`, `art`) and `hiv_status` follow the same pattern, so one function cleans them all with `across()`:
 
 ```{r}
 #| label: yes-no
 clean_yes_no <- function(x) {
-  x <- str_to_lower(x)
+  x <- tolower(x)
   case_when(
     x %in% c("y", "yes") ~ "Yes",
     x %in% c("n", "no")  ~ "No"
@@ -163,7 +170,7 @@ clean_yes_no <- function(x) {
 }
 
 clean_pos_neg <- function(x) {
-  x <- str_to_lower(x)
+  x <- tolower(x)
   case_when(
     x %in% c("pos", "positive") ~ "Positive",
     x %in% c("neg", "negative") ~ "Negative"
@@ -180,6 +187,42 @@ metadata_clean <- metadata_clean |>
 metadata_clean |> count(hiv_status)
 ```
 
+### A few more values
+
+The IGRA result and ethnicity have more than two answers, but the same approach works: list every spelling of each answer.
+
+```{r}
+#| label: igra-ethnicity
+igra_raw <- tolower(metadata_clean$igra_result)
+
+igra_clean <- case_when(
+  igra_raw %in% c("pos", "positive")            ~ "Positive",
+  igra_raw %in% c("neg", "negative")            ~ "Negative",
+  igra_raw %in% c("indeterminate", "borderline") ~ "Indeterminate"
+)
+
+compare(metadata_clean$igra_result, igra_clean)
+
+ethnicity_raw <- tolower(metadata_clean$ethnicity)
+
+ethnicity_clean <- case_when(
+  ethnicity_raw == "black african"                        ~ "Black African",
+  ethnicity_raw %in% c("coloured", "mixed", "mixed race") ~ "Coloured",
+  ethnicity_raw == "white"                                ~ "White",
+  ethnicity_raw == "asian"                                ~ "Asian"
+)
+
+compare(metadata_clean$ethnicity, ethnicity_clean)
+
+metadata_clean <- metadata_clean |>
+  mutate(igra_result = igra_clean, ethnicity = ethnicity_clean)
+```
+
+Two of these are decisions, so they go in the decision log:
+
+- A **borderline** IGRA is too close to the cut-off to call positive or negative, so it joins **Indeterminate**: in both cases the test didn't give a usable answer.
+- **"Mixed" and "mixed race"** describe the same group as **Coloured**, the term used in the South African census, so all three become Coloured.
+
 ### Columns that need a decision
 
 Some columns can't be cleaned by fixing capitals alone. You have to decide what the values mean.
@@ -188,7 +231,7 @@ Some columns can't be cleaned by fixing capitals alone. You have to decide what 
 
 ```{r}
 #| label: smoking
-smoking_raw <- str_to_lower(metadata_clean$smoking_status)
+smoking_raw <- tolower(metadata_clean$smoking_status)
 
 smoking <- case_when(
   smoking_raw == "yes"                          ~ "Current",
@@ -196,7 +239,7 @@ smoking <- case_when(
   smoking_raw %in% c("never", "no")              ~ "Never"
 )
 
-compare(smoking_raw, smoking)
+compare(metadata_clean$smoking_status, smoking)
 
 metadata_clean <- metadata_clean |>
   mutate(smoking_status = factor(smoking, levels = c("Never", "Former", "Current")))
@@ -208,7 +251,7 @@ metadata_clean <- metadata_clean |>
 #| label: drug-type
 metadata_clean <- metadata_clean |>
   mutate(
-    drug_type = str_to_lower(drug_type),
+    drug_type = tolower(drug_type),
     drug_type = case_when(
       drug_type == "tik" ~ "crystal meth",
       TRUE               ~ drug_type   # keep every other value
@@ -219,6 +262,12 @@ metadata_clean <- metadata_clean |>
 metadata_clean |> count(drug_type)
 ```
 
+::: {.callout-tip}
+## `TRUE ~` or `.default`
+
+Since dplyr 1.1.0 you can write the catch-all as `.default = drug_type` instead of `TRUE ~ drug_type`. Both do the same thing; `TRUE ~` also works in older versions, and you'll see it in most existing code. Use a catch-all only when you mean "leave everything else as it is", as here. When you're mapping spellings to categories, leave it out so unexpected values show up as `NA`.
+:::
+
 ### Ordered categories
 
 **Sputum smear grade** was recorded in 21 ways, including `+2`, `2 +`, `two plus` and `0` for negative. Removing spaces first leaves fewer variants to list. The grades have a natural order, so store them as an **ordered factor**; later analyses can then treat Scanty < 1+ < 2+ < 3+ correctly:
@@ -226,7 +275,7 @@ metadata_clean |> count(drug_type)
 ```{r}
 #| label: smear
 smear_raw <- metadata_clean$smear_grade |>
-  str_to_lower() |>
+  tolower() |>
   str_remove_all("\\s")
 
 smear <- case_when(
@@ -250,7 +299,8 @@ metadata_clean |> count(smear_grade)
 
 ```{r}
 #| label: cxr-trap
-cxr <- str_to_lower(metadata_clean$cxr_finding)
+cxr_original <- metadata_clean$cxr_finding
+cxr <- tolower(cxr_original)
 
 # A tempting shortcut: anything containing "normal" is normal
 shortcut <- case_when(
@@ -258,11 +308,17 @@ shortcut <- case_when(
   TRUE                      ~ "Abnormal"
 )
 
-compare(cxr, shortcut) |>
+compare(cxr_original, shortcut) |>
   filter(after == "Normal")
 ```
 
-"ab**normal** - other" contains the word "normal", so the shortcut calls an abnormal X-ray normal. Match normal findings exactly, and use keywords only for the abnormal ones:
+The shortcut goes wrong twice. "ab**normal** - other" and "other ab**normal**ity" both contain the word "normal", so abnormal X-rays are called normal. And "NAD" (no abnormality detected) doesn't contain it, so normal X-rays are called abnormal. Match normal findings exactly, and use keywords only for the abnormal ones:
+
+```{r}
+#| label: cxr-width-wide
+#| echo: false
+options(width = 120)
+```
 
 ```{r}
 #| label: cxr
@@ -276,10 +332,16 @@ metadata_clean <- metadata_clean |>
     str_detect(cxr, "other")                      ~ "Other abnormality"
   ))
 
-compare(cxr, metadata_clean$cxr_finding)
+compare(cxr_original, metadata_clean$cxr_finding)
 ```
 
-`NAD` is the clinical abbreviation for "no abnormality detected". Every original value now has exactly one clean category, and none became `NA`.
+```{r}
+#| label: cxr-width-reset
+#| echo: false
+options(width = 100)
+```
+
+`NAD` is the clinical abbreviation for "no abnormality detected". Fourteen spellings now fall into six categories, and there's no `NA` row.
 
 ### Many variants: use a lookup table
 
@@ -288,7 +350,7 @@ compare(cxr, metadata_clean$cxr_finding)
 ```{r}
 #| label: referral-key
 referral_key <- metadata_clean$referral_source |>
-  str_to_lower() |>
+  tolower() |>
   str_remove_all("'") |>
   str_remove(" (chc|community health( centre)?|hosp(ital)?|district hospital|dhc)$")
 
@@ -337,28 +399,38 @@ metadata_clean |> count(referral_site)
 `ERCHC` could stand for Elsies River CHC or Eerste River CHC. No Eerste River *CHC* appears anywhere else in the data (only the hospital), so we map it to Elsies River CHC. That's an assumption, so it goes in the decision log, and ideally you'd confirm it with whoever entered the data.
 :::
 
-## 5. Missing doesn't always mean the same thing
+## 5. When "missing" is really a category
 
-Tutorial 1 treated `N/A` and `ND` as missing. For most columns that's right, but look at the original values of the rifampicin-resistance result:
+Tutorial 1 treated `N/A` and `ND` as missing. For most columns that's right, but not for the rifampicin-resistance result (`GeneXpert_RIF`). In the Excel file it holds `Sensitive`, `Resistant` and `Indeterminate`, plus three codes: `N/A`, `Not applicable` and `ND` (not done). They look like three different things. Read the original text again and check where they occur:
 
 ```{r}
-#| label: rif-raw
-read_excel(metadata_path, sheet = "MetaData", col_types = "text") |>
-  count(GeneXpert_RIF)
+#| label: rif-codes
+rif_original <- read_excel(metadata_path, sheet = "MetaData", col_types = "text") |>
+  transmute(pt_id = toupper(Pt_ID), mtb_result = tolower(GeneXpert_Res), rif = GeneXpert_RIF) |>
+  distinct()
+
+rif_original |>
+  filter(rif %in% c("N/A", "Not applicable", "ND")) |>
+  count(mtb_result)
 ```
 
-`N/A` and `Not applicable` mean the test result doesn't apply. `ND` means **not done**. Reading `N/A` and `ND` as `NA` erased that difference, and left `Not applicable` as a separate category.
+None of them occurs when TB was detected. GeneXpert only reports rifampicin resistance when it detects *M. tuberculosis*, so all three codes mean the same thing: **there's no resistance result because there was no TB to test**. That's a real answer, not missing data. But Tutorial 1's missing-value codes turned `N/A` and `ND` into `NA` while `Not applicable` stayed as text, splitting one group into two.
 
-The underlying rule is simpler than any of these codes. GeneXpert reports rifampicin resistance only when it detects *M. tuberculosis*. So first clean the MTB result, then **derive** the RIF result from it:
+The fix is to **derive** the RIF result from the rule instead of relying on whichever code was typed: first clean the MTB result, then set the RIF result to "Not applicable" whenever MTB wasn't detected.
+
+The MTB result also has three labels for a failed test: `Error`, `Invalid` and `Indeterminate`. None of them gives a usable result, and each group is small, so combine them into one "No result" category:
 
 ```{r}
 #| label: genexpert
+xpert_original <- metadata_clean$gene_xpert_res
+xpert_raw <- tolower(xpert_original)
+
 metadata_clean <- metadata_clean |>
   mutate(
     gene_xpert_res = case_when(
-      str_to_lower(gene_xpert_res) == "mtb detected"     ~ "MTB detected",
-      str_to_lower(gene_xpert_res) == "mtb not detected" ~ "MTB not detected",
-      TRUE ~ gene_xpert_res   # keep Error, Invalid, Indeterminate as they are
+      xpert_raw == "mtb detected"                           ~ "MTB detected",
+      xpert_raw == "mtb not detected"                       ~ "MTB not detected",
+      xpert_raw %in% c("error", "invalid", "indeterminate") ~ "No result"
     ),
     gene_xpert_rif = case_when(
       gene_xpert_res == "MTB detected" ~ gene_xpert_rif,
@@ -366,16 +438,20 @@ metadata_clean <- metadata_clean |>
     )
   )
 
-metadata_clean |> count(gene_xpert_res, gene_xpert_rif)
+compare(xpert_original, metadata_clean$gene_xpert_res)
 ```
 
-::: {.callout-tip}
-## `TRUE ~` or `.default`
+Now compare the original RIF codes with the derived result. Joining by `pt_id` lines each participant's original code up with their clean value:
 
-Since dplyr 1.1.0 you can write the catch-all as `.default = gene_xpert_res` instead of `TRUE ~ gene_xpert_res`. Both do the same thing; `TRUE ~` also works in older versions, and you'll see it in most existing code.
-:::
+```{r}
+#| label: rif-compare
+rif_check <- rif_original |>
+  left_join(select(metadata_clean, pt_id, gene_xpert_rif), by = "pt_id")
 
-Every participant with MTB detected has a resistance result, and nobody else does. The rule also corrects 66 rows that recorded "Sensitive" for a sample where no TB was detected, which is impossible.
+compare(rif_check$rif, rif_check$gene_xpert_rif)
+```
+
+`N/A`, `ND` and `Not applicable` are now one "Not applicable" group. The "Not applicable" row also takes in some `Sensitive` and `Indeterminate` entries: 66 rows recorded "Sensitive" for a sample where no TB was detected, which is impossible, and the rule corrects them. Every participant with MTB detected keeps their resistance result.
 
 ::: {.callout-tip}
 When one column depends on another, derive it from the rule rather than trusting what was typed. Then a data-entry mistake in the dependent column can't get through.
@@ -499,11 +575,9 @@ Both measurements agree for these participants (178 cm and about 30 kg, for exam
 Choose plausible ranges **before** you look at the results, and base them on biology rather than on the data (100–220 cm covers the adolescents and adults in this study). A range picked to remove the points you don't like isn't a rule, it's a way of hiding data.
 :::
 
-## 8. Do the columns agree with each other?
+## 8. Duplicate columns and rows to review
 
-Some problems only appear when you compare columns.
-
-**Duplicate columns.** `study_group` looks like `tb_diagnosis`:
+Some problems only appear when you compare columns. `study_group` looks like `tb_diagnosis`:
 
 ```{r}
 #| label: study-group
@@ -512,31 +586,18 @@ metadata_clean |> count(study_group == tb_diagnosis)
 
 They're identical on every row, so drop `study_group`; keeping two copies invites them to drift apart later.
 
-**HIV results.** CD4 count, viral load and antiretroviral therapy (ART) only apply to people living with HIV:
-
-```{r}
-#| label: hiv-check
-metadata_clean |>
-  count(hiv_status, has_cd4 = !is.na(cd4_count), on_art = art)
-```
-
-Sixteen participants recorded as HIV-negative have a CD4 count, and some of them are recorded as on ART. Either the HIV status or the HIV results are wrong, and the data alone can't tell you which. **Don't guess: flag the rows** and send the list to the study team:
+The very low BMIs from section 7 could be real or a recording error, and the data alone can't tell you which. **Don't guess: flag the rows** and send the list to the study team:
 
 ```{r}
 #| label: flag
 metadata_clean <- metadata_clean |>
   select(-study_group) |>
-  mutate(
-    review_hiv = hiv_status == "Negative" & (!is.na(cd4_count) | !is.na(art)),
-    review_bmi = !is.na(bmi) & bmi < 13
-  )
+  mutate(review_bmi = !is.na(bmi) & bmi < 13)
 
-metadata_clean |>
-  filter(review_hiv) |>
-  select(pt_id, hiv_status, cd4_count, viral_load_cp_ml, art)
+metadata_clean |> count(review_bmi)
 ```
 
-The `review_bmi` flag from section 7 marks the very low BMIs in the same way. Analyses can then include or exclude these rows deliberately, and you can update them when the answers come back.
+Analyses can then include or exclude these rows deliberately, and you can update them when the answers come back.
 
 ## 9. Finish and save
 
@@ -560,9 +621,11 @@ A final check, the same audit as section 2:
 ```{r}
 #| label: audit-after
 metadata_clean |>
-  summarise(across(where(\(x) is.character(x) | is.factor(x)), n_distinct)) |>
+  summarise(across(where(\(x) is.character(x) | is.factor(x)), \(x) n_distinct(x, na.rm = TRUE))) |>
   tidyr::pivot_longer(everything(), names_to = "column", values_to = "distinct_values")
 ```
+
+Every category now has the number of values it should, apart from `vaping_type` and `art_regimen`: those two are left for you in [Try it yourself](#try-it-yourself).
 
 Save the result. `write_rds()` keeps factor levels and dates exactly as they are; a CSV file loses them, so use it only for sharing with other software:
 
@@ -584,18 +647,19 @@ Every judgement call made above, in one place. Keep a table like this with your 
 | `drug_type` | Treated "tik" as crystal meth | 47 |
 | `cxr_finding` | Grouped into 6 categories; infiltrate and consolidation combined | all |
 | `referral_source` | Mapped 49 spellings to 11 sites; ERCHC assumed to be Elsies River CHC | all |
-| `gene_xpert_rif` | Derived from the MTB result: "Not applicable" unless MTB detected | 500 |
+| `igra_result` | Borderline combined with Indeterminate | 14 |
+| `ethnicity` | "Mixed" and "mixed race" combined with Coloured | 66 |
+| `gene_xpert_res` | Error, Invalid and Indeterminate combined as "No result" | 56 |
+| `gene_xpert_rif` | Derived from the MTB result: N/A, ND and Not applicable become one "Not applicable" group whenever MTB wasn't detected | 500 |
 | `date_seen` | Read 8 month-first dates with `mdy()` | 8 |
 | Height, weight | Values outside 100–220 cm and 25–250 kg set to `NA`; mean of two measurements | 41 |
 | `bmi` | BMI below 13 flagged in `review_bmi`, not changed | 6 |
 | `study_group` | Dropped (identical to `tb_diagnosis`) | — |
-| HIV results | HIV-negative participants with HIV results flagged in `review_hiv`, not changed | 16 |
-
 ## Try it yourself
 
 Two columns are left for you, using the same patterns:
 
-1. **`art_regimen`** has 11 spellings of what are really two regimens: TLD (tenofovir, lamivudine and dolutegravir) and efavirenz-based ones such as TEE. Use `str_to_lower()` and `case_when()` to reduce it to `TLD` and `Efavirenz-based`.
+1. **`art_regimen`** has 10 spellings of what are really two regimens: TLD (tenofovir, lamivudine and dolutegravir) and efavirenz-based ones such as TEE. Use `tolower()` and `case_when()` to reduce it to `TLD` and `Efavirenz-based`.
 2. **`vaping_type`** mixes capitals (`pod`, `Pod`). Clean the case. Then decide whether `Juul`, a brand of pod device, should be its own category or grouped with `Pod`, and add the decision to your log.
 
 ## Common pitfalls
@@ -605,10 +669,12 @@ Two columns are left for you, using the same patterns:
 | Cleaning in Excel | Changes can't be checked or repeated | Leave the raw file alone; clean in code |
 | Unlisted spellings | New `NA` values after recoding | `compare()` before and after; leave out a `TRUE ~` catch-all so `case_when()` returns `NA` for anything unlisted |
 | Keyword matches too much | "Abnormal" counted as "normal" | Match exact values first, keywords second |
-| Different kinds of missing | "Not done" and "not applicable" merged | Check the original codes; derive values from the rule where you can |
+| Missing codes that are really an answer | One group split into `NA` and "Not applicable" | Check where the codes occur; derive values from the rule where you can |
+| Capitals | "Female", "FEMALE" and "female" listed separately | `tolower()` before matching |
 | Mixed date formats | `dmy()` returns `NA` for some dates | Check the failures; `coalesce()` a second format |
 | Guessing at errors | `814` "fixed" to `81.4` | Use a repeat measurement, or set to `NA` |
 | Silent fixes to conflicting data | Nobody knows a value was changed | Flag rows for review instead |
+| Vector named like a column | `mutate(sex = sex)` silently keeps the old column | Give cleaned vectors their own names (`sex_clean`) |
 | Alphabetical categories | Tables start with "Active TB" | Set factor levels in a sensible order |
 
 ## Next

@@ -1,7 +1,7 @@
 ---
 title: "Tutorials"
 subtitle: "A hands-on series on one simulated TB study, from importing data to machine learning, in R and Python"
-description: "Practical R and Python tutorials using a simulated TB study dataset, from importing data in RStudio to working with the same data in pandas."
+description: "Practical R and Python tutorials using a simulated TB study dataset, from importing and cleaning data in RStudio to working with the same data in pandas."
 body-classes: hide-description   # description is for search/link previews only
 image: tutorials/images/tutorial-series.jpg   # link-preview image
 toc: false
@@ -34,17 +34,17 @@ listing:
 
 ::: {.series-upcoming}
 ::: {.upcoming-item}
-[3]{.upcoming-number}
-[**Cleaning the data**: fixing inconsistent categories, duplicates and missing values]{.upcoming-text}
-:::
-
-::: {.upcoming-item}
 [4]{.upcoming-number}
-[**Statistics**: comparing groups and testing associations]{.upcoming-text}
+[**Statistical tests**: choosing the right test and running the common ones in RStudio]{.upcoming-text}
 :::
 
 ::: {.upcoming-item}
 [5]{.upcoming-number}
+[**Specialised tests**: post hoc comparisons, multiple testing and regression, with an interactive app to run them]{.upcoming-text}
+:::
+
+::: {.upcoming-item}
+[6]{.upcoming-number}
 [**Machine learning**: building and evaluating a predictive model in Python]{.upcoming-text}
 :::
 :::

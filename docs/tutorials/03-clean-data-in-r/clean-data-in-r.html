@@ -368,10 +368,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#audit-before-you-change-anything" id="toc-audit-before-you-change-anything" class="nav-link" data-scroll-target="#audit-before-you-change-anything">2. Audit before you change anything</a></li>
   <li><a href="#ids-and-duplicates" id="toc-ids-and-duplicates" class="nav-link" data-scroll-target="#ids-and-duplicates">3. IDs and duplicates</a></li>
   <li><a href="#consistent-spellings" id="toc-consistent-spellings" class="nav-link" data-scroll-target="#consistent-spellings">4. Consistent spellings</a></li>
-  <li><a href="#missing-doesnt-always-mean-the-same-thing" id="toc-missing-doesnt-always-mean-the-same-thing" class="nav-link" data-scroll-target="#missing-doesnt-always-mean-the-same-thing">5. Missing doesn’t always mean the same thing</a></li>
+  <li><a href="#when-missing-is-really-a-category" id="toc-when-missing-is-really-a-category" class="nav-link" data-scroll-target="#when-missing-is-really-a-category">5. When “missing” is really a category</a></li>
   <li><a href="#dates-in-mixed-formats" id="toc-dates-in-mixed-formats" class="nav-link" data-scroll-target="#dates-in-mixed-formats">6. Dates in mixed formats</a></li>
   <li><a href="#impossible-measurements" id="toc-impossible-measurements" class="nav-link" data-scroll-target="#impossible-measurements">7. Impossible measurements</a></li>
-  <li><a href="#do-the-columns-agree-with-each-other" id="toc-do-the-columns-agree-with-each-other" class="nav-link" data-scroll-target="#do-the-columns-agree-with-each-other">8. Do the columns agree with each other?</a></li>
+  <li><a href="#duplicate-columns-and-rows-to-review" id="toc-duplicate-columns-and-rows-to-review" class="nav-link" data-scroll-target="#duplicate-columns-and-rows-to-review">8. Duplicate columns and rows to review</a></li>
   <li><a href="#finish-and-save" id="toc-finish-and-save" class="nav-link" data-scroll-target="#finish-and-save">9. Finish and save</a></li>
   <li><a href="#try-it-yourself" id="toc-try-it-yourself" class="nav-link" data-scroll-target="#try-it-yourself">Try it yourself</a></li>
   <li><a href="#common-pitfalls" id="toc-common-pitfalls" class="nav-link" data-scroll-target="#common-pitfalls">Common pitfalls</a></li>
@@ -440,8 +440,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="callout-body-container callout-body">
 <ul>
 <li>Audit a dataset to find what needs cleaning</li>
-<li>Make category spellings consistent with <code>stringr</code> and <code>case_when()</code></li>
-<li>Tell apart missing values that mean different things</li>
+<li>Make category spellings consistent with <code>tolower()</code> and <code>case_when()</code></li>
+<li>Spot missing-value codes that are really an answer</li>
 <li>Parse dates entered in mixed formats with <code>lubridate</code></li>
 <li>Replace impossible measurements without guessing</li>
 <li>Check that columns agree with each other, and flag rows for review instead of silently changing them</li>
@@ -511,7 +511,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Start by counting how many different values each text column holds. A column with two possible answers shouldn’t have eight:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>metadata <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), n_distinct)) <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), \(x) <span class="fu">n_distinct</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))) <span class="sc">|&gt;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"column"</span>, <span class="at">values_to =</span> <span class="st">"distinct_values"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(distinct_values))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -520,24 +520,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    &lt;chr&gt;                     &lt;int&gt;
  1 pt_id                       500
  2 date_seen                   445
- 3 art_start_date               90
+ 3 art_start_date               89
  4 referral_source              49
  5 smear_grade                  21
  6 cxr_finding                  20
  7 ethnicity                    13
  8 smoking_status               12
- 9 drug_type                    12
+ 9 drug_type                    11
 10 igra_result                  11
 # ℹ 11 more rows</code></pre>
 </div>
 </div>
 <p><code>pt_id</code> and the dates are meant to have many values. But <code>sex</code> has 8 spellings of 2 values, <code>smoking_status</code> has 12, and <code>referral_source</code> has 49 versions of a handful of clinics. That list is the to-do list for this tutorial.</p>
-<p>As you clean, check every change against the original values. This small helper puts each original value next to its cleaned value, so you can see exactly what became what:</p>
+<p>As you clean, check every change against the original values. This small helper reads like a before-and-after: on each row, the original spellings (<code>before</code>), the clean value they became (<code>after</code>), and how many rows that covers (<code>n</code>):</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>compare <span class="ot">&lt;-</span> <span class="cf">function</span>(before, after) {</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(before, after) <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(before, after)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">before =</span> <span class="fu">paste</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(before)), <span class="at">collapse =</span> <span class="st">", "</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">n      =</span> <span class="fu">n</span>(),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">.by =</span> after</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(before, after, n) <span class="sc">|&gt;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(after)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="ids-and-duplicates" class="level2">
@@ -557,7 +563,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>One ID was typed in lower case. Fix the case and remove stray spaces, then deal with the two participants Tutorial 1 found entered twice. Their two rows are identical in every column, so <code>distinct()</code> safely drops the copies:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pt_id =</span> <span class="fu">str_to_upper</span>(<span class="fu">str_trim</span>(pt_id))) <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pt_id =</span> <span class="fu">toupper</span>(<span class="fu">str_trim</span>(pt_id))) <span class="sc">|&gt;</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(metadata_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -588,10 +594,10 @@ Warning
 <h2 class="anchored" data-anchor-id="consistent-spellings">4. Consistent spellings</h2>
 <section id="two-value-columns" class="level3">
 <h3 class="anchored" data-anchor-id="two-value-columns">Two-value columns</h3>
-<p>Most spelling problems are differences in capitals and abbreviations. Lower-case everything with <code>str_to_lower()</code>, then use <code>case_when()</code> to say which values mean what. Each line is a condition on the left of <code>~</code> and the value to use when it’s true on the right:</p>
+<p>Most spelling problems are differences in capitals and abbreviations. Lower-case everything first with <code>tolower()</code>, so “FEMALE”, “Female” and “female” all become “female” and you only have to list each answer once. Then use <code>case_when()</code> to say which values mean what. Each line is a condition on the left of <code>~</code> and the value to use when it’s true on the right:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>clean_sex <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">str_to_lower</span>(x)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">tolower</span>(x)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">case_when</span>(</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"f"</span>, <span class="st">"female"</span>) <span class="sc">~</span> <span class="st">"Female"</span>,</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"m"</span>, <span class="st">"male"</span>)   <span class="sc">~</span> <span class="st">"Male"</span></span>
@@ -600,24 +606,18 @@ Warning
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>(metadata_clean<span class="sc">$</span>sex, <span class="fu">clean_sex</span>(metadata_clean<span class="sc">$</span>sex))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 8 × 3
-  before after      n
-  &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt;
-1 F      Female    17
-2 FEMALE Female    12
-3 Female Female   204
-4 M      Male      14
-5 MALE   Male      17
-6 Male   Male     200
-7 female Female    23
-8 male   Male      13</code></pre>
+<pre><code># A tibble: 2 × 3
+  before                    after      n
+  &lt;chr&gt;                     &lt;chr&gt;  &lt;int&gt;
+1 F, female, Female, FEMALE Female   256
+2 M, male, Male, MALE       Male     244</code></pre>
 </div>
 </div>
-<p>Every original value maps to one of two clean values. <code>case_when()</code> returns <code>NA</code> for any value that matches none of the conditions. That’s a useful safety net: a spelling you didn’t expect shows up as a new <code>NA</code> in the comparison rather than being quietly lumped in with something else. (You could add a catch-all last line, <code>TRUE ~ "Other"</code>, but then unexpected values would hide inside “Other”.)</p>
+<p>Eight spellings become two clean values, one row each. <code>case_when()</code> returns <code>NA</code> for any value that matches none of the conditions. That’s a useful safety net: a spelling you didn’t expect shows up in an <code>NA</code> row of the comparison rather than being quietly lumped in with something else. (You could add a catch-all last line, <code>TRUE ~ "Other"</code>, but then unexpected values would hide inside “Other”.)</p>
 <p>The yes/no columns (<code>drug_use</code>, <code>vaping</code>, <code>art</code>) and <code>hiv_status</code> follow the same pattern, so one function cleans them all with <code>across()</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>clean_yes_no <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">str_to_lower</span>(x)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">tolower</span>(x)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">case_when</span>(</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"y"</span>, <span class="st">"yes"</span>) <span class="sc">~</span> <span class="st">"Yes"</span>,</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"n"</span>, <span class="st">"no"</span>)  <span class="sc">~</span> <span class="st">"No"</span></span>
@@ -625,7 +625,7 @@ Warning
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>clean_pos_neg <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">str_to_lower</span>(x)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">tolower</span>(x)</span>
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">case_when</span>(</span>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"pos"</span>, <span class="st">"positive"</span>) <span class="sc">~</span> <span class="st">"Positive"</span>,</span>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"neg"</span>, <span class="st">"negative"</span>) <span class="sc">~</span> <span class="st">"Negative"</span></span>
@@ -649,47 +649,93 @@ Warning
 </div>
 </div>
 </section>
+<section id="a-few-more-values" class="level3">
+<h3 class="anchored" data-anchor-id="a-few-more-values">A few more values</h3>
+<p>The IGRA result and ethnicity have more than two answers, but the same approach works: list every spelling of each answer.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>igra_raw <span class="ot">&lt;-</span> <span class="fu">tolower</span>(metadata_clean<span class="sc">$</span>igra_result)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>igra_clean <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  igra_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"pos"</span>, <span class="st">"positive"</span>)            <span class="sc">~</span> <span class="st">"Positive"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  igra_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"neg"</span>, <span class="st">"negative"</span>)            <span class="sc">~</span> <span class="st">"Negative"</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  igra_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"indeterminate"</span>, <span class="st">"borderline"</span>) <span class="sc">~</span> <span class="st">"Indeterminate"</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>(metadata_clean<span class="sc">$</span>igra_result, igra_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  before                                   after             n
+  &lt;chr&gt;                                    &lt;chr&gt;         &lt;int&gt;
+1 Borderline, indeterminate, Indeterminate Indeterminate    68
+2 Neg, negative, Negative, NEGATIVE        Negative        166
+3 Pos, positive, Positive, POSITIVE        Positive        266</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>ethnicity_raw <span class="ot">&lt;-</span> <span class="fu">tolower</span>(metadata_clean<span class="sc">$</span>ethnicity)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>ethnicity_clean <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  ethnicity_raw <span class="sc">==</span> <span class="st">"black african"</span>                        <span class="sc">~</span> <span class="st">"Black African"</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  ethnicity_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"coloured"</span>, <span class="st">"mixed"</span>, <span class="st">"mixed race"</span>) <span class="sc">~</span> <span class="st">"Coloured"</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  ethnicity_raw <span class="sc">==</span> <span class="st">"white"</span>                                <span class="sc">~</span> <span class="st">"White"</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  ethnicity_raw <span class="sc">==</span> <span class="st">"asian"</span>                                <span class="sc">~</span> <span class="st">"Asian"</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>(metadata_clean<span class="sc">$</span>ethnicity, ethnicity_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  before                                          after             n
+  &lt;chr&gt;                                           &lt;chr&gt;         &lt;int&gt;
+1 asian, Asian                                    Asian            82
+2 black african, Black African, BLACK AFRICAN     Black African   119
+3 coloured, Coloured, COLOURED, Mixed, mixed race Coloured        189
+4 white, White, WHITE                             White           110</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">igra_result =</span> igra_clean, <span class="at">ethnicity =</span> ethnicity_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Two of these are decisions, so they go in the decision log:</p>
+<ul>
+<li>A <strong>borderline</strong> IGRA is too close to the cut-off to call positive or negative, so it joins <strong>Indeterminate</strong>: in both cases the test didn’t give a usable answer.</li>
+<li><strong>“Mixed” and “mixed race”</strong> describe the same group as <strong>Coloured</strong>, the term used in the South African census, so all three become Coloured.</li>
+</ul>
+</section>
 <section id="columns-that-need-a-decision" class="level3">
 <h3 class="anchored" data-anchor-id="columns-that-need-a-decision">Columns that need a decision</h3>
 <p>Some columns can’t be cleaned by fixing capitals alone. You have to decide what the values mean.</p>
 <p><strong>Smoking status</strong> has <code>ex</code>, <code>Ex-smoker</code> and <code>Former</code>, which clearly mean the same thing, and <code>yes</code> for current smokers. But it also has both <code>never</code> and <code>no</code>. “No” probably means “doesn’t smoke now”, which could include former smokers who answered loosely. Here we treat <code>no</code> as “Never”, <strong>and write that decision down</strong> (see section 9):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>smoking_raw <span class="ot">&lt;-</span> <span class="fu">str_to_lower</span>(metadata_clean<span class="sc">$</span>smoking_status)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>smoking <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  smoking_raw <span class="sc">==</span> <span class="st">"yes"</span>                          <span class="sc">~</span> <span class="st">"Current"</span>,</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  smoking_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"ex"</span>, <span class="st">"ex-smoker"</span>, <span class="st">"former"</span>) <span class="sc">~</span> <span class="st">"Former"</span>,</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  smoking_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"never"</span>, <span class="st">"no"</span>)              <span class="sc">~</span> <span class="st">"Never"</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>(smoking_raw, smoking)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>smoking_raw <span class="ot">&lt;-</span> <span class="fu">tolower</span>(metadata_clean<span class="sc">$</span>smoking_status)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>smoking <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  smoking_raw <span class="sc">==</span> <span class="st">"yes"</span>                          <span class="sc">~</span> <span class="st">"Current"</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  smoking_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"ex"</span>, <span class="st">"ex-smoker"</span>, <span class="st">"former"</span>) <span class="sc">~</span> <span class="st">"Former"</span>,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  smoking_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"never"</span>, <span class="st">"no"</span>)              <span class="sc">~</span> <span class="st">"Never"</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>(metadata_clean<span class="sc">$</span>smoking_status, smoking)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 3
-  before    after       n
-  &lt;chr&gt;     &lt;chr&gt;   &lt;int&gt;
-1 ex        Former    120
-2 ex-smoker Former     50
-3 former    Former     44
-4 never     Never      39
-5 no        Never     125
-6 yes       Current   122</code></pre>
+<pre><code># A tibble: 3 × 3
+  before                        after       n
+  &lt;chr&gt;                         &lt;chr&gt;   &lt;int&gt;
+1 yes, Yes, YES                 Current   122
+2 ex, Ex, EX, Ex-smoker, Former Former    214
+3 never, no, No, NO             Never     164</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">smoking_status =</span> <span class="fu">factor</span>(smoking, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Never"</span>, <span class="st">"Former"</span>, <span class="st">"Current"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">smoking_status =</span> <span class="fu">factor</span>(smoking, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Never"</span>, <span class="st">"Former"</span>, <span class="st">"Current"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Drug type</strong> needs local knowledge: <em>tik</em> is South African slang for crystal methamphetamine, so <code>tik</code> and <code>crystal meth</code> are the same drug. Only one value changes. The last line, <code>TRUE ~ drug_type</code>, is a condition that is always true, so every value not matched above it keeps its current value. <code>str_to_sentence()</code> then fixes the capitals:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">drug_type =</span> <span class="fu">str_to_lower</span>(drug_type),</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">drug_type =</span> <span class="fu">case_when</span>(</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>      drug_type <span class="sc">==</span> <span class="st">"tik"</span> <span class="sc">~</span> <span class="st">"crystal meth"</span>,</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>               <span class="sc">~</span> drug_type   <span class="co"># keep every other value</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">drug_type =</span> <span class="fu">str_to_sentence</span>(drug_type)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span> <span class="fu">count</span>(drug_type)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">drug_type =</span> <span class="fu">tolower</span>(drug_type),</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">drug_type =</span> <span class="fu">case_when</span>(</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>      drug_type <span class="sc">==</span> <span class="st">"tik"</span> <span class="sc">~</span> <span class="st">"crystal meth"</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>               <span class="sc">~</span> drug_type   <span class="co"># keep every other value</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">drug_type =</span> <span class="fu">str_to_sentence</span>(drug_type)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span> <span class="fu">count</span>(drug_type)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 2
   drug_type        n
@@ -702,28 +748,41 @@ Warning
 6 &lt;NA&gt;           242</code></pre>
 </div>
 </div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span><code>TRUE ~</code> or <code>.default</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Since dplyr 1.1.0 you can write the catch-all as <code>.default = drug_type</code> instead of <code>TRUE ~ drug_type</code>. Both do the same thing; <code>TRUE ~</code> also works in older versions, and you’ll see it in most existing code. Use a catch-all only when you mean “leave everything else as it is”, as here. When you’re mapping spellings to categories, leave it out so unexpected values show up as <code>NA</code>.</p>
+</div>
+</div>
 </section>
 <section id="ordered-categories" class="level3">
 <h3 class="anchored" data-anchor-id="ordered-categories">Ordered categories</h3>
 <p><strong>Sputum smear grade</strong> was recorded in 21 ways, including <code>+2</code>, <code>2 +</code>, <code>two plus</code> and <code>0</code> for negative. Removing spaces first leaves fewer variants to list. The grades have a natural order, so store them as an <strong>ordered factor</strong>; later analyses can then treat Scanty &lt; 1+ &lt; 2+ &lt; 3+ correctly:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>smear_raw <span class="ot">&lt;-</span> metadata_clean<span class="sc">$</span>smear_grade <span class="sc">|&gt;</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_to_lower</span>() <span class="sc">|&gt;</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_remove_all</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">s"</span>)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>smear <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  smear_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"neg"</span>, <span class="st">"negative"</span>)  <span class="sc">~</span> <span class="st">"Negative"</span>,</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  smear_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"scant"</span>, <span class="st">"scanty"</span>)       <span class="sc">~</span> <span class="st">"Scanty"</span>,</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  smear_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"1+"</span>, <span class="st">"+1"</span>, <span class="st">"oneplus"</span>)   <span class="sc">~</span> <span class="st">"1+"</span>,</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  smear_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"2+"</span>, <span class="st">"+2"</span>, <span class="st">"twoplus"</span>)   <span class="sc">~</span> <span class="st">"2+"</span>,</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  smear_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"3+"</span>, <span class="st">"+3"</span>, <span class="st">"threeplus"</span>) <span class="sc">~</span> <span class="st">"3+"</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">smear_grade =</span> <span class="fu">factor</span>(smear,</span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Negative"</span>, <span class="st">"Scanty"</span>, <span class="st">"1+"</span>, <span class="st">"2+"</span>, <span class="st">"3+"</span>), <span class="at">ordered =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span> <span class="fu">count</span>(smear_grade)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>smear_raw <span class="ot">&lt;-</span> metadata_clean<span class="sc">$</span>smear_grade <span class="sc">|&gt;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tolower</span>() <span class="sc">|&gt;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_remove_all</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">s"</span>)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>smear <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  smear_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"0"</span>, <span class="st">"neg"</span>, <span class="st">"negative"</span>)  <span class="sc">~</span> <span class="st">"Negative"</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  smear_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"scant"</span>, <span class="st">"scanty"</span>)       <span class="sc">~</span> <span class="st">"Scanty"</span>,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  smear_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"1+"</span>, <span class="st">"+1"</span>, <span class="st">"oneplus"</span>)   <span class="sc">~</span> <span class="st">"1+"</span>,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  smear_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"2+"</span>, <span class="st">"+2"</span>, <span class="st">"twoplus"</span>)   <span class="sc">~</span> <span class="st">"2+"</span>,</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  smear_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"3+"</span>, <span class="st">"+3"</span>, <span class="st">"threeplus"</span>) <span class="sc">~</span> <span class="st">"3+"</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">smear_grade =</span> <span class="fu">factor</span>(smear,</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Negative"</span>, <span class="st">"Scanty"</span>, <span class="st">"1+"</span>, <span class="st">"2+"</span>, <span class="st">"3+"</span>), <span class="at">ordered =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span> <span class="fu">count</span>(smear_grade)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 2
   smear_grade     n
@@ -740,107 +799,97 @@ Warning
 <h3 class="anchored" data-anchor-id="free-text-categories">Free-text categories</h3>
 <p><strong>Chest X-ray findings</strong> are closer to free text. <code>case_when()</code> can test keywords with <code>str_detect()</code> as well as exact values. It checks the conditions from top to bottom and uses the first one that’s true, so the order matters, and so does choosing the right keyword:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>cxr <span class="ot">&lt;-</span> <span class="fu">str_to_lower</span>(metadata_clean<span class="sc">$</span>cxr_finding)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># A tempting shortcut: anything containing "normal" is normal</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>shortcut <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_detect</span>(cxr, <span class="st">"normal"</span>) <span class="sc">~</span> <span class="st">"Normal"</span>,</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="cn">TRUE</span>                      <span class="sc">~</span> <span class="st">"Abnormal"</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>(cxr, shortcut) <span class="sc">|&gt;</span></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(after <span class="sc">==</span> <span class="st">"Normal"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>cxr_original <span class="ot">&lt;-</span> metadata_clean<span class="sc">$</span>cxr_finding</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>cxr <span class="ot">&lt;-</span> <span class="fu">tolower</span>(cxr_original)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># A tempting shortcut: anything containing "normal" is normal</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>shortcut <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_detect</span>(cxr, <span class="st">"normal"</span>) <span class="sc">~</span> <span class="st">"Normal"</span>,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="cn">TRUE</span>                      <span class="sc">~</span> <span class="st">"Abnormal"</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>(cxr_original, shortcut) <span class="sc">|&gt;</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(after <span class="sc">==</span> <span class="st">"Normal"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 4 × 3
-  before            after      n
-  &lt;chr&gt;             &lt;chr&gt;  &lt;int&gt;
-1 abnormal - other  Normal     8
-2 no abnormality    Normal    50
-3 normal            Normal   182
-4 other abnormality Normal    12</code></pre>
+<pre><code># A tibble: 1 × 3
+  before                                                                      after      n
+  &lt;chr&gt;                                                                       &lt;chr&gt;  &lt;int&gt;
+1 Abnormal - other, No abnormality, normal, Normal, NORMAL, Other abnormality Normal   252</code></pre>
 </div>
 </div>
-<p>“ab<strong>normal</strong> - other” contains the word “normal”, so the shortcut calls an abnormal X-ray normal. Match normal findings exactly, and use keywords only for the abnormal ones:</p>
+<p>The shortcut goes wrong twice. “ab<strong>normal</strong> - other” and “other ab<strong>normal</strong>ity” both contain the word “normal”, so abnormal X-rays are called normal. And “NAD” (no abnormality detected) doesn’t contain it, so normal X-rays are called abnormal. Match normal findings exactly, and use keywords only for the abnormal ones:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cxr_finding =</span> <span class="fu">case_when</span>(</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    cxr <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"normal"</span>, <span class="st">"nad"</span>, <span class="st">"no abnormality"</span>) <span class="sc">~</span> <span class="st">"Normal"</span>,</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(cxr, <span class="st">"cavit"</span>)                      <span class="sc">~</span> <span class="st">"Cavitation"</span>,</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(cxr, <span class="st">"infiltrate|consolidation"</span>)   <span class="sc">~</span> <span class="st">"Infiltrate/consolidation"</span>,</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    cxr <span class="sc">==</span> <span class="st">"pleural effusion"</span>                     <span class="sc">~</span> <span class="st">"Pleural effusion"</span>,</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    cxr <span class="sc">==</span> <span class="st">"fibrosis"</span>                             <span class="sc">~</span> <span class="st">"Fibrosis"</span>,</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(cxr, <span class="st">"other"</span>)                      <span class="sc">~</span> <span class="st">"Other abnormality"</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>(cxr, metadata_clean<span class="sc">$</span>cxr_finding)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cxr_finding =</span> <span class="fu">case_when</span>(</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    cxr <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"normal"</span>, <span class="st">"nad"</span>, <span class="st">"no abnormality"</span>) <span class="sc">~</span> <span class="st">"Normal"</span>,</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(cxr, <span class="st">"cavit"</span>)                      <span class="sc">~</span> <span class="st">"Cavitation"</span>,</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(cxr, <span class="st">"infiltrate|consolidation"</span>)   <span class="sc">~</span> <span class="st">"Infiltrate/consolidation"</span>,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    cxr <span class="sc">==</span> <span class="st">"pleural effusion"</span>                     <span class="sc">~</span> <span class="st">"Pleural effusion"</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    cxr <span class="sc">==</span> <span class="st">"fibrosis"</span>                             <span class="sc">~</span> <span class="st">"Fibrosis"</span>,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(cxr, <span class="st">"other"</span>)                      <span class="sc">~</span> <span class="st">"Other abnormality"</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>(cxr_original, metadata_clean<span class="sc">$</span>cxr_finding)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 14 × 3
-   before                   after                        n
-   &lt;chr&gt;                    &lt;chr&gt;                    &lt;int&gt;
- 1 abnormal - other         Other abnormality            8
- 2 cavitary                 Cavitation                  30
- 3 cavitation               Cavitation                  25
- 4 cavity noted             Cavitation                  11
- 5 consolidation            Infiltrate/consolidation    33
- 6 fibrosis                 Fibrosis                     9
- 7 infiltrate               Infiltrate/consolidation    26
- 8 infiltrate/consolidation Infiltrate/consolidation    19
- 9 nad                      Normal                      69
-10 no abnormality           Normal                      50
-11 normal                   Normal                     182
-12 other                    Other abnormality           13
-13 other abnormality        Other abnormality           12
-14 pleural effusion         Pleural effusion            13</code></pre>
+<pre><code># A tibble: 6 × 3
+  before                                                                         after                        n
+  &lt;chr&gt;                                                                          &lt;chr&gt;                    &lt;int&gt;
+1 cavitary, Cavitary, cavitation, Cavitation, Cavity noted                       Cavitation                  66
+2 Fibrosis                                                                       Fibrosis                     9
+3 consolidation, Consolidation, infiltrate, Infiltrate, Infiltrate/Consolidation Infiltrate/consolidation    78
+4 NAD, No abnormality, normal, Normal, NORMAL                                    Normal                     301
+5 Abnormal - other, Other, Other abnormality                                     Other abnormality           33
+6 Pleural effusion                                                               Pleural effusion            13</code></pre>
 </div>
 </div>
-<p><code>NAD</code> is the clinical abbreviation for “no abnormality detected”. Every original value now has exactly one clean category, and none became <code>NA</code>.</p>
+<p><code>NAD</code> is the clinical abbreviation for “no abnormality detected”. Fourteen spellings now fall into six categories, and there’s no <code>NA</code> row.</p>
 </section>
 <section id="many-variants-use-a-lookup-table" class="level3">
 <h3 class="anchored" data-anchor-id="many-variants-use-a-lookup-table">Many variants: use a lookup table</h3>
 <p><code>referral_source</code> has 49 versions of the referring clinic’s name, including full names, abbreviations (<code>BV CHC</code>, <code>KDH</code>) and a misspelling (<code>Mitchells Plein</code>). A <code>case_when()</code> with 49 values would work, but a <strong>lookup table</strong> is easier to read and to update. First, let rules remove the differences that don’t matter, so there are fewer variants to look up:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>referral_key <span class="ot">&lt;-</span> metadata_clean<span class="sc">$</span>referral_source <span class="sc">|&gt;</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_to_lower</span>() <span class="sc">|&gt;</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_remove_all</span>(<span class="st">"'"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_remove</span>(<span class="st">" (chc|community health( centre)?|hosp(ital)?|district hospital|dhc)$"</span>)</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="fu">n_distinct</span>(referral_key)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>referral_key <span class="ot">&lt;-</span> metadata_clean<span class="sc">$</span>referral_source <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tolower</span>() <span class="sc">|&gt;</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_remove_all</span>(<span class="st">"'"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_remove</span>(<span class="st">" (chc|community health( centre)?|hosp(ital)?|district hospital|dhc)$"</span>)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="fu">n_distinct</span>(referral_key)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 20</code></pre>
 </div>
 </div>
 <p>Then write one row per remaining variant, and join:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>referral_lookup <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>referral_key,     <span class="sc">~</span>referral_site,</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"bellville"</span>,       <span class="st">"Bellville CHC"</span>,</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"bv"</span>,              <span class="st">"Bellville CHC"</span>,</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"claremont"</span>,       <span class="st">"Claremont CHC"</span>,</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"cchc"</span>,            <span class="st">"Claremont CHC"</span>,</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"delft"</span>,           <span class="st">"Delft CHC"</span>,</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"dchc"</span>,            <span class="st">"Delft CHC"</span>,</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"eerste river"</span>,    <span class="st">"Eerste River Hospital"</span>,</span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"erh"</span>,             <span class="st">"Eerste River Hospital"</span>,</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"elsies river"</span>,    <span class="st">"Elsies River CHC"</span>,</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"erchc"</span>,           <span class="st">"Elsies River CHC"</span>,</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"khayelitsha"</span>,     <span class="st">"Khayelitsha District Hospital"</span>,</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"kdh"</span>,             <span class="st">"Khayelitsha District Hospital"</span>,</span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"mitchells plain"</span>, <span class="st">"Mitchells Plain District Hospital"</span>,</span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"mitchells plein"</span>, <span class="st">"Mitchells Plain District Hospital"</span>,</span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"mp"</span>,              <span class="st">"Mitchells Plain District Hospital"</span>,</span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ottery"</span>,          <span class="st">"Ottery CHC"</span>,</span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"retreat"</span>,         <span class="st">"Retreat CHC"</span>,</span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"somerset"</span>,        <span class="st">"Somerset Hospital"</span>,</span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"woodstock"</span>,       <span class="st">"Woodstock CHC"</span>,</span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ws"</span>,              <span class="st">"Woodstock CHC"</span></span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">referral_key =</span> referral_key) <span class="sc">|&gt;</span></span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(referral_lookup, <span class="at">by =</span> <span class="st">"referral_key"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>referral_key, <span class="sc">-</span>referral_source)</span>
-<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span> <span class="fu">count</span>(referral_site)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>referral_lookup <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>referral_key,     <span class="sc">~</span>referral_site,</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"bellville"</span>,       <span class="st">"Bellville CHC"</span>,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"bv"</span>,              <span class="st">"Bellville CHC"</span>,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"claremont"</span>,       <span class="st">"Claremont CHC"</span>,</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"cchc"</span>,            <span class="st">"Claremont CHC"</span>,</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"delft"</span>,           <span class="st">"Delft CHC"</span>,</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"dchc"</span>,            <span class="st">"Delft CHC"</span>,</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"eerste river"</span>,    <span class="st">"Eerste River Hospital"</span>,</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"erh"</span>,             <span class="st">"Eerste River Hospital"</span>,</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"elsies river"</span>,    <span class="st">"Elsies River CHC"</span>,</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"erchc"</span>,           <span class="st">"Elsies River CHC"</span>,</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"khayelitsha"</span>,     <span class="st">"Khayelitsha District Hospital"</span>,</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"kdh"</span>,             <span class="st">"Khayelitsha District Hospital"</span>,</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"mitchells plain"</span>, <span class="st">"Mitchells Plain District Hospital"</span>,</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"mitchells plein"</span>, <span class="st">"Mitchells Plain District Hospital"</span>,</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"mp"</span>,              <span class="st">"Mitchells Plain District Hospital"</span>,</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ottery"</span>,          <span class="st">"Ottery CHC"</span>,</span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"retreat"</span>,         <span class="st">"Retreat CHC"</span>,</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"somerset"</span>,        <span class="st">"Somerset Hospital"</span>,</span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"woodstock"</span>,       <span class="st">"Woodstock CHC"</span>,</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"ws"</span>,              <span class="st">"Woodstock CHC"</span></span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">referral_key =</span> referral_key) <span class="sc">|&gt;</span></span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(referral_lookup, <span class="at">by =</span> <span class="st">"referral_key"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>referral_key, <span class="sc">-</span>referral_source)</span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span> <span class="fu">count</span>(referral_site)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 11 × 2
    referral_site                         n
@@ -874,68 +923,74 @@ Note
 </div>
 </section>
 </section>
-<section id="missing-doesnt-always-mean-the-same-thing" class="level2">
-<h2 class="anchored" data-anchor-id="missing-doesnt-always-mean-the-same-thing">5. Missing doesn’t always mean the same thing</h2>
-<p>Tutorial 1 treated <code>N/A</code> and <code>ND</code> as missing. For most columns that’s right, but look at the original values of the rifampicin-resistance result:</p>
+<section id="when-missing-is-really-a-category" class="level2">
+<h2 class="anchored" data-anchor-id="when-missing-is-really-a-category">5. When “missing” is really a category</h2>
+<p>Tutorial 1 treated <code>N/A</code> and <code>ND</code> as missing. For most columns that’s right, but not for the rifampicin-resistance result (<code>GeneXpert_RIF</code>). In the Excel file it holds <code>Sensitive</code>, <code>Resistant</code> and <code>Indeterminate</code>, plus three codes: <code>N/A</code>, <code>Not applicable</code> and <code>ND</code> (not done). They look like three different things. Read the original text again and check where they occur:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_excel</span>(metadata_path, <span class="at">sheet =</span> <span class="st">"MetaData"</span>, <span class="at">col_types =</span> <span class="st">"text"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(GeneXpert_RIF)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>rif_original <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(metadata_path, <span class="at">sheet =</span> <span class="st">"MetaData"</span>, <span class="at">col_types =</span> <span class="st">"text"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="at">pt_id =</span> <span class="fu">toupper</span>(Pt_ID), <span class="at">mtb_result =</span> <span class="fu">tolower</span>(GeneXpert_Res), <span class="at">rif =</span> GeneXpert_RIF) <span class="sc">|&gt;</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>rif_original <span class="sc">|&gt;</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(rif <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"N/A"</span>, <span class="st">"Not applicable"</span>, <span class="st">"ND"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(mtb_result)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 2
-  GeneXpert_RIF      n
-  &lt;chr&gt;          &lt;int&gt;
-1 Indeterminate     57
-2 N/A              100
-3 ND                92
-4 Not applicable    60
-5 Resistant         22
-6 Sensitive        171</code></pre>
+<pre><code># A tibble: 4 × 2
+  mtb_result           n
+  &lt;chr&gt;            &lt;int&gt;
+1 error               19
+2 indeterminate       10
+3 invalid             11
+4 mtb not detected   212</code></pre>
 </div>
 </div>
-<p><code>N/A</code> and <code>Not applicable</code> mean the test result doesn’t apply. <code>ND</code> means <strong>not done</strong>. Reading <code>N/A</code> and <code>ND</code> as <code>NA</code> erased that difference, and left <code>Not applicable</code> as a separate category.</p>
-<p>The underlying rule is simpler than any of these codes. GeneXpert reports rifampicin resistance only when it detects <em>M. tuberculosis</em>. So first clean the MTB result, then <strong>derive</strong> the RIF result from it:</p>
+<p>None of them occurs when TB was detected. GeneXpert only reports rifampicin resistance when it detects <em>M. tuberculosis</em>, so all three codes mean the same thing: <strong>there’s no resistance result because there was no TB to test</strong>. That’s a real answer, not missing data. But Tutorial 1’s missing-value codes turned <code>N/A</code> and <code>ND</code> into <code>NA</code> while <code>Not applicable</code> stayed as text, splitting one group into two.</p>
+<p>The fix is to <strong>derive</strong> the RIF result from the rule instead of relying on whichever code was typed: first clean the MTB result, then set the RIF result to “Not applicable” whenever MTB wasn’t detected.</p>
+<p>The MTB result also has three labels for a failed test: <code>Error</code>, <code>Invalid</code> and <code>Indeterminate</code>. None of them gives a usable result, and each group is small, so combine them into one “No result” category:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">gene_xpert_res =</span> <span class="fu">case_when</span>(</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_to_lower</span>(gene_xpert_res) <span class="sc">==</span> <span class="st">"mtb detected"</span>     <span class="sc">~</span> <span class="st">"MTB detected"</span>,</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_to_lower</span>(gene_xpert_res) <span class="sc">==</span> <span class="st">"mtb not detected"</span> <span class="sc">~</span> <span class="st">"MTB not detected"</span>,</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> gene_xpert_res   <span class="co"># keep Error, Invalid, Indeterminate as they are</span></span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">gene_xpert_rif =</span> <span class="fu">case_when</span>(</span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>      gene_xpert_res <span class="sc">==</span> <span class="st">"MTB detected"</span> <span class="sc">~</span> gene_xpert_rif,</span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>                             <span class="sc">~</span> <span class="st">"Not applicable"</span></span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span> <span class="fu">count</span>(gene_xpert_res, gene_xpert_rif)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>xpert_original <span class="ot">&lt;-</span> metadata_clean<span class="sc">$</span>gene_xpert_res</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>xpert_raw <span class="ot">&lt;-</span> <span class="fu">tolower</span>(xpert_original)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">gene_xpert_res =</span> <span class="fu">case_when</span>(</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>      xpert_raw <span class="sc">==</span> <span class="st">"mtb detected"</span>                           <span class="sc">~</span> <span class="st">"MTB detected"</span>,</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>      xpert_raw <span class="sc">==</span> <span class="st">"mtb not detected"</span>                       <span class="sc">~</span> <span class="st">"MTB not detected"</span>,</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>      xpert_raw <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"error"</span>, <span class="st">"invalid"</span>, <span class="st">"indeterminate"</span>) <span class="sc">~</span> <span class="st">"No result"</span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">gene_xpert_rif =</span> <span class="fu">case_when</span>(</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>      gene_xpert_res <span class="sc">==</span> <span class="st">"MTB detected"</span> <span class="sc">~</span> gene_xpert_rif,</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>                             <span class="sc">~</span> <span class="st">"Not applicable"</span></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>(xpert_original, metadata_clean<span class="sc">$</span>gene_xpert_res)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 7 × 3
-  gene_xpert_res   gene_xpert_rif     n
-  &lt;chr&gt;            &lt;chr&gt;          &lt;int&gt;
-1 Error            Not applicable    23
-2 Indeterminate    Not applicable    15
-3 Invalid          Not applicable    18
-4 MTB detected     Indeterminate     38
-5 MTB detected     Resistant         22
-6 MTB detected     Sensitive        104
-7 MTB not detected Not applicable   280</code></pre>
+<pre><code># A tibble: 3 × 3
+  before                                                 after                n
+  &lt;chr&gt;                                                  &lt;chr&gt;            &lt;int&gt;
+1 mtb detected, MTB detected, MTB Detected, MTB DETECTED MTB detected       164
+2 mtb not detected, MTB not detected, MTB Not Detected   MTB not detected   280
+3 Error, Indeterminate, Invalid                          No result           56</code></pre>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p>Now compare the original RIF codes with the derived result. Joining by <code>pt_id</code> lines each participant’s original code up with their clean value:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>rif_check <span class="ot">&lt;-</span> rif_original <span class="sc">|&gt;</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(metadata_clean, pt_id, gene_xpert_rif), <span class="at">by =</span> <span class="st">"pt_id"</span>)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="fu">compare</span>(rif_check<span class="sc">$</span>rif, rif_check<span class="sc">$</span>gene_xpert_rif)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  before                                            after              n
+  &lt;chr&gt;                                             &lt;chr&gt;          &lt;int&gt;
+1 Indeterminate                                     Indeterminate     38
+2 Indeterminate, N/A, ND, Not applicable, Sensitive Not applicable   336
+3 Resistant                                         Resistant         22
+4 Sensitive                                         Sensitive        104</code></pre>
 </div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span><code>TRUE ~</code> or <code>.default</code>
 </div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Since dplyr 1.1.0 you can write the catch-all as <code>.default = gene_xpert_res</code> instead of <code>TRUE ~ gene_xpert_res</code>. Both do the same thing; <code>TRUE ~</code> also works in older versions, and you’ll see it in most existing code.</p>
-</div>
-</div>
-<p>Every participant with MTB detected has a resistance result, and nobody else does. The rule also corrects 66 rows that recorded “Sensitive” for a sample where no TB was detected, which is impossible.</p>
+<p><code>N/A</code>, <code>ND</code> and <code>Not applicable</code> are now one “Not applicable” group. The “Not applicable” row also takes in some <code>Sensitive</code> and <code>Indeterminate</code> entries: 66 rows recorded “Sensitive” for a sample where no TB was detected, which is impossible, and the rule corrects them. Every participant with MTB detected keeps their resistance result.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -954,10 +1009,10 @@ Tip
 <h2 class="anchored" data-anchor-id="dates-in-mixed-formats">6. Dates in mixed formats</h2>
 <p><code>date_seen</code> was entered as text in several formats:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(date_seen, <span class="st">"^</span><span class="sc">\\</span><span class="st">d{2}/</span><span class="sc">\\</span><span class="st">d{2}/</span><span class="sc">\\</span><span class="st">d{4}$"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(date_seen) <span class="sc">|&gt;</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(date_seen, <span class="st">"^</span><span class="sc">\\</span><span class="st">d{2}/</span><span class="sc">\\</span><span class="st">d{2}/</span><span class="sc">\\</span><span class="st">d{4}$"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(date_seen) <span class="sc">|&gt;</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 8 × 1
   date_seen   
@@ -974,27 +1029,27 @@ Tip
 </div>
 <p><code>dmy()</code> from lubridate reads day-month-year dates whatever the separator, two-digit years and month names included. Use it, then look at what failed:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>date_seen <span class="ot">&lt;-</span> <span class="fu">dmy</span>(metadata_clean<span class="sc">$</span>date_seen, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>metadata_clean<span class="sc">$</span>date_seen[<span class="fu">is.na</span>(date_seen)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>date_seen <span class="ot">&lt;-</span> <span class="fu">dmy</span>(metadata_clean<span class="sc">$</span>date_seen, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>metadata_clean<span class="sc">$</span>date_seen[<span class="fu">is.na</span>(date_seen)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "08/20/2017" "12/26/2016" "06/26/2020" "07/28/2020" "10/17/2018"
-[6] "08/16/2018" "03/19/2016" "08/21/2020"</code></pre>
+<pre><code>[1] "08/20/2017" "12/26/2016" "06/26/2020" "07/28/2020" "10/17/2018" "08/16/2018" "03/19/2016"
+[8] "08/21/2020"</code></pre>
 </div>
 </div>
 <p>These 8 dates fail because they’re in American <strong>month/day/year</strong> order: there’s no 20th month. Read the failures with <code>mdy()</code>, and use <code>coalesce()</code> to fill each gap from the second attempt:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">date_seen      =</span> <span class="fu">coalesce</span>(<span class="fu">dmy</span>(date_seen, <span class="at">quiet =</span> <span class="cn">TRUE</span>), <span class="fu">mdy</span>(date_seen, <span class="at">quiet =</span> <span class="cn">TRUE</span>)),</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">art_start_date =</span> <span class="fu">coalesce</span>(<span class="fu">dmy</span>(art_start_date, <span class="at">quiet =</span> <span class="cn">TRUE</span>), <span class="fu">mdy</span>(art_start_date, <span class="at">quiet =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(metadata_clean<span class="sc">$</span>date_seen)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">date_seen      =</span> <span class="fu">coalesce</span>(<span class="fu">dmy</span>(date_seen, <span class="at">quiet =</span> <span class="cn">TRUE</span>), <span class="fu">mdy</span>(date_seen, <span class="at">quiet =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">art_start_date =</span> <span class="fu">coalesce</span>(<span class="fu">dmy</span>(art_start_date, <span class="at">quiet =</span> <span class="cn">TRUE</span>), <span class="fu">mdy</span>(art_start_date, <span class="at">quiet =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(metadata_clean<span class="sc">$</span>date_seen)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "2016-01-04" "2020-12-08"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(metadata_clean<span class="sc">$</span>date_seen))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(metadata_clean<span class="sc">$</span>date_seen))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>
@@ -1018,35 +1073,27 @@ Tip
 <h2 class="anchored" data-anchor-id="impossible-measurements">7. Impossible measurements</h2>
 <p><code>summary()</code> quickly shows values that can’t be right:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(age, height_1_cm, height_2_cm, weight_1_kg, weight_2_kg) <span class="sc">|&gt;</span></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(age, height_1_cm, height_2_cm, weight_1_kg, weight_2_kg) <span class="sc">|&gt;</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>      age         height_1_cm      height_2_cm     weight_1_kg    
- Min.   :11.00   Min.   :-170.1   Min.   :125.4   Min.   :-72.50  
- 1st Qu.:23.00   1st Qu.: 157.9   1st Qu.:158.3   1st Qu.: 57.80  
- Median :34.00   Median : 166.0   Median :165.8   Median : 68.05  
- Mean   :34.75   Mean   : 172.7   Mean   :172.2   Mean   : 83.63  
- 3rd Qu.:47.00   3rd Qu.: 173.9   3rd Qu.:173.6   3rd Qu.: 79.08  
- Max.   :59.00   Max.   :1863.0   Max.   :999.0   Max.   :999.00  
-                 NAs    :17       NAs    :14      NAs    :18      
-  weight_2_kg    
- Min.   : 29.40  
- 1st Qu.: 58.10  
- Median : 67.75  
- Mean   : 71.82  
- 3rd Qu.: 78.28  
- Max.   :999.00  
- NAs    :22      </code></pre>
+<pre><code>      age         height_1_cm      height_2_cm     weight_1_kg      weight_2_kg    
+ Min.   :11.00   Min.   :-170.1   Min.   :125.4   Min.   :-72.50   Min.   : 29.40  
+ 1st Qu.:23.00   1st Qu.: 157.9   1st Qu.:158.3   1st Qu.: 57.80   1st Qu.: 58.10  
+ Median :34.00   Median : 166.0   Median :165.8   Median : 68.05   Median : 67.75  
+ Mean   :34.75   Mean   : 172.7   Mean   :172.2   Mean   : 83.63   Mean   : 71.82  
+ 3rd Qu.:47.00   3rd Qu.: 173.9   3rd Qu.:173.6   3rd Qu.: 79.08   3rd Qu.: 78.28  
+ Max.   :59.00   Max.   :1863.0   Max.   :999.0   Max.   :999.00   Max.   :999.00  
+                 NAs    :17       NAs    :14      NAs    :18       NAs    :22      </code></pre>
 </div>
 </div>
 <p>Heights of −170 cm and 1,863 cm, and weights of 999 kg. Each participant was measured twice, so plotting the two measurements against each other shows the problems clearly. Good pairs fall on the diagonal:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(metadata_clean, <span class="fu">aes</span>(weight_1_kg, weight_2_kg)) <span class="sc">+</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">colour =</span> <span class="st">"grey60"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight, first measurement (kg)"</span>, <span class="at">y =</span> <span class="st">"Weight, second measurement (kg)"</span>) <span class="sc">+</span></span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(metadata_clean, <span class="fu">aes</span>(weight_1_kg, weight_2_kg)) <span class="sc">+</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">colour =</span> <span class="st">"grey60"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Weight, first measurement (kg)"</span>, <span class="at">y =</span> <span class="st">"Weight, second measurement (kg)"</span>) <span class="sc">+</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-weights" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1066,30 +1113,30 @@ Figure&nbsp;1: First and second weight measurements. Values far from the diagona
 <li>Use the mean of the remaining measurements. If one is missing, use the other.</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep values inside the range; anything else becomes NA</span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>plausible <span class="ot">&lt;-</span> <span class="cf">function</span>(x, lower, upper) {</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">case_when</span>(</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">between</span>(x, lower, upper) <span class="sc">~</span> x,</span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span>                     <span class="sc">~</span> <span class="cn">NA</span></span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a><span class="co"># The mean of two values; if one is missing, the other one</span></span>
-<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>mean_of_two <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) (<span class="fu">coalesce</span>(a, b) <span class="sc">+</span> <span class="fu">coalesce</span>(b, a)) <span class="sc">/</span> <span class="dv">2</span></span>
-<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"height"</span>), \(x) <span class="fu">plausible</span>(x, <span class="dv">100</span>, <span class="dv">220</span>)),</span>
-<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"weight"</span>), \(x) <span class="fu">plausible</span>(x, <span class="dv">25</span>, <span class="dv">250</span>)),</span>
-<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">height_cm =</span> <span class="fu">mean_of_two</span>(height_1_cm, height_2_cm),</span>
-<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">weight_kg =</span> <span class="fu">mean_of_two</span>(weight_1_kg, weight_2_kg),</span>
-<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">bmi       =</span> weight_kg <span class="sc">/</span> (height_cm <span class="sc">/</span> <span class="dv">100</span>)<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">matches</span>(<span class="st">"_[12]_(cm|kg)$"</span>))</span>
-<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(height_cm, weight_kg, bmi) <span class="sc">|&gt;</span></span>
-<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep values inside the range; anything else becomes NA</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>plausible <span class="ot">&lt;-</span> <span class="cf">function</span>(x, lower, upper) {</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">case_when</span>(</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">between</span>(x, lower, upper) <span class="sc">~</span> x,</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span>                     <span class="sc">~</span> <span class="cn">NA</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a><span class="co"># The mean of two values; if one is missing, the other one</span></span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>mean_of_two <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) (<span class="fu">coalesce</span>(a, b) <span class="sc">+</span> <span class="fu">coalesce</span>(b, a)) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"height"</span>), \(x) <span class="fu">plausible</span>(x, <span class="dv">100</span>, <span class="dv">220</span>)),</span>
+<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"weight"</span>), \(x) <span class="fu">plausible</span>(x, <span class="dv">25</span>, <span class="dv">250</span>)),</span>
+<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">height_cm =</span> <span class="fu">mean_of_two</span>(height_1_cm, height_2_cm),</span>
+<span id="cb55-17"><a href="#cb55-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">weight_kg =</span> <span class="fu">mean_of_two</span>(weight_1_kg, weight_2_kg),</span>
+<span id="cb55-18"><a href="#cb55-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">bmi       =</span> weight_kg <span class="sc">/</span> (height_cm <span class="sc">/</span> <span class="dv">100</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb55-19"><a href="#cb55-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb55-20"><a href="#cb55-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">matches</span>(<span class="st">"_[12]_(cm|kg)$"</span>))</span>
+<span id="cb55-21"><a href="#cb55-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-22"><a href="#cb55-22" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb55-23"><a href="#cb55-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(height_cm, weight_kg, bmi) <span class="sc">|&gt;</span></span>
+<span id="cb55-24"><a href="#cb55-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   height_cm       weight_kg           bmi        
  Min.   :125.9   Min.   : 29.40   Min.   : 9.675  
@@ -1104,10 +1151,10 @@ Figure&nbsp;1: First and second weight measurements. Values far from the diagona
 <p>Heights and weights are now in a believable range. Three participants have no valid height or weight at all, and stay <code>NA</code>.</p>
 <p>Now check the variable you <strong>derived</strong>. The lowest BMI is below 10, which is barely compatible with life:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bmi <span class="sc">&lt;</span> <span class="dv">13</span>) <span class="sc">|&gt;</span></span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pt_id, age, height_cm, weight_kg, bmi) <span class="sc">|&gt;</span></span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(bmi)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(bmi <span class="sc">&lt;</span> <span class="dv">13</span>) <span class="sc">|&gt;</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pt_id, age, height_cm, weight_kg, bmi) <span class="sc">|&gt;</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(bmi)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 5
   pt_id     age height_cm weight_kg   bmi
@@ -1135,12 +1182,11 @@ Tip
 </div>
 </div>
 </section>
-<section id="do-the-columns-agree-with-each-other" class="level2">
-<h2 class="anchored" data-anchor-id="do-the-columns-agree-with-each-other">8. Do the columns agree with each other?</h2>
-<p>Some problems only appear when you compare columns.</p>
-<p><strong>Duplicate columns.</strong> <code>study_group</code> looks like <code>tb_diagnosis</code>:</p>
+<section id="duplicate-columns-and-rows-to-review" class="level2">
+<h2 class="anchored" data-anchor-id="duplicate-columns-and-rows-to-review">8. Duplicate columns and rows to review</h2>
+<p>Some problems only appear when you compare columns. <code>study_group</code> looks like <code>tb_diagnosis</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span> <span class="fu">count</span>(study_group <span class="sc">==</span> tb_diagnosis)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span> <span class="fu">count</span>(study_group <span class="sc">==</span> tb_diagnosis)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 2
   `study_group == tb_diagnosis`     n
@@ -1149,110 +1195,74 @@ Tip
 </div>
 </div>
 <p>They’re identical on every row, so drop <code>study_group</code>; keeping two copies invites them to drift apart later.</p>
-<p><strong>HIV results.</strong> CD4 count, viral load and antiretroviral therapy (ART) only apply to people living with HIV:</p>
+<p>The very low BMIs from section 7 could be real or a recording error, and the data alone can’t tell you which. <strong>Don’t guess: flag the rows</strong> and send the list to the study team:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(hiv_status, <span class="at">has_cd4 =</span> <span class="sc">!</span><span class="fu">is.na</span>(cd4_count), <span class="at">on_art =</span> art)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>study_group) <span class="sc">|&gt;</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">review_bmi =</span> <span class="sc">!</span><span class="fu">is.na</span>(bmi) <span class="sc">&amp;</span> bmi <span class="sc">&lt;</span> <span class="dv">13</span>)</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span> <span class="fu">count</span>(review_bmi)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 4
-  hiv_status has_cd4 on_art     n
-  &lt;chr&gt;      &lt;lgl&gt;   &lt;chr&gt;  &lt;int&gt;
-1 Negative   FALSE   &lt;NA&gt;     281
-2 Negative   TRUE    No         8
-3 Negative   TRUE    Yes        8
-4 Positive   FALSE   &lt;NA&gt;      17
-5 Positive   TRUE    No        96
-6 Positive   TRUE    Yes       90</code></pre>
+<pre><code># A tibble: 2 × 2
+  review_bmi     n
+  &lt;lgl&gt;      &lt;int&gt;
+1 FALSE        494
+2 TRUE           6</code></pre>
 </div>
 </div>
-<p>Sixteen participants recorded as HIV-negative have a CD4 count, and some of them are recorded as on ART. Either the HIV status or the HIV results are wrong, and the data alone can’t tell you which. <strong>Don’t guess: flag the rows</strong> and send the list to the study team:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>study_group) <span class="sc">|&gt;</span></span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">review_hiv =</span> hiv_status <span class="sc">==</span> <span class="st">"Negative"</span> <span class="sc">&amp;</span> (<span class="sc">!</span><span class="fu">is.na</span>(cd4_count) <span class="sc">|</span> <span class="sc">!</span><span class="fu">is.na</span>(art)),</span>
-<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">review_bmi =</span> <span class="sc">!</span><span class="fu">is.na</span>(bmi) <span class="sc">&amp;</span> bmi <span class="sc">&lt;</span> <span class="dv">13</span></span>
-<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(review_hiv) <span class="sc">|&gt;</span></span>
-<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(pt_id, hiv_status, cd4_count, viral_load_cp_ml, art)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 16 × 5
-   pt_id   hiv_status cd4_count viral_load_cp_ml art  
-   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;            &lt;dbl&gt; &lt;chr&gt;
- 1 SP21645 Negative         639              691 Yes  
- 2 SP28582 Negative         313             2955 Yes  
- 3 SP23983 Negative         646              460 No   
- 4 SP20445 Negative         227               47 No   
- 5 SP38844 Negative         255             2281 No   
- 6 SP32155 Negative         558           535103 Yes  
- 7 SP26261 Negative         458               62 No   
- 8 SP09082 Negative         218             1454 No   
- 9 SP31556 Negative         196            19068 Yes  
-10 SP24166 Negative         246            33582 No   
-11 SP36687 Negative         159               34 Yes  
-12 SP02450 Negative         385              117 Yes  
-13 SP16903 Negative         390             9607 Yes  
-14 SP25237 Negative         605             1059 Yes  
-15 SP21229 Negative         305            15781 No   
-16 SP23493 Negative         530              857 No   </code></pre>
-</div>
-</div>
-<p>The <code>review_bmi</code> flag from section 7 marks the very low BMIs in the same way. Analyses can then include or exclude these rows deliberately, and you can update them when the answers come back.</p>
+<p>Analyses can then include or exclude these rows deliberately, and you can update them when the answers come back.</p>
 </section>
 <section id="finish-and-save" class="level2">
 <h2 class="anchored" data-anchor-id="finish-and-save">9. Finish and save</h2>
 <p>Set the order of the main grouping variables. Without this, R sorts categories alphabetically (“Active TB” before “Control”), and every table and plot comes out in an awkward order:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">tb_diagnosis =</span> <span class="fu">factor</span>(tb_diagnosis, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Control"</span>, <span class="st">"LTBI"</span>, <span class="st">"Active TB"</span>, <span class="st">"Indeterminate"</span>)),</span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">hiv_status   =</span> <span class="fu">factor</span>(hiv_status, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Negative"</span>, <span class="st">"Positive"</span>)),</span>
-<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex          =</span> <span class="fu">factor</span>(sex)</span>
-<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(pt_id, date_seen, sex, age, height_cm, weight_kg, bmi, tb_diagnosis, hiv_status)</span>
-<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(metadata_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="ot">&lt;-</span> metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">tb_diagnosis =</span> <span class="fu">factor</span>(tb_diagnosis, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Control"</span>, <span class="st">"LTBI"</span>, <span class="st">"Active TB"</span>, <span class="st">"Indeterminate"</span>)),</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">hiv_status   =</span> <span class="fu">factor</span>(hiv_status, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Negative"</span>, <span class="st">"Positive"</span>)),</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex          =</span> <span class="fu">factor</span>(sex)</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(pt_id, date_seen, sex, age, height_cm, weight_kg, bmi, tb_diagnosis, hiv_status)</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(metadata_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 500
-Columns: 29
-$ pt_id            &lt;chr&gt; "SP34696", "SP22845", "SP31186", "SP39161", "SP06180"…
-$ date_seen        &lt;date&gt; 2019-08-01, 2017-07-25, 2020-06-21, 2018-09-28, 2020…
-$ sex              &lt;fct&gt; Female, Female, Male, Female, Female, Male, Female, F…
-$ age              &lt;dbl&gt; 53, 30, 15, 50, 30, 35, 54, 38, 20, 43, 44, 27, 24, 4…
-$ height_cm        &lt;dbl&gt; 181.60, 160.15, 143.90, 165.75, 174.15, 171.95, 168.3…
-$ weight_kg        &lt;dbl&gt; 54.90, 50.75, 57.65, 59.10, 80.20, 71.85, 39.30, 56.0…
-$ bmi              &lt;dbl&gt; 16.64718, 19.78710, 27.84054, 21.51198, 26.44402, 24.…
-$ tb_diagnosis     &lt;fct&gt; LTBI, Control, LTBI, Control, LTBI, Control, Active T…
-$ hiv_status       &lt;fct&gt; Negative, Positive, Negative, Positive, Positive, Pos…
-$ smoking_status   &lt;fct&gt; Never, Former, Former, Former, Never, Current, Curren…
-$ drug_use         &lt;chr&gt; "Yes", "No", "Yes", "No", "Yes", "Yes", "No", "No", "…
-$ drug_type        &lt;chr&gt; "Crystal meth", NA, "Cannabis", NA, "Mandrax", "Multi…
-$ vaping           &lt;chr&gt; "No", "Yes", "No", "No", "No", "Yes", "No", "Yes", "Y…
-$ vaping_type      &lt;chr&gt; NA, "Pod", NA, NA, NA, "juul", NA, "Juul", "e-cigaret…
-$ gene_xpert_res   &lt;chr&gt; "MTB not detected", "MTB not detected", "MTB not dete…
-$ gene_xpert_rif   &lt;chr&gt; "Not applicable", "Not applicable", "Not applicable",…
-$ smear_grade      &lt;ord&gt; Negative, Negative, Negative, Negative, Negative, Neg…
-$ cxr_finding      &lt;chr&gt; "Normal", "Normal", "Normal", "Normal", "Normal", "No…
-$ igra_result      &lt;chr&gt; "POSITIVE", "Negative", "Pos", "Negative", "Positive"…
-$ igra_value_iu_ml &lt;dbl&gt; 9.13, 0.01, 9.93, 0.16, 5.00, 0.09, 0.16, 2.84, NA, 4…
-$ cd4_count        &lt;dbl&gt; NA, 354, NA, 562, 529, 459, NA, 406, 364, 169, NA, 20…
-$ viral_load_cp_ml &lt;dbl&gt; NA, 1346, NA, 4213, 171, 383061, NA, 90239, 24018, 87…
-$ art              &lt;chr&gt; NA, "No", NA, "No", "No", "No", NA, "Yes", "No", "No"…
-$ art_regimen      &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, "TDF/3TC/DTG", NA, NA, NA…
-$ art_start_date   &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, 2014-08-07, NA, NA, NA, …
-$ ethnicity        &lt;chr&gt; "White", "mixed race", "WHITE", "White", "BLACK AFRIC…
-$ referral_site    &lt;chr&gt; "Elsies River CHC", "Eerste River Hospital", "Retreat…
-$ review_hiv       &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALS…
-$ review_bmi       &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALS…</code></pre>
+Columns: 28
+$ pt_id            &lt;chr&gt; "SP34696", "SP22845", "SP31186", "SP39161", "SP06180", "SP34673", "SP0363…
+$ date_seen        &lt;date&gt; 2019-08-01, 2017-07-25, 2020-06-21, 2018-09-28, 2020-09-09, 2020-08-17, …
+$ sex              &lt;fct&gt; Female, Female, Male, Female, Female, Male, Female, Female, Male, Female,…
+$ age              &lt;dbl&gt; 53, 30, 15, 50, 30, 35, 54, 38, 20, 43, 44, 27, 24, 40, 49, 21, 44, 28, 5…
+$ height_cm        &lt;dbl&gt; 181.60, 160.15, 143.90, 165.75, 174.15, 171.95, 168.30, 156.25, 173.90, 1…
+$ weight_kg        &lt;dbl&gt; 54.90, 50.75, 57.65, 59.10, 80.20, 71.85, 39.30, 56.00, 57.60, 80.45, 80.…
+$ bmi              &lt;dbl&gt; 16.64718, 19.78710, 27.84054, 21.51198, 26.44402, 24.30090, 13.87472, 22.…
+$ tb_diagnosis     &lt;fct&gt; LTBI, Control, LTBI, Control, LTBI, Control, Active TB, LTBI, Control, Ac…
+$ hiv_status       &lt;fct&gt; Negative, Positive, Negative, Positive, Positive, Positive, Negative, Pos…
+$ smoking_status   &lt;fct&gt; Never, Former, Former, Former, Never, Current, Current, Never, Never, For…
+$ drug_use         &lt;chr&gt; "Yes", "No", "Yes", "No", "Yes", "Yes", "No", "No", "No", "Yes", "No", "N…
+$ drug_type        &lt;chr&gt; "Crystal meth", NA, "Cannabis", NA, "Mandrax", "Multiple", NA, NA, NA, "C…
+$ vaping           &lt;chr&gt; "No", "Yes", "No", "No", "No", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "…
+$ vaping_type      &lt;chr&gt; NA, "Pod", NA, NA, NA, "juul", NA, "Juul", "e-cigarette", "vape pen", "Po…
+$ gene_xpert_res   &lt;chr&gt; "MTB not detected", "MTB not detected", "MTB not detected", "MTB not dete…
+$ gene_xpert_rif   &lt;chr&gt; "Not applicable", "Not applicable", "Not applicable", "Not applicable", "…
+$ smear_grade      &lt;ord&gt; Negative, Negative, Negative, Negative, Negative, Negative, 3+, Negative,…
+$ cxr_finding      &lt;chr&gt; "Normal", "Normal", "Normal", "Normal", "Normal", "Normal", "Normal", "No…
+$ igra_result      &lt;chr&gt; "Positive", "Negative", "Positive", "Negative", "Positive", "Negative", "…
+$ igra_value_iu_ml &lt;dbl&gt; 9.13, 0.01, 9.93, 0.16, 5.00, 0.09, 0.16, 2.84, NA, 4.48, 1.36, 10.96, 0.…
+$ cd4_count        &lt;dbl&gt; NA, 354, NA, 562, 529, 459, NA, 406, 364, 169, NA, 206, 115, NA, NA, NA, …
+$ viral_load_cp_ml &lt;dbl&gt; NA, 1346, NA, 4213, 171, 383061, NA, 90239, 24018, 87794, NA, 59014, 3110…
+$ art              &lt;chr&gt; NA, "No", NA, "No", "No", "No", NA, "Yes", "No", "No", NA, "Yes", "No", N…
+$ art_regimen      &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, "TDF/3TC/DTG", NA, NA, NA, "Tenofovir/Lamivud…
+$ art_start_date   &lt;date&gt; NA, NA, NA, NA, NA, NA, NA, 2014-08-07, NA, NA, NA, NA, NA, NA, NA, NA, …
+$ ethnicity        &lt;chr&gt; "White", "Coloured", "White", "White", "Black African", "Coloured", "Blac…
+$ referral_site    &lt;chr&gt; "Elsies River CHC", "Eerste River Hospital", "Retreat CHC", "Ottery CHC",…
+$ review_bmi       &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FAL…</code></pre>
 </div>
 </div>
 <p>A final check, the same audit as section 2:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span></span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">where</span>(\(x) <span class="fu">is.character</span>(x) <span class="sc">|</span> <span class="fu">is.factor</span>(x)), n_distinct)) <span class="sc">|&gt;</span></span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"column"</span>, <span class="at">values_to =</span> <span class="st">"distinct_values"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>metadata_clean <span class="sc">|&gt;</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">where</span>(\(x) <span class="fu">is.character</span>(x) <span class="sc">|</span> <span class="fu">is.factor</span>(x)), \(x) <span class="fu">n_distinct</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"column"</span>, <span class="at">values_to =</span> <span class="st">"distinct_values"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 18 × 2
    column         distinct_values
@@ -1263,24 +1273,25 @@ $ review_bmi       &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, 
  4 hiv_status                   2
  5 smoking_status               3
  6 drug_use                     2
- 7 drug_type                    6
+ 7 drug_type                    5
  8 vaping                       2
- 9 vaping_type                  9
-10 gene_xpert_res               5
+ 9 vaping_type                  8
+10 gene_xpert_res               3
 11 gene_xpert_rif               4
 12 smear_grade                  5
 13 cxr_finding                  6
-14 igra_result                 11
-15 art                          3
-16 art_regimen                 11
-17 ethnicity                   13
+14 igra_result                  3
+15 art                          2
+16 art_regimen                 10
+17 ethnicity                    4
 18 referral_site               11</code></pre>
 </div>
 </div>
+<p>Every category now has the number of values it should, apart from <code>vaping_type</code> and <code>art_regimen</code>: those two are left for you in <a href="#try-it-yourself">Try it yourself</a>.</p>
 <p>Save the result. <code>write_rds()</code> keeps factor levels and dates exactly as they are; a CSV file loses them, so use it only for sharing with other software:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(metadata_clean, <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"bal_metadata_clean.rds"</span>))</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(metadata_clean, <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"bal_metadata_clean.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(metadata_clean, <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"bal_metadata_clean.rds"</span>))</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(metadata_clean, <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"bal_metadata_clean.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="the-decision-log" class="level3">
 <h3 class="anchored" data-anchor-id="the-decision-log">The decision log</h3>
@@ -1325,34 +1336,44 @@ $ review_bmi       &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, 
 <td>all</td>
 </tr>
 <tr class="even">
-<td><code>gene_xpert_rif</code></td>
-<td>Derived from the MTB result: “Not applicable” unless MTB detected</td>
-<td>500</td>
+<td><code>igra_result</code></td>
+<td>Borderline combined with Indeterminate</td>
+<td>14</td>
 </tr>
 <tr class="odd">
+<td><code>ethnicity</code></td>
+<td>“Mixed” and “mixed race” combined with Coloured</td>
+<td>66</td>
+</tr>
+<tr class="even">
+<td><code>gene_xpert_res</code></td>
+<td>Error, Invalid and Indeterminate combined as “No result”</td>
+<td>56</td>
+</tr>
+<tr class="odd">
+<td><code>gene_xpert_rif</code></td>
+<td>Derived from the MTB result: N/A, ND and Not applicable become one “Not applicable” group whenever MTB wasn’t detected</td>
+<td>500</td>
+</tr>
+<tr class="even">
 <td><code>date_seen</code></td>
 <td>Read 8 month-first dates with <code>mdy()</code></td>
 <td>8</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Height, weight</td>
 <td>Values outside 100–220 cm and 25–250 kg set to <code>NA</code>; mean of two measurements</td>
 <td>41</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>bmi</code></td>
 <td>BMI below 13 flagged in <code>review_bmi</code>, not changed</td>
 <td>6</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>study_group</code></td>
 <td>Dropped (identical to <code>tb_diagnosis</code>)</td>
 <td>—</td>
-</tr>
-<tr class="odd">
-<td>HIV results</td>
-<td>HIV-negative participants with HIV results flagged in <code>review_hiv</code>, not changed</td>
-<td>16</td>
 </tr>
 </tbody>
 </table>
@@ -1362,7 +1383,7 @@ $ review_bmi       &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, 
 <h2 class="anchored" data-anchor-id="try-it-yourself">Try it yourself</h2>
 <p>Two columns are left for you, using the same patterns:</p>
 <ol type="1">
-<li><strong><code>art_regimen</code></strong> has 11 spellings of what are really two regimens: TLD (tenofovir, lamivudine and dolutegravir) and efavirenz-based ones such as TEE. Use <code>str_to_lower()</code> and <code>case_when()</code> to reduce it to <code>TLD</code> and <code>Efavirenz-based</code>.</li>
+<li><strong><code>art_regimen</code></strong> has 10 spellings of what are really two regimens: TLD (tenofovir, lamivudine and dolutegravir) and efavirenz-based ones such as TEE. Use <code>tolower()</code> and <code>case_when()</code> to reduce it to <code>TLD</code> and <code>Efavirenz-based</code>.</li>
 <li><strong><code>vaping_type</code></strong> mixes capitals (<code>pod</code>, <code>Pod</code>). Clean the case. Then decide whether <code>Juul</code>, a brand of pod device, should be its own category or grouped with <code>Pod</code>, and add the decision to your log.</li>
 </ol>
 </section>
@@ -1398,24 +1419,34 @@ $ review_bmi       &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, 
 <td>Match exact values first, keywords second</td>
 </tr>
 <tr class="even">
-<td>Different kinds of missing</td>
-<td>“Not done” and “not applicable” merged</td>
-<td>Check the original codes; derive values from the rule where you can</td>
+<td>Missing codes that are really an answer</td>
+<td>One group split into <code>NA</code> and “Not applicable”</td>
+<td>Check where the codes occur; derive values from the rule where you can</td>
 </tr>
 <tr class="odd">
+<td>Capitals</td>
+<td>“Female”, “FEMALE” and “female” listed separately</td>
+<td><code>tolower()</code> before matching</td>
+</tr>
+<tr class="even">
 <td>Mixed date formats</td>
 <td><code>dmy()</code> returns <code>NA</code> for some dates</td>
 <td>Check the failures; <code>coalesce()</code> a second format</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Guessing at errors</td>
 <td><code>814</code> “fixed” to <code>81.4</code></td>
 <td>Use a repeat measurement, or set to <code>NA</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Silent fixes to conflicting data</td>
 <td>Nobody knows a value was changed</td>
 <td>Flag rows for review instead</td>
+</tr>
+<tr class="odd">
+<td>Vector named like a column</td>
+<td><code>mutate(sex = sex)</code> silently keeps the old column</td>
+<td>Give cleaned vectors their own names (<code>sex_clean</code>)</td>
 </tr>
 <tr class="even">
 <td>Alphabetical categories</td>

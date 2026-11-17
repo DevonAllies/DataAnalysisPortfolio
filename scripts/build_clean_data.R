@@ -32,7 +32,7 @@ missing_codes <- c("", "N/A", "ND", ".", "-", "not done")
 # Helpers --------------------------------------------------------------------
 
 clean_yes_no <- function(x) {
-  x <- str_to_lower(x)
+  x <- tolower(x)
   case_when(
     x %in% c("y", "yes") ~ "Yes",
     x %in% c("n", "no")  ~ "No"
@@ -40,7 +40,7 @@ clean_yes_no <- function(x) {
 }
 
 clean_pos_neg <- function(x) {
-  x <- str_to_lower(x)
+  x <- tolower(x)
   case_when(
     x %in% c("pos", "positive") ~ "Positive",
     x %in% c("neg", "negative") ~ "Negative"
@@ -79,7 +79,7 @@ raw <- read_excel(file.path(data_dir, "bal_metadata.xlsx"), sheet = "MetaData",
 metadata <- raw |>
   type_convert(na = missing_codes, col_types = cols()) |>
   clean_names() |>
-  mutate(pt_id = str_to_upper(str_trim(pt_id))) |>
+  mutate(pt_id = toupper(str_trim(pt_id))) |>
   distinct()
 
 stopifnot(nrow(metadata) == n_distinct(metadata$pt_id))
@@ -113,8 +113,8 @@ m <- metadata
 m <- m |>
   mutate(
     sex        = check_no_new_na(sex, case_when(
-                   str_to_lower(sex) %in% c("f", "female") ~ "Female",
-                   str_to_lower(sex) %in% c("m", "male")   ~ "Male"), "sex"),
+                   tolower(sex) %in% c("f", "female") ~ "Female",
+                   tolower(sex) %in% c("m", "male")   ~ "Male"), "sex"),
     hiv_status = check_no_new_na(hiv_status, clean_pos_neg(hiv_status), "hiv_status"),
     drug_use   = check_no_new_na(drug_use, clean_yes_no(drug_use), "drug_use"),
     vaping     = check_no_new_na(vaping, clean_yes_no(vaping), "vaping"),
@@ -122,7 +122,7 @@ m <- m |>
   )
 
 # Smoking: "no" is treated as Never (decision, as in Tutorial 3)
-smoking_raw <- str_to_lower(m$smoking_status)
+smoking_raw <- tolower(m$smoking_status)
 m$smoking_status <- check_no_new_na(m$smoking_status, case_when(
   smoking_raw == "yes"                            ~ "Current",
   smoking_raw %in% c("ex", "ex-smoker", "former") ~ "Former",
@@ -130,14 +130,14 @@ m$smoking_status <- check_no_new_na(m$smoking_status, case_when(
 ), "smoking_status")
 
 # Drug type: "tik" is South African slang for crystal meth
-drug_raw <- str_to_lower(m$drug_type)
+drug_raw <- tolower(m$drug_type)
 m$drug_type <- case_when(
   drug_raw == "tik" ~ "Crystal meth",
   TRUE              ~ str_to_sentence(drug_raw)
 )
 
 # Vaping type: Juul is a brand of pod device, so it's grouped with Pod
-vape_raw <- str_to_lower(m$vaping_type)
+vape_raw <- tolower(m$vaping_type)
 m$vaping_type <- check_no_new_na(m$vaping_type, case_when(
   vape_raw %in% c("pod", "juul") ~ "Pod",
   vape_raw == "e-cigarette"      ~ "E-cigarette",
@@ -145,7 +145,7 @@ m$vaping_type <- check_no_new_na(m$vaping_type, case_when(
 ), "vaping_type")
 
 # Smear grade: ordered categories
-smear_raw <- str_remove_all(str_to_lower(m$smear_grade), "\\s")
+smear_raw <- str_remove_all(tolower(m$smear_grade), "\\s")
 m$smear_grade <- check_no_new_na(m$smear_grade, case_when(
   smear_raw %in% c("0", "neg", "negative")  ~ "Negative",
   smear_raw %in% c("scant", "scanty")       ~ "Scanty",
@@ -155,7 +155,7 @@ m$smear_grade <- check_no_new_na(m$smear_grade, case_when(
 ), "smear_grade")
 
 # Chest X-ray: exact match for normal ("abnormal - other" contains "normal")
-cxr <- str_to_lower(m$cxr_finding)
+cxr <- tolower(m$cxr_finding)
 m$cxr_finding <- check_no_new_na(m$cxr_finding, case_when(
   cxr %in% c("normal", "nad", "no abnormality") ~ "Normal",
   str_detect(cxr, "cavit")                      ~ "Cavitation",
@@ -165,23 +165,26 @@ m$cxr_finding <- check_no_new_na(m$cxr_finding, case_when(
   str_detect(cxr, "other")                      ~ "Other abnormality"
 ), "cxr_finding")
 
-# IGRA result
-igra_raw <- str_to_lower(m$igra_result)
+# IGRA result: borderline can't be called either way, so it joins Indeterminate
+igra_raw <- tolower(m$igra_result)
 m$igra_result <- check_no_new_na(m$igra_result, case_when(
-  igra_raw %in% c("pos", "positive") ~ "Positive",
-  igra_raw %in% c("neg", "negative") ~ "Negative",
-  igra_raw == "indeterminate"        ~ "Indeterminate",
-  igra_raw == "borderline"           ~ "Borderline"
+  igra_raw %in% c("pos", "positive")             ~ "Positive",
+  igra_raw %in% c("neg", "negative")             ~ "Negative",
+  igra_raw %in% c("indeterminate", "borderline") ~ "Indeterminate"
 ), "igra_result")
 
-# GeneXpert: RIF result only applies when MTB is detected, so derive it
+# GeneXpert: Error, Invalid and Indeterminate are all failed tests, so they
+# become one "No result" group. RIF only applies when MTB is detected, so
+# derive it: N/A, ND and Not applicable (only ever entered when MTB wasn't
+# detected) all become "Not applicable".
+xpert_raw <- tolower(m$gene_xpert_res)
 m <- m |>
   mutate(
-    gene_xpert_res = case_when(
-      str_to_lower(gene_xpert_res) == "mtb detected"     ~ "MTB detected",
-      str_to_lower(gene_xpert_res) == "mtb not detected" ~ "MTB not detected",
-      TRUE                                               ~ gene_xpert_res
-    ),
+    gene_xpert_res = check_no_new_na(gene_xpert_res, case_when(
+      xpert_raw == "mtb detected"                           ~ "MTB detected",
+      xpert_raw == "mtb not detected"                       ~ "MTB not detected",
+      xpert_raw %in% c("error", "invalid", "indeterminate") ~ "No result"
+    ), "gene_xpert_res"),
     gene_xpert_rif = case_when(
       gene_xpert_res == "MTB detected" ~ gene_xpert_rif,
       TRUE                             ~ "Not applicable"
@@ -189,7 +192,7 @@ m <- m |>
   )
 
 # ART regimen: TLD or efavirenz-based (TEE and similar)
-regimen_raw <- str_to_lower(m$art_regimen)
+regimen_raw <- tolower(m$art_regimen)
 m$art_regimen <- check_no_new_na(m$art_regimen, case_when(
   regimen_raw %in% c("tld", "tdf/3tc/dtg", "tdf+3tc+dtg",
                      "tenofovir/lamivudine/dolutegravir") ~ "TLD",
@@ -197,21 +200,20 @@ m$art_regimen <- check_no_new_na(m$art_regimen, case_when(
                      "efv-based", "efavirenz-based")      ~ "Efavirenz-based"
 ), "art_regimen")
 
-# Ethnicity: fix capitals only. "Mixed" and "mixed race" are kept apart from
-# "Coloured": whether they mean the same group is for the study team to say.
-eth_raw <- str_to_lower(m$ethnicity)
+# Ethnicity: "Mixed" and "mixed race" are the same group as Coloured (the
+# South African census term)
+eth_raw <- tolower(m$ethnicity)
 m$ethnicity <- check_no_new_na(m$ethnicity, case_when(
-  eth_raw == "black african"             ~ "Black African",
-  eth_raw == "coloured"                  ~ "Coloured",
-  eth_raw == "white"                     ~ "White",
-  eth_raw == "asian"                     ~ "Asian",
-  eth_raw %in% c("mixed", "mixed race")  ~ "Mixed race"
+  eth_raw == "black african"                        ~ "Black African",
+  eth_raw %in% c("coloured", "mixed", "mixed race") ~ "Coloured",
+  eth_raw == "white"                                ~ "White",
+  eth_raw == "asian"                                ~ "Asian"
 ), "ethnicity")
 
 # Referral clinic: rules first, then a lookup table for what's left
 m <- m |>
   mutate(referral_key = referral_source |>
-           str_to_lower() |>
+           tolower() |>
            str_remove_all("'") |>
            str_remove(" (chc|community health( centre)?|hosp(ital)?|district hospital|dhc)$")) |>
   left_join(referral_lookup, by = "referral_key")
@@ -253,7 +255,7 @@ cells <- excel_sheets(cells_path) |>
   list_rbind(names_to = "visit") |>
   type_convert(na = c(missing_codes, "ASAP", "unknown", "not recorded"), col_types = cols()) |>
   clean_names() |>
-  mutate(pt_id = str_to_upper(str_trim(pt_id)))
+  mutate(pt_id = toupper(str_trim(pt_id)))
 
 stopifnot(nrow(cells) == nrow(distinct(cells, visit, pt_id)))
 
@@ -261,7 +263,7 @@ stopifnot(nrow(cells) == nrow(distinct(cells, visit, pt_id)))
 # ("Malason", "Therson", "de Vman") are matched by their start; the mapping
 # agrees with bal_baseline.csv for every baseline row.
 dr <- cells$dr_name |>
-  str_to_lower() |>
+  tolower() |>
   str_remove("^(dr|prof)\\.?\\s+")
 cells$dr_name <- check_no_new_na(cells$dr_name, case_when(
   dr == "adams"                ~ "Dr. Adams",
@@ -278,7 +280,7 @@ cells$dr_name <- check_no_new_na(cells$dr_name, case_when(
 
 # Lobe: abbreviations (RUL, lll), "R upper", "left lower lobe"
 lobe <- cells$lobe |>
-  str_to_lower() |>
+  tolower() |>
   str_remove(" lobe$") |>
   str_replace("^l ", "left ") |>
   str_replace("^r ", "right ")
@@ -291,20 +293,20 @@ cells$lobe <- check_no_new_na(cells$lobe, case_when(
 ), "lobe")
 
 # Pellet colour: "red-tinged" is recorded as Bloody in bal_baseline.csv
-pellet <- str_to_lower(cells$pellet_colour)
+pellet <- tolower(cells$pellet_colour)
 cells$pellet_colour <- case_when(
   pellet == "red-tinged" ~ "Bloody",
   TRUE                   ~ str_to_sentence(pellet)
 )
 
-diff <- str_to_lower(cells$diff_method)
+diff <- tolower(cells$diff_method)
 cells$diff_method <- check_no_new_na(cells$diff_method, case_when(
   diff %in% c("auto", "automated") ~ "Automated",
   diff == "manual"                 ~ "Manual",
   diff == "both"                   ~ "Both"
 ), "diff_method")
 
-notes <- str_to_lower(cells$notes)
+notes <- tolower(cells$notes)
 cells$processing_delayed <- case_when(
   str_detect(notes, "delay|late")                            ~ TRUE,
   notes %in% c("no issues", "processed on time", "sample adequate") ~ FALSE
@@ -355,7 +357,7 @@ cell_types <- c("macrophages", "lymphocytes", "neutrophils",
 cells <- cells |>
   mutate(
     visit         = factor(visit, levels = c("Baseline", "Month3", "Month6", "Month12")),
-    lab_tech      = str_to_sentence(lab_tech),
+    lab_tech      = str_to_sentence(tolower(lab_tech)),
     cytospin      = check_no_new_na(cytospin, clean_yes_no(cytospin), "cytospin"),
     # 999 is a missing code; recovered volume can't exceed what was instilled
     vol_pbs_out_ml = case_when(vol_pbs_out_ml <= vol_pbs_in_ml ~ vol_pbs_out_ml),
