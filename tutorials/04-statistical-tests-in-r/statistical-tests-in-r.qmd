@@ -1,0 +1,714 @@
+---
+title: "Choosing and running statistical tests in R"
+subtitle: "Tutorial 4: what each common test does, when to use it, and how to run it in RStudio"
+author: "Devon Allies"
+date: 2026-11-19
+order: 4
+description: "Learn what the common statistical tests do and when to use each one, then run them in R on the cleaned BAL study data: t-tests, Wilcoxon tests, ANOVA, Kruskal-Wallis, paired tests, chi-square, Fisher's exact test and correlation."
+categories: [R, Statistics]
+bibliography: references.bib
+csl: ../../assets/csl/harvard-anglia-ruskin-university.csl
+---
+
+::: {.callout-note}
+## What you'll learn
+
+- Choose a test from three questions: what kind of data, how many groups, and whether the measurements are paired
+- Check the assumptions a test relies on, with plots and the Shapiro-Wilk test
+- What each common test does, when to use it, and how to run it in R
+- Read the output: the test statistic, the p-value and the confidence interval
+- Measure how big a difference is (effect size), and check whether a study could have detected it (power)
+- Report a result in one clear sentence
+:::
+
+::: {.callout-important appearance="simple"}
+## Simulated data
+
+This tutorial uses the **cleaned** version of the simulated BAL study from [Tutorial 3](../03-clean-data-in-r/clean-data-in-r.qmd). No row describes a real person, and the results describe the simulation, not real patients.
+
+[Download bal_metadata_clean.csv](../data/bal_metadata_clean.csv){.btn .btn-sm .btn-outline-primary}
+[Download bal_cell_counts_clean.csv](../data/bal_cell_counts_clean.csv){.btn .btn-sm .btn-outline-primary}
+:::
+
+::: {.callout-tip appearance="simple"}
+## Read alongside
+
+[<i class="bi bi-file-earmark-pdf"></i> Two-page guide: Choosing the right statistical test (PDF)](../../guides/choosing-a-statistical-test/choosing-a-statistical-test.pdf){.btn .btn-sm .btn-outline-primary}
+
+A printable summary of this tutorial: the decision table, the assumptions to check and the trade-offs, with references.
+
+For the theory behind these tests, with worked biomedical examples, see *Introductory Statistics for the Life and Biomedical Sciences* [@vu2020], a free textbook from [OpenIntro](https://www.openintro.org/book/biostat/). Each test below points to the relevant section. OpenIntro's *Introduction to Modern Statistics* [@cetinkayarundel2024], free to read [online](https://openintrostat.github.io/ims/), adds randomisation tests, which don't assume normality. The rank-based (non-parametric) tests aren't in either book; for those, see [chapter 33](https://dzchilds.github.io/stats-for-bio/non-parametric-tests.html) of *APS 240: Data Analysis and Statistics with R* [@childs2021], a free online course book.
+:::
+
+## 1. Set up
+
+Put the two cleaned files in your project's `data/` folder and load the packages. Every test in this tutorial is part of base R; the packages are for loading, reshaping and plotting the data.
+
+```{r}
+#| label: packages
+library(readr)    # read the CSV files
+library(dplyr)    # data manipulation
+library(tidyr)    # reshape data for paired tests
+library(ggplot2)  # plots
+library(here)     # file paths from the project root
+```
+
+```{r}
+#| label: paths
+#| eval: false
+metadata_path <- here("data", "bal_metadata_clean.csv")
+cells_path    <- here("data", "bal_cell_counts_clean.csv")
+```
+
+```{r}
+#| label: paths-site
+#| echo: false
+# On this website, the files live in tutorials/data/
+metadata_path <- here("tutorials", "data", "bal_metadata_clean.csv")
+cells_path    <- here("tutorials", "data", "bal_cell_counts_clean.csv")
+```
+
+A CSV file stores categories as plain text, so set their order again after loading. Without this, R sorts them alphabetically and every table and plot starts with "Active TB":
+
+```{r}
+#| label: load
+metadata <- read_csv(metadata_path, show_col_types = FALSE) |>
+  mutate(
+    tb_diagnosis   = factor(tb_diagnosis, levels = c("Control", "LTBI", "Active TB", "Indeterminate")),
+    hiv_status     = factor(hiv_status, levels = c("Negative", "Positive")),
+    smoking_status = factor(smoking_status, levels = c("Never", "Former", "Current"))
+  )
+
+cell_counts <- read_csv(cells_path, show_col_types = FALSE) |>
+  mutate(visit = factor(visit, levels = c("Baseline", "Month3", "Month6", "Month12")))
+
+# One row per participant: their details plus their baseline cell counts
+baseline <- metadata |>
+  inner_join(filter(cell_counts, visit == "Baseline"), by = "pt_id")
+
+dim(baseline)
+```
+
+## 2. How to choose a test
+
+Every test answers a version of the same question: **could the pattern in this sample just be chance?** The answer comes as a **p-value**.
+
+::: {.callout-tip}
+## Reading a p-value
+
+Every test starts by assuming **there's no real difference** between the groups (or no real link between two variables). This starting assumption is called the *null hypothesis*. The p-value then asks:
+
+> **If there were no real difference, how likely is it that chance alone would give a difference at least as big as the one in our data?**
+
+- **A small p-value (below 0.05)** means a difference this big would rarely happen by chance alone. The data would be surprising if the null hypothesis were true, so we **reject the null hypothesis** and conclude there's probably a real difference: the result is *statistically significant*.
+- **A large p-value (0.05 or above)** means a difference this big could easily happen by chance. The data gives **no evidence** of a real difference.
+
+For example, p = 0.03 means that if there were no real difference, chance alone would produce a difference at least this large only about 3 times in 100.
+
+The cut-off of 0.05 (1 in 20) is a convention, called the *significance level* and written α (alpha). Choose it **before** you look at the results, not after [@vu2020, section 4.3].
+
+**Three things a p-value doesn't tell you:**
+
+1. **How big or important the difference is.** In a large study, even a tiny, unimportant difference can have a very small p-value. Always look at the means or medians too.
+2. **That the groups are the same.** A large p-value means "we found no evidence of a difference", not "there is no difference". The study may simply be too small to tell.
+3. **The chance that the null hypothesis is true.** It's the chance of the *data*, assuming the null hypothesis is true, not the other way round.
+
+**Read more:** @vu2020 [section 4.3] for hypothesis testing and p-values, and section 4.2 for confidence intervals ([free PDF](https://www.openintro.org/book/biostat/)).
+:::
+
+To choose a test, answer three questions about your data:
+
+1. **What kind of outcome is it?** A measurement on a scale (BMI, cell percentages) or a category (HIV status, smear result)?
+2. **How many groups are you comparing?** Two, or three or more?
+3. **Are the groups independent or paired?** Different people in each group, or the same people measured twice?
+
+For measurements, there's a fourth: **do the values roughly follow a normal (bell-shaped) distribution?** Tests that assume this are called *parametric*. Their *non-parametric* alternatives work on the ranks of the values instead, so they don't need it. The price is a little less power when the data really is normal: the Wilcoxon rank-sum test is about 95% as powerful as the t-test [@childs2021, section 33.8]. So use the parametric test when its assumptions hold, and the rank-based one when they don't.
+
+| Outcome | Comparison | Values look normal | Values don't look normal |
+|---|---|---|---|
+| Measurement | 2 independent groups | Welch's t-test | Wilcoxon rank-sum test |
+| Measurement | 3 or more independent groups | One-way ANOVA | Kruskal-Wallis test |
+| Measurement | Same people, 2 time points | Paired t-test | Wilcoxon signed-rank test |
+| Category | 2 categorical variables | Chi-square test | Fisher's exact test (small counts) |
+| Measurement | 2 measurements, same people | Pearson correlation | Spearman correlation |
+
+The rest of this tutorial works through that table, one test at a time.
+
+## 3. Check the assumptions first
+
+The parametric tests assume the values in each group come from a roughly normal distribution. There are two ways to check.
+
+**Look at the data.** A histogram shows the shape. A **Q-Q plot** (quantile-quantile plot) is more precise: it plots the values against what a normal distribution would give, so normal data falls along the straight line.
+
+```{r}
+#| label: fig-qq
+#| fig-cap: "Q-Q plots. BMI follows the line, so it's close to normal. Neutrophil percentages curve away from it: most values are low, with a long tail of high values."
+#| fig-height: 3.5
+baseline |>
+  select(bmi, neutrophils_percent) |>
+  pivot_longer(everything(), names_to = "measurement", values_to = "value") |>
+  ggplot(aes(sample = value)) +
+  stat_qq(alpha = 0.4) +
+  stat_qq_line(colour = "#E36414") +
+  facet_wrap(~ measurement, scales = "free") +
+  labs(x = "Expected if normal", y = "Observed") +
+  theme_minimal()
+```
+
+**Test it.** The **Shapiro-Wilk test** has the null hypothesis "these values come from a normal distribution". A small p-value (below 0.05) is evidence that they don't. Check each group separately, because the assumption applies to each group:
+
+```{r}
+#| label: shapiro
+baseline |>
+  filter(!is.na(bmi)) |>
+  group_by(tb_diagnosis) |>
+  summarise(n = n(), shapiro_p = shapiro.test(bmi)$p.value)
+```
+
+Every group has p above 0.05, so BMI looks normal in all four groups.
+
+::: {.callout-warning}
+## Don't rely on the Shapiro-Wilk test alone
+
+With large groups, Shapiro-Wilk flags tiny departures from normality that don't matter; with small groups, it misses big ones. Use it together with the plots, not instead of them. Look mainly for strong **skew** and **outliers**, the departures that cause real problems [@vu2020, section 5.1]. And the t-test and ANOVA cope with mild non-normality once the groups are reasonably large.
+
+The normal distribution, and how to judge whether data follows it with a Q-Q plot, are in @vu2020 [section 3.3] ([free PDF](https://www.openintro.org/book/biostat/)).
+:::
+
+## 4. Comparing two groups
+
+### Welch's t-test
+
+::: {.callout-note appearance="simple"}
+## About Welch's t-test
+
+**What it does:** compares the **means** of a measurement in two independent groups. It divides the difference between the two sample means by its *standard error*, the amount that difference would vary by chance from one sample to the next. The further this *t statistic* is from 0, the less likely the difference is to be chance.
+
+**Use it when:** the outcome is a numeric measurement, there are two groups of different people, and the values in each group look roughly normal.
+
+**Assumptions,** most important first [@childs2021, section 13.2]:
+
+1. **Independent observations.** Each person appears once, and one person's value doesn't affect another's. This matters most: even mild dependence makes p-values too small, and only the study design can tell you whether it holds.
+2. **A numeric measurement,** not a category or a score.
+3. **Roughly normal values in each group.** Check each group on its own, not the combined data. The test copes with mild departures in larger samples: about 30 or more per group [@vu2020, section 5.1], and comfortably above 100 [@childs2021, section 13.2].
+
+The classic **Student's** t-test also assumes the two groups have the same spread (variance). **Welch's** version doesn't, which is why R uses it by default. When the spreads really are equal, Student's test is only slightly more powerful, so Welch's is the safer choice [@childs2021, section 13.2].
+
+**In R:** `t.test(outcome ~ group, data = ...)`
+
+**Read more:** @vu2020 [section 5.3] ([free PDF](https://www.openintro.org/book/biostat/)); [chapter 13](https://dzchilds.github.io/stats-for-bio/two-sample-t-test.html) of @childs2021.
+:::
+
+**Question:** do participants with active TB have a different BMI from controls? BMI looked normal in every group (section 3), so a t-test fits. Keep just the two groups, then run it:
+
+```{r}
+#| label: t-test
+two_groups <- baseline |>
+  filter(tb_diagnosis %in% c("Active TB", "Control")) |>
+  mutate(tb_diagnosis = droplevels(tb_diagnosis))
+
+t.test(bmi ~ tb_diagnosis, data = two_groups)
+```
+
+How to read it:
+
+- **mean in group**: the average BMI in each group, about 24.3 in controls and 25.4 with active TB.
+- **t** and **df**: the test statistic and its degrees of freedom. You report them, but the p-value is what you interpret.
+- **p-value**: 0.12, above 0.05, so there's **no evidence** that mean BMI differs between the groups.
+- **95 percent confidence interval**: the range of plausible values for the difference in means. It includes 0 (no difference), which matches the p-value.
+
+`droplevels()` matters here: after filtering, `tb_diagnosis` still knows about the LTBI and Indeterminate levels, and `t.test()` needs exactly two.
+
+### Wilcoxon rank-sum test
+
+::: {.callout-note appearance="simple"}
+## About the Wilcoxon rank-sum test
+
+**What it does:** compares two independent groups using the **ranks** of the values instead of the values themselves. All the values from both groups are put in order and numbered 1, 2, 3 and so on. If one group's values tend to be larger, its ranks add up to more than you'd expect by chance [@childs2021, section 33.2]. It's also called the **Mann-Whitney U test**.
+
+**Use it when:** there are two groups of different people, and the outcome is skewed, has outliers, comes from small groups, or is an ordered score (such as a smear grade) rather than a measurement.
+
+**Assumptions:** rank-based tests make weaker assumptions than the t-test, but they aren't assumption-free [@childs2021, sections 33.1 and 33.5]:
+
+1. **Independent observations,** as for the t-test.
+2. **An outcome you can put in order:** a measurement or an ordered score, not a plain category.
+3. **Distributions of a similar shape** in the two groups, apart from where they're centred. When that holds, the test compares the medians. When it doesn't, a significant result only tells you that values in one group *tend to be larger*, not that the medians differ.
+
+**The trade-off:** if the data really is normal, the test is about 95% as powerful as the t-test [@childs2021, section 33.8]. That's why the t-test is still the first choice when its assumptions hold.
+
+**In R:** `wilcox.test(outcome ~ group, data = ...)`
+
+**Read more:** [section 33.5](https://dzchilds.github.io/stats-for-bio/non-parametric-tests.html#mann-whitney) of @childs2021, and R's [`wilcox.test` help page](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html) (or type `?wilcox.test` in the console). For a related approach that also avoids assuming normality, a *randomisation test*, see [chapter 20](https://openintrostat.github.io/ims/inference-two-means.html) of @cetinkayarundel2024.
+:::
+
+**Question:** do neutrophil percentages differ between active TB and latent TB infection (LTBI)? Section 3 showed neutrophil percentages are strongly skewed, so use the rank-based test. Plot first, then test:
+
+```{r}
+#| label: fig-neutrophils
+#| fig-cap: "Neutrophil percentage at baseline in latent TB infection and active TB."
+#| fig-height: 3.5
+active_vs_ltbi <- baseline |>
+  filter(tb_diagnosis %in% c("Active TB", "LTBI")) |>
+  mutate(tb_diagnosis = droplevels(tb_diagnosis))
+
+ggplot(active_vs_ltbi, aes(tb_diagnosis, neutrophils_percent)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15, alpha = 0.3) +
+  labs(x = NULL, y = "Neutrophils (%)") +
+  theme_minimal()
+```
+
+```{r}
+#| label: wilcoxon
+active_vs_ltbi |>
+  group_by(tb_diagnosis) |>
+  summarise(n = sum(!is.na(neutrophils_percent)),
+            median = median(neutrophils_percent, na.rm = TRUE))
+
+wilcox.test(neutrophils_percent ~ tb_diagnosis, data = active_vs_ltbi, exact = FALSE)
+```
+
+The median neutrophil percentage is about 2% with LTBI and about 20% with active TB, and the p-value is far below 0.05: strong evidence of a difference.
+
+Check the shape assumption against the plot: the LTBI values are tightly bunched near 2%, while the active TB values are spread widely. The shapes aren't similar, so the safe conclusion is that **neutrophil percentages tend to be higher in active TB**, rather than a precise statement about medians.
+
+`W` is the test statistic: the number of pairs, one person from each group, in which the first group's value (here LTBI, the first level) is the larger. **W = 0** means that in every possible pair, the person with active TB had the higher neutrophil percentage: the two groups don't overlap at all, as the plot shows. That clean separation is a feature of this simulated data. `exact = FALSE` tells R to use the normal approximation, which is standard when there are tied values or more than about 50 observations.
+
+## 5. Comparing three or more groups
+
+You might be tempted to run a t-test on every pair of groups. With four groups that's six tests, and each one has a 5% chance of a false positive, so the chance of at least one false alarm climbs to about 26% [@vu2020, section 5.5]. Instead, test all the groups at once.
+
+### One-way ANOVA
+
+::: {.callout-note appearance="simple"}
+## About one-way ANOVA
+
+**What it does:** analysis of variance (ANOVA) tests whether three or more independent groups all have the same **mean**. It splits the total variation in the outcome into two parts: variation **between** the group means, and variation **within** each group, from person to person. The *F statistic* is the ratio of the two. If the group means are further apart than the person-to-person variation would explain, F is large and the p-value small [@childs2021, section 17.3].
+
+**Use it when:** the outcome is a numeric measurement, there are three or more groups of different people, and the values in each group look roughly normal.
+
+**Assumptions** [@vu2020, section 5.5]:
+
+1. **Independent observations,** within and across the groups.
+2. **Roughly normal values in each group.** As with the t-test, ANOVA copes with mild departures when the groups are reasonably large.
+3. **Similar spread in each group.** Compare the boxes in a boxplot, or the groups' standard deviations.
+
+**In R:** `aov(outcome ~ group, data = ...)`, then `summary()` on the result.
+
+**Read more:** @vu2020 [section 5.5] ([free PDF](https://www.openintro.org/book/biostat/)), which also covers the multiple-comparisons problem; [chapters 17](https://dzchilds.github.io/stats-for-bio/introduction-to-one-way-anova.html) and [18](https://dzchilds.github.io/stats-for-bio/one-way-anova-in-r.html) of @childs2021.
+:::
+
+**Question:** does BMI differ across the four diagnosis groups? BMI looked normal in all four, so use ANOVA:
+
+```{r}
+#| label: anova
+bmi_anova <- aov(bmi ~ tb_diagnosis, data = baseline)
+summary(bmi_anova)
+```
+
+The row that matters is `tb_diagnosis`. `F value` is the test statistic (between-group variation divided by within-group variation), and `Pr(>F)` is the p-value: 0.10. So there's no evidence that mean BMI differs across the four groups.
+
+::: {.callout-tip}
+A significant ANOVA tells you that **at least one** group differs, not which one. Finding out which groups differ needs a **post hoc** test, which is in Tutorial 5.
+:::
+
+### Kruskal-Wallis test
+
+::: {.callout-note appearance="simple"}
+## About the Kruskal-Wallis test
+
+**What it does:** the rank-based version of one-way ANOVA. It ranks all the values across the groups, then tests whether the average rank differs between groups [@childs2021, section 33.6]. With two groups it gives the same answer as the Wilcoxon rank-sum test.
+
+**Use it when:** there are three or more groups of different people, and the outcome is skewed, has outliers, comes from small groups, or is an ordered score.
+
+**Assumptions:** the same as the Wilcoxon rank-sum test: independent observations, an outcome you can put in order, and distributions of a **similar shape** in every group. Similar skew matters most: if one group is strongly skewed and another isn't, a significant result is hard to interpret [@childs2021, section 33.6].
+
+**The trade-off:** it's less informative than ANOVA. A significant result says the groups differ, but working out which ones is harder [@childs2021, section 33.8]. Tutorial 5 covers the follow-up tests.
+
+**In R:** `kruskal.test(outcome ~ group, data = ...)`
+
+**Read more:** [section 33.6](https://dzchilds.github.io/stats-for-bio/non-parametric-tests.html#the-kruskal-wallis-test) of @childs2021, and R's [`kruskal.test` help page](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/kruskal.test.html). For a randomisation approach to comparing many groups, see [chapter 22](https://openintrostat.github.io/ims/inference-many-means.html) of @cetinkayarundel2024.
+:::
+
+**Question:** do macrophage percentages differ across the diagnosis groups? Cell percentages are skewed, so use Kruskal-Wallis:
+
+```{r}
+#| label: fig-macrophages
+#| fig-cap: "Macrophage percentage at baseline by TB diagnosis."
+#| fig-height: 3.5
+ggplot(baseline, aes(tb_diagnosis, macrophages_percent)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(width = 0.15, alpha = 0.2) +
+  labs(x = NULL, y = "Macrophages (%)") +
+  theme_minimal()
+```
+
+```{r}
+#| label: kruskal
+kruskal.test(macrophages_percent ~ tb_diagnosis, data = baseline)
+```
+
+The p-value is extremely small: macrophage percentages clearly differ between the diagnosis groups. The plot shows where: participants with active TB have far fewer macrophages, because more of their BAL cells are lymphocytes and neutrophils. `df` is the number of groups minus one.
+
+As with the Wilcoxon example, the groups' shapes aren't identical: the active TB values are much more spread out. So read this as "macrophage percentages tend to be lower in active TB", and use the follow-up tests in Tutorial 5 to compare specific groups.
+
+## 6. Paired measurements
+
+### Paired t-test and Wilcoxon signed-rank test
+
+::: {.callout-note appearance="simple"}
+## About paired tests
+
+**What they do:** compare two measurements taken on the **same** participants, such as before and after treatment. Instead of comparing two groups, they work out each person's **change** and test whether the changes are centred on zero.
+
+**Use them when:** each value in one set has a partner in the other: the same person at two visits, two samples from the same patient, or matched pairs.
+
+**Why pairing helps:** people differ a lot from one another. Comparing each person with themselves removes that person-to-person variation, so a paired test can detect much smaller changes [@childs2021, section 20.2]. Treating paired data as two independent groups is a common mistake, and it can hide a real effect [@vu2020, section 5.3].
+
+**Assumptions:**
+
+- **Paired t-test:** the pairs are independent of each other, and the **differences** are roughly normal. The original values don't need to be normal, and differences are often close to normal even when the values aren't [@childs2021, section 20.3].
+- **Wilcoxon signed-rank test:** the pairs are independent, and the differences are roughly **symmetric** around their centre, though not necessarily normal [@childs2021, section 33.4].
+
+**How R pairs the values:** given two vectors, R pairs them **by position**: the first value with the first, the second with the second [@childs2021, section 20.4]. Make sure each row holds one person's two measurements, as `pivot_wider()` does below.
+
+**In R:** `t.test(after, before, paired = TRUE)` or `wilcox.test(after, before, paired = TRUE)`
+
+**Read more:** @vu2020 [section 5.2] ([free PDF](https://www.openintro.org/book/biostat/)) and [chapter 20](https://dzchilds.github.io/stats-for-bio/paired-sample-t-test.html) of @childs2021 for the paired t-test; [section 33.4](https://dzchilds.github.io/stats-for-bio/non-parametric-tests.html#wilcoxon-signed-rank-test) of @childs2021 for the Wilcoxon signed-rank test; [chapter 21](https://openintrostat.github.io/ims/inference-paired-means.html) of @cetinkayarundel2024 for a randomisation version.
+:::
+
+**Question:** in participants with active TB, does the neutrophil percentage change between baseline and month 6? Put each participant's two visits side by side with `pivot_wider()`, keeping only people with both:
+
+```{r}
+#| label: paired-data
+neutrophils_paired <- cell_counts |>
+  filter(visit %in% c("Baseline", "Month6")) |>
+  inner_join(select(metadata, pt_id, tb_diagnosis), by = "pt_id") |>
+  filter(tb_diagnosis == "Active TB") |>
+  select(pt_id, visit, neutrophils_percent) |>
+  pivot_wider(names_from = visit, values_from = neutrophils_percent) |>
+  filter(!is.na(Baseline), !is.na(Month6)) |>
+  mutate(change = Month6 - Baseline)
+
+nrow(neutrophils_paired)
+```
+
+Check the assumption on the **differences**:
+
+```{r}
+#| label: paired-shapiro
+shapiro.test(neutrophils_paired$change)
+```
+
+The differences look normal (p above 0.05), so the paired t-test fits:
+
+```{r}
+#| label: paired-t
+t.test(neutrophils_paired$Month6, neutrophils_paired$Baseline, paired = TRUE)
+```
+
+The **mean difference** is negative: on average, neutrophil percentages fell by about 4 percentage points between baseline and month 6, and the confidence interval doesn't include 0. The p-value is very small. The order of the two arguments sets the sign: `Month6` first gives month 6 minus baseline.
+
+If the differences hadn't been normal, the Wilcoxon signed-rank test would be the choice. It reaches the same conclusion here:
+
+```{r}
+#| label: paired-wilcoxon
+wilcox.test(neutrophils_paired$Month6, neutrophils_paired$Baseline, paired = TRUE, exact = FALSE)
+```
+
+## 7. Two categorical variables
+
+### Chi-square test of independence
+
+::: {.callout-note appearance="simple"}
+## About the chi-square test
+
+**What it does:** tests whether two categorical variables are **associated**: whether knowing one tells you something about the other. Assuming there's no association, it works out the count you'd **expect** in each cell of the table: the row total times the column total, divided by the overall total [@vu2020, section 8.3]. The chi-square statistic adds up how far each observed count is from its expected count. The bigger the mismatch, the smaller the p-value.
+
+**Use it when:** both variables are categories (HIV status, smear result) and each person is counted once.
+
+**Assumptions:**
+
+1. **Independent observations.** Each person falls in exactly one cell. That rules out, for example, before-and-after measurements on the same people [@childs2021, section 32.2].
+2. **Large enough expected counts,** checked on the *expected* counts, not the observed ones. The rules of thumb differ: at least 5 in every cell [@childs2021, section 32.2], or more cautiously at least 10 [@vu2020, section 8.3]. Below that, the p-value isn't reliable: use Fisher's exact test instead.
+
+**In R:** `chisq.test(table(variable_1, variable_2))`
+
+**Read more:** @vu2020 [section 8.3] ([free PDF](https://www.openintro.org/book/biostat/)); [chapter 32](https://dzchilds.github.io/stats-for-bio/contingency-tables.html) of @childs2021.
+:::
+
+**Question:** among people with active TB, is a negative sputum smear more common in people living with HIV? Make the table first:
+
+```{r}
+#| label: smear-table
+active_tb <- baseline |>
+  filter(tb_diagnosis == "Active TB") |>
+  mutate(smear = if_else(smear_grade == "Negative", "Smear negative", "Smear positive"))
+
+smear_hiv <- table(active_tb$smear, active_tb$hiv_status)
+smear_hiv
+```
+
+Check the expected counts, then run the test:
+
+```{r}
+#| label: chi-square
+smear_test <- chisq.test(smear_hiv)
+smear_test$expected
+smear_test
+```
+
+Every expected count is above 10, so the test is valid by either rule of thumb. The p-value is below 0.05: smear results and HIV status are associated. The table shows the direction: 24 of 66 people living with HIV had a negative smear (36%), against 17 of 98 HIV-negative people (17%).
+
+For a 2×2 table, R applies **Yates' continuity correction** by default, which makes the test slightly more cautious. That's why the output says "with Yates' continuity correction".
+
+### Fisher's exact test
+
+::: {.callout-note appearance="simple"}
+## About Fisher's exact test
+
+**What it does:** answers the same question as the chi-square test, whether two categorical variables are associated. Instead of an approximation that needs large counts, it calculates the p-value **exactly**, from every way the counts could have been arranged given the table's row and column totals.
+
+**Use it when:** the expected counts are too small for the chi-square test: below 5, or below 10 by the more cautious rule [@vu2020, section 8.3]. It's usually used for 2×2 tables. R can run it on larger tables, but the calculation gets heavy.
+
+**Assumptions:** independent observations. There's no minimum count.
+
+**In R:** `fisher.test(table(variable_1, variable_2))`
+
+**Read more:** @vu2020 [section 8.3] ([free PDF](https://www.openintro.org/book/biostat/)).
+:::
+
+**Question:** among people with TB detected by GeneXpert, is rifampicin-resistant TB more common in children (under 18)?
+
+```{r}
+#| label: rif-table
+tb_detected <- metadata |>
+  filter(gene_xpert_rif %in% c("Resistant", "Sensitive")) |>
+  mutate(age_group = if_else(age < 18, "Under 18", "18 and over"))
+
+rif_age <- table(tb_detected$gene_xpert_rif, tb_detected$age_group)
+rif_age
+```
+
+Only 16 children had TB detected, and only 2 had resistant TB. Try the chi-square test and R warns you:
+
+```{r}
+#| label: rif-chisq-warning
+#| warning: true
+chisq.test(rif_age)$expected
+chisq.test(rif_age)
+```
+
+The expected count for resistant TB in children is below 5 (about 2.8), so the chi-square p-value can't be trusted by either rule of thumb. Use Fisher's exact test:
+
+```{r}
+#| label: fisher
+fisher.test(rif_age)
+```
+
+The p-value is 0.74: no evidence that resistance is more or less common in children. Fisher's test also reports an **odds ratio** with a confidence interval. The interval is very wide (it runs from well below 1 to well above it), which is what small numbers look like: the data is compatible with anything from much lower to much higher odds of resistance in children.
+
+## 8. Two measurements: correlation
+
+::: {.callout-note appearance="simple"}
+## About correlation
+
+**What it does:** measures how strongly two measurements on the same people move together, as a coefficient from −1 to +1. Near +1: when one is high, so is the other. Near −1: when one is high, the other is low. Near 0: no relationship. `cor.test()` also tests whether the coefficient differs from zero.
+
+**Pearson's r** measures a **straight-line** (linear) relationship. Its assumptions [@childs2021, section 14.1]:
+
+1. Both variables are numeric measurements.
+2. Both are roughly normal; this matters for the p-value.
+3. The relationship is linear: the scatter plot looks like a line, not a curve. It's also sensitive to outliers, so always plot first.
+
+**Spearman's rho** is Pearson's r calculated on the **ranks**. It measures whether one variable tends to rise (or fall) as the other rises, in a straight line or not: a *monotonic* relationship. It works for skewed data and ordered scores. Its assumptions [@childs2021, section 33.7]:
+
+1. Both variables can be put in order.
+2. The relationship is monotonic. Don't use it if the scatter plot forms a hill or a valley.
+
+When Pearson's assumptions do hold, Spearman's is somewhat less powerful (roughly 91% in some evaluations) [@childs2021, section 33.7].
+
+**In R:** `cor.test(x, y, method = "pearson")` or `cor.test(x, y, method = "spearman")`
+
+**Read more:** correlation and scatterplots in @vu2020 [sections 1.6 and 6.1] ([free PDF](https://www.openintro.org/book/biostat/)) and [chapter 14](https://dzchilds.github.io/stats-for-bio/a-correlation-test.html) of @childs2021. For Spearman's rho, see [section 33.7](https://dzchilds.github.io/stats-for-bio/non-parametric-tests.html#spearmans-rank-correlation) of @childs2021 and R's [`cor.test` help page](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html).
+:::
+
+**Question:** do people with a stronger IGRA response have more lymphocytes in their BAL fluid? Plot it first, as always:
+
+```{r}
+#| label: fig-igra
+#| fig-cap: "IGRA value and baseline lymphocyte percentage. Both are skewed, with many low values and a few high ones."
+#| fig-height: 3.5
+ggplot(baseline, aes(igra_value_iu_ml, lymphocytes_percent)) +
+  geom_point(alpha = 0.4) +
+  labs(x = "IGRA value (IU/ml)", y = "Lymphocytes (%)") +
+  theme_minimal()
+```
+
+Both variables are skewed, so Spearman is the right choice. Running both shows how they compare:
+
+```{r}
+#| label: correlation
+cor.test(baseline$igra_value_iu_ml, baseline$lymphocytes_percent, method = "spearman", exact = FALSE)
+cor.test(baseline$igra_value_iu_ml, baseline$lymphocytes_percent, method = "pearson")
+```
+
+Spearman's rho is about 0.36: a weak-to-moderate positive relationship, very unlikely to be chance (p far below 0.05). Pearson's r is a little lower because the relationship isn't a straight line. `cor.test()` drops participants with a missing value in either variable automatically.
+
+::: {.callout-warning}
+## Correlation is not causation
+
+This association doesn't mean a stronger IGRA response causes more lymphocytes, or the reverse. In this dataset, both are highest in participants with active TB, so TB diagnosis may drive both. A third variable behind an association is called a **confounder**; regression, in Tutorial 5, is one way to account for it.
+:::
+
+## 9. How big is the difference? Effect size and power
+
+A p-value tells you whether a difference is likely to be real, not whether it **matters**. Statistical significance isn't the same as biological or clinical importance. In one river study, water pH differed significantly between open water and weed beds (p < 0.01), but the means were 7.1 and 6.9: a real difference, and almost certainly an unimportant one [@childs2021, section 10.3]. Two more ideas complete the picture: **effect size** (how big is it?) and **power** (could the study have found it?).
+
+### Effect size
+
+::: {.callout-note appearance="simple"}
+## About effect size
+
+**What it is:** a measure of **how big** a difference or association is. Unlike a p-value, it doesn't shrink just because the study is large.
+
+**In the original units:** the difference between the group means (or medians), with its 95% confidence interval. This is usually the most useful version, because readers can judge directly whether it matters: is a difference of 1 kg/m² in BMI important? The confidence interval shows the range of differences the data is compatible with [@vu2020, section 4.2].
+
+**Standardised:** **Cohen's d** is the difference in means divided by the pooled standard deviation, so it's measured in standard deviations. That lets you compare effects across measurements with different units. Cohen's rough guide is 0.2 for a small effect, 0.5 medium and 0.8 large [@cohen1988], but what counts as important depends on the measurement and the setting.
+
+**Correlations** are already effect sizes: Pearson's r and Spearman's rho measure how strong a relationship is.
+
+**Read more:** @vu2020 [section 4.2] ([free PDF](https://www.openintro.org/book/biostat/)) on confidence intervals; [section 10.3](https://dzchilds.github.io/stats-for-bio/hypotheses-and-p-values.html) of @childs2021 on biological versus statistical significance.
+:::
+
+Go back to the BMI comparison from section 4. `t.test()` already gives the effect size in the original units: the difference in means and its confidence interval. Cohen's d takes a few lines:
+
+```{r}
+#| label: effect-size
+bmi_summary <- two_groups |>
+  filter(!is.na(bmi)) |>
+  group_by(tb_diagnosis) |>
+  summarise(n = n(), mean = mean(bmi), sd = sd(bmi))
+bmi_summary
+
+# Difference in means (active TB minus control)
+difference <- diff(bmi_summary$mean)
+
+# Pooled standard deviation: the two groups' SDs combined, weighted by group size
+pooled_sd <- with(bmi_summary, sqrt(sum((n - 1) * sd^2) / (sum(n) - 2)))
+
+c(difference = difference, pooled_sd = pooled_sd, cohens_d = difference / pooled_sd)
+```
+
+Active TB participants averaged about 1.1 kg/m² more than controls, a Cohen's d of about 0.19: a small effect, smaller than the person-to-person spread of almost 6 kg/m². The t-test's confidence interval (section 4) runs from about 2.5 kg/m² lower to 0.3 kg/m² higher in controls, so the data is compatible with no difference or with a modest one.
+
+### Power
+
+::: {.callout-note appearance="simple"}
+## About power
+
+**Two ways to be wrong:** a test can find a difference that isn't real (a **Type I error**, a false positive), or miss one that is (a **Type II error**, a false negative). The significance level, α = 0.05, is the chance of a Type I error [@vu2020, section 4.3].
+
+**What power is:** the probability that a test detects a real effect of a given size, if it exists [@cetinkayarundel2024, chapter 14]. Power is 1 minus the chance of a Type II error.
+
+**What it depends on:** the **size of the effect** (bigger effects are easier to find), the **variability** of the measurement, the **sample size**, and α.
+
+**Use it when:**
+
+- **Planning a study:** choose a sample size large enough to detect the smallest difference that would matter. Studies usually aim for 80% or 90% power, and the calculated sample size is always rounded up [@vu2020, section 5.4].
+- **Reading a non-significant result:** if the study had little power to detect an important difference, "no evidence of a difference" may just mean "too small to tell".
+
+Base the calculation on the smallest difference that would **matter**, not on the difference you happened to observe.
+
+**In R:** `power.t.test()` for comparing two means (`power.prop.test()` for two proportions). Give it all but one of `n` (per group), `delta` (the difference), `sd`, `sig.level` and `power`, and it calculates the missing one.
+
+**Read more:** @vu2020 [section 5.4] ([free PDF](https://www.openintro.org/book/biostat/)), a worked example of power and sample size for a clinical trial; [chapter 14](https://openintrostat.github.io/ims/foundations-errors.html#sec-pow) of @cetinkayarundel2024; R's [`power.t.test` help page](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/power.t.test.html).
+:::
+
+**Was the BMI comparison large enough to find a difference?** `power.t.test()` assumes equal group sizes, so use the smaller group (108 controls); that errs on the cautious side. First, the smallest difference the study had an 80% chance of detecting:
+
+```{r}
+#| label: power-delta
+power.t.test(n = 108, sd = pooled_sd, power = 0.80)
+```
+
+`delta` is about 2.3 kg/m². Now the other way round: the power to detect a difference of 1 kg/m², about the size seen here:
+
+```{r}
+#| label: power-1
+power.t.test(n = 108, delta = 1, sd = pooled_sd)
+```
+
+Only about 24%. And the number per group that would give 80% power to detect 1 kg/m²:
+
+```{r}
+#| label: power-n
+power.t.test(delta = 1, sd = pooled_sd, power = 0.80)
+```
+
+About 549 per group, rounded up: five times as many as this study has. Putting it together: the study had a good chance of detecting a difference of about 2.3 kg/m² or more, and the confidence interval rules out differences much larger than 2.5 kg/m². But a smaller difference, like the 1.1 kg/m² seen here, can't be ruled out: the study was too small to tell. That's the practical meaning of "no evidence of a difference" from section 2.
+
+## 10. Report a result
+
+A result needs more than "p < 0.05". Report what was compared, the summary values, the test, the statistic and the p-value, in one sentence:
+
+> Median baseline neutrophil percentage was higher in active TB than in latent TB infection (median 19.5% vs 1.8%; Wilcoxon rank-sum test, W = 0, p < 0.001; n = 157 and 151).
+
+Some conventions:
+
+- Give exact p-values to two significant figures (p = 0.12), and "p < 0.001" for anything smaller.
+- Report means with a t-test or ANOVA, and medians with the rank-based tests.
+- Report the size of the difference with its confidence interval, not just whether it's significant.
+- Say how many people were in each group, and how many were left out because of missing values.
+
+```{r}
+#| label: report-numbers
+#| include: false
+# Numbers quoted in the example sentence above (checked when the page renders)
+w <- wilcox.test(neutrophils_percent ~ tb_diagnosis, data = active_vs_ltbi, exact = FALSE)
+stopifnot(unname(w$statistic) == 0, w$p.value < 0.001)
+```
+
+## Quick reference
+
+The same table, with the assumptions and trade-offs, is in the printable [two-page guide](../../guides/choosing-a-statistical-test/choosing-a-statistical-test.pdf).
+
+| Question | Test | R function |
+|---|---|---|
+| Is this measurement normal? | Shapiro-Wilk, plus a Q-Q plot | `shapiro.test(x)`, `stat_qq()` |
+| Do 2 groups differ (normal)? | Welch's t-test | `t.test(y ~ group)` |
+| Do 2 groups differ (not normal)? | Wilcoxon rank-sum | `wilcox.test(y ~ group)` |
+| Do 3+ groups differ (normal)? | One-way ANOVA | `summary(aov(y ~ group))` |
+| Do 3+ groups differ (not normal)? | Kruskal-Wallis | `kruskal.test(y ~ group)` |
+| Did the same people change (normal differences)? | Paired t-test | `t.test(after, before, paired = TRUE)` |
+| Did the same people change (not normal)? | Wilcoxon signed-rank | `wilcox.test(after, before, paired = TRUE)` |
+| Are 2 categories associated? | Chi-square | `chisq.test(table(a, b))` |
+| Are 2 categories associated (small counts)? | Fisher's exact | `fisher.test(table(a, b))` |
+| Do 2 measurements move together? | Pearson or Spearman correlation | `cor.test(x, y, method = ...)` |
+| How big is a difference in means? | Difference with 95% CI; Cohen's d | `t.test()` output; difference ÷ pooled SD |
+| Could the study detect a difference? | Power calculation | `power.t.test(n, delta, sd, power = 0.8)` |
+
+## Common pitfalls
+
+| Problem | Symptom | Fix |
+|---|---|---|
+| Choosing the test after seeing the results | Trying tests until one gives p < 0.05 | Choose the test from the data type and design, before testing |
+| Many pairwise t-tests | False positives across lots of comparisons | Test all groups at once (ANOVA, Kruskal-Wallis); post hoc tests in Tutorial 5 |
+| Unpaired test on paired data | Real changes look non-significant | Use a paired test whenever the same people are measured twice |
+| Chi-square with small counts | R warns "approximation may be incorrect" | Check expected counts; use Fisher's exact test |
+| Leftover factor levels | `t.test()` complains about more than two groups | `droplevels()` after filtering |
+| "Not significant" read as "no difference" | Claiming groups are the same | Say "no evidence of a difference" and look at the confidence interval |
+| Only reporting p-values | Readers can't judge how big the difference is | Report the effect size with its confidence interval, plus the statistic and group sizes |
+| Significant read as important | A tiny difference reported as a finding | Judge the effect size, not the p-value |
+| Small study, no power | Real differences come out non-significant | Plan the sample size with `power.t.test()` before collecting data |
+
+## References
+
+::: {#refs}
+:::
+
+## Next
+
+Tutorial 5 (coming soon) builds on these tests: post hoc comparisons to find which groups differ, correcting for multiple tests, effect sizes for every test, planning sample sizes, and regression, with an interactive app to try the tests yourself.
+
+← Back to [Tutorial 3: Cleaning data in R](../03-clean-data-in-r/clean-data-in-r.qmd)

@@ -3,13 +3,17 @@ project:
   output-dir: docs
   # Only .qmd files are pages. data/ is local-only (gitignored) and can hold
   # .md/.qmd files from other projects and archives that must not be published.
+  # guides/ holds PDF guides (Typst), rendered one at a time with
+  # `quarto render guides/<name>/<name>.qmd`, not as website pages.
   render:
     - "*.qmd"
     - "!data/"
+    - "!guides/"
   resources:
     - CNAME   # custom domain for GitHub Pages; must be copied into docs/
     - "tutorials/data/*.xlsx"
     - "tutorials/data/*.csv"
+    - "guides/*/*.pdf"
 
 website:
   title: "Devon Allies"

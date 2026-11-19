@@ -1,0 +1,97 @@
+---
+title: "Choosing the right statistical test"
+subtitle: "A two-page guide for biomedical data, with the R function for each test"
+author: "Devon Allies"
+date: 2026-11-19
+date-format: "D MMMM YYYY"
+bibliography: references.bib
+csl: ../../assets/csl/harvard-anglia-ruskin-university.csl
+format:
+  typst:
+    papersize: a4
+    margin:
+      x: 1.7cm
+      y: 1.5cm
+    fontsize: 9.5pt
+    section-numbering: "1."
+    citeproc: true
+    include-in-header:
+      text: |
+        #show heading: set text(fill: rgb("#0F4C5C"))
+        #show link: set text(fill: rgb("#0F4C5C"))
+        #set table(stroke: 0.5pt + rgb("#9AA9AF"), inset: 4pt)
+        #show table.cell.where(y: 0): set text(weight: "bold", fill: white)
+        #set table(fill: (x, y) => if y == 0 { rgb("#0F4C5C") } else if calc.even(y) { rgb("#EEF4F5") })
+---
+
+Every statistical test answers a version of one question: **is the pattern in this sample big enough that it's unlikely to be chance?** Choosing the right test means matching the test to the *kind of data* and the *study design*, before you look at any results. Choosing after seeing the results, or trying tests until one gives p < 0.05, makes the p-value meaningless.
+
+# Answer four questions about your data
+
+1. **What is the outcome?** A *measurement* on a numeric scale (BMI, a cell count), an *ordered score* (a smear grade), or a *category* (HIV status)?
+2. **What are you comparing?** Two groups, three or more groups, or two variables measured on the same people?
+3. **Independent or paired?** Different people in each group, or the same people measured twice (before and after, two visits, matched pairs)?
+4. **For measurements: do the values look roughly normal in each group?** Tests that assume a normal distribution are *parametric*; their *non-parametric* alternatives use the ranks of the values instead.
+
+# Find the test
+
+```{=typst}
+#block(width: 100%)[
+  #set par(justify: false)
+  #table(
+    columns: (13%, 19%, 34%, 34%),
+    align: left + horizon,
+    [Outcome], [Design], [Values look normal], [Skewed, outliers or ordered score],
+    [Measurement], [2 independent groups],
+      [*Welch's t-test* \ `t.test(y ~ group)`],
+      [*Wilcoxon rank-sum* (Mann-Whitney U) \ `wilcox.test(y ~ group)`],
+    [Measurement], [3 or more independent groups],
+      [*One-way ANOVA* \ `summary(aov(y ~ group))`],
+      [*Kruskal-Wallis test* \ `kruskal.test(y ~ group)`],
+    [Measurement], [Same people, 2 time points],
+      [*Paired t-test* \ `t.test(after, before, paired = TRUE)`],
+      [*Wilcoxon signed-rank* \ `wilcox.test(after, before, paired = TRUE)`],
+    [Two measurements], [Same people],
+      [*Pearson correlation* \ `cor.test(x, y)`],
+      [*Spearman correlation* \ `cor.test(x, y, method = "spearman")`],
+    [Two categories], [Each person counted once],
+      [*Chi-square test* (large expected counts) \ `chisq.test(table(a, b))`],
+      [*Fisher's exact test* (small expected counts) \ `fisher.test(table(a, b))`],
+  )
+]
+```
+
+All of these functions are part of base R [@rcore2026]. For two categories, the choice depends on the expected counts rather than on normality (see below).
+
+# Check the assumptions
+
+**Independence comes first.** Every test here assumes each observation is independent: each person appears once, and one person's value doesn't affect another's. It's the most important assumption, because even mild dependence makes p-values too small, and only the study design can tell you whether it holds [@childs2021, section 13.2]. Repeated measurements on the same people need a paired test.
+
+**Normality, for the parametric tests.** Check each group separately, not the combined data. Look at a histogram or a Q-Q plot for strong skew and outliers, the departures that cause real problems [@vu2020, section 5.1]. The Shapiro-Wilk test (`shapiro.test()`) helps, but use it alongside the plots: it flags trivial departures in large samples and misses large ones in small samples. The t-test and ANOVA cope with mild non-normality once groups are reasonably large: about 30 per group [@vu2020, section 5.1], and comfortably over 100 [@childs2021, section 13.2]. For a paired t-test, it's the **differences** that need to be roughly normal, not the original values [@childs2021, section 20.3].
+
+**Equal spread.** The classic Student's t-test assumes both groups have the same variance; Welch's t-test, R's default, doesn't, so use it [@childs2021, section 13.2]. ANOVA does assume similar spread in each group [@vu2020, section 5.5].
+
+**Expected counts, for the chi-square test.** Work out the count you'd expect in each cell if there were no association: row total × column total ÷ overall total. If any *expected* count is below 5 [@childs2021, section 32.2], or below 10 by a more cautious rule [@vu2020, section 8.3], the chi-square p-value isn't reliable: use Fisher's exact test.
+
+# Parametric or non-parametric?
+
+Rank-based (non-parametric) tests make weaker assumptions, but they aren't assumption-free [@childs2021, section 33.1]. The Wilcoxon rank-sum and Kruskal-Wallis tests assume the groups' distributions have a **similar shape**; if they don't, a significant result only means values in one group *tend to be larger*, not that the medians differ. The signed-rank test assumes the differences are roughly symmetric [@childs2021, section 33.4], and Spearman's correlation assumes a *monotonic* relationship, one that rises or falls but doesn't form a hill or valley [@childs2021, section 33.7].
+
+The price of the weaker assumptions is power. When the data really is normal, the Wilcoxon rank-sum test is about 95% as powerful as the t-test [@childs2021, section 33.8], and Spearman's correlation roughly 91% as powerful as Pearson's [@childs2021, section 33.7]. Rank-based tests are also less informative: a significant Kruskal-Wallis test says the groups differ, but it's harder to tell which ones [@childs2021, section 33.8]. So: **use the parametric test when its assumptions hold, and the rank-based one when they don't.** A randomisation (permutation) test is another way to avoid assuming normality: see chapters 20 to 22 of @cetinkayarundel2024.
+
+# After the test
+
+- **Read the p-value correctly.** It's the probability of data at least this extreme *if there were no real difference*. Compare it with a significance level chosen in advance, usually α = 0.05 [@vu2020, section 4.3]. It isn't the probability that the null hypothesis is true, and it doesn't measure how big or important an effect is.
+- **"Not significant" means "no evidence of a difference",** not "the groups are the same". Look at the confidence interval: a wide interval that includes zero means the data can't tell [@vu2020, section 4.2].
+- **Report the effect size, not just the p-value.** Significance isn't importance: a tiny difference can be significant in a large study [@childs2021, section 10.3]. Give the difference in means or medians with its 95% confidence interval; Cohen's d (difference ÷ pooled SD) puts it in standard deviations, with 0.2, 0.5 and 0.8 as rough guides to small, medium and large [@cohen1988].
+- **Check the power.** Power is the chance of detecting a real effect of a given size [@cetinkayarundel2024, chapter 14]. It grows with the effect size and the sample size, and shrinks with variability. Plan studies for 80–90% power to detect the smallest difference that matters, rounding the sample size up [@vu2020, section 5.4]: `power.t.test(delta = , sd = , power = 0.8)`. A non-significant result from a study with low power means "too small to tell".
+- **Comparing many groups?** Each extra test adds a chance of a false positive: six pairwise tests at α = 0.05 give about a 26% chance of at least one. Test all groups at once (ANOVA, Kruskal-Wallis), then use a post hoc test with a correction such as Bonferroni [@vu2020, section 5.5].
+- **Correlation isn't causation.** A third variable, a *confounder*, can drive both measurements.
+- **Report the whole result** in one sentence: what was compared, the means or medians, the test, the statistic, the p-value and the group sizes. For example, from the simulated data in Tutorial 4: *median neutrophil percentage was higher in active TB than in latent TB infection (19.5% vs 1.8%; Wilcoxon rank-sum test, W = 0, p < 0.001; n = 157 and 151).*
+
+A worked example of every test above, in R on a simulated TB study, is in Tutorial 4 at [devonallies.co.za/tutorials](https://devonallies.co.za/tutorials.html).
+
+# References
+
+::: {#refs}
+:::

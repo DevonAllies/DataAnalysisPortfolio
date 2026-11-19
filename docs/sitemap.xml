@@ -50,7 +50,7 @@
   </url>
   <url>
     <loc>https://devonallies.co.za/tutorials.html</loc>
-    <lastmod>2026-11-17T08:04:31.458Z</lastmod>
+    <lastmod>2026-11-17T09:03:59.293Z</lastmod>
   </url>
   <url>
     <loc>https://devonallies.co.za/tutorials/01-import-data-in-r/import-data-in-r.html</loc>
@@ -66,6 +66,10 @@
   </url>
   <url>
     <loc>https://devonallies.co.za/tutorials/03-clean-data-in-r/clean-data-in-r.html</loc>
-    <lastmod>2026-11-17T08:02:01.846Z</lastmod>
+    <lastmod>2026-11-17T09:23:24.910Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/tutorials/04-statistical-tests-in-r/statistical-tests-in-r.html</loc>
+    <lastmod>2026-11-19T06:25:07.684Z</lastmod>
   </url>
 </urlset>

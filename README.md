@@ -35,11 +35,14 @@ A numbered, hands-on series built on one small extract of a simulated TB study (
 2. [Using one dataset in both R and Python](https://devonallies.co.za/tutorials/02-r-and-python/r-and-python-dataframes.html): passing data frames between R and pandas with reticulate, and the conversions that quietly corrupt data.
 3. [Cleaning data in R](https://devonallies.co.za/tutorials/03-clean-data-in-r/clean-data-in-r.html): consistent categories with `tolower()` and `case_when()`, missing-value codes that are really an answer, mixed date formats, impossible measurements, rows flagged for review, and a log of every cleaning decision.
 
-The cleaned data is in `tutorials/data/` too: `bal_metadata_clean.csv` (one row per participant) and `bal_cell_counts_clean.csv` (one row per visit), built by `scripts/build_clean_data.R` with the same rules as Tutorial 3. Later tutorials start from these files.
+4. [Choosing and running statistical tests in R](https://devonallies.co.za/tutorials/04-statistical-tests-in-r/statistical-tests-in-r.html): what each common test does and when to use it, checking assumptions, t-tests, Wilcoxon tests, ANOVA, Kruskal-Wallis, paired tests, chi-square, Fisher's exact test and correlation, then effect size and power. Each test points to free textbooks for further reading.
+
+The cleaned data is in `tutorials/data/` too: `bal_metadata_clean.csv` (one row per participant) and `bal_cell_counts_clean.csv` (one row per visit), built by `scripts/build_clean_data.R` with the same rules as Tutorial 3. Tutorial 4 onwards starts from these files.
+
+**Guide:** [Choosing the right statistical test](https://devonallies.co.za/guides/choosing-a-statistical-test/choosing-a-statistical-test.pdf), a two-page PDF that goes with Tutorial 4 (source in [`guides/choosing-a-statistical-test/`](guides/choosing-a-statistical-test/)).
 
 **Coming next**, using the same data:
 
-4. Statistical tests: choosing the right test and running the common ones in RStudio
 5. Specialised tests: post hoc comparisons, multiple testing and regression, with an interactive [Shinylive](https://posit-dev.github.io/r-shinylive/) app that runs in the browser
 6. Machine learning: building and evaluating a predictive model in Python
 
@@ -72,6 +75,7 @@ projects/<name>/       one folder per project, all with the same layout:
 tutorials/             numbered tutorials, their dataset in tutorials/data/ and the series banner in tutorials/images/
 assets/                shared files: css/ (theme.scss, theme-dark.scss for dark mode, styles.css),
                          images/ (me.jpeg About photo, og-card.jpg link-preview card), csl/ (citation style)
+guides/                printable PDF guides (Quarto + Typst), e.g. choosing-a-statistical-test/; not website pages
 scripts/               helper scripts: refresh publications, rebuild tutorial data, build the cleaned tutorial data
 _data/                 publications.json, built by scripts/fetch_publications.py
 docs/                  rendered site (committed; served by GitHub Pages)
@@ -102,7 +106,7 @@ uv run python scripts/fetch_publications.py
 quarto render publications.qmd
 ```
 
-**Which pages render from a fresh clone:** the home, listing, About, Contact and Publications pages, all three tutorials, and the COVID-19, TB trends, credit risk, BAL Databricks and WGS pipeline projects render from the repo alone. *Using R and Python Together* downloads its data from Kaggle. The chrX RNA-seq and TB BAL cytokine projects read local data that isn't in the repo (`data/` is gitignored), so render pages one at a time with `quarto render projects/<name>/index.qmd` and preview with `quarto preview --no-render`. The rendered versions in `docs/` are always current.
+**Which pages render from a fresh clone:** the home, listing, About, Contact and Publications pages, all four tutorials, the PDF guide, and the COVID-19, TB trends, credit risk, BAL Databricks and WGS pipeline projects render from the repo alone. *Using R and Python Together* downloads its data from Kaggle. The chrX RNA-seq and TB BAL cytokine projects read local data that isn't in the repo (`data/` is gitignored), so render pages one at a time with `quarto render projects/<name>/index.qmd` and preview with `quarto preview --no-render`. The rendered versions in `docs/` are always current.
 
 ## Contact
 

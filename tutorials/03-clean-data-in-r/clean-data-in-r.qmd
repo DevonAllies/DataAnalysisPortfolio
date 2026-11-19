@@ -569,7 +569,7 @@ metadata_clean |>
   arrange(bmi)
 ```
 
-Both measurements agree for these participants (178 cm and about 30 kg, for example), so this isn't a typing error the second measurement can catch. Severe weight loss is common in TB, but not usually this severe. The height or weight could have been recorded for the wrong person. You can't tell from the data, so these rows get flagged for review in the next section.
+Both measurements agree for these participants (178 cm and about 30 kg, for example), so this isn't a typing error the second measurement can catch. The values could be real, or the height or weight could have been recorded for the wrong person. You can't tell from the data, so these rows get flagged for review in the next section.
 
 ::: {.callout-tip}
 Choose plausible ranges **before** you look at the results, and base them on biology rather than on the data (100–220 cm covers the adolescents and adults in this study). A range picked to remove the points you don't like isn't a rule, it's a way of hiding data.
@@ -679,6 +679,6 @@ Two columns are left for you, using the same patterns:
 
 ## Next
 
-The cleaned metadata is ready for analysis. Tutorial 4, on choosing and running statistical tests in R, is coming soon.
+The cleaned metadata is ready for analysis. In [Tutorial 4](../04-statistical-tests-in-r/statistical-tests-in-r.qmd) you'll choose and run statistical tests on it, starting from the cleaned files.
 
 ← Back to [Tutorial 2: Using one dataset in both R and Python](../02-r-and-python/r-and-python-dataframes.qmd)
