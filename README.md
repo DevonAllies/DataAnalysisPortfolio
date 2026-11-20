@@ -49,9 +49,10 @@ The cleaned data is in `tutorials/data/` too: `bal_metadata_clean.csv` (one row 
 ## Publications & Writing
 
 - **Peer-reviewed papers:** three papers in TB diagnostics, BAL research and a phase 2 vaccine trial (*Scientific Reports*, *BMC Infectious Diseases*, *The Lancet Infectious Diseases*), cited 100+ times. ORCID: [0000-0001-8928-4334](https://orcid.org/0000-0001-8928-4334)
+- **On this site:** [Choosing the right statistics for cytokine data](https://devonallies.co.za/writing/choosing-statistics-for-cytokine-data/), on values below the detection limit, skewed concentrations and multiple testing, worked through on simulated plasma data (`tutorials/data/bal_plasma_cytokines.xlsx`, built by `scripts/simulate_plasma_cytokines.py`). Source in [`writing/`](writing/).
 - **Articles:** a series on [Medium](https://medium.com/@alliesdl) about reproducible research and scientific writing with Quarto.
 
-The page is generated from `_data/publications.json`, which a script builds from ORCID, Crossref and the Medium RSS feed (see below).
+The papers and Medium articles come from `_data/publications.json`, which a script builds from ORCID, Crossref and the Medium RSS feed (see below).
 
 ## How the site is built
 
@@ -75,8 +76,10 @@ projects/<name>/       one folder per project, all with the same layout:
 tutorials/             numbered tutorials, their dataset in tutorials/data/ and the series banner in tutorials/images/
 assets/                shared files: css/ (theme.scss, theme-dark.scss for dark mode, styles.css),
                          images/ (me.jpeg About photo, og-card.jpg link-preview card), csl/ (citation style)
+writing/               articles on this site, one folder each (index.qmd + references.bib); listed on Publications & Writing
 guides/                printable PDF guides (Quarto + Typst), e.g. choosing-a-statistical-test/; not website pages
-scripts/               helper scripts: refresh publications, rebuild tutorial data, build the cleaned tutorial data
+scripts/               helper scripts: refresh publications, rebuild tutorial data, build the cleaned tutorial data,
+                         simulate the plasma cytokine data
 _data/                 publications.json, built by scripts/fetch_publications.py
 docs/                  rendered site (committed; served by GitHub Pages)
 ```
@@ -101,12 +104,15 @@ quarto render projects/covid19-blood-counts/index.qmd
 # Rebuild the cleaned tutorial data after changing the cleaning rules
 Rscript scripts/build_clean_data.R
 
+# Rebuild the simulated plasma cytokine data used by the cytokine article
+uv run python scripts/simulate_plasma_cytokines.py
+
 # Refresh publications and articles from ORCID, Crossref and Medium
 uv run python scripts/fetch_publications.py
 quarto render publications.qmd
 ```
 
-**Which pages render from a fresh clone:** the home, listing, About, Contact and Publications pages, all four tutorials, the PDF guide, and the COVID-19, TB trends, credit risk, BAL Databricks and WGS pipeline projects render from the repo alone. *Using R and Python Together* downloads its data from Kaggle. The chrX RNA-seq and TB BAL cytokine projects read local data that isn't in the repo (`data/` is gitignored), so render pages one at a time with `quarto render projects/<name>/index.qmd` and preview with `quarto preview --no-render`. The rendered versions in `docs/` are always current.
+**Which pages render from a fresh clone:** the home, listing, About, Contact and Publications pages, all four tutorials, the PDF guide, the cytokine article, and the COVID-19, TB trends, credit risk, BAL Databricks and WGS pipeline projects render from the repo alone. *Using R and Python Together* downloads its data from Kaggle. The chrX RNA-seq and TB BAL cytokine projects read local data that isn't in the repo (`data/` is gitignored), so render pages one at a time with `quarto render projects/<name>/index.qmd` and preview with `quarto preview --no-render`. The rendered versions in `docs/` are always current.
 
 ## Contact
 

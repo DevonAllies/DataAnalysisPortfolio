@@ -75,6 +75,41 @@ for (p in pubs) {
 }
 ```
 
+## On this site
+
+::: {.pub-intro}
+Longer articles published here, with the data and code to follow along.
+:::
+
+```{r}
+#| label: site-articles
+#| output: asis
+# Every article in writing/<name>/index.qmd, newest first, from its own front matter
+site_articles <- list.files(here::here("writing"), pattern = "^index\\.qmd$",
+                            recursive = TRUE, full.names = TRUE)
+site_articles <- lapply(site_articles, \(f) {
+  meta <- rmarkdown::yaml_front_matter(f)
+  meta$href <- paste0("writing/", basename(dirname(f)), "/index.qmd")
+  meta
+})
+site_articles <- site_articles[order(vapply(site_articles, \(m) as.character(m$date), ""),
+                                     decreasing = TRUE)]
+
+for (a in site_articles) {
+  tags <- paste(sprintf("[%s]{.article-tag}", unlist(a$categories)), collapse = " ")
+  cat(
+    "::: {.pub-card .article-card}\n",
+    sprintf("[%s]{.pub-year}\n\n", format(as.Date(a$date), "%d %B %Y")),
+    sprintf("[%s]{.pub-title}\n\n", a$title),
+    sprintf("%s\n\n", a$subtitle),
+    sprintf("%s\n\n", tags),
+    sprintf("[Read the article](%s){.btn .btn-sm .btn-primary}\n", a$href),
+    ":::\n\n",
+    sep = ""
+  )
+}
+```
+
 ## Articles
 
 ::: {.pub-intro}

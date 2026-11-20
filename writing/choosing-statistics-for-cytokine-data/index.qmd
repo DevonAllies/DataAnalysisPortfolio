@@ -1,0 +1,564 @@
+---
+title: "Choosing the right statistics for cytokine data"
+subtitle: "Values below the detection limit, skewed concentrations and 27 tests at once, worked through on simulated plasma data"
+author: "Devon Allies"
+date: 2026-11-20
+description: "Cytokine panels measure dozens of analytes at once, and the usual approach (a t-test per cytokine, stars on anything below 0.05) can both miss real effects and report false ones. Seven decisions, demonstrated on simulated plasma data where the true effects are known."
+categories: [Statistics, R, Cytokines]
+bibliography: references.bib
+csl: ../../assets/csl/harvard-anglia-ruskin-university.csl
+engine: knitr
+toc: true
+toc-depth: 2
+toc-location: left
+code-fold: true
+code-summary: "Show the code"
+execute:
+  warning: false
+  message: false
+---
+
+A multiplex cytokine panel measures dozens of analytes in every sample. The tempting analysis is quick: run a t-test on each cytokine, put a star on everything below 0.05, and write up the stars. But cytokine data breaks the assumptions behind that approach in several ways at once, and the result can both **miss real effects** and **report false ones**.
+
+This article works through seven decisions that change the answer, using a simulated dataset where the truth is known, because the effects were built into it.
+
+::: {.callout-important appearance="simple"}
+## Simulated data
+
+Every value here is **simulated**: no row describes a real person, and none of the results describe real patients. The dataset has 27 cytokines measured in plasma from the 500 fictional participants of my [tutorial series](../../tutorials.qmd), at baseline, month 3 and month 6. Its layout copies a real multiplex export, including the codes for values outside the assay's range, but the numbers are invented.
+
+[Download bal_plasma_cytokines.xlsx](../../tutorials/data/bal_plasma_cytokines.xlsx){.btn .btn-sm .btn-outline-primary}
+[Download bal_metadata_clean.csv](../../tutorials/data/bal_metadata_clean.csv){.btn .btn-sm .btn-outline-primary}
+
+The code for every step is folded away: click **Show the code** above a table or figure to see how it was made.
+:::
+
+```{r}
+#| label: setup
+#| code-summary: "Show the code: packages and data"
+library(readxl)
+library(readr)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+library(ggrepel)
+library(kableExtra)
+library(here)
+
+# Every table in the article goes through this, so they share one style
+show_table <- function(x, ...) {
+  kbl(x, ...) |>
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                  full_width = FALSE, position = "left")
+}
+
+plasma_raw <- read_excel(here("tutorials", "data", "bal_plasma_cytokines.xlsx"),
+                         sheet = "Plasma", col_types = "text")
+metadata <- read_csv(here("tutorials", "data", "bal_metadata_clean.csv"), show_col_types = FALSE)
+
+cytokines <- setdiff(names(plasma_raw), c("Pt_ID", "Visit", "Notes"))
+
+theme_set(theme_minimal(base_size = 12))
+teal <- "#0F4C5C"
+orange <- "#E36414"
+```
+
+## 1. Read what the assay actually reported
+
+Open a multiplex export and many cells aren't numbers. Each cytokine has a range the assay can measure. Values below the lower limit come back as codes such as `OOR <4.8` ("out of range, below 4.8 pg/ml"), and values above the upper limit as `OOR >30432.0`. The same code is often written several ways in one file:
+
+```{r}
+#| label: tbl-raw-codes
+#| tbl-cap: "Four samples with IL-10, IL-13 and GM-CSF all below the detection limit, exactly as the assay reported them (simulated data)."
+#| code-fold: show
+plasma_raw |>
+  select(Pt_ID, Visit, `IL-10`, `IL-13`, `GM-CSF`) |>
+  filter(if_all(c(`IL-10`, `IL-13`, `GM-CSF`), \(x) str_detect(x, "<"))) |>
+  head(4) |>
+  show_table()
+```
+
+Before choosing any test, turn the codes into information instead of throwing them away. For each value, record whether it was below or above the limit, and what the limit was:
+
+```{r}
+#| label: parse
+#| code-summary: "Show the code: parse the out-of-range codes"
+plasma <- plasma_raw |>
+  mutate(Pt_ID = toupper(Pt_ID)) |>
+  pivot_longer(all_of(cytokines), names_to = "cytokine", values_to = "reported") |>
+  mutate(
+    below = str_detect(reported, "<"),
+    above = str_detect(reported, ">"),
+    limit = as.numeric(str_extract(reported, "[0-9.]+$")),
+    value = suppressWarnings(as.numeric(reported))
+  ) |>
+  inner_join(select(metadata, pt_id, tb_diagnosis, hiv_status), by = c("Pt_ID" = "pt_id"))
+
+# Each cytokine's lower limit of detection, taken from its own codes
+lod <- plasma |> filter(below) |> distinct(cytokine, lod = limit)
+
+plasma <- plasma |>
+  left_join(lod, by = "cytokine") |>
+  mutate(cytokine = factor(cytokine, levels = cytokines))
+```
+
+```{r}
+#| label: fig-below
+#| fig-cap: "Share of baseline samples below the lower limit of detection, by cytokine (simulated data)."
+#| fig-height: 5
+#| code-summary: "Show the code: share below the limit"
+plasma |>
+  filter(Visit == "Baseline") |>
+  group_by(cytokine) |>
+  summarise(below = mean(below) * 100) |>
+  ggplot(aes(below, reorder(cytokine, below))) +
+  geom_col(fill = teal) +
+  labs(x = "Below the detection limit (%)", y = NULL)
+```
+
+In this dataset, between 0% and 35% of baseline values fall below the limit, depending on the cytokine (@fig-below). That's too many to ignore.
+
+## 2. Think twice before dropping values below the detection limit
+
+The easiest thing to do with `OOR <4.8` is to treat it as missing. It can also do the most damage. A value below the limit isn't entirely unknown: we know it's **low**. Dropping it removes exactly the low values, and if one group has more of them, it removes the difference you're looking for.
+
+IL-10 shows how much this matters. The simulation includes a real increase in IL-10 in the active TB group. Compare the four diagnosis groups at baseline with a Kruskal-Wallis test, first dropping the values below the limit, then keeping them:
+
+```{r}
+#| label: tbl-il10
+#| tbl-cap: "Kruskal-Wallis test of baseline IL-10 across the four diagnosis groups, with values below the limit dropped or kept as the lowest values (simulated data)."
+#| code-summary: "Show the code: IL-10, dropped vs kept"
+il10 <- plasma |> filter(Visit == "Baseline", cytokine == "IL-10")
+
+# 1. Below-limit values treated as missing (dropped)
+dropped <- kruskal.test(value ~ tb_diagnosis, data = il10)
+
+# 2. Below-limit values kept as the lowest values
+kept <- kruskal.test(if_else(below, 0, value) ~ tb_diagnosis, data = il10)
+
+tibble(
+  approach = c("Below-limit values dropped", "Below-limit values kept as lowest"),
+  p_value  = format.pval(c(dropped$p.value, kept$p.value), digits = 2)
+) |>
+  show_table(col.names = c("Approach", "Kruskal-Wallis p"), align = "lr")
+```
+
+Dropped, the difference disappears (p = 0.14). Kept, it's clear (p < 0.001; @tbl-il10). The reason is visible in how often IL-10 was detected at all:
+
+```{r}
+#| label: tbl-il10-detected
+#| tbl-cap: "Share of baseline samples in which IL-10 was detected, by diagnosis group (simulated data)."
+#| code-summary: "Show the code: IL-10 detection by group"
+il10 |>
+  group_by(tb_diagnosis) |>
+  summarise(n = n(), detected = round(mean(!below) * 100)) |>
+  show_table(col.names = c("Diagnosis", "Samples", "Detected (%)"))
+```
+
+IL-10 was detected in 85% of the active TB group but only 68% of controls (@tbl-il10-detected). Dropping the undetected values throws away that difference.
+
+**If you keep them,** the options depend on how many values are below the limit and which method you use:
+
+- **Rank-based tests** (Wilcoxon, Kruskal-Wallis) handle it neatly. Every value below the limit is smaller than every detected value, so they all tie for the lowest ranks. It doesn't matter what number you put in for them, as long as it's below the limit: the test gives the same answer. That's why replacing them with 0 above works.
+- **Simple substitution** with the limit divided by √2 or by 2 is common when you need means or fold changes. Hornung and Reed suggested the limit ÷ √2 for data that isn't highly skewed, and the limit ÷ 2 when it is [@hornung1990].
+- **Methods designed for censored data** are more principled. Substituting a value and then running t-tests has repeatedly been shown to give inaccurate results, and survival-analysis methods built for "less than" values avoid the guess altogether [@helsel2012]. **Multiple imputation** is another option: each value below the limit is filled in several times with plausible values below the limit, and the results are combined so the uncertainty about the true values is carried into the analysis. In simulations with 10% to 60% of values below the limit, it gave less biased estimates than substitution, particularly as the share below the limit grew [@zhang2012].
+- **When most values are below the limit,** the concentration carries little information. Analyse whether the cytokine was **detected or not** instead, with a chi-square or Fisher's exact test.
+
+**What I'm doing in my master's.** My master's analysis, which is still under way, takes a different approach. First, I leave out any cytokine with more than 40–50% of its values out of range or missing, because so little of it has actually been measured. Then, for the cytokines I keep, I leave the OOR values out of the tests and don't substitute anything for them. The true values aren't known, and I don't want a guessed number to skew the results.
+
+This is one approach among several, and it isn't universally accepted. Each choice has a cost: leaving the values out can hide a real difference, as IL-10 shows above, while substituting a value means analysing a number nobody measured. Section 5 runs the whole panel both ways, so you can see what the choice changes.
+
+```{r}
+#| label: cutoff
+#| code-summary: "Show the code: apply a 40% cutoff"
+oor_share <- plasma |>
+  filter(Visit == "Baseline") |>
+  group_by(cytokine) |>
+  summarise(pct_oor = mean(below | above | is.na(reported)) * 100, .groups = "drop")
+
+excluded <- oor_share |> filter(pct_oor > 40)
+```
+
+In this dataset a 40% cutoff removes `r if (nrow(excluded) == 0) "nothing" else paste(excluded$cytokine, collapse = ", ")`: the cytokine with the most OOR values, `r oor_share$cytokine[which.max(oor_share$pct_oor)]`, has `r round(max(oor_share$pct_oor))`% at baseline.
+
+Values *above* the upper limit are rarer. Set them to the upper limit, and note how many there were.
+
+The rest of this article keeps every value: ranks for testing, and the limit ÷ √2 where a number is needed.
+
+```{r}
+#| label: substitute
+#| code-summary: "Show the code: substitute the limit ÷ √2"
+plasma <- plasma |>
+  mutate(conc = case_when(
+    below ~ lod / sqrt(2),
+    above ~ limit,
+    TRUE  ~ value
+  ))
+```
+
+## 3. Expect skewed concentrations, and log them
+
+Cytokine concentrations in this dataset have a long right tail: most samples are low, a few are very high. IP-10 is typical (@fig-skew):
+
+```{r}
+#| label: fig-skew
+#| fig-cap: "Baseline IP-10 in pg/ml (left) and on a log scale (right). The log-transformed values are close to symmetric (simulated data)."
+#| fig-height: 3.2
+#| code-summary: "Show the code: histograms of IP-10"
+plasma |>
+  filter(Visit == "Baseline", cytokine == "IP-10") |>
+  transmute(`pg/ml` = conc, `log(pg/ml)` = log(conc)) |>
+  pivot_longer(everything()) |>
+  mutate(name = factor(name, levels = c("pg/ml", "log(pg/ml)"))) |>
+  ggplot(aes(value)) +
+  geom_histogram(bins = 30, fill = teal, colour = "white") +
+  facet_wrap(~ name, scales = "free") +
+  labs(x = NULL, y = "Samples")
+```
+
+The histogram is the first check. The second is a formal test of normality, the **Shapiro-Wilk test**, whose null hypothesis is that the values come from a normal distribution: a small p-value means they probably don't.
+
+```{r}
+#| label: tbl-shapiro
+#| tbl-cap: "Shapiro-Wilk test of baseline IP-10 on the original and log scales (simulated data)."
+#| code-summary: "Show the code: Shapiro-Wilk test on IP-10"
+ip10 <- plasma |> filter(Visit == "Baseline", cytokine == "IP-10")
+tibble(
+  scale = c("Original (pg/ml)", "Logged"),
+  p     = format.pval(c(shapiro.test(ip10$conc)$p.value,
+                        shapiro.test(log(ip10$conc))$p.value), digits = 2)
+) |>
+  show_table(col.names = c("Scale", "Shapiro-Wilk p"), align = "lr")
+```
+
+On the original scale, a t-test's assumption of roughly normal values fails badly (Shapiro-Wilk p < 0.001; @tbl-shapiro). After a log transformation the values are close to normal (p = 0.25), and the parametric tests are back on the table [@childs2021, section 24.4].
+
+IP-10 is one of the easy cases, though. Run the same test on every cytokine:
+
+```{r}
+#| label: tbl-shapiro-panel
+#| tbl-cap: "Cytokines whose baseline values look normal (Shapiro-Wilk p > 0.05), grouped by the share of values below the detection limit (simulated data)."
+#| code-summary: "Show the code: Shapiro-Wilk test on all 27 cytokines"
+normality <- plasma |>
+  filter(Visit == "Baseline") |>
+  group_by(cytokine) |>
+  summarise(
+    pct_below = mean(below) * 100,
+    p_original = shapiro.test(conc)$p.value,
+    p_logged   = shapiro.test(log(conc))$p.value,
+    .groups = "drop"
+  )
+
+normality |>
+  mutate(values_below_limit = case_when(
+    pct_below == 0 ~ "None",
+    pct_below < 1  ~ "Under 1%",
+    TRUE           ~ "1% or more"
+  ),
+  values_below_limit = factor(values_below_limit, levels = c("None", "Under 1%", "1% or more"))) |>
+  group_by(values_below_limit) |>
+  summarise(cytokines = n(),
+            normal_original = sum(p_original > 0.05),
+            normal_logged   = sum(p_logged > 0.05)) |>
+  arrange(values_below_limit) |>
+  show_table(col.names = c("Values below the limit", "Cytokines",
+                           "Normal, original scale", "Normal, logged"))
+```
+
+None of the 27 cytokines look normal on the original scale (@tbl-shapiro-panel). After logging, 15 do: the 12 with **no values below the detection limit**, and 3 with only one or two. The other 12, each with 5% or more of its values below the limit, still fail after logging, and the histogram shows why. IL-13, the cytokine with the most values below the limit, has a spike where every substituted value sits at the same number (@fig-spike):
+
+```{r}
+#| label: fig-spike
+#| fig-cap: "Baseline IL-13 on a log scale. The spike on the left is the 35% of samples below the detection limit, all substituted with the same value (simulated data)."
+#| fig-height: 3
+#| code-summary: "Show the code: histogram of logged IL-13"
+plasma |>
+  filter(Visit == "Baseline", cytokine == "IL-13") |>
+  ggplot(aes(log(conc))) +
+  geom_histogram(bins = 30, fill = teal, colour = "white") +
+  labs(x = "log(pg/ml)", y = "Samples")
+```
+
+No transformation can spread out values that were all given the same number, and leaving them out doesn't help either: the detected values alone stop sharply at the limit. For cytokines with values below the limit, rank-based tests are the safer route.
+
+Use the histogram and the test together. With hundreds of samples, Shapiro-Wilk can flag departures from normality too small to matter; with a handful, it can miss large ones. The picture shows what the p-value can't: whether the problem is a long tail, a spike or a cut-off.
+
+Logging also matches how cytokine differences are usually described: as **ratios** ("twice as high") rather than differences in pg/ml. A t-test on log values compares *geometric* means, and its result transforms back into a ratio with a confidence interval [@childs2021, section 24.4]. So there are two sound routes:
+
+- **Log the values,** then use t-tests or ANOVA, and report ratios.
+- **Use rank-based tests** on the original values, which need no transformation and handle the below-limit values automatically.
+
+Running a t-test on the raw pg/ml values isn't one of them.
+
+## 4. Match the test to the design
+
+Which test to use depends on the question, not the cytokine. My [two-page guide to choosing a test](../../guides/choosing-a-statistical-test/choosing-a-statistical-test.pdf) and [Tutorial 4](../../tutorials/04-statistical-tests-in-r/statistical-tests-in-r.qmd) cover the choices in full; for cytokine panels, @tbl-designs sets out the common designs.
+
+| Question | Logged values | Original values (ranks) |
+|---|---|---|
+| Two groups (active TB vs controls) | Welch's t-test | Wilcoxon rank-sum |
+| Three or more groups (all four diagnoses) | One-way ANOVA | Kruskal-Wallis |
+| Same people at two visits | Paired t-test on the log differences | Wilcoxon signed-rank |
+| Detected or not, by group | Chi-square, or Fisher's exact for small counts | — |
+
+: Tests for common cytokine-panel designs, on logged values or on ranks. {#tbl-designs}
+
+**Repeated visits deserve particular care.** The same participants were sampled at baseline, month 3 and month 6, so their samples aren't independent. Comparing the visits as if they came from different people wastes the design. In the simulation, IP-10 falls during follow-up in the active TB group. Compare baseline with month 6 for the participants who have both:
+
+```{r}
+#| label: tbl-paired
+#| tbl-cap: "IP-10 at month 6 compared with baseline in the active TB group: ratio of geometric means with its 95% CI, and p-values from paired and unpaired t-tests on the log values (simulated data)."
+#| code-summary: "Show the code: paired vs unpaired t-test"
+ip10_pairs <- plasma |>
+  filter(cytokine == "IP-10", tb_diagnosis == "Active TB", Visit %in% c("Baseline", "Month6")) |>
+  select(Pt_ID, Visit, conc) |>
+  pivot_wider(names_from = Visit, values_from = conc) |>
+  filter(!is.na(Baseline), !is.na(Month6))
+
+log_change <- log(ip10_pairs$Month6) - log(ip10_pairs$Baseline)
+paired   <- t.test(log_change)
+unpaired <- t.test(log(ip10_pairs$Month6), log(ip10_pairs$Baseline))
+
+tibble(
+  participants = nrow(ip10_pairs),
+  ratio        = round(exp(mean(log_change)), 2),
+  ci_low       = round(exp(paired$conf.int[1]), 2),
+  ci_high      = round(exp(paired$conf.int[2]), 2),
+  p_paired     = format(signif(paired$p.value, 2)),
+  p_unpaired   = format(signif(unpaired$p.value, 2))
+) |>
+  show_table(col.names = c("Participants", "Ratio (month 6 ÷ baseline)", "95% CI low",
+                           "95% CI high", "p, paired", "p, unpaired"))
+```
+
+By month 6, IP-10 was on average 0.44 times its baseline level (95% CI 0.37 to 0.51; @tbl-paired). The paired test's p-value is about ten million times smaller than the unpaired one on the same data, because comparing each person with themselves removes the person-to-person variation [@childs2021, section 20.2].
+
+## 5. 27 cytokines means 27 tests
+
+Each test at α = 0.05 has a 5% chance of a false positive. Run 27 of them on data with no real differences at all, and you'd expect more than one "significant" cytokine by chance alone (27 × 0.05 ≈ 1.4).
+
+Compare active TB with controls at baseline, one Wilcoxon test per cytokine, then correct the p-values two ways:
+
+- **Bonferroni** multiplies each p-value by the number of tests. It strictly limits the chance of even one false positive, but it's very cautious [@vu2020, section 5.5].
+- **Benjamini-Hochberg** controls the **false discovery rate**: the expected proportion of false positives among the cytokines you call significant [@benjamini1995]. It's less cautious, which is why it's widely used when many outcomes are tested at once.
+
+```{r}
+#| label: tbl-screen
+#| tbl-cap: "The nine cytokines with the smallest p-values, active TB vs controls at baseline: ratio of geometric means, Wilcoxon p-value, and Bonferroni and Benjamini-Hochberg corrected values (simulated data)."
+#| code-summary: "Show the code: one Wilcoxon test per cytokine, then correct"
+screen <- plasma |>
+  filter(Visit == "Baseline", tb_diagnosis %in% c("Active TB", "Control")) |>
+  group_by(cytokine) |>
+  summarise(
+    ratio = exp(mean(log(conc[tb_diagnosis == "Active TB"])) -
+                mean(log(conc[tb_diagnosis == "Control"]))),
+    p = wilcox.test(conc ~ tb_diagnosis, exact = FALSE)$p.value,
+    .groups = "drop"
+  ) |>
+  mutate(
+    p_bonferroni = p.adjust(p, method = "bonferroni"),
+    q_bh         = p.adjust(p, method = "BH")
+  ) |>
+  arrange(p)
+
+# p-values too small for the computer to store come out as 0; show them as "< 1e-16"
+screen |>
+  head(9) |>
+  mutate(ratio = round(ratio, 2),
+         across(c(p, p_bonferroni, q_bh), \(x) format.pval(x, digits = 2, eps = 1e-16))) |>
+  show_table(col.names = c("Cytokine", "Ratio (active TB ÷ controls)", "p",
+                           "p, Bonferroni", "q, Benjamini-Hochberg"))
+```
+
+```{r}
+#| label: tbl-screen-count
+#| tbl-cap: "Number of cytokines significant at 0.05 before and after correcting for 27 tests (simulated data)."
+#| code-summary: "Show the code: count the significant cytokines"
+screen |>
+  summarise(unadjusted = sum(p < 0.05), bonferroni = sum(p_bonferroni < 0.05), bh = sum(q_bh < 0.05)) |>
+  show_table(col.names = c("Unadjusted", "Bonferroni", "Benjamini-Hochberg"))
+```
+
+Eight cytokines are significant before correction, and seven after either correction (@tbl-screen-count). The one that drops out, **Eotaxin** (p = 0.03 in @tbl-screen), is a cytokine with **no effect** in the simulation: a false positive that the uncorrected analysis would have reported as a finding. The seven that survive are exactly the seven with a built-in difference.
+
+Correction doesn't make a panel foolproof. The false discovery rate is controlled *on average*, so some false positives can still get through, and every correction trades some power for fewer false alarms. But reporting uncorrected p-values from 27 tests reports noise as findings.
+
+### The same screen with the OOR values left out
+
+Here is the analysis from @tbl-screen repeated the way I'm handling it in my master's: OOR values left out of the tests, nothing substituted.
+
+```{r}
+#| label: tbl-left-out
+#| tbl-cap: "Active TB vs controls at baseline, with OOR values kept (as in @tbl-screen) and left out. Only cytokines with OOR values are shown; the rest give identical results either way. Ratios are of geometric means; q-values are Benjamini-Hochberg corrected across all 27 cytokines (simulated data)."
+#| code-summary: "Show the code: repeat the screen with OOR values left out"
+built_in <- c("IP-10", "IFN-y", "IL-1ra", "IL-6", "TNF-a", "IL-10", "MCP-1")
+
+screen_left_out <- plasma |>
+  filter(Visit == "Baseline", tb_diagnosis %in% c("Active TB", "Control")) |>
+  group_by(cytokine) |>
+  summarise(
+    pct_oor = mean(below | above) * 100,
+    # value is NA wherever the assay reported an OOR code, so these use detected values only
+    ratio_out = exp(mean(log(value[tb_diagnosis == "Active TB"]), na.rm = TRUE) -
+                    mean(log(value[tb_diagnosis == "Control"]), na.rm = TRUE)),
+    p_out = wilcox.test(value ~ tb_diagnosis, exact = FALSE)$p.value,
+    .groups = "drop"
+  ) |>
+  mutate(q_out = p.adjust(p_out, method = "BH"))
+
+screen |>
+  select(cytokine, ratio, p, q_bh) |>
+  inner_join(screen_left_out, by = "cytokine") |>
+  filter(pct_oor > 0) |>
+  arrange(desc(pct_oor)) |>
+  transmute(cytokine,
+            pct_oor = round(pct_oor, 1),
+            effect  = if_else(cytokine %in% built_in, "Yes", "No"),
+            ratio   = round(ratio, 2), ratio_out = round(ratio_out, 2),
+            across(c(p, p_out, q_bh, q_out), \(x) sapply(x, format.pval, digits = 2, eps = 1e-16))) |>
+  show_table(col.names = c("Cytokine", "OOR (%)", "Effect built in",
+                           "Kept", "Left out", "Kept", "Left out", "Kept", "Left out")) |>
+  add_header_above(c(" " = 3, "Ratio" = 2, "p" = 2, "q" = 2))
+```
+
+With the OOR values left out, Benjamini-Hochberg finds `r sum(screen_left_out$q_out < 0.05)` significant cytokines instead of `r sum(screen$q_bh < 0.05)`, and three results change:
+
+- **IL-10 is missed.** Its real effect is no longer significant (q = 0.27, against 0.002 with the values kept).
+- **IL-6's ratio shrinks** from 1.92 to 1.54. It's still significant, but the effect looks smaller than the one built into the simulation, because the ratio now compares only the samples where IL-6 was detected.
+- **IL-13 moves towards a false positive.** It has no effect in the simulation, but its uncorrected p-value falls from 0.32 to 0.016. Correction keeps it out (q = 0.06), only just.
+
+For cytokines with only a few percent OOR, such as IL-2 and IL-17A, the two approaches barely differ. The gap grows with the share of OOR values. Whichever approach you choose, say which one in the methods, and how many values it affected.
+
+## 6. Remember that cytokines move together
+
+The 27 tests aren't independent. Cytokines measured in the same samples are often correlated, and this simulation includes groups of cytokines that rise and fall together (@fig-heatmap):
+
+```{r}
+#| label: fig-heatmap
+#| fig-cap: "Spearman correlations between baseline cytokine concentrations (simulated data)."
+#| fig-height: 6.5
+#| fig-width: 7.5
+#| code-summary: "Show the code: correlation heatmap"
+wide <- plasma |>
+  filter(Visit == "Baseline") |>
+  select(Pt_ID, cytokine, conc) |>
+  pivot_wider(names_from = cytokine, values_from = conc)
+
+rho <- cor(wide[cytokines], method = "spearman")
+cluster_order <- cytokines[hclust(as.dist(1 - rho))$order]
+
+as_tibble(rho, rownames = "a") |>
+  pivot_longer(-a, names_to = "b", values_to = "rho") |>
+  mutate(a = factor(a, levels = cluster_order), b = factor(b, levels = cluster_order)) |>
+  ggplot(aes(a, b, fill = rho)) +
+  geom_tile() +
+  scale_fill_gradient2(low = orange, mid = "white", high = teal, limits = c(-1, 1)) +
+  labs(x = NULL, y = NULL, fill = "Spearman's\nrho") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+```
+
+The heatmap uses **Spearman's** correlation, which works on ranks, so the values don't need to be logged or z-scored first: either step would leave every rank, and so the heatmap, unchanged. Those steps matter for a different kind of heatmap, one showing the concentrations themselves (samples by cytokines). There, each cytokine is logged and then z-scored so that cytokines measured in tens and in thousands of pg/ml share one colour scale. Z-scoring only rescales the values; it doesn't make them any more normal.
+
+Two practical consequences:
+
+- **Seven significant cytokines aren't seven independent discoveries.** IP-10 and IFN-y correlate (ρ ≈ 0.44 here), so finding both is partly finding the same thing twice. Describe them as a pattern.
+- **Correlated outcomes suit methods that look at all the cytokines together,** such as principal component analysis, rather than only one test at a time. My [R and Python workflow project](../../projects/r-python-workflow/index.qmd) shows PCA on a much larger panel.
+
+## 7. Report how big, not just how significant
+
+A table of stars says nothing about size. For each cytokine, report the **ratio** between groups (from the log scale) with its confidence interval, alongside the corrected p-value. A *volcano plot* shows both at once for the whole panel (@fig-volcano):
+
+```{r}
+#| label: fig-volcano
+#| fig-cap: "Active TB compared with controls at baseline: ratio of geometric means (x, log2 scale) against Benjamini-Hochberg corrected significance (y). Labelled cytokines have q < 0.05; IP-10's q-value is below 1e-16 and is drawn at that level (simulated data)."
+#| fig-height: 4.5
+#| code-summary: "Show the code: volcano plot"
+screen |>
+  mutate(significant = q_bh < 0.05,
+         q_plot = pmax(q_bh, 1e-16)) |>   # p-values stored as 0 are drawn at 1e-16
+  ggplot(aes(log2(ratio), -log10(q_plot), colour = significant)) +
+  geom_hline(yintercept = -log10(0.05), linetype = "dashed", colour = "grey60") +
+  geom_vline(xintercept = 0, colour = "grey80") +
+  geom_point(size = 2.5) +
+  geom_text_repel(data = \(d) filter(d, significant), aes(label = cytokine),
+                  size = 3.3, min.segment.length = 0, box.padding = 0.4,
+                  seed = 1, show.legend = FALSE) +
+  scale_colour_manual(values = c(`FALSE` = "grey60", `TRUE` = orange), guide = "none") +
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.12))) +
+  labs(x = "log2 ratio, active TB vs controls", y = "-log10(BH-corrected p)")
+```
+
+The confidence interval for each ratio comes from a t-test on the log values, transformed back (@tbl-ratios):
+
+```{r}
+#| label: tbl-ratios
+#| tbl-cap: "Ratio of geometric means, active TB vs controls at baseline, with 95% CIs from t-tests on the log values (simulated data)."
+#| code-summary: "Show the code: ratios with confidence intervals"
+plasma |>
+  filter(Visit == "Baseline", tb_diagnosis %in% c("Active TB", "Control"),
+         cytokine %in% c("IP-10", "IFN-y", "IL-10", "Eotaxin")) |>
+  mutate(tb_diagnosis = factor(tb_diagnosis, levels = c("Active TB", "Control"))) |>
+  group_by(cytokine) |>
+  summarise(
+    test     = list(t.test(log(conc) ~ tb_diagnosis)),
+    ratio    = exp(-diff(test[[1]]$estimate)),
+    ci_low   = exp(test[[1]]$conf.int[1]),
+    ci_high  = exp(test[[1]]$conf.int[2]),
+    .groups = "drop"
+  ) |>
+  select(-test) |>
+  show_table(digits = 2, col.names = c("Cytokine", "Ratio (active TB ÷ controls)",
+                                       "95% CI low", "95% CI high"))
+```
+
+"IP-10 was 3.4 times higher in active TB than in controls (95% CI 2.8 to 4.2)" tells a reader far more than "IP-10 ***".
+
+Two more things stand out. **Eotaxin's** interval (1.04 to 1.47) excludes 1, so on its own this single test looks convincing; it's only once you account for the 27 tests that it drops out, as section 5 showed. And **IL-10's** ratio uses substituted values for the 22% of these samples below the limit, so it deserves a caveat in any write-up.
+
+## A checklist for your next panel
+
+1. **Parse the out-of-range codes.** Record below and above the limit; don't let them become missing values.
+2. **Think twice before dropping values below the detection limit.** Dropping them can hide real differences. To keep them, use rank-based tests, a stated substitution or censored-data methods; analyse detected vs not when most values are below the limit. Whichever you choose, report it.
+3. **Log the concentrations,** or use rank-based tests. Don't run t-tests on raw pg/ml values.
+4. **Match the test to the design,** and use paired tests for repeated visits on the same people.
+5. **Correct for the number of cytokines tested,** with Benjamini-Hochberg or Bonferroni.
+6. **Treat correlated cytokines as patterns,** not independent findings.
+7. **Report ratios with confidence intervals,** not just stars.
+
+## About the simulation
+
+So that you can check the results above against the truth, these are the effects built into the simulated data (on the log scale, as multiples of each cytokine's typical level):
+
+- **Active TB:** higher IP-10, IFN-y, IL-1ra, IL-6, TNF-a, IL-10 and MCP-1, fading at month 3 and further by month 6.
+- **HIV:** higher IP-10, IL-10 and TNF-a.
+- **Every other cytokine:** no difference between any groups.
+
+The simulation script, `scripts/simulate_plasma_cytokines.py`, is in the [site's GitHub repository](https://github.com/DevonAllies/DataAnalysisPortfolio).
+
+## References
+
+::: {#refs}
+:::
+
+## List of figures
+
+- @fig-below: Share of baseline samples below the detection limit, by cytokine
+- @fig-skew: Baseline IP-10 on the original and log scales
+- @fig-spike: Baseline IL-13 on a log scale, showing the spike of substituted values
+- @fig-heatmap: Spearman correlations between baseline cytokine concentrations
+- @fig-volcano: Volcano plot of active TB compared with controls at baseline
+
+## List of tables
+
+- @tbl-raw-codes: Out-of-range codes as reported by the assay
+- @tbl-il10: IL-10 across diagnosis groups, below-limit values dropped or kept
+- @tbl-il10-detected: IL-10 detection by diagnosis group
+- @tbl-shapiro: Shapiro-Wilk test of IP-10 on the original and log scales
+- @tbl-shapiro-panel: Shapiro-Wilk results for all 27 cytokines
+- @tbl-designs: Tests for common cytokine-panel designs
+- @tbl-paired: IP-10 at month 6 compared with baseline, paired and unpaired
+- @tbl-screen: The nine cytokines with the smallest p-values
+- @tbl-screen-count: Cytokines significant before and after correction
+- @tbl-left-out: The screen with OOR values kept and left out
+- @tbl-ratios: Ratios of geometric means with 95% confidence intervals

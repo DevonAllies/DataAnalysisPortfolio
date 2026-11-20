@@ -1,0 +1,2209 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Devon Allies">
+<meta name="dcterms.date" content="2026-11-20">
+<meta name="description" content="Cytokine panels measure dozens of analytes at once, and the usual approach (a t-test per cytokine, stars on anything below 0.05) can both miss real effects and report false ones. Seven decisions, demonstrated on simulated plasma data where the true effects are known.">
+
+<title>Choosing the right statistics for cytokine data – Devon Allies</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-6cf16a0ce48188bf19ff39fb87ef469d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-4e9eb92e81f4872fd354fdb18ad42d67.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-6cf16a0ce48188bf19ff39fb87ef469d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../../assets/css/styles.css">
+<meta property="og:title" content="Choosing the right statistics for cytokine data – Devon Allies">
+<meta property="og:description" content="Cytokine panels measure dozens of analytes at once, and the usual approach (a t-test per cytokine, stars on anything below 0.05) can both miss real effects and report false ones. Seven decisions, demonstrated on simulated plasma data where the true effects are known.">
+<meta property="og:image" content="https://devonallies.co.za/writing/choosing-statistics-for-cytokine-data/index_files/figure-html/fig-below-1.png">
+<meta property="og:site_name" content="Devon Allies">
+<meta property="og:image:height" content="960">
+<meta property="og:image:width" content="1344">
+</head>
+
+<body class="floating nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      refreshSafariScrollbar();
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Devon Allies</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../tutorials.html"> 
+<span class="menu-text">Tutorials</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications &amp; Writing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../contact.html"> 
+<span class="menu-text">Contact</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
+</div>
+            <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Section">
+    <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#read-what-the-assay-actually-reported" id="toc-read-what-the-assay-actually-reported" class="nav-link active" data-scroll-target="#read-what-the-assay-actually-reported">1. Read what the assay actually reported</a></li>
+  <li><a href="#think-twice-before-dropping-values-below-the-detection-limit" id="toc-think-twice-before-dropping-values-below-the-detection-limit" class="nav-link" data-scroll-target="#think-twice-before-dropping-values-below-the-detection-limit">2. Think twice before dropping values below the detection limit</a></li>
+  <li><a href="#expect-skewed-concentrations-and-log-them" id="toc-expect-skewed-concentrations-and-log-them" class="nav-link" data-scroll-target="#expect-skewed-concentrations-and-log-them">3. Expect skewed concentrations, and log them</a></li>
+  <li><a href="#match-the-test-to-the-design" id="toc-match-the-test-to-the-design" class="nav-link" data-scroll-target="#match-the-test-to-the-design">4. Match the test to the design</a></li>
+  <li><a href="#cytokines-means-27-tests" id="toc-cytokines-means-27-tests" class="nav-link" data-scroll-target="#cytokines-means-27-tests">5. 27 cytokines means 27 tests</a></li>
+  <li><a href="#remember-that-cytokines-move-together" id="toc-remember-that-cytokines-move-together" class="nav-link" data-scroll-target="#remember-that-cytokines-move-together">6. Remember that cytokines move together</a></li>
+  <li><a href="#report-how-big-not-just-how-significant" id="toc-report-how-big-not-just-how-significant" class="nav-link" data-scroll-target="#report-how-big-not-just-how-significant">7. Report how big, not just how significant</a></li>
+  <li><a href="#a-checklist-for-your-next-panel" id="toc-a-checklist-for-your-next-panel" class="nav-link" data-scroll-target="#a-checklist-for-your-next-panel">A checklist for your next panel</a></li>
+  <li><a href="#about-the-simulation" id="toc-about-the-simulation" class="nav-link" data-scroll-target="#about-the-simulation">About the simulation</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#list-of-figures" id="toc-list-of-figures" class="nav-link" data-scroll-target="#list-of-figures">List of figures</a></li>
+  <li><a href="#list-of-tables" id="toc-list-of-tables" class="nav-link" data-scroll-target="#list-of-tables">List of tables</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Choosing the right statistics for cytokine data</h1>
+<p class="subtitle lead">Values below the detection limit, skewed concentrations and 27 tests at once, worked through on simulated plasma data</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Statistics</div>
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">Cytokines</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Cytokine panels measure dozens of analytes at once, and the usual approach (a t-test per cytokine, stars on anything below 0.05) can both miss real effects and report false ones. Seven decisions, demonstrated on simulated plasma data where the true effects are known.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Devon Allies </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 20, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>A multiplex cytokine panel measures dozens of analytes in every sample. The tempting analysis is quick: run a t-test on each cytokine, put a star on everything below 0.05, and write up the stars. But cytokine data breaks the assumptions behind that approach in several ways at once, and the result can both <strong>miss real effects</strong> and <strong>report false ones</strong>.</p>
+<p>This article works through seven decisions that change the answer, using a simulated dataset where the truth is known, because the effects were built into it.</p>
+<div class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Simulated data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Every value here is <strong>simulated</strong>: no row describes a real person, and none of the results describe real patients. The dataset has 27 cytokines measured in plasma from the 500 fictional participants of my <a href="../../tutorials.html">tutorial series</a>, at baseline, month 3 and month 6. Its layout copies a real multiplex export, including the codes for values outside the assay’s range, but the numbers are invented.</p>
+<p><a href="../../tutorials/data/bal_plasma_cytokines.xlsx" class="btn btn-sm btn-outline-primary">Download bal_plasma_cytokines.xlsx</a> <a href="../../tutorials/data/bal_metadata_clean.csv" class="btn btn-sm btn-outline-primary">Download bal_metadata_clean.csv</a></p>
+<p>The code for every step is folded away: click <strong>Show the code</strong> above a table or figure to see how it was made.</p>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: packages and data</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Every table in the article goes through this, so they share one style</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>show_table <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...) {</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(x, ...) <span class="sc">|&gt;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>                  <span class="at">full_width =</span> <span class="cn">FALSE</span>, <span class="at">position =</span> <span class="st">"left"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>plasma_raw <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="fu">here</span>(<span class="st">"tutorials"</span>, <span class="st">"data"</span>, <span class="st">"bal_plasma_cytokines.xlsx"</span>),</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sheet =</span> <span class="st">"Plasma"</span>, <span class="at">col_types =</span> <span class="st">"text"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>metadata <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"tutorials"</span>, <span class="st">"data"</span>, <span class="st">"bal_metadata_clean.csv"</span>), <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>cytokines <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">names</span>(plasma_raw), <span class="fu">c</span>(<span class="st">"Pt_ID"</span>, <span class="st">"Visit"</span>, <span class="st">"Notes"</span>))</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>))</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>teal <span class="ot">&lt;-</span> <span class="st">"#0F4C5C"</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>orange <span class="ot">&lt;-</span> <span class="st">"#E36414"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="read-what-the-assay-actually-reported" class="level2">
+<h2 class="anchored" data-anchor-id="read-what-the-assay-actually-reported">1. Read what the assay actually reported</h2>
+<p>Open a multiplex export and many cells aren’t numbers. Each cytokine has a range the assay can measure. Values below the lower limit come back as codes such as <code>OOR &lt;4.8</code> (“out of range, below 4.8 pg/ml”), and values above the upper limit as <code>OOR &gt;30432.0</code>. The same code is often written several ways in one file:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>plasma_raw <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Pt_ID, Visit, <span class="st">`</span><span class="at">IL-10</span><span class="st">`</span>, <span class="st">`</span><span class="at">IL-13</span><span class="st">`</span>, <span class="st">`</span><span class="at">GM-CSF</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">if_all</span>(<span class="fu">c</span>(<span class="st">`</span><span class="at">IL-10</span><span class="st">`</span>, <span class="st">`</span><span class="at">IL-13</span><span class="st">`</span>, <span class="st">`</span><span class="at">GM-CSF</span><span class="st">`</span>), \(x) <span class="fu">str_detect</span>(x, <span class="st">"&lt;"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">4</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_table</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-raw-codes" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-raw-codes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Four samples with IL-10, IL-13 and GM-CSF all below the detection limit, exactly as the assay reported them (simulated data).
+</figcaption>
+<div aria-describedby="tbl-raw-codes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Pt_ID</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Visit</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">IL-10</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">IL-13</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">GM-CSF</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">SP00431</td>
+<td style="text-align: left;">Month3</td>
+<td style="text-align: left;">OOR &lt;4.8</td>
+<td style="text-align: left;">OOR &lt;4.05</td>
+<td style="text-align: left;">&lt;4.83</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SP07270</td>
+<td style="text-align: left;">Month3</td>
+<td style="text-align: left;">OOR &lt;4.8</td>
+<td style="text-align: left;">&lt; 4.05</td>
+<td style="text-align: left;">OOR &lt;4.83</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SP10968</td>
+<td style="text-align: left;">Baseline</td>
+<td style="text-align: left;">OOR &lt;4.8</td>
+<td style="text-align: left;">&lt;4.05</td>
+<td style="text-align: left;">OOR &lt;4.83</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SP11648</td>
+<td style="text-align: left;">Month6</td>
+<td style="text-align: left;">OOR &lt;4.8</td>
+<td style="text-align: left;">OOR &lt;4.05</td>
+<td style="text-align: left;">&lt;4.83</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Before choosing any test, turn the codes into information instead of throwing them away. For each value, record whether it was below or above the limit, and what the limit was:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: parse the out-of-range codes</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plasma <span class="ot">&lt;-</span> plasma_raw <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Pt_ID =</span> <span class="fu">toupper</span>(Pt_ID)) <span class="sc">|&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">all_of</span>(cytokines), <span class="at">names_to =</span> <span class="st">"cytokine"</span>, <span class="at">values_to =</span> <span class="st">"reported"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">below =</span> <span class="fu">str_detect</span>(reported, <span class="st">"&lt;"</span>),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">above =</span> <span class="fu">str_detect</span>(reported, <span class="st">"&gt;"</span>),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">limit =</span> <span class="fu">as.numeric</span>(<span class="fu">str_extract</span>(reported, <span class="st">"[0-9.]+$"</span>)),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">value =</span> <span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(reported))</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">select</span>(metadata, pt_id, tb_diagnosis, hiv_status), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"Pt_ID"</span> <span class="ot">=</span> <span class="st">"pt_id"</span>))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Each cytokine's lower limit of detection, taken from its own codes</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>lod <span class="ot">&lt;-</span> plasma <span class="sc">|&gt;</span> <span class="fu">filter</span>(below) <span class="sc">|&gt;</span> <span class="fu">distinct</span>(cytokine, <span class="at">lod =</span> limit)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>plasma <span class="ot">&lt;-</span> plasma <span class="sc">|&gt;</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(lod, <span class="at">by =</span> <span class="st">"cytokine"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cytokine =</span> <span class="fu">factor</span>(cytokine, <span class="at">levels =</span> cytokines))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: share below the limit</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plasma <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Visit <span class="sc">==</span> <span class="st">"Baseline"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cytokine) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">below =</span> <span class="fu">mean</span>(below) <span class="sc">*</span> <span class="dv">100</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(below, <span class="fu">reorder</span>(cytokine, below))) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> teal) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Below the detection limit (%)"</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-below" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-below-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-below-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-below-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Share of baseline samples below the lower limit of detection, by cytokine (simulated data).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In this dataset, between 0% and 35% of baseline values fall below the limit, depending on the cytokine (<a href="#fig-below" class="quarto-xref">Figure&nbsp;1</a>). That’s too many to ignore.</p>
+</section>
+<section id="think-twice-before-dropping-values-below-the-detection-limit" class="level2">
+<h2 class="anchored" data-anchor-id="think-twice-before-dropping-values-below-the-detection-limit">2. Think twice before dropping values below the detection limit</h2>
+<p>The easiest thing to do with <code>OOR &lt;4.8</code> is to treat it as missing. It can also do the most damage. A value below the limit isn’t entirely unknown: we know it’s <strong>low</strong>. Dropping it removes exactly the low values, and if one group has more of them, it removes the difference you’re looking for.</p>
+<p>IL-10 shows how much this matters. The simulation includes a real increase in IL-10 in the active TB group. Compare the four diagnosis groups at baseline with a Kruskal-Wallis test, first dropping the values below the limit, then keeping them:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: IL-10, dropped vs kept</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>il10 <span class="ot">&lt;-</span> plasma <span class="sc">|&gt;</span> <span class="fu">filter</span>(Visit <span class="sc">==</span> <span class="st">"Baseline"</span>, cytokine <span class="sc">==</span> <span class="st">"IL-10"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Below-limit values treated as missing (dropped)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>dropped <span class="ot">&lt;-</span> <span class="fu">kruskal.test</span>(value <span class="sc">~</span> tb_diagnosis, <span class="at">data =</span> il10)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Below-limit values kept as the lowest values</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>kept <span class="ot">&lt;-</span> <span class="fu">kruskal.test</span>(<span class="fu">if_else</span>(below, <span class="dv">0</span>, value) <span class="sc">~</span> tb_diagnosis, <span class="at">data =</span> il10)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">approach =</span> <span class="fu">c</span>(<span class="st">"Below-limit values dropped"</span>, <span class="st">"Below-limit values kept as lowest"</span>),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">p_value  =</span> <span class="fu">format.pval</span>(<span class="fu">c</span>(dropped<span class="sc">$</span>p.value, kept<span class="sc">$</span>p.value), <span class="at">digits =</span> <span class="dv">2</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_table</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Approach"</span>, <span class="st">"Kruskal-Wallis p"</span>), <span class="at">align =</span> <span class="st">"lr"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-il10" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-il10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Kruskal-Wallis test of baseline IL-10 across the four diagnosis groups, with values below the limit dropped or kept as the lowest values (simulated data).
+</figcaption>
+<div aria-describedby="tbl-il10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Approach</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Kruskal-Wallis p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Below-limit values dropped</td>
+<td style="text-align: right;">0.14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Below-limit values kept as lowest</td>
+<td style="text-align: right;">2.5e-05</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Dropped, the difference disappears (p = 0.14). Kept, it’s clear (p &lt; 0.001; <a href="#tbl-il10" class="quarto-xref">Table&nbsp;2</a>). The reason is visible in how often IL-10 was detected at all:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: IL-10 detection by group</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>il10 <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(tb_diagnosis) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">detected =</span> <span class="fu">round</span>(<span class="fu">mean</span>(<span class="sc">!</span>below) <span class="sc">*</span> <span class="dv">100</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_table</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Diagnosis"</span>, <span class="st">"Samples"</span>, <span class="st">"Detected (%)"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-il10-detected" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-il10-detected-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Share of baseline samples in which IL-10 was detected, by diagnosis group (simulated data).
+</figcaption>
+<div aria-describedby="tbl-il10-detected-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Diagnosis</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Samples</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Detected (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Active TB</td>
+<td style="text-align: right;">164</td>
+<td style="text-align: right;">85</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">109</td>
+<td style="text-align: right;">68</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indeterminate</td>
+<td style="text-align: right;">74</td>
+<td style="text-align: right;">73</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LTBI</td>
+<td style="text-align: right;">153</td>
+<td style="text-align: right;">63</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>IL-10 was detected in 85% of the active TB group but only 68% of controls (<a href="#tbl-il10-detected" class="quarto-xref">Table&nbsp;3</a>). Dropping the undetected values throws away that difference.</p>
+<p><strong>If you keep them,</strong> the options depend on how many values are below the limit and which method you use:</p>
+<ul>
+<li><strong>Rank-based tests</strong> (Wilcoxon, Kruskal-Wallis) handle it neatly. Every value below the limit is smaller than every detected value, so they all tie for the lowest ranks. It doesn’t matter what number you put in for them, as long as it’s below the limit: the test gives the same answer. That’s why replacing them with 0 above works.</li>
+<li><strong>Simple substitution</strong> with the limit divided by √2 or by 2 is common when you need means or fold changes. Hornung and Reed suggested the limit ÷ √2 for data that isn’t highly skewed, and the limit ÷ 2 when it is <span class="citation" data-cites="hornung1990">(<a href="#ref-hornung1990" role="doc-biblioref">Hornung and Reed, 1990</a>)</span>.</li>
+<li><strong>Methods designed for censored data</strong> are more principled. Substituting a value and then running t-tests has repeatedly been shown to give inaccurate results, and survival-analysis methods built for “less than” values avoid the guess altogether <span class="citation" data-cites="helsel2012">(<a href="#ref-helsel2012" role="doc-biblioref">Helsel, 2012</a>)</span>. <strong>Multiple imputation</strong> is another option: each value below the limit is filled in several times with plausible values below the limit, and the results are combined so the uncertainty about the true values is carried into the analysis. In simulations with 10% to 60% of values below the limit, it gave less biased estimates than substitution, particularly as the share below the limit grew <span class="citation" data-cites="zhang2012">(<a href="#ref-zhang2012" role="doc-biblioref">Zhang and Guo, 2012</a>)</span>.</li>
+<li><strong>When most values are below the limit,</strong> the concentration carries little information. Analyse whether the cytokine was <strong>detected or not</strong> instead, with a chi-square or Fisher’s exact test.</li>
+</ul>
+<p><strong>What I’m doing in my master’s.</strong> My master’s analysis, which is still under way, takes a different approach. First, I leave out any cytokine with more than 40–50% of its values out of range or missing, because so little of it has actually been measured. Then, for the cytokines I keep, I leave the OOR values out of the tests and don’t substitute anything for them. The true values aren’t known, and I don’t want a guessed number to skew the results.</p>
+<p>This is one approach among several, and it isn’t universally accepted. Each choice has a cost: leaving the values out can hide a real difference, as IL-10 shows above, while substituting a value means analysing a number nobody measured. Section 5 runs the whole panel both ways, so you can see what the choice changes.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: apply a 40% cutoff</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>oor_share <span class="ot">&lt;-</span> plasma <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Visit <span class="sc">==</span> <span class="st">"Baseline"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cytokine) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">pct_oor =</span> <span class="fu">mean</span>(below <span class="sc">|</span> above <span class="sc">|</span> <span class="fu">is.na</span>(reported)) <span class="sc">*</span> <span class="dv">100</span>, <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>excluded <span class="ot">&lt;-</span> oor_share <span class="sc">|&gt;</span> <span class="fu">filter</span>(pct_oor <span class="sc">&gt;</span> <span class="dv">40</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>In this dataset a 40% cutoff removes nothing: the cytokine with the most OOR values, IL-13, has 35% at baseline.</p>
+<p>Values <em>above</em> the upper limit are rarer. Set them to the upper limit, and note how many there were.</p>
+<p>The rest of this article keeps every value: ranks for testing, and the limit ÷ √2 where a number is needed.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: substitute the limit ÷ √2</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plasma <span class="ot">&lt;-</span> plasma <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">conc =</span> <span class="fu">case_when</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    below <span class="sc">~</span> lod <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="dv">2</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    above <span class="sc">~</span> limit,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span>  <span class="sc">~</span> value</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  ))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="expect-skewed-concentrations-and-log-them" class="level2">
+<h2 class="anchored" data-anchor-id="expect-skewed-concentrations-and-log-them">3. Expect skewed concentrations, and log them</h2>
+<p>Cytokine concentrations in this dataset have a long right tail: most samples are low, a few are very high. IP-10 is typical (<a href="#fig-skew" class="quarto-xref">Figure&nbsp;2</a>):</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: histograms of IP-10</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>plasma <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Visit <span class="sc">==</span> <span class="st">"Baseline"</span>, cytokine <span class="sc">==</span> <span class="st">"IP-10"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(<span class="st">`</span><span class="at">pg/ml</span><span class="st">`</span> <span class="ot">=</span> conc, <span class="st">`</span><span class="at">log(pg/ml)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">log</span>(conc)) <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name =</span> <span class="fu">factor</span>(name, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"pg/ml"</span>, <span class="st">"log(pg/ml)"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(value)) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> teal, <span class="at">colour =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> name, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Samples"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-skew" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-skew-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-skew-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-skew-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Baseline IP-10 in pg/ml (left) and on a log scale (right). The log-transformed values are close to symmetric (simulated data).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The histogram is the first check. The second is a formal test of normality, the <strong>Shapiro-Wilk test</strong>, whose null hypothesis is that the values come from a normal distribution: a small p-value means they probably don’t.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: Shapiro-Wilk test on IP-10</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ip10 <span class="ot">&lt;-</span> plasma <span class="sc">|&gt;</span> <span class="fu">filter</span>(Visit <span class="sc">==</span> <span class="st">"Baseline"</span>, cytokine <span class="sc">==</span> <span class="st">"IP-10"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">scale =</span> <span class="fu">c</span>(<span class="st">"Original (pg/ml)"</span>, <span class="st">"Logged"</span>),</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">p     =</span> <span class="fu">format.pval</span>(<span class="fu">c</span>(<span class="fu">shapiro.test</span>(ip10<span class="sc">$</span>conc)<span class="sc">$</span>p.value,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                        <span class="fu">shapiro.test</span>(<span class="fu">log</span>(ip10<span class="sc">$</span>conc))<span class="sc">$</span>p.value), <span class="at">digits =</span> <span class="dv">2</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_table</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Scale"</span>, <span class="st">"Shapiro-Wilk p"</span>), <span class="at">align =</span> <span class="st">"lr"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-shapiro" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-shapiro-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Shapiro-Wilk test of baseline IP-10 on the original and log scales (simulated data).
+</figcaption>
+<div aria-describedby="tbl-shapiro-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Scale</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Shapiro-Wilk p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Original (pg/ml)</td>
+<td style="text-align: right;">&lt;2e-16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Logged</td>
+<td style="text-align: right;">0.25</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>On the original scale, a t-test’s assumption of roughly normal values fails badly (Shapiro-Wilk p &lt; 0.001; <a href="#tbl-shapiro" class="quarto-xref">Table&nbsp;4</a>). After a log transformation the values are close to normal (p = 0.25), and the parametric tests are back on the table <span class="citation" data-cites="childs2021">(<a href="#ref-childs2021" role="doc-biblioref">Childs, Hindle and Warren, 2021, sec.24.4</a>)</span>.</p>
+<p>IP-10 is one of the easy cases, though. Run the same test on every cytokine:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: Shapiro-Wilk test on all 27 cytokines</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>normality <span class="ot">&lt;-</span> plasma <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Visit <span class="sc">==</span> <span class="st">"Baseline"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cytokine) <span class="sc">|&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_below =</span> <span class="fu">mean</span>(below) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_original =</span> <span class="fu">shapiro.test</span>(conc)<span class="sc">$</span>p.value,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_logged   =</span> <span class="fu">shapiro.test</span>(<span class="fu">log</span>(conc))<span class="sc">$</span>p.value,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>normality <span class="sc">|&gt;</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">values_below_limit =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    pct_below <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"None"</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    pct_below <span class="sc">&lt;</span> <span class="dv">1</span>  <span class="sc">~</span> <span class="st">"Under 1%"</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span>           <span class="sc">~</span> <span class="st">"1% or more"</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">values_below_limit =</span> <span class="fu">factor</span>(values_below_limit, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"None"</span>, <span class="st">"Under 1%"</span>, <span class="st">"1% or more"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(values_below_limit) <span class="sc">|&gt;</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">cytokines =</span> <span class="fu">n</span>(),</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">normal_original =</span> <span class="fu">sum</span>(p_original <span class="sc">&gt;</span> <span class="fl">0.05</span>),</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>            <span class="at">normal_logged   =</span> <span class="fu">sum</span>(p_logged <span class="sc">&gt;</span> <span class="fl">0.05</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(values_below_limit) <span class="sc">|&gt;</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_table</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Values below the limit"</span>, <span class="st">"Cytokines"</span>,</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"Normal, original scale"</span>, <span class="st">"Normal, logged"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-shapiro-panel" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-shapiro-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Cytokines whose baseline values look normal (Shapiro-Wilk p &gt; 0.05), grouped by the share of values below the detection limit (simulated data).
+</figcaption>
+<div aria-describedby="tbl-shapiro-panel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Values below the limit</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Cytokines</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Normal, original scale</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Normal, logged</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">None</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Under 1%</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1% or more</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>None of the 27 cytokines look normal on the original scale (<a href="#tbl-shapiro-panel" class="quarto-xref">Table&nbsp;5</a>). After logging, 15 do: the 12 with <strong>no values below the detection limit</strong>, and 3 with only one or two. The other 12, each with 5% or more of its values below the limit, still fail after logging, and the histogram shows why. IL-13, the cytokine with the most values below the limit, has a spike where every substituted value sits at the same number (<a href="#fig-spike" class="quarto-xref">Figure&nbsp;3</a>):</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: histogram of logged IL-13</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>plasma <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Visit <span class="sc">==</span> <span class="st">"Baseline"</span>, cytokine <span class="sc">==</span> <span class="st">"IL-13"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">log</span>(conc))) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> teal, <span class="at">colour =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log(pg/ml)"</span>, <span class="at">y =</span> <span class="st">"Samples"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-spike" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-spike-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-spike-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spike-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Baseline IL-13 on a log scale. The spike on the left is the 35% of samples below the detection limit, all substituted with the same value (simulated data).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>No transformation can spread out values that were all given the same number, and leaving them out doesn’t help either: the detected values alone stop sharply at the limit. For cytokines with values below the limit, rank-based tests are the safer route.</p>
+<p>Use the histogram and the test together. With hundreds of samples, Shapiro-Wilk can flag departures from normality too small to matter; with a handful, it can miss large ones. The picture shows what the p-value can’t: whether the problem is a long tail, a spike or a cut-off.</p>
+<p>Logging also matches how cytokine differences are usually described: as <strong>ratios</strong> (“twice as high”) rather than differences in pg/ml. A t-test on log values compares <em>geometric</em> means, and its result transforms back into a ratio with a confidence interval <span class="citation" data-cites="childs2021">(<a href="#ref-childs2021" role="doc-biblioref">Childs, Hindle and Warren, 2021, sec.24.4</a>)</span>. So there are two sound routes:</p>
+<ul>
+<li><strong>Log the values,</strong> then use t-tests or ANOVA, and report ratios.</li>
+<li><strong>Use rank-based tests</strong> on the original values, which need no transformation and handle the below-limit values automatically.</li>
+</ul>
+<p>Running a t-test on the raw pg/ml values isn’t one of them.</p>
+</section>
+<section id="match-the-test-to-the-design" class="level2">
+<h2 class="anchored" data-anchor-id="match-the-test-to-the-design">4. Match the test to the design</h2>
+<p>Which test to use depends on the question, not the cytokine. My <a href="../../guides/choosing-a-statistical-test/choosing-a-statistical-test.pdf">two-page guide to choosing a test</a> and <a href="../../tutorials/04-statistical-tests-in-r/statistical-tests-in-r.html">Tutorial 4</a> cover the choices in full; for cytokine panels, <a href="#tbl-designs" class="quarto-xref">Table&nbsp;6</a> sets out the common designs.</p>
+<div id="tbl-designs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-designs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6: Tests for common cytokine-panel designs, on logged values or on ranks.
+</figcaption>
+<div aria-describedby="tbl-designs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Logged values</th>
+<th>Original values (ranks)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Two groups (active TB vs controls)</td>
+<td>Welch’s t-test</td>
+<td>Wilcoxon rank-sum</td>
+</tr>
+<tr class="even">
+<td>Three or more groups (all four diagnoses)</td>
+<td>One-way ANOVA</td>
+<td>Kruskal-Wallis</td>
+</tr>
+<tr class="odd">
+<td>Same people at two visits</td>
+<td>Paired t-test on the log differences</td>
+<td>Wilcoxon signed-rank</td>
+</tr>
+<tr class="even">
+<td>Detected or not, by group</td>
+<td>Chi-square, or Fisher’s exact for small counts</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Repeated visits deserve particular care.</strong> The same participants were sampled at baseline, month 3 and month 6, so their samples aren’t independent. Comparing the visits as if they came from different people wastes the design. In the simulation, IP-10 falls during follow-up in the active TB group. Compare baseline with month 6 for the participants who have both:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: paired vs unpaired t-test</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ip10_pairs <span class="ot">&lt;-</span> plasma <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cytokine <span class="sc">==</span> <span class="st">"IP-10"</span>, tb_diagnosis <span class="sc">==</span> <span class="st">"Active TB"</span>, Visit <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Baseline"</span>, <span class="st">"Month6"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Pt_ID, Visit, conc) <span class="sc">|&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Visit, <span class="at">values_from =</span> conc) <span class="sc">|&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Baseline), <span class="sc">!</span><span class="fu">is.na</span>(Month6))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>log_change <span class="ot">&lt;-</span> <span class="fu">log</span>(ip10_pairs<span class="sc">$</span>Month6) <span class="sc">-</span> <span class="fu">log</span>(ip10_pairs<span class="sc">$</span>Baseline)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>paired   <span class="ot">&lt;-</span> <span class="fu">t.test</span>(log_change)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>unpaired <span class="ot">&lt;-</span> <span class="fu">t.test</span>(<span class="fu">log</span>(ip10_pairs<span class="sc">$</span>Month6), <span class="fu">log</span>(ip10_pairs<span class="sc">$</span>Baseline))</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">participants =</span> <span class="fu">nrow</span>(ip10_pairs),</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">ratio        =</span> <span class="fu">round</span>(<span class="fu">exp</span>(<span class="fu">mean</span>(log_change)), <span class="dv">2</span>),</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci_low       =</span> <span class="fu">round</span>(<span class="fu">exp</span>(paired<span class="sc">$</span>conf.int[<span class="dv">1</span>]), <span class="dv">2</span>),</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci_high      =</span> <span class="fu">round</span>(<span class="fu">exp</span>(paired<span class="sc">$</span>conf.int[<span class="dv">2</span>]), <span class="dv">2</span>),</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">p_paired     =</span> <span class="fu">format</span>(<span class="fu">signif</span>(paired<span class="sc">$</span>p.value, <span class="dv">2</span>)),</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">p_unpaired   =</span> <span class="fu">format</span>(<span class="fu">signif</span>(unpaired<span class="sc">$</span>p.value, <span class="dv">2</span>))</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_table</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Participants"</span>, <span class="st">"Ratio (month 6 ÷ baseline)"</span>, <span class="st">"95% CI low"</span>,</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"95% CI high"</span>, <span class="st">"p, paired"</span>, <span class="st">"p, unpaired"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-paired" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-paired-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7: IP-10 at month 6 compared with baseline in the active TB group: ratio of geometric means with its 95% CI, and p-values from paired and unpaired t-tests on the log values (simulated data).
+</figcaption>
+<div aria-describedby="tbl-paired-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Participants</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Ratio (month 6 ÷ baseline)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">95% CI low</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">95% CI high</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">p, paired</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">p, unpaired</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: left;">3.7e-18</td>
+<td style="text-align: left;">5.5e-11</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>By month 6, IP-10 was on average 0.44 times its baseline level (95% CI 0.37 to 0.51; <a href="#tbl-paired" class="quarto-xref">Table&nbsp;7</a>). The paired test’s p-value is about ten million times smaller than the unpaired one on the same data, because comparing each person with themselves removes the person-to-person variation <span class="citation" data-cites="childs2021">(<a href="#ref-childs2021" role="doc-biblioref">Childs, Hindle and Warren, 2021, sec.20.2</a>)</span>.</p>
+</section>
+<section id="cytokines-means-27-tests" class="level2">
+<h2 class="anchored" data-anchor-id="cytokines-means-27-tests">5. 27 cytokines means 27 tests</h2>
+<p>Each test at α = 0.05 has a 5% chance of a false positive. Run 27 of them on data with no real differences at all, and you’d expect more than one “significant” cytokine by chance alone (27 × 0.05 ≈ 1.4).</p>
+<p>Compare active TB with controls at baseline, one Wilcoxon test per cytokine, then correct the p-values two ways:</p>
+<ul>
+<li><strong>Bonferroni</strong> multiplies each p-value by the number of tests. It strictly limits the chance of even one false positive, but it’s very cautious <span class="citation" data-cites="vu2020">(<a href="#ref-vu2020" role="doc-biblioref">Vu and Harrington, 2020, sec.5.5</a>)</span>.</li>
+<li><strong>Benjamini-Hochberg</strong> controls the <strong>false discovery rate</strong>: the expected proportion of false positives among the cytokines you call significant <span class="citation" data-cites="benjamini1995">(<a href="#ref-benjamini1995" role="doc-biblioref">Benjamini and Hochberg, 1995</a>)</span>. It’s less cautious, which is why it’s widely used when many outcomes are tested at once.</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: one Wilcoxon test per cytokine, then correct</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>screen <span class="ot">&lt;-</span> plasma <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Visit <span class="sc">==</span> <span class="st">"Baseline"</span>, tb_diagnosis <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Active TB"</span>, <span class="st">"Control"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cytokine) <span class="sc">|&gt;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">ratio =</span> <span class="fu">exp</span>(<span class="fu">mean</span>(<span class="fu">log</span>(conc[tb_diagnosis <span class="sc">==</span> <span class="st">"Active TB"</span>])) <span class="sc">-</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>                <span class="fu">mean</span>(<span class="fu">log</span>(conc[tb_diagnosis <span class="sc">==</span> <span class="st">"Control"</span>]))),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">p =</span> <span class="fu">wilcox.test</span>(conc <span class="sc">~</span> tb_diagnosis, <span class="at">exact =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>p.value,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_bonferroni =</span> <span class="fu">p.adjust</span>(p, <span class="at">method =</span> <span class="st">"bonferroni"</span>),</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">q_bh         =</span> <span class="fu">p.adjust</span>(p, <span class="at">method =</span> <span class="st">"BH"</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(p)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co"># p-values too small for the computer to store come out as 0; show them as "&lt; 1e-16"</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>screen <span class="sc">|&gt;</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">9</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ratio =</span> <span class="fu">round</span>(ratio, <span class="dv">2</span>),</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>         <span class="fu">across</span>(<span class="fu">c</span>(p, p_bonferroni, q_bh), \(x) <span class="fu">format.pval</span>(x, <span class="at">digits =</span> <span class="dv">2</span>, <span class="at">eps =</span> <span class="fl">1e-16</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_table</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Cytokine"</span>, <span class="st">"Ratio (active TB ÷ controls)"</span>, <span class="st">"p"</span>,</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"p, Bonferroni"</span>, <span class="st">"q, Benjamini-Hochberg"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-screen" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-screen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;8: The nine cytokines with the smallest p-values, active TB vs controls at baseline: ratio of geometric means, Wilcoxon p-value, and Bonferroni and Benjamini-Hochberg corrected values (simulated data).
+</figcaption>
+<div aria-describedby="tbl-screen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Cytokine</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Ratio (active TB ÷ controls)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">p</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">p, Bonferroni</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">q, Benjamini-Hochberg</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">IP-10</td>
+<td style="text-align: right;">3.45</td>
+<td style="text-align: left;">&lt; 1e-16</td>
+<td style="text-align: left;">&lt; 1e-16</td>
+<td style="text-align: left;">&lt; 1e-16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IFN-y</td>
+<td style="text-align: right;">2.46</td>
+<td style="text-align: left;">4.4e-16</td>
+<td style="text-align: left;">1.2e-14</td>
+<td style="text-align: left;">6.0e-15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IL-1ra</td>
+<td style="text-align: right;">1.83</td>
+<td style="text-align: left;">8.1e-11</td>
+<td style="text-align: left;">2.2e-09</td>
+<td style="text-align: left;">7.2e-10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">TNF-a</td>
+<td style="text-align: right;">1.87</td>
+<td style="text-align: left;">2.0e-10</td>
+<td style="text-align: left;">5.3e-09</td>
+<td style="text-align: left;">1.3e-09</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IL-6</td>
+<td style="text-align: right;">1.92</td>
+<td style="text-align: left;">2.6e-09</td>
+<td style="text-align: left;">7.0e-08</td>
+<td style="text-align: left;">1.4e-08</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MCP-1</td>
+<td style="text-align: right;">1.43</td>
+<td style="text-align: left;">0.00022</td>
+<td style="text-align: left;">0.0061</td>
+<td style="text-align: left;">0.0010</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IL-10</td>
+<td style="text-align: right;">1.44</td>
+<td style="text-align: left;">0.00063</td>
+<td style="text-align: left;">0.0171</td>
+<td style="text-align: left;">0.0024</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eotaxin</td>
+<td style="text-align: right;">1.24</td>
+<td style="text-align: left;">0.03035</td>
+<td style="text-align: left;">0.8194</td>
+<td style="text-align: left;">0.1024</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IL-7</td>
+<td style="text-align: right;">1.13</td>
+<td style="text-align: left;">0.09099</td>
+<td style="text-align: left;">1.0000</td>
+<td style="text-align: left;">0.2730</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: count the significant cytokines</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>screen <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">unadjusted =</span> <span class="fu">sum</span>(p <span class="sc">&lt;</span> <span class="fl">0.05</span>), <span class="at">bonferroni =</span> <span class="fu">sum</span>(p_bonferroni <span class="sc">&lt;</span> <span class="fl">0.05</span>), <span class="at">bh =</span> <span class="fu">sum</span>(q_bh <span class="sc">&lt;</span> <span class="fl">0.05</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_table</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Unadjusted"</span>, <span class="st">"Bonferroni"</span>, <span class="st">"Benjamini-Hochberg"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-screen-count" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-screen-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;9: Number of cytokines significant at 0.05 before and after correcting for 27 tests (simulated data).
+</figcaption>
+<div aria-describedby="tbl-screen-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Unadjusted</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Bonferroni</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Benjamini-Hochberg</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Eight cytokines are significant before correction, and seven after either correction (<a href="#tbl-screen-count" class="quarto-xref">Table&nbsp;9</a>). The one that drops out, <strong>Eotaxin</strong> (p = 0.03 in <a href="#tbl-screen" class="quarto-xref">Table&nbsp;8</a>), is a cytokine with <strong>no effect</strong> in the simulation: a false positive that the uncorrected analysis would have reported as a finding. The seven that survive are exactly the seven with a built-in difference.</p>
+<p>Correction doesn’t make a panel foolproof. The false discovery rate is controlled <em>on average</em>, so some false positives can still get through, and every correction trades some power for fewer false alarms. But reporting uncorrected p-values from 27 tests reports noise as findings.</p>
+<section id="the-same-screen-with-the-oor-values-left-out" class="level3">
+<h3 class="anchored" data-anchor-id="the-same-screen-with-the-oor-values-left-out">The same screen with the OOR values left out</h3>
+<p>Here is the analysis from <a href="#tbl-screen" class="quarto-xref">Table&nbsp;8</a> repeated the way I’m handling it in my master’s: OOR values left out of the tests, nothing substituted.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: repeat the screen with OOR values left out</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>built_in <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"IP-10"</span>, <span class="st">"IFN-y"</span>, <span class="st">"IL-1ra"</span>, <span class="st">"IL-6"</span>, <span class="st">"TNF-a"</span>, <span class="st">"IL-10"</span>, <span class="st">"MCP-1"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>screen_left_out <span class="ot">&lt;-</span> plasma <span class="sc">|&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Visit <span class="sc">==</span> <span class="st">"Baseline"</span>, tb_diagnosis <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Active TB"</span>, <span class="st">"Control"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cytokine) <span class="sc">|&gt;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_oor =</span> <span class="fu">mean</span>(below <span class="sc">|</span> above) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># value is NA wherever the assay reported an OOR code, so these use detected values only</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">ratio_out =</span> <span class="fu">exp</span>(<span class="fu">mean</span>(<span class="fu">log</span>(value[tb_diagnosis <span class="sc">==</span> <span class="st">"Active TB"</span>]), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">-</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">mean</span>(<span class="fu">log</span>(value[tb_diagnosis <span class="sc">==</span> <span class="st">"Control"</span>]), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">p_out =</span> <span class="fu">wilcox.test</span>(value <span class="sc">~</span> tb_diagnosis, <span class="at">exact =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>p.value,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">q_out =</span> <span class="fu">p.adjust</span>(p_out, <span class="at">method =</span> <span class="st">"BH"</span>))</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>screen <span class="sc">|&gt;</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(cytokine, ratio, p, q_bh) <span class="sc">|&gt;</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(screen_left_out, <span class="at">by =</span> <span class="st">"cytokine"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(pct_oor <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(pct_oor)) <span class="sc">|&gt;</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(cytokine,</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">pct_oor =</span> <span class="fu">round</span>(pct_oor, <span class="dv">1</span>),</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">effect  =</span> <span class="fu">if_else</span>(cytokine <span class="sc">%in%</span> built_in, <span class="st">"Yes"</span>, <span class="st">"No"</span>),</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">ratio   =</span> <span class="fu">round</span>(ratio, <span class="dv">2</span>), <span class="at">ratio_out =</span> <span class="fu">round</span>(ratio_out, <span class="dv">2</span>),</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>            <span class="fu">across</span>(<span class="fu">c</span>(p, p_out, q_bh, q_out), \(x) <span class="fu">sapply</span>(x, format.pval, <span class="at">digits =</span> <span class="dv">2</span>, <span class="at">eps =</span> <span class="fl">1e-16</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_table</span>(<span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Cytokine"</span>, <span class="st">"OOR (%)"</span>, <span class="st">"Effect built in"</span>,</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"Kept"</span>, <span class="st">"Left out"</span>, <span class="st">"Kept"</span>, <span class="st">"Left out"</span>, <span class="st">"Kept"</span>, <span class="st">"Left out"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">" "</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">"Ratio"</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">"p"</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">"q"</span> <span class="ot">=</span> <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-left-out" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-left-out-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;10: Active TB vs controls at baseline, with OOR values kept (as in <a href="#tbl-screen" class="quarto-xref">Table&nbsp;8</a>) and left out. Only cytokines with OOR values are shown; the rest give identical results either way. Ratios are of geometric means; q-values are Benjamini-Hochberg corrected across all 27 cytokines (simulated data).
+</figcaption>
+<div aria-describedby="tbl-left-out-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed cell caption-top table-sm small">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th colspan="3" data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide; border-bottom: hidden;"></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Ratio
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+p
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+q
+</div></th>
+</tr>
+<tr class="even">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Cytokine</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">OOR (%)</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Effect built in</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Kept</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Left out</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Kept</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Left out</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Kept</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Left out</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">IL-13</td>
+<td style="text-align: right;">38.5</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">1.09</td>
+<td style="text-align: right;">1.18</td>
+<td style="text-align: left;">0.32</td>
+<td style="text-align: left;">0.016</td>
+<td style="text-align: left;">0.63</td>
+<td style="text-align: left;">0.061</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GM-CSF</td>
+<td style="text-align: right;">26.7</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: left;">0.38</td>
+<td style="text-align: left;">0.094</td>
+<td style="text-align: left;">0.64</td>
+<td style="text-align: left;">0.26</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IL-10</td>
+<td style="text-align: right;">22.0</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: right;">1.44</td>
+<td style="text-align: right;">1.20</td>
+<td style="text-align: left;">0.00063</td>
+<td style="text-align: left;">0.12</td>
+<td style="text-align: left;">0.0024</td>
+<td style="text-align: left;">0.27</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IL-12(p70)</td>
+<td style="text-align: right;">20.9</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">1.05</td>
+<td style="text-align: right;">1.05</td>
+<td style="text-align: left;">0.58</td>
+<td style="text-align: left;">0.48</td>
+<td style="text-align: left;">0.78</td>
+<td style="text-align: left;">0.62</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MIP-1a</td>
+<td style="text-align: right;">16.1</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">1.10</td>
+<td style="text-align: left;">0.74</td>
+<td style="text-align: left;">0.4</td>
+<td style="text-align: left;">0.81</td>
+<td style="text-align: left;">0.61</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IL-5</td>
+<td style="text-align: right;">14.7</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">1.02</td>
+<td style="text-align: right;">1.05</td>
+<td style="text-align: left;">0.83</td>
+<td style="text-align: left;">0.59</td>
+<td style="text-align: left;">0.86</td>
+<td style="text-align: left;">0.67</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IL-6</td>
+<td style="text-align: right;">11.0</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: right;">1.92</td>
+<td style="text-align: right;">1.54</td>
+<td style="text-align: left;">2.6e-09</td>
+<td style="text-align: left;">1.2e-05</td>
+<td style="text-align: left;">1.4e-08</td>
+<td style="text-align: left;">6.3e-05</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IL-1b</td>
+<td style="text-align: right;">11.0</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">1.10</td>
+<td style="text-align: right;">1.18</td>
+<td style="text-align: left;">0.33</td>
+<td style="text-align: left;">0.096</td>
+<td style="text-align: left;">0.63</td>
+<td style="text-align: left;">0.26</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IL-7</td>
+<td style="text-align: right;">8.4</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">1.13</td>
+<td style="text-align: right;">1.05</td>
+<td style="text-align: left;">0.091</td>
+<td style="text-align: left;">0.32</td>
+<td style="text-align: left;">0.27</td>
+<td style="text-align: left;">0.55</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IL-4</td>
+<td style="text-align: right;">6.6</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">1.02</td>
+<td style="text-align: right;">1.05</td>
+<td style="text-align: left;">0.73</td>
+<td style="text-align: left;">0.51</td>
+<td style="text-align: left;">0.81</td>
+<td style="text-align: left;">0.62</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IL-2</td>
+<td style="text-align: right;">4.8</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: left;">0.72</td>
+<td style="text-align: left;">0.3</td>
+<td style="text-align: left;">0.81</td>
+<td style="text-align: left;">0.55</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IL-17A</td>
+<td style="text-align: right;">4.8</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0.96</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">0.96</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">TNF-a</td>
+<td style="text-align: right;">0.4</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: right;">1.87</td>
+<td style="text-align: right;">1.83</td>
+<td style="text-align: left;">2e-10</td>
+<td style="text-align: left;">3.5e-10</td>
+<td style="text-align: left;">1.3e-09</td>
+<td style="text-align: left;">2.3e-09</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IL-9</td>
+<td style="text-align: right;">0.4</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">1.13</td>
+<td style="text-align: right;">1.15</td>
+<td style="text-align: left;">0.13</td>
+<td style="text-align: left;">0.11</td>
+<td style="text-align: left;">0.36</td>
+<td style="text-align: left;">0.27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RANTES</td>
+<td style="text-align: right;">0.4</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: right;">1.14</td>
+<td style="text-align: right;">1.13</td>
+<td style="text-align: left;">0.46</td>
+<td style="text-align: left;">0.51</td>
+<td style="text-align: left;">0.71</td>
+<td style="text-align: left;">0.62</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>With the OOR values left out, Benjamini-Hochberg finds 6 significant cytokines instead of 7, and three results change:</p>
+<ul>
+<li><strong>IL-10 is missed.</strong> Its real effect is no longer significant (q = 0.27, against 0.002 with the values kept).</li>
+<li><strong>IL-6’s ratio shrinks</strong> from 1.92 to 1.54. It’s still significant, but the effect looks smaller than the one built into the simulation, because the ratio now compares only the samples where IL-6 was detected.</li>
+<li><strong>IL-13 moves towards a false positive.</strong> It has no effect in the simulation, but its uncorrected p-value falls from 0.32 to 0.016. Correction keeps it out (q = 0.06), only just.</li>
+</ul>
+<p>For cytokines with only a few percent OOR, such as IL-2 and IL-17A, the two approaches barely differ. The gap grows with the share of OOR values. Whichever approach you choose, say which one in the methods, and how many values it affected.</p>
+</section>
+</section>
+<section id="remember-that-cytokines-move-together" class="level2">
+<h2 class="anchored" data-anchor-id="remember-that-cytokines-move-together">6. Remember that cytokines move together</h2>
+<p>The 27 tests aren’t independent. Cytokines measured in the same samples are often correlated, and this simulation includes groups of cytokines that rise and fall together (<a href="#fig-heatmap" class="quarto-xref">Figure&nbsp;4</a>):</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: correlation heatmap</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>wide <span class="ot">&lt;-</span> plasma <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Visit <span class="sc">==</span> <span class="st">"Baseline"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Pt_ID, cytokine, conc) <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> cytokine, <span class="at">values_from =</span> conc)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>rho <span class="ot">&lt;-</span> <span class="fu">cor</span>(wide[cytokines], <span class="at">method =</span> <span class="st">"spearman"</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>cluster_order <span class="ot">&lt;-</span> cytokines[<span class="fu">hclust</span>(<span class="fu">as.dist</span>(<span class="dv">1</span> <span class="sc">-</span> rho))<span class="sc">$</span>order]</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(rho, <span class="at">rownames =</span> <span class="st">"a"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>a, <span class="at">names_to =</span> <span class="st">"b"</span>, <span class="at">values_to =</span> <span class="st">"rho"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">a =</span> <span class="fu">factor</span>(a, <span class="at">levels =</span> cluster_order), <span class="at">b =</span> <span class="fu">factor</span>(b, <span class="at">levels =</span> cluster_order)) <span class="sc">|&gt;</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(a, b, <span class="at">fill =</span> rho)) <span class="sc">+</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> orange, <span class="at">mid =</span> <span class="st">"white"</span>, <span class="at">high =</span> teal, <span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">fill =</span> <span class="st">"Spearman's</span><span class="sc">\n</span><span class="st">rho"</span>) <span class="sc">+</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-heatmap-1.png" class="img-fluid figure-img" width="720">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Spearman correlations between baseline cytokine concentrations (simulated data).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The heatmap uses <strong>Spearman’s</strong> correlation, which works on ranks, so the values don’t need to be logged or z-scored first: either step would leave every rank, and so the heatmap, unchanged. Those steps matter for a different kind of heatmap, one showing the concentrations themselves (samples by cytokines). There, each cytokine is logged and then z-scored so that cytokines measured in tens and in thousands of pg/ml share one colour scale. Z-scoring only rescales the values; it doesn’t make them any more normal.</p>
+<p>Two practical consequences:</p>
+<ul>
+<li><strong>Seven significant cytokines aren’t seven independent discoveries.</strong> IP-10 and IFN-y correlate (ρ ≈ 0.44 here), so finding both is partly finding the same thing twice. Describe them as a pattern.</li>
+<li><strong>Correlated outcomes suit methods that look at all the cytokines together,</strong> such as principal component analysis, rather than only one test at a time. My <a href="../../projects/r-python-workflow/index.html">R and Python workflow project</a> shows PCA on a much larger panel.</li>
+</ul>
+</section>
+<section id="report-how-big-not-just-how-significant" class="level2">
+<h2 class="anchored" data-anchor-id="report-how-big-not-just-how-significant">7. Report how big, not just how significant</h2>
+<p>A table of stars says nothing about size. For each cytokine, report the <strong>ratio</strong> between groups (from the log scale) with its confidence interval, alongside the corrected p-value. A <em>volcano plot</em> shows both at once for the whole panel (<a href="#fig-volcano" class="quarto-xref">Figure&nbsp;5</a>):</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: volcano plot</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>screen <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">significant =</span> q_bh <span class="sc">&lt;</span> <span class="fl">0.05</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">q_plot =</span> <span class="fu">pmax</span>(q_bh, <span class="fl">1e-16</span>)) <span class="sc">|&gt;</span>   <span class="co"># p-values stored as 0 are drawn at 1e-16</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">log2</span>(ratio), <span class="sc">-</span><span class="fu">log10</span>(q_plot), <span class="at">colour =</span> significant)) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">0.05</span>), <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">colour =</span> <span class="st">"grey60"</span>) <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">colour =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">2.5</span>) <span class="sc">+</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="at">data =</span> \(d) <span class="fu">filter</span>(d, significant), <span class="fu">aes</span>(<span class="at">label =</span> cytokine),</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">size =</span> <span class="fl">3.3</span>, <span class="at">min.segment.length =</span> <span class="dv">0</span>, <span class="at">box.padding =</span> <span class="fl">0.4</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>                  <span class="at">seed =</span> <span class="dv">1</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">FALSE</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"grey60"</span>, <span class="st">`</span><span class="at">TRUE</span><span class="st">`</span> <span class="ot">=</span> orange), <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.12</span>))) <span class="sc">+</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"log2 ratio, active TB vs controls"</span>, <span class="at">y =</span> <span class="st">"-log10(BH-corrected p)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-volcano" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-volcano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-volcano-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-volcano-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Active TB compared with controls at baseline: ratio of geometric means (x, log2 scale) against Benjamini-Hochberg corrected significance (y). Labelled cytokines have q &lt; 0.05; IP-10’s q-value is below 1e-16 and is drawn at that level (simulated data).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The confidence interval for each ratio comes from a t-test on the log values, transformed back (<a href="#tbl-ratios" class="quarto-xref">Table&nbsp;11</a>):</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code: ratios with confidence intervals</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>plasma <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Visit <span class="sc">==</span> <span class="st">"Baseline"</span>, tb_diagnosis <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Active TB"</span>, <span class="st">"Control"</span>),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>         cytokine <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"IP-10"</span>, <span class="st">"IFN-y"</span>, <span class="st">"IL-10"</span>, <span class="st">"Eotaxin"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tb_diagnosis =</span> <span class="fu">factor</span>(tb_diagnosis, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Active TB"</span>, <span class="st">"Control"</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cytokine) <span class="sc">|&gt;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">test     =</span> <span class="fu">list</span>(<span class="fu">t.test</span>(<span class="fu">log</span>(conc) <span class="sc">~</span> tb_diagnosis)),</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">ratio    =</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">diff</span>(test[[<span class="dv">1</span>]]<span class="sc">$</span>estimate)),</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">ci_low   =</span> <span class="fu">exp</span>(test[[<span class="dv">1</span>]]<span class="sc">$</span>conf.int[<span class="dv">1</span>]),</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">ci_high  =</span> <span class="fu">exp</span>(test[[<span class="dv">1</span>]]<span class="sc">$</span>conf.int[<span class="dv">2</span>]),</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>test) <span class="sc">|&gt;</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">show_table</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"Cytokine"</span>, <span class="st">"Ratio (active TB ÷ controls)"</span>,</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"95% CI low"</span>, <span class="st">"95% CI high"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-ratios" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ratios-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;11: Ratio of geometric means, active TB vs controls at baseline, with 95% CIs from t-tests on the log values (simulated data).
+</figcaption>
+<div aria-describedby="tbl-ratios-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Cytokine</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Ratio (active TB ÷ controls)</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">95% CI low</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">95% CI high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">IL-10</td>
+<td style="text-align: right;">1.44</td>
+<td style="text-align: right;">1.18</td>
+<td style="text-align: right;">1.76</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eotaxin</td>
+<td style="text-align: right;">1.24</td>
+<td style="text-align: right;">1.04</td>
+<td style="text-align: right;">1.47</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">IFN-y</td>
+<td style="text-align: right;">2.46</td>
+<td style="text-align: right;">2.04</td>
+<td style="text-align: right;">2.97</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IP-10</td>
+<td style="text-align: right;">3.45</td>
+<td style="text-align: right;">2.83</td>
+<td style="text-align: right;">4.21</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>“IP-10 was 3.4 times higher in active TB than in controls (95% CI 2.8 to 4.2)” tells a reader far more than “IP-10 ***“.</p>
+<p>Two more things stand out. <strong>Eotaxin’s</strong> interval (1.04 to 1.47) excludes 1, so on its own this single test looks convincing; it’s only once you account for the 27 tests that it drops out, as section 5 showed. And <strong>IL-10’s</strong> ratio uses substituted values for the 22% of these samples below the limit, so it deserves a caveat in any write-up.</p>
+</section>
+<section id="a-checklist-for-your-next-panel" class="level2">
+<h2 class="anchored" data-anchor-id="a-checklist-for-your-next-panel">A checklist for your next panel</h2>
+<ol type="1">
+<li><strong>Parse the out-of-range codes.</strong> Record below and above the limit; don’t let them become missing values.</li>
+<li><strong>Think twice before dropping values below the detection limit.</strong> Dropping them can hide real differences. To keep them, use rank-based tests, a stated substitution or censored-data methods; analyse detected vs not when most values are below the limit. Whichever you choose, report it.</li>
+<li><strong>Log the concentrations,</strong> or use rank-based tests. Don’t run t-tests on raw pg/ml values.</li>
+<li><strong>Match the test to the design,</strong> and use paired tests for repeated visits on the same people.</li>
+<li><strong>Correct for the number of cytokines tested,</strong> with Benjamini-Hochberg or Bonferroni.</li>
+<li><strong>Treat correlated cytokines as patterns,</strong> not independent findings.</li>
+<li><strong>Report ratios with confidence intervals,</strong> not just stars.</li>
+</ol>
+</section>
+<section id="about-the-simulation" class="level2">
+<h2 class="anchored" data-anchor-id="about-the-simulation">About the simulation</h2>
+<p>So that you can check the results above against the truth, these are the effects built into the simulated data (on the log scale, as multiples of each cytokine’s typical level):</p>
+<ul>
+<li><strong>Active TB:</strong> higher IP-10, IFN-y, IL-1ra, IL-6, TNF-a, IL-10 and MCP-1, fading at month 3 and further by month 6.</li>
+<li><strong>HIV:</strong> higher IP-10, IL-10 and TNF-a.</li>
+<li><strong>Every other cytokine:</strong> no difference between any groups.</li>
+</ul>
+<p>The simulation script, <code>scripts/simulate_plasma_cytokines.py</code>, is in the <a href="https://github.com/DevonAllies/DataAnalysisPortfolio">site’s GitHub repository</a>.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-benjamini1995" class="csl-entry" role="listitem">
+Benjamini, Y. and Hochberg, Y., 1995. Controlling the false discovery rate: A practical and powerful approach to multiple testing. <em>Journal of the Royal Statistical Society: Series B (Methodological)</em>, 57(1), pp.289–300. https://doi.org/<a href="https://doi.org/10.1111/j.2517-6161.1995.tb02031.x">10.1111/j.2517-6161.1995.tb02031.x</a>.
+</div>
+<div id="ref-childs2021" class="csl-entry" role="listitem">
+Childs, D.Z., Hindle, B.J. and Warren, P.H., 2021. <em><span>APS</span> 240: Data analysis and statistics with <span>R</span></em>. [online] Available at: &lt;<a href="https://dzchilds.github.io/stats-for-bio/">https://dzchilds.github.io/stats-for-bio/</a>&gt;.
+</div>
+<div id="ref-helsel2012" class="csl-entry" role="listitem">
+Helsel, D.R., 2012. <em>Statistics for censored environmental data using <span>Minitab</span> and <span>R</span></em>. 2nd ed. Hoboken, NJ: John Wiley &amp; Sons. https://doi.org/<a href="https://doi.org/10.1002/9781118162729">10.1002/9781118162729</a>.
+</div>
+<div id="ref-hornung1990" class="csl-entry" role="listitem">
+Hornung, R.W. and Reed, L.D., 1990. Estimation of average concentration in the presence of nondetectable values. <em>Applied Occupational and Environmental Hygiene</em>, 5(1), pp.46–51. https://doi.org/<a href="https://doi.org/10.1080/1047322X.1990.10389587">10.1080/1047322X.1990.10389587</a>.
+</div>
+<div id="ref-vu2020" class="csl-entry" role="listitem">
+Vu, J. and Harrington, D., 2020. <em>Introductory statistics for the life and biomedical sciences</em>. 1st ed. [online] OpenIntro. Available at: &lt;<a href="https://www.openintro.org/book/biostat/">https://www.openintro.org/book/biostat/</a>&gt;.
+</div>
+<div id="ref-zhang2012" class="csl-entry" role="listitem">
+Zhang, S. and Guo, Y., 2012. Multiple imputation for cytokine/metabolite assay data with missing data and values below detectable limits of quantification. In: <em>JSM proceedings, biopharmaceutical section</em>. Alexandria, VA: American Statistical Association. pp.725–736.
+</div>
+</div>
+</section>
+<section id="list-of-figures" class="level2">
+<h2 class="anchored" data-anchor-id="list-of-figures">List of figures</h2>
+<ul>
+<li><a href="#fig-below" class="quarto-xref">Figure&nbsp;1</a>: Share of baseline samples below the detection limit, by cytokine</li>
+<li><a href="#fig-skew" class="quarto-xref">Figure&nbsp;2</a>: Baseline IP-10 on the original and log scales</li>
+<li><a href="#fig-spike" class="quarto-xref">Figure&nbsp;3</a>: Baseline IL-13 on a log scale, showing the spike of substituted values</li>
+<li><a href="#fig-heatmap" class="quarto-xref">Figure&nbsp;4</a>: Spearman correlations between baseline cytokine concentrations</li>
+<li><a href="#fig-volcano" class="quarto-xref">Figure&nbsp;5</a>: Volcano plot of active TB compared with controls at baseline</li>
+</ul>
+</section>
+<section id="list-of-tables" class="level2">
+<h2 class="anchored" data-anchor-id="list-of-tables">List of tables</h2>
+<ul>
+<li><a href="#tbl-raw-codes" class="quarto-xref">Table&nbsp;1</a>: Out-of-range codes as reported by the assay</li>
+<li><a href="#tbl-il10" class="quarto-xref">Table&nbsp;2</a>: IL-10 across diagnosis groups, below-limit values dropped or kept</li>
+<li><a href="#tbl-il10-detected" class="quarto-xref">Table&nbsp;3</a>: IL-10 detection by diagnosis group</li>
+<li><a href="#tbl-shapiro" class="quarto-xref">Table&nbsp;4</a>: Shapiro-Wilk test of IP-10 on the original and log scales</li>
+<li><a href="#tbl-shapiro-panel" class="quarto-xref">Table&nbsp;5</a>: Shapiro-Wilk results for all 27 cytokines</li>
+<li><a href="#tbl-designs" class="quarto-xref">Table&nbsp;6</a>: Tests for common cytokine-panel designs</li>
+<li><a href="#tbl-paired" class="quarto-xref">Table&nbsp;7</a>: IP-10 at month 6 compared with baseline, paired and unpaired</li>
+<li><a href="#tbl-screen" class="quarto-xref">Table&nbsp;8</a>: The nine cytokines with the smallest p-values</li>
+<li><a href="#tbl-screen-count" class="quarto-xref">Table&nbsp;9</a>: Cytokines significant before and after correction</li>
+<li><a href="#tbl-left-out" class="quarto-xref">Table&nbsp;10</a>: The screen with OOR values kept and left out</li>
+<li><a href="#tbl-ratios" class="quarto-xref">Table&nbsp;11</a>: Ratios of geometric means with 95% confidence intervals</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/devonallies\.co\.za\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
