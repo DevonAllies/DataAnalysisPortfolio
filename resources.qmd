@@ -1,0 +1,314 @@
+---
+title: "Resources"
+subtitle: "Free books, documentation and tools that go with the tutorials and projects"
+description: "Free books on R, Python, statistics and bioinformatics, the documentation for the packages used in the tutorials, and where to get R, RStudio, Python and Quarto. Collected by Devon Allies."
+body-classes: hide-description   # description is for search/link previews only
+toc: true
+toc-location: left
+link-external-newwindow: true   # books and docs open in a new tab, so this page stays open
+---
+
+Everything here is free to read or use online. Each entry says which of my [tutorials](tutorials.qmd), articles or projects it goes with, so you can go deeper on the part you're working on.
+
+## Free books
+
+::: {.grid .resource-grid}
+::: {.g-col-12 .g-col-md-6 .pub-card}
+[R · tidyverse]{.pub-year}
+
+[[R for Data Science (2nd edition)](https://r4ds.hadley.nz/)]{.pub-title}
+
+[Hadley Wickham, Mine Çetinkaya-Rundel and Garrett Grolemund]{.pub-meta}
+
+The place to start with R: importing, tidying, transforming and visualising data with the tidyverse.
+
+Goes with: [Tutorial 1: Importing data](tutorials/01-import-data-in-r/import-data-in-r.qmd) and [Tutorial 3: Cleaning data](tutorials/03-clean-data-in-r/clean-data-in-r.qmd)
+:::
+
+::: {.g-col-12 .g-col-md-6 .pub-card}
+[R · figures]{.pub-year}
+
+[[ggplot2: Elegant Graphics for Data Analysis (3rd edition)](https://ggplot2-book.org/)]{.pub-title}
+
+[Hadley Wickham, Danielle Navarro and Thomas Lin Pedersen]{.pub-meta}
+
+How ggplot2 works, from the grammar of graphics to scales, facets and themes. The online third edition is still being written.
+
+Goes with: the figures in [Choosing the right statistics for cytokine data](writing/choosing-statistics-for-cytokine-data/index.qmd) and every tutorial
+:::
+
+::: {.g-col-12 .g-col-md-6 .pub-card}
+[Statistics]{.pub-year}
+
+[[Introductory Statistics for the Life and Biomedical Sciences](https://www.openintro.org/book/biostat/)]{.pub-title}
+
+[Julie Vu and David Harrington (OpenIntro)]{.pub-meta}
+
+An introduction to statistics built on biomedical examples. The PDF is free (you can set the price to $0).
+
+Goes with: [Tutorial 4: Statistical tests](tutorials/04-statistical-tests-in-r/statistical-tests-in-r.qmd) and the [guide to choosing a test](guides/choosing-a-statistical-test/choosing-a-statistical-test.pdf)
+:::
+
+::: {.g-col-12 .g-col-md-6 .pub-card}
+[Statistics]{.pub-year}
+
+[[Introduction to Modern Statistics (2nd edition)](https://openintrostat.github.io/ims/)]{.pub-title}
+
+[Mine Çetinkaya-Rundel and Johanna Hardin (OpenIntro)]{.pub-meta}
+
+A modern introduction that teaches randomisation and bootstrapping alongside the classical tests.
+
+Goes with: [Tutorial 4: Statistical tests](tutorials/04-statistical-tests-in-r/statistical-tests-in-r.qmd)
+:::
+
+::: {.g-col-12 .g-col-md-6 .pub-card}
+[Statistics · R]{.pub-year}
+
+[[APS 240: Data Analysis and Statistics with R](https://dzchilds.github.io/stats-for-bio/)]{.pub-title}
+
+[Dylan Z. Childs, Bethan J. Hindle and Philip H. Warren]{.pub-meta}
+
+A university course book that teaches statistics and R together for biologists, with clear chapters on assumptions, transformations and paired designs.
+
+Goes with: [Tutorial 4: Statistical tests](tutorials/04-statistical-tests-in-r/statistical-tests-in-r.qmd) and [Choosing the right statistics for cytokine data](writing/choosing-statistics-for-cytokine-data/index.qmd)
+:::
+
+::: {.g-col-12 .g-col-md-6 .pub-card}
+[Python · pandas]{.pub-year}
+
+[[Python for Data Analysis (3rd edition)](https://wesmckinney.com/book/)]{.pub-title}
+
+[Wes McKinney]{.pub-meta}
+
+Data wrangling in Python with pandas and NumPy, by the creator of pandas. Free to read online.
+
+Goes with: [Tutorial 2: One dataset in R and Python](tutorials/02-r-and-python/r-and-python-dataframes.qmd)
+:::
+
+::: {.g-col-12 .g-col-md-6 .pub-card}
+[Bioinformatics · R]{.pub-year}
+
+[[Modern Statistics for Modern Biology](https://www.huber.embl.de/msmb/)]{.pub-title}
+
+[Susan Holmes and Wolfgang Huber]{.pub-meta}
+
+Statistics for high-throughput biology with R and Bioconductor: multiple testing, clustering, RNA-seq and more.
+
+Goes with: the [chromosome X RNA-seq project](projects/chrx-rnaseq/index.qmd)
+:::
+
+::: {.g-col-12 .g-col-md-6 .pub-card}
+[Machine learning · Python]{.pub-year}
+
+[[An Introduction to Statistical Learning, with Applications in Python](https://www.statlearning.com/)]{.pub-title}
+
+[Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani and Jonathan Taylor]{.pub-meta}
+
+The standard introduction to machine learning: regression, classification, resampling, trees and boosting, with Python labs. The PDF is free on the book's site.
+
+Goes with: the classifier planned for the [TB BAL cytokines project](projects/tb-bal-cytokines/index.qmd)
+:::
+
+::: {.g-col-12 .g-col-md-6 .pub-card}
+[Machine learning · SHAP]{.pub-year}
+
+[[Interpretable Machine Learning](https://christophm.github.io/interpretable-ml-book/)]{.pub-title}
+
+[Christoph Molnar]{.pub-meta}
+
+How to explain what a model has learnt, including clear chapters on Shapley values and SHAP, permutation importance and partial dependence.
+
+Goes with: the classifier planned for the [TB BAL cytokines project](projects/tb-bal-cytokines/index.qmd)
+:::
+
+::: {.g-col-12 .g-col-md-6 .pub-card}
+[Python · machine learning]{.pub-year}
+
+[[Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/)]{.pub-title}
+
+[Jake VanderPlas]{.pub-meta}
+
+NumPy, pandas, Matplotlib and scikit-learn in one book. The free online version is the first edition.
+
+Goes with: [Tutorial 2: One dataset in R and Python](tutorials/02-r-and-python/r-and-python-dataframes.qmd) and the [credit risk pipeline](projects/credit-risk-pipeline/index.qmd)
+:::
+
+::: {.g-col-12 .g-col-md-6 .pub-card}
+[Git · RStudio]{.pub-year}
+
+[[Happy Git and GitHub for the useR](https://happygitwithr.com/)]{.pub-title}
+
+[Jenny Bryan, the STAT 545 TAs and Jim Hester]{.pub-meta}
+
+Setting up Git and GitHub with RStudio, and the everyday version-control habits that keep an analysis reproducible.
+:::
+
+:::
+
+## Package documentation
+
+The official documentation for the packages used in the tutorials and projects. Each site has a getting-started guide and a page for every function.
+
+### R
+
+::: {.grid .resource-grid}
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[readr](https://readr.tidyverse.org/) and [readxl](https://readxl.tidyverse.org/)]{.resource-title}
+
+Reading CSV and Excel files
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[dplyr](https://dplyr.tidyverse.org/)]{.resource-title}
+
+Filtering, summarising and joining data
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[tidyr](https://tidyr.tidyverse.org/)]{.resource-title}
+
+Reshaping between wide and long formats
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[stringr](https://stringr.tidyverse.org/) and [lubridate](https://lubridate.tidyverse.org/)]{.resource-title}
+
+Text and dates
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[purrr](https://purrr.tidyverse.org/)]{.resource-title}
+
+Applying a function to many inputs
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[janitor](https://sfirke.github.io/janitor/)]{.resource-title}
+
+Tidying column names and quick tables
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[ggplot2](https://ggplot2.tidyverse.org/)]{.resource-title}
+
+Figures
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[here](https://here.r-lib.org/)]{.resource-title}
+
+File paths that work from any folder
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[reticulate](https://rstudio.github.io/reticulate/)]{.resource-title}
+
+Running Python from R
+:::
+
+:::
+
+### Python
+
+::: {.grid .resource-grid}
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[pandas](https://pandas.pydata.org/docs/)]{.resource-title}
+
+Data frames in Python
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[scikit-learn](https://scikit-learn.org/stable/user_guide.html)]{.resource-title}
+
+Machine learning models, cross-validation and evaluation metrics
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[XGBoost](https://xgboost.readthedocs.io/en/stable/)]{.resource-title}
+
+Gradient-boosted decision trees
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[SHAP](https://shap.readthedocs.io/en/latest/)]{.resource-title}
+
+Explaining a model's predictions feature by feature
+:::
+
+:::
+
+## Tools and setup
+
+::: {.grid .resource-grid}
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[R](https://cran.r-project.org/)]{.resource-title}
+
+The R language, from CRAN
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[RStudio Desktop](https://posit.co/download/rstudio-desktop/)]{.resource-title}
+
+The editor the tutorials use
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[Python](https://www.python.org/downloads/)]{.resource-title}
+
+The Python language, from python.org
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[uv](https://docs.astral.sh/uv/)]{.resource-title}
+
+Installs Python and its packages for a project
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[renv](https://rstudio.github.io/renv/)]{.resource-title}
+
+Records the R package versions a project uses
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[Quarto](https://quarto.org/docs/get-started/)]{.resource-title}
+
+Turns R and Python code and text into reports and websites; this site is built with it
+:::
+
+:::
+
+## Bioinformatics
+
+::: {.grid .resource-grid}
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[Bioconductor](https://bioconductor.org/)]{.resource-title}
+
+R packages for genomic data, with free [course materials](https://www.bioconductor.org/help/course-materials/)
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[Nextflow](https://www.nextflow.io/docs/latest/)]{.resource-title}
+
+Workflow manager for reproducible pipelines, used in my [variant-calling pipeline](projects/wgs-variant-calling-pipeline/index.qmd)
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[nf-core](https://nf-co.re/)]{.resource-title}
+
+Community-built, peer-reviewed Nextflow pipelines
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[GATK](https://github.com/broadinstitute/gatk)]{.resource-title}
+
+The Broad Institute's toolkit for variant discovery
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[Galaxy Training Network](https://training.galaxyproject.org/)]{.resource-title}
+
+Free hands-on tutorials across genomics and bioinformatics
+:::
+
+:::

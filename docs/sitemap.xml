@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://devonallies.co.za/writing/choosing-statistics-for-cytokine-data/index.html</loc>
+    <lastmod>2026-11-20T08:00:41.031Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/tutorials/03-clean-data-in-r/clean-data-in-r.html</loc>
+    <lastmod>2026-11-17T09:23:24.910Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/tutorials/01-import-data-in-r/import-data-in-r.html</loc>
+    <lastmod>2026-11-13T08:59:41.360Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/resources.html</loc>
+    <lastmod>2026-11-20T10:04:41.193Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/projects/wgs-variant-calling-pipeline/index.html</loc>
+    <lastmod>2026-11-13T08:49:28.801Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/projects/tb-bal-cytokines/index.html</loc>
+    <lastmod>2026-11-16T12:10:37.878Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/projects/credit-risk-pipeline/index.html</loc>
+    <lastmod>2026-11-13T08:44:40.312Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/projects/chrx-rnaseq/index.html</loc>
+    <lastmod>2026-11-16T16:47:57.739Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/projects.html</loc>
+    <lastmod>2026-11-14T06:20:56.369Z</lastmod>
+  </url>
+  <url>
+    <loc>https://devonallies.co.za/contact.html</loc>
+    <lastmod>2026-11-16T07:21:18.738Z</lastmod>
+  </url>
+  <url>
     <loc>https://devonallies.co.za/about.html</loc>
     <lastmod>2026-11-13T14:13:11.633Z</lastmod>
   </url>
@@ -9,40 +49,20 @@
     <lastmod>2026-11-20T08:12:10.050Z</lastmod>
   </url>
   <url>
-    <loc>https://devonallies.co.za/projects.html</loc>
-    <lastmod>2026-11-14T06:20:56.369Z</lastmod>
-  </url>
-  <url>
     <loc>https://devonallies.co.za/projects/bal-databricks-pipeline/index.html</loc>
     <lastmod>2026-11-13T08:44:40.312Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.co.za/projects/chrx-rnaseq/index.html</loc>
-    <lastmod>2026-11-16T16:47:57.739Z</lastmod>
   </url>
   <url>
     <loc>https://devonallies.co.za/projects/covid19-blood-counts/index.html</loc>
     <lastmod>2026-11-13T09:18:01.986Z</lastmod>
   </url>
   <url>
-    <loc>https://devonallies.co.za/projects/credit-risk-pipeline/index.html</loc>
-    <lastmod>2026-11-13T08:44:40.312Z</lastmod>
-  </url>
-  <url>
     <loc>https://devonallies.co.za/projects/r-python-workflow/index.html</loc>
     <lastmod>2026-11-13T09:18:01.986Z</lastmod>
   </url>
   <url>
-    <loc>https://devonallies.co.za/projects/tb-bal-cytokines/index.html</loc>
-    <lastmod>2026-11-16T12:10:37.878Z</lastmod>
-  </url>
-  <url>
     <loc>https://devonallies.co.za/projects/tb-global-trends/index.html</loc>
     <lastmod>2026-11-16T12:32:30.987Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.co.za/projects/wgs-variant-calling-pipeline/index.html</loc>
-    <lastmod>2026-11-13T08:49:28.801Z</lastmod>
   </url>
   <url>
     <loc>https://devonallies.co.za/publications.html</loc>
@@ -53,27 +73,11 @@
     <lastmod>2026-11-17T09:03:59.293Z</lastmod>
   </url>
   <url>
-    <loc>https://devonallies.co.za/tutorials/01-import-data-in-r/import-data-in-r.html</loc>
-    <lastmod>2026-11-13T08:59:41.360Z</lastmod>
-  </url>
-  <url>
     <loc>https://devonallies.co.za/tutorials/02-r-and-python/r-and-python-dataframes.html</loc>
     <lastmod>2026-11-16T12:48:17.826Z</lastmod>
   </url>
   <url>
-    <loc>https://devonallies.co.za/contact.html</loc>
-    <lastmod>2026-11-16T07:21:18.738Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.co.za/tutorials/03-clean-data-in-r/clean-data-in-r.html</loc>
-    <lastmod>2026-11-17T09:23:24.910Z</lastmod>
-  </url>
-  <url>
     <loc>https://devonallies.co.za/tutorials/04-statistical-tests-in-r/statistical-tests-in-r.html</loc>
     <lastmod>2026-11-19T06:25:07.684Z</lastmod>
-  </url>
-  <url>
-    <loc>https://devonallies.co.za/writing/choosing-statistics-for-cytokine-data/index.html</loc>
-    <lastmod>2026-11-20T08:00:41.031Z</lastmod>
   </url>
 </urlset>

@@ -46,6 +46,10 @@ The cleaned data is in `tutorials/data/` too: `bal_metadata_clean.csv` (one row 
 5. Specialised tests: post hoc comparisons, multiple testing and regression, with an interactive [Shinylive](https://posit-dev.github.io/r-shinylive/) app that runs in the browser
 6. Machine learning: building and evaluating a predictive model in Python
 
+## Resources
+
+The [Resources page](https://devonallies.co.za/resources.html) collects free books (R for Data Science, the ggplot2 book, OpenIntro, APS 240, Python for Data Analysis, Modern Statistics for Modern Biology, Happy Git with R), the documentation for the packages the tutorials use, where to get the tools, and bioinformatics resources. Each book says which tutorial, article or project it goes with.
+
 ## Publications & Writing
 
 - **Peer-reviewed papers:** three papers in TB diagnostics, BAL research and a phase 2 vaccine trial (*Scientific Reports*, *BMC Infectious Diseases*, *The Lancet Infectious Diseases*), cited 100+ times. ORCID: [0000-0001-8928-4334](https://orcid.org/0000-0001-8928-4334)
@@ -65,6 +69,7 @@ index.qmd              home page, with hand-picked featured projects
 about.qmd              About page
 projects.qmd           project listing: newest first, with tag filters and search
 tutorials.qmd          tutorial series page: banner, data downloads, numbered list (by each tutorial's `order` field), roadmap
+resources.qmd          free books, package documentation, tools and bioinformatics links
 publications.qmd       Publications & Writing page
 contact.qmd            Contact page: form sent by FormSubmit (formsubmit.co) to my inbox
 projects/<name>/       one folder per project, all with the same layout:

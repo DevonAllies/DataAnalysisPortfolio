@@ -1,14 +1,5 @@
 [
   {
-    "listing": "/tutorials.html",
-    "items": [
-      "/tutorials/01-import-data-in-r/import-data-in-r.html",
-      "/tutorials/02-r-and-python/r-and-python-dataframes.html",
-      "/tutorials/03-clean-data-in-r/clean-data-in-r.html",
-      "/tutorials/04-statistical-tests-in-r/statistical-tests-in-r.html"
-    ]
-  },
-  {
     "listing": "/projects.html",
     "items": [
       "/projects/credit-risk-pipeline/index.html",
@@ -28,6 +19,15 @@
       "/projects/credit-risk-pipeline/index.html",
       "/projects/bal-databricks-pipeline/index.html",
       "/projects/chrx-rnaseq/index.html"
+    ]
+  },
+  {
+    "listing": "/tutorials.html",
+    "items": [
+      "/tutorials/01-import-data-in-r/import-data-in-r.html",
+      "/tutorials/02-r-and-python/r-and-python-dataframes.html",
+      "/tutorials/03-clean-data-in-r/clean-data-in-r.html",
+      "/tutorials/04-statistical-tests-in-r/statistical-tests-in-r.html"
     ]
   }
 ]

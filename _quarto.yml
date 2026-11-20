@@ -31,6 +31,8 @@ website:
         text: Projects
       - href: tutorials.qmd
         text: Tutorials
+      - href: resources.qmd
+        text: Resources
       - href: publications.qmd
         text: Publications & Writing
       - href: about.qmd
