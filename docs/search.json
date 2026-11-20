@@ -515,7 +515,7 @@
     "href": "index.html#latest",
     "title": "Devon Allies",
     "section": "Latest",
-    "text": "Latest\n\n\n Tutorial\nCleaning data in R\nTutorial 3\nClean the imported BAL study metadata in R: fix IDs and duplicates, make category spellings consistent, parse mixed date formats, deal with…\n\n\n Article\nEnhancing Reproducibility: A Deep Dive into My Updated Quarto Scientific Writing Template\nMedium · 04 June 2025\nIn May, I wrote an article detailing my switch to RStudio® for scientific writing. I also introduced the concept of reproducibility, mentioning…\n\n\n Paper\nOptimising the yield from bronchoalveolar lavage on human participants in infectious disease immunology research\nScientific Reports · 2023\nCo-authored, cited 10 times. All publications →"
+    "text": "Latest\n\n\n Tutorial\nChoosing and running statistical tests in R\nTutorial 4\nLearn what the common statistical tests do and when to use each one, then run them in R on the cleaned BAL…\n\n\n Article\nChoosing the right statistics for cytokine data\nOn this site · 20 November 2026\nCytokine panels measure dozens of analytes at once, and the usual approach (a t-test per cytokine, stars on anything below 0.05) can…\n\n\n Paper\nOptimising the yield from bronchoalveolar lavage on human participants in infectious disease immunology research\nScientific Reports · 2023\nCo-authored, cited 10 times. All publications →"
   },
   {
     "objectID": "index.html#get-in-touch",

@@ -46,8 +46,17 @@ tuts <- lapply(tut_files, \(f) c(rmarkdown::yaml_front_matter(f), path = f))
 latest_tut <- tuts[[which.max(vapply(tuts, \(t) as.numeric(t$order), numeric(1)))]]
 latest_tut$href <- sub(paste0("^", here::here(), "/"), "", latest_tut$path)
 
-latest_article <- pubs$articles[[1]]          # sorted newest first by the fetch script
-latest_paper   <- pubs$publications[[1]]      # sorted newest first by the fetch script
+# Newest article, from this site's writing/ folder or from Medium
+site_articles <- lapply(Sys.glob(here::here("writing", "*", "index.qmd")), \(f) {
+  m <- rmarkdown::yaml_front_matter(f)
+  list(title = m$title, date = as.character(m$date), excerpt = m$description,
+       url = paste0("writing/", basename(dirname(f)), "/index.qmd"), where = "On this site")
+})
+medium_articles <- lapply(pubs$articles, \(a) modifyList(a, list(where = "Medium")))
+all_articles <- c(site_articles, medium_articles)
+latest_article <- all_articles[[which.max(vapply(all_articles, \(a) as.numeric(as.Date(a$date)), numeric(1)))]]
+
+latest_paper  <- pubs$publications[[1]]      # sorted newest first by the fetch script
 
 shorten <- function(x, n = 22) {
   w <- strsplit(x, "\\s+")[[1]]
@@ -110,7 +119,7 @@ cat("::: {.grid .latest-grid}\n\n")
 card("Tutorial", "bi-mortarboard", latest_tut$title, latest_tut$href,
      sprintf("Tutorial %s", latest_tut$order), shorten(latest_tut$description))
 card("Article", "bi-pencil-square", latest_article$title, latest_article$url,
-     sprintf("Medium · %s", format(as.Date(latest_article$date), "%d %B %Y")),
+     sprintf("%s · %s", latest_article$where, format(as.Date(latest_article$date), "%d %B %Y")),
      shorten(latest_article$excerpt))
 card("Paper", "bi-journal-text", latest_paper$title,
      if (!is.null(latest_paper$doi)) paste0("https://doi.org/", latest_paper$doi) else "publications.qmd",
