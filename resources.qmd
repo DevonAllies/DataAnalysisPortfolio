@@ -5,6 +5,9 @@ description: "Free books and courses on R, Python, statistics, the command line 
 body-classes: hide-description   # description is for search/link previews only
 toc: true
 toc-location: left
+include-after-body:
+  text: '<script src="assets/js/toc-groups.js"></script>'   # card entries in "On this page"
+toc-depth: 4   # each book and tool is listed under its section
 link-external-newwindow: true   # books and docs open in a new tab, so this page stays open
 ---
 
@@ -19,7 +22,7 @@ Everything here is free to read or use online. Each entry says which of my [tuto
 ::: {.g-col-12 .g-col-md-6 .pub-card}
 [R · tidyverse]{.pub-year}
 
-[[R for Data Science (2nd edition)](https://r4ds.hadley.nz/)]{.pub-title}
+### [R for Data Science (2nd edition)](https://r4ds.hadley.nz/) {.pub-title}
 
 [Hadley Wickham, Mine Çetinkaya-Rundel and Garrett Grolemund]{.pub-meta}
 
@@ -31,7 +34,7 @@ Goes with: [Tutorial 1: Importing data](tutorials/01-import-data-in-r/import-dat
 ::: {.g-col-12 .g-col-md-6 .pub-card}
 [R · figures]{.pub-year}
 
-[[ggplot2: Elegant Graphics for Data Analysis (3rd edition)](https://ggplot2-book.org/)]{.pub-title}
+### [ggplot2: Elegant Graphics for Data Analysis (3rd edition)](https://ggplot2-book.org/) {.pub-title}
 
 [Hadley Wickham, Danielle Navarro and Thomas Lin Pedersen]{.pub-meta}
 
@@ -43,7 +46,7 @@ Goes with: the figures in [Choosing the right statistics for cytokine data](writ
 ::: {.g-col-12 .g-col-md-6 .pub-card}
 [Statistics]{.pub-year}
 
-[[Introductory Statistics for the Life and Biomedical Sciences](https://www.openintro.org/book/biostat/)]{.pub-title}
+### [Introductory Statistics for the Life and Biomedical Sciences](https://www.openintro.org/book/biostat/) {.pub-title}
 
 [Julie Vu and David Harrington (OpenIntro)]{.pub-meta}
 
@@ -55,7 +58,7 @@ Goes with: [Tutorial 4: Statistical tests](tutorials/04-statistical-tests-in-r/s
 ::: {.g-col-12 .g-col-md-6 .pub-card}
 [Statistics]{.pub-year}
 
-[[Introduction to Modern Statistics (2nd edition)](https://openintrostat.github.io/ims/)]{.pub-title}
+### [Introduction to Modern Statistics (2nd edition)](https://openintrostat.github.io/ims/) {.pub-title}
 
 [Mine Çetinkaya-Rundel and Johanna Hardin (OpenIntro)]{.pub-meta}
 
@@ -67,7 +70,7 @@ Goes with: [Tutorial 4: Statistical tests](tutorials/04-statistical-tests-in-r/s
 ::: {.g-col-12 .g-col-md-6 .pub-card}
 [Statistics · R]{.pub-year}
 
-[[APS 240: Data Analysis and Statistics with R](https://dzchilds.github.io/stats-for-bio/)]{.pub-title}
+### [APS 240: Data Analysis and Statistics with R](https://dzchilds.github.io/stats-for-bio/) {.pub-title}
 
 [Dylan Z. Childs, Bethan J. Hindle and Philip H. Warren]{.pub-meta}
 
@@ -79,7 +82,7 @@ Goes with: [Tutorial 4: Statistical tests](tutorials/04-statistical-tests-in-r/s
 ::: {.g-col-12 .g-col-md-6 .pub-card}
 [Python · pandas]{.pub-year}
 
-[[Python for Data Analysis (3rd edition)](https://wesmckinney.com/book/)]{.pub-title}
+### [Python for Data Analysis (3rd edition)](https://wesmckinney.com/book/) {.pub-title}
 
 [Wes McKinney]{.pub-meta}
 
@@ -91,7 +94,7 @@ Goes with: [Tutorial 2: One dataset in R and Python](tutorials/02-r-and-python/r
 ::: {.g-col-12 .g-col-md-6 .pub-card}
 [Bioinformatics · R]{.pub-year}
 
-[[Modern Statistics for Modern Biology](https://www.huber.embl.de/msmb/)]{.pub-title}
+### [Modern Statistics for Modern Biology](https://www.huber.embl.de/msmb/) {.pub-title}
 
 [Susan Holmes and Wolfgang Huber]{.pub-meta}
 
@@ -103,7 +106,7 @@ Goes with: the [chromosome X RNA-seq project](projects/chrx-rnaseq/index.qmd)
 ::: {.g-col-12 .g-col-md-6 .pub-card}
 [Machine learning · Python]{.pub-year}
 
-[[An Introduction to Statistical Learning, with Applications in Python](https://www.statlearning.com/)]{.pub-title}
+### [An Introduction to Statistical Learning, with Applications in Python](https://www.statlearning.com/) {.pub-title}
 
 [Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani and Jonathan Taylor]{.pub-meta}
 
@@ -115,7 +118,7 @@ Goes with: the classifier planned for the [TB BAL cytokines project](projects/tb
 ::: {.g-col-12 .g-col-md-6 .pub-card}
 [Machine learning · SHAP]{.pub-year}
 
-[[Interpretable Machine Learning](https://christophm.github.io/interpretable-ml-book/)]{.pub-title}
+### [Interpretable Machine Learning](https://christophm.github.io/interpretable-ml-book/) {.pub-title}
 
 [Christoph Molnar]{.pub-meta}
 
@@ -127,7 +130,7 @@ Goes with: the classifier planned for the [TB BAL cytokines project](projects/tb
 ::: {.g-col-12 .g-col-md-6 .pub-card}
 [Python · machine learning]{.pub-year}
 
-[[Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/)]{.pub-title}
+### [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/) {.pub-title}
 
 [Jake VanderPlas]{.pub-meta}
 
@@ -139,7 +142,7 @@ Goes with: [Tutorial 2: One dataset in R and Python](tutorials/02-r-and-python/r
 ::: {.g-col-12 .g-col-md-6 .pub-card}
 [Git · RStudio]{.pub-year}
 
-[[Happy Git and GitHub for the useR](https://happygitwithr.com/)]{.pub-title}
+### [Happy Git and GitHub for the useR](https://happygitwithr.com/) {.pub-title}
 
 [Jenny Bryan, the STAT 545 TAs and Jim Hester]{.pub-meta}
 
@@ -161,55 +164,55 @@ The official documentation for the packages used in the tutorials and projects. 
 
 ::: {.grid .resource-grid}
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[readr](https://readr.tidyverse.org/) and [readxl](https://readxl.tidyverse.org/)]{.resource-title}
+#### [readr](https://readr.tidyverse.org/) and [readxl](https://readxl.tidyverse.org/) {.resource-title}
 
 Reading CSV and Excel files
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[dplyr](https://dplyr.tidyverse.org/)]{.resource-title}
+#### [dplyr](https://dplyr.tidyverse.org/) {.resource-title}
 
 Filtering, summarising and joining data
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[tidyr](https://tidyr.tidyverse.org/)]{.resource-title}
+#### [tidyr](https://tidyr.tidyverse.org/) {.resource-title}
 
 Reshaping between wide and long formats
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[stringr](https://stringr.tidyverse.org/) and [lubridate](https://lubridate.tidyverse.org/)]{.resource-title}
+#### [stringr](https://stringr.tidyverse.org/) and [lubridate](https://lubridate.tidyverse.org/) {.resource-title}
 
 Text and dates
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[purrr](https://purrr.tidyverse.org/)]{.resource-title}
+#### [purrr](https://purrr.tidyverse.org/) {.resource-title}
 
 Applying a function to many inputs
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[janitor](https://sfirke.github.io/janitor/)]{.resource-title}
+#### [janitor](https://sfirke.github.io/janitor/) {.resource-title}
 
 Tidying column names and quick tables
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[ggplot2](https://ggplot2.tidyverse.org/)]{.resource-title}
+#### [ggplot2](https://ggplot2.tidyverse.org/) {.resource-title}
 
 Figures
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[here](https://here.r-lib.org/)]{.resource-title}
+#### [here](https://here.r-lib.org/) {.resource-title}
 
 File paths that work from any folder
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[reticulate](https://rstudio.github.io/reticulate/)]{.resource-title}
+#### [reticulate](https://rstudio.github.io/reticulate/) {.resource-title}
 
 Running Python from R
 :::
@@ -220,25 +223,25 @@ Running Python from R
 
 ::: {.grid .resource-grid}
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[pandas](https://pandas.pydata.org/docs/)]{.resource-title}
+#### [pandas](https://pandas.pydata.org/docs/) {.resource-title}
 
 Data frames in Python
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[scikit-learn](https://scikit-learn.org/stable/user_guide.html)]{.resource-title}
+#### [scikit-learn](https://scikit-learn.org/stable/user_guide.html) {.resource-title}
 
 Machine learning models, cross-validation and evaluation metrics
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[XGBoost](https://xgboost.readthedocs.io/en/stable/)]{.resource-title}
+#### [XGBoost](https://xgboost.readthedocs.io/en/stable/) {.resource-title}
 
 Gradient-boosted decision trees
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[SHAP](https://shap.readthedocs.io/en/latest/)]{.resource-title}
+#### [SHAP](https://shap.readthedocs.io/en/latest/) {.resource-title}
 
 Explaining a model's predictions feature by feature
 :::
@@ -254,49 +257,49 @@ Explaining a model's predictions feature by feature
 
 ::: {.grid .resource-grid}
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[R](https://cran.r-project.org/)]{.resource-title}
+### [R](https://cran.r-project.org/) {.resource-title}
 
 The R language, from CRAN
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[RStudio Desktop](https://posit.co/download/rstudio-desktop/)]{.resource-title}
+### [RStudio Desktop](https://posit.co/download/rstudio-desktop/) {.resource-title}
 
 The editor the tutorials use
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[Python](https://www.python.org/downloads/)]{.resource-title}
+### [Python](https://www.python.org/downloads/) {.resource-title}
 
 The Python language, from python.org
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[uv](https://docs.astral.sh/uv/)]{.resource-title}
+### [uv](https://docs.astral.sh/uv/) {.resource-title}
 
 Installs Python and its packages for a project
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[renv](https://rstudio.github.io/renv/)]{.resource-title}
+### [renv](https://rstudio.github.io/renv/) {.resource-title}
 
 Records the R package versions a project uses
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html)]{.resource-title}
+### [micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html) {.resource-title}
 
 A small, fast conda-compatible package manager for Bioconda tools and project environments
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[Miniforge](https://github.com/conda-forge/miniforge)]{.resource-title}
+### [Miniforge](https://github.com/conda-forge/miniforge) {.resource-title}
 
 Installs conda, set up for the free conda-forge channel
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[Quarto](https://quarto.org/docs/get-started/)]{.resource-title}
+### [Quarto](https://quarto.org/docs/get-started/) {.resource-title}
 
 Turns R and Python code and text into reports and websites; this site is built with it
 :::
@@ -316,7 +319,7 @@ Getting comfortable in a terminal, from your first `cd` to building pipelines. S
 ::: {.g-col-12 .g-col-md-6 .pub-card}
 [Command line · book]{.pub-year}
 
-[[Data Science at the Command Line (2nd edition)](https://jeroenjanssens.com/dsatcl/)]{.pub-title}
+### [Data Science at the Command Line (2nd edition)](https://jeroenjanssens.com/dsatcl/) {.pub-title}
 
 [Jeroen Janssens]{.pub-meta}
 
@@ -328,7 +331,7 @@ Goes with: [The command line for biologists](writing/command-line-for-biologists
 ::: {.g-col-12 .g-col-md-6 .pub-card}
 [Linux · book]{.pub-year}
 
-[[The Linux Command Line](https://linuxcommand.org/tlcl.php)]{.pub-title}
+### [The Linux Command Line](https://linuxcommand.org/tlcl.php) {.pub-title}
 
 [William Shotts]{.pub-meta}
 
@@ -341,49 +344,49 @@ Goes with: [The command line for biologists](writing/command-line-for-biologists
 
 ::: {.grid .resource-grid}
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[The Unix Shell](https://swcarpentry.github.io/shell-novice/)]{.resource-title}
+### [The Unix Shell](https://swcarpentry.github.io/shell-novice/) {.resource-title}
 
 Software Carpentry's hands-on lesson: files, pipes, loops and scripts, with exercises
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[Command Line for Genomics](https://datacarpentry.github.io/shell-genomics/)]{.resource-title}
+### [Command Line for Genomics](https://datacarpentry.github.io/shell-genomics/) {.resource-title}
 
 Data Carpentry's lesson applying the shell to sequencing files
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[The command line for beginners](https://ubuntu.com/tutorials/command-line-for-beginners)]{.resource-title}
+### [The command line for beginners](https://ubuntu.com/tutorials/command-line-for-beginners) {.resource-title}
 
 Ubuntu's own short tutorial for first-time terminal users
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[The Missing Semester](https://missing.csail.mit.edu/)]{.resource-title}
+### [The Missing Semester](https://missing.csail.mit.edu/) {.resource-title}
 
 MIT's free lectures on the shell, scripting, editors and Git
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[Linux command line guide](https://www.freecodecamp.org/news/linux-command-line-bash-tutorial/)]{.resource-title}
+### [Linux command line guide](https://www.freecodecamp.org/news/linux-command-line-bash-tutorial/) {.resource-title}
 
 freeCodeCamp's long written tutorial on Bash commands
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[explainshell](https://explainshell.com/)]{.resource-title}
+### [explainshell](https://explainshell.com/) {.resource-title}
 
 Paste a command and see what each part of it does
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[OverTheWire: Bandit](https://overthewire.org/wargames/bandit/)]{.resource-title}
+### [OverTheWire: Bandit](https://overthewire.org/wargames/bandit/) {.resource-title}
 
 A game that teaches Linux commands one level at a time
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[WSL](https://learn.microsoft.com/en-us/windows/wsl/install)]{.resource-title}
+### [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) {.resource-title}
 
 Running Ubuntu inside Windows, from Microsoft's install guide
 :::
@@ -401,19 +404,19 @@ Structured, self-paced courses that teach programming and data skills from scrat
 
 ::: {.grid .resource-grid}
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[freeCodeCamp](https://www.freecodecamp.org/learn)]{.resource-title}
+### [freeCodeCamp](https://www.freecodecamp.org/learn) {.resource-title}
 
 Free interactive courses and certifications, including Python and data analysis
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[Software Carpentry](https://software-carpentry.org/lessons/)]{.resource-title}
+### [Software Carpentry](https://software-carpentry.org/lessons/) {.resource-title}
 
 Lessons on the shell, Git, R and Python for researchers
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[Data Carpentry](https://datacarpentry.org/lessons/)]{.resource-title}
+### [Data Carpentry](https://datacarpentry.org/lessons/) {.resource-title}
 
 Data skills for researchers, with lesson sets for genomics and ecology
 :::
@@ -429,37 +432,37 @@ Data skills for researchers, with lesson sets for genomics and ecology
 
 ::: {.grid .resource-grid}
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[Bioconductor](https://bioconductor.org/)]{.resource-title}
+### [Bioconductor](https://bioconductor.org/) {.resource-title}
 
 R packages for genomic data, with free [course materials](https://www.bioconductor.org/help/course-materials/)
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[Nextflow](https://www.nextflow.io/docs/latest/)]{.resource-title}
+### [Nextflow](https://www.nextflow.io/docs/latest/) {.resource-title}
 
 Workflow manager for reproducible pipelines, used in my [variant-calling pipeline](projects/wgs-variant-calling-pipeline/index.qmd)
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[nf-core](https://nf-co.re/)]{.resource-title}
+### [nf-core](https://nf-co.re/) {.resource-title}
 
 Community-built, peer-reviewed Nextflow pipelines
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[Bioconda](https://bioconda.github.io/)]{.resource-title}
+### [Bioconda](https://bioconda.github.io/) {.resource-title}
 
 Thousands of bioinformatics command-line tools, installed with conda
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[GATK](https://gatk.broadinstitute.org/hc/en-us)]{.resource-title}
+### [GATK](https://gatk.broadinstitute.org/hc/en-us) {.resource-title}
 
 The Broad Institute's toolkit for variant discovery
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[Galaxy Training Network](https://training.galaxyproject.org/)]{.resource-title}
+### [Galaxy Training Network](https://training.galaxyproject.org/) {.resource-title}
 
 Free hands-on tutorials across genomics and bioinformatics
 :::
@@ -468,23 +471,3 @@ Free hands-on tutorials across genomics and bioinformatics
 
 </details>
 
-```{=html}
-<script>
-// Open a group when "On this page" (or a link with #section) points into it
-function openGroupFor(hash) {
-  if (!hash) return;
-  const target = document.getElementById(decodeURIComponent(hash.slice(1)));
-  if (!target) return;
-  const inside = target.closest("details.pub-group");
-  if (inside) { inside.open = true; return; }
-  const section = target.closest("section") || target;
-  section.querySelectorAll(":scope > details.pub-group").forEach(d => d.open = true);
-}
-window.addEventListener("hashchange", () => openGroupFor(location.hash));
-document.addEventListener("DOMContentLoaded", () => {
-  openGroupFor(location.hash);
-  document.querySelectorAll("#TOC a[href^='#']").forEach(a =>
-    a.addEventListener("click", () => openGroupFor(a.getAttribute("href"))));
-});
-</script>
-```

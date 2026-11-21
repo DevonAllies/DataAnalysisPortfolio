@@ -5,8 +5,10 @@ description: "Peer-reviewed TB research co-authored by Devon Allies in Scientifi
 body-classes: hide-description   # description is for search/link previews only
 engine: knitr
 toc: true
-toc-depth: 3
+toc-depth: 4   # each paper and article is listed under its group
 toc-location: left
+include-after-body:
+  text: '<script src="assets/js/toc-groups.js"></script>'   # card entries in "On this page"
 link-external-newwindow: true   # DOI, PubMed and Medium links open in a new tab
 execute:
   echo: false
@@ -77,7 +79,7 @@ for (p in pubs) {
   cat(
     "::: {.pub-card}\n",
     sprintf("[%s]{.pub-year}\n\n", p$year),
-    sprintf("[%s]{.pub-title}\n\n", p$title),
+    sprintf("### %s {.pub-title}\n\n", p$title),
     sprintf("[%s]{.pub-authors}\n\n", format_authors(p$authors)),
     sprintf("%s\n\n", ref),
     sprintf("[%s%s]{.pub-meta}\n\n", role, cites),
@@ -115,7 +117,7 @@ article_card <- function(a, label) {
   cat(
     "::: {.pub-card .article-card}\n",
     sprintf("[%s]{.pub-year}\n\n", label),
-    sprintf("[%s]{.pub-title}\n\n", a$title),
+    sprintf("#### %s {.pub-title}\n\n", a$title),
     sprintf("%s\n\n", a$subtitle),
     sprintf("%s\n\n", tags),
     sprintf("[Read the article](%s){.btn .btn-sm .btn-primary}\n", a$href),
@@ -166,7 +168,7 @@ for (a in pubs_data$articles) {
   cat(
     "::: {.pub-card .article-card}\n",
     sprintf("[%s · %d min read]{.pub-year}\n\n", date_label, a$minutes),
-    sprintf("[%s]{.pub-title}\n\n", a$title),
+    sprintf("### %s {.pub-title}\n\n", a$title),
     sprintf("%s\n\n", a$excerpt),
     sprintf("%s\n\n", tags),
     sprintf("[Read on Medium](%s){.btn .btn-sm .btn-primary}\n", a$url),
@@ -177,21 +179,3 @@ for (a in pubs_data$articles) {
 group_close()
 ```
 
-```{=html}
-<script>
-// Open a group when "On this page" (or a link with #section) points into it
-function openGroupFor(hash) {
-  if (!hash) return;
-  const target = document.getElementById(decodeURIComponent(hash.slice(1)));
-  if (!target) return;
-  const section = target.closest("section") || target;
-  section.querySelectorAll(":scope > details.pub-group, :scope > div > details.pub-group").forEach(d => d.open = true);
-}
-window.addEventListener("hashchange", () => openGroupFor(location.hash));
-document.addEventListener("DOMContentLoaded", () => {
-  openGroupFor(location.hash);
-  document.querySelectorAll("#TOC a[href^='#']").forEach(a =>
-    a.addEventListener("click", () => openGroupFor(a.getAttribute("href"))));
-});
-</script>
-```
