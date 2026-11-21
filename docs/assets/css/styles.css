@@ -436,3 +436,15 @@
 }
 .resource-card p { margin-bottom: 0.25rem; font-size: 0.95rem; }
 .resource-title { font-weight: 600; font-size: 1rem; }
+
+/* Series navigation (assets/lua/series.lua) */
+.series-pager {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 2.5rem 0 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--bs-border-color, #dee2e6);
+}
+.series-pager p { margin: 0; }

@@ -1,7 +1,7 @@
 ---
 title: "Resources"
 subtitle: "Free books, documentation and tools that go with the tutorials and projects"
-description: "Free books on R, Python, statistics and bioinformatics, the documentation for the packages used in the tutorials, and where to get R, RStudio, Python and Quarto. Collected by Devon Allies."
+description: "Free books and courses on R, Python, statistics, the command line and bioinformatics, the documentation for the packages used in the tutorials, and where to get R, RStudio, Python and Quarto. Collected by Devon Allies."
 body-classes: hide-description   # description is for search/link previews only
 toc: true
 toc-location: left
@@ -271,9 +271,128 @@ Records the R package versions a project uses
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html)]{.resource-title}
+
+A small, fast conda-compatible package manager for Bioconda tools and project environments
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[Miniforge](https://github.com/conda-forge/miniforge)]{.resource-title}
+
+Installs conda, set up for the free conda-forge channel
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
 [[Quarto](https://quarto.org/docs/get-started/)]{.resource-title}
 
 Turns R and Python code and text into reports and websites; this site is built with it
+:::
+
+:::
+
+## Command line and Linux
+
+Getting comfortable in a terminal, from your first `cd` to building pipelines. Start with my article, [The command line for biologists](writing/command-line-for-biologists/index.qmd), then go further with these.
+
+::: {.grid .resource-grid}
+::: {.g-col-12 .g-col-md-6 .pub-card}
+[Command line · book]{.pub-year}
+
+[[Data Science at the Command Line (2nd edition)](https://jeroenjanssens.com/dsatcl/)]{.pub-title}
+
+[Jeroen Janssens]{.pub-meta}
+
+Obtaining, cleaning, exploring and modelling data with command-line tools and pipes, including tools that understand CSV and JSON. Free to read online.
+
+Goes with: [The command line for biologists](writing/command-line-for-biologists/index.qmd)
+:::
+
+::: {.g-col-12 .g-col-md-6 .pub-card}
+[Linux · book]{.pub-year}
+
+[[The Linux Command Line](https://linuxcommand.org/tlcl.php)]{.pub-title}
+
+[William Shotts]{.pub-meta}
+
+A complete beginner-to-advanced guide to the Linux shell, from navigating folders to writing shell scripts. The PDF is a free download.
+
+Goes with: [The command line for biologists](writing/command-line-for-biologists/index.qmd)
+:::
+
+:::
+
+::: {.grid .resource-grid}
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[The Unix Shell](https://swcarpentry.github.io/shell-novice/)]{.resource-title}
+
+Software Carpentry's hands-on lesson: files, pipes, loops and scripts, with exercises
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[Command Line for Genomics](https://datacarpentry.github.io/shell-genomics/)]{.resource-title}
+
+Data Carpentry's lesson applying the shell to sequencing files
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[The command line for beginners](https://ubuntu.com/tutorials/command-line-for-beginners)]{.resource-title}
+
+Ubuntu's own short tutorial for first-time terminal users
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[The Missing Semester](https://missing.csail.mit.edu/)]{.resource-title}
+
+MIT's free lectures on the shell, scripting, editors and Git
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[Linux command line guide](https://www.freecodecamp.org/news/linux-command-line-bash-tutorial/)]{.resource-title}
+
+freeCodeCamp's long written tutorial on Bash commands
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[explainshell](https://explainshell.com/)]{.resource-title}
+
+Paste a command and see what each part of it does
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[OverTheWire: Bandit](https://overthewire.org/wargames/bandit/)]{.resource-title}
+
+A game that teaches Linux commands one level at a time
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[WSL](https://learn.microsoft.com/en-us/windows/wsl/install)]{.resource-title}
+
+Running Ubuntu inside Windows, from Microsoft's install guide
+:::
+
+:::
+
+## Free courses
+
+Structured, self-paced courses that teach programming and data skills from scratch.
+
+::: {.grid .resource-grid}
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[freeCodeCamp](https://www.freecodecamp.org/learn)]{.resource-title}
+
+Free interactive courses and certifications, including Python and data analysis
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[Software Carpentry](https://software-carpentry.org/lessons/)]{.resource-title}
+
+Lessons on the shell, Git, R and Python for researchers
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[Data Carpentry](https://datacarpentry.org/lessons/)]{.resource-title}
+
+Data skills for researchers, with lesson sets for genomics and ecology
 :::
 
 :::
@@ -300,7 +419,13 @@ Community-built, peer-reviewed Nextflow pipelines
 :::
 
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
-[[GATK](https://github.com/broadinstitute/gatk)]{.resource-title}
+[[Bioconda](https://bioconda.github.io/)]{.resource-title}
+
+Thousands of bioinformatics command-line tools, installed with conda
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+[[GATK](https://gatk.broadinstitute.org/hc/en-us)]{.resource-title}
 
 The Broad Institute's toolkit for variant discovery
 :::

@@ -1,0 +1,387 @@
+---
+title: "The command line for biologists"
+subtitle: "Moving around, managing files, installing software and looking at data, with the commands I use every day on Ubuntu"
+author: "Devon Allies"
+date: 2026-11-21
+description: "A practical introduction to the Linux command line for biologists and lab scientists: navigating folders, copying and moving files, installing software and environments with apt and micromamba, and exploring a CSV file with head, cut, sort, uniq, grep and awk. Works on Ubuntu, macOS and Windows through WSL."
+categories: [Command line, Linux, Bioinformatics]
+series: command-line
+series-part: 1
+bibliography: references.bib
+csl: ../../assets/csl/harvard-anglia-ruskin-university.csl
+engine: knitr
+filters:
+  - ../../assets/lua/series.lua
+toc: true
+toc-depth: 2
+toc-location: left
+---
+
+```{r}
+#| label: setup
+#| include: false
+# The data commands below run on the tutorial data, as a reader's would after
+# downloading it into one folder.
+knitr::opts_knit$set(root.dir = here::here("tutorials", "data"))
+```
+
+Most of my day happens in a terminal. Bioinformatics tools such as [GATK](https://gatk.broadinstitute.org/hc/en-us) and [Nextflow](https://www.nextflow.io/docs/latest/) have no buttons to click: you run them by typing commands. The same is true on a remote server or computing cluster, where the terminal is often the only way in. And even at my own desk, a few short commands answer "what's in this file?" faster than opening it.
+
+The command line looks unfriendly at first, but you need surprisingly little of it to be useful. This article covers the commands I use every day on Ubuntu, in the order you'd need them:
+
+1. Opening a terminal (including on Windows)
+2. Moving around folders
+3. Creating, copying, moving and deleting files
+4. Installing software and setting up project environments
+5. Looking at a data file without opening it
+6. Saving what you find
+
+The last two sections use the simulated BAL dataset from my [tutorial series](../../tutorials.qmd), so you can follow along and check your output against mine.
+
+::: {.callout-note appearance="simple"}
+## How to read the commands
+
+Each grey box is something you type at the prompt, then press **Enter**. Where a box is followed by a second box, the second one is what the command prints. Lines starting with `#` are comments: the shell ignores them, so you don't need to type them.
+:::
+
+## 1. Open a terminal
+
+The commands here are for **Bash**, the shell (command interpreter) on Ubuntu and most Linux systems.
+
+- **Ubuntu and other Linux:** press **Ctrl + Alt + T**, or search for "Terminal".
+- **macOS:** open **Terminal** from Applications → Utilities. Its default shell is zsh rather than Bash, but every command in this article works the same in both.
+- **Windows:** install the **Windows Subsystem for Linux (WSL)**, which runs a real Linux system inside Windows. Open PowerShell as administrator (right-click → *Run as administrator*), run the command below, then restart [@microsoft2025wsl]:
+
+```{.powershell}
+wsl --install
+```
+
+It installs Ubuntu by default. Afterwards, open **Ubuntu** from the Start menu and you have the same terminal I use, so everything below applies as written. Your Windows drives are inside it too: `C:\Users\you\Documents` is `/mnt/c/Users/you/Documents`.
+
+When the terminal opens you'll see a **prompt** like `devon@laptop:~$`: your user name, the computer's name, the folder you're in (`~` means your home folder), and a `$` waiting for a command.
+
+## 2. Move around
+
+Your files live in a tree of folders (also called *directories*). The terminal is always "in" one of them, the **working directory**, and commands act on files there unless you say otherwise.
+
+```{.bash}
+pwd                 # print working directory: where am I?
+ls                  # list what's here
+ls -lh              # long list: sizes (human-readable), dates, permissions
+ls -a               # include hidden files (names starting with .)
+```
+
+To move, use `cd` (change directory):
+
+```{.bash}
+cd Documents        # into a folder inside the current one
+cd Documents/bal    # several levels at once
+cd ..               # up one level, to the parent folder
+cd ~                # home folder (plain `cd` does the same)
+cd -                # back to wherever you were before
+cd /mnt/c/Users     # an absolute path: starts from the root, /
+```
+
+A path that starts with `/` is **absolute**: it means the same place wherever you are. Any other path is **relative** to the working directory. `.` means "here" and `..` means "the folder above".
+
+::: {.callout-tip appearance="simple"}
+## Let the shell type for you
+
+Press **Tab** while typing a file or folder name and the shell completes it; press it twice to see every match. It saves typing and catches typos, because it only completes names that exist. **Up arrow** brings back previous commands, and **Ctrl + C** stops a command that's running (or abandons the line you're typing).
+:::
+
+## 3. Create, copy, move and delete
+
+```{.bash}
+mkdir bal-analysis              # make a folder
+mkdir -p bal-analysis/data/raw  # make a whole path, parents included
+touch notes.txt                 # make an empty file (or update its date)
+```
+
+**Copy** with `cp`, giving the source first and the destination second:
+
+```{.bash}
+cp bal_baseline.csv backup.csv          # copy to a new name
+cp bal_baseline.csv bal-analysis/data/  # copy into a folder, same name
+cp -r bal-analysis bal-analysis-copy    # copy a folder and everything in it
+```
+
+**Move or rename** with `mv`. It's the same command for both, because renaming is moving a file to a new name:
+
+```{.bash}
+mv notes.txt bal-analysis/             # move into a folder
+mv backup.csv bal_baseline_backup.csv  # rename
+```
+
+**Delete** with `rm`:
+
+```{.bash}
+rm bal_baseline_backup.csv   # delete a file
+rmdir empty-folder           # delete a folder, only if it's empty
+rm -r bal-analysis-copy      # delete a folder and everything in it
+```
+
+::: {.callout-warning appearance="simple"}
+## There is no recycle bin
+
+`rm` deletes immediately and permanently, and `cp` and `mv` silently overwrite a file that already has the destination name. Until it's habit:
+
+- add `-i` (`rm -i`, `cp -i`, `mv -i`) to be asked before anything is deleted or overwritten;
+- run `ls` with the same name first (`ls bal-analysis-copy`) to see exactly what the command will touch;
+- be most careful with `rm -r` and with `*`, which matches every name in a folder.
+
+Names with spaces need quotes (`cd "My Documents"`), which is one reason to name files with hyphens or underscores instead.
+:::
+
+To read a whole text file, `cat file.txt` prints it, and `less file.txt` opens it one screen at a time (arrow keys or **Space** to scroll, `/` to search, `q` to quit). `man ls` opens the manual for any command, and most commands also accept `--help`.
+
+## 4. Install software and set up environments
+
+### System software: apt
+
+On Ubuntu, most general software comes from the system's package manager, **apt**. Installing for the whole system needs administrator rights, which is what `sudo` ("superuser do") gives a single command; it asks for your password.
+
+```{.bash}
+sudo apt update                  # refresh the list of available packages
+sudo apt upgrade                 # install updates for everything installed
+sudo apt install git curl tree   # install packages by name
+```
+
+### Project environments
+
+An **environment** is a separate set of packages for one project, kept apart from the rest of the computer, with a file that lists exactly which versions it holds. Setting one up takes a few minutes and saves a lot of trouble later:
+
+- **Projects don't break each other.** Different tools need different versions of the same packages. Install everything in one place and adding a tool for a new project can quietly upgrade, downgrade or remove something an older project relies on. Sometimes the installer avoids a clash without telling you: when I added SRA Toolkit to my existing bioinformatics environment, it installed cleanly, but as a version from 2019, the newest that fitted alongside everything else. Asking for the current version would have downgraded Perl and removed another tool I use (regenie). A separate environment can hold the current version without touching anything.
+- **Your results can be reproduced.** The environment's file records the version of every package, so you, a colleague or a reviewer can rebuild the same set-up next year and get the same answer. A package update that changes a default can otherwise change your results without any error.
+- **Sharing a project is simple.** Send the code with the environment file, and one command installs everything it needs on another computer.
+- **The system stays safe.** Environments live in your own folders and need no `sudo`, so they can't break the software Ubuntu itself depends on, and you can delete one and rebuild it if something goes wrong.
+
+**Bioinformatics tools with micromamba.** Many command-line bioinformatics tools (samtools, bwa, FastQC and thousands more) are packaged by **Bioconda** [@gruning2018], which installs through the **conda** family of package managers. I use [micromamba](https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html): a single small program that does the same job as conda, solves installs quickly, and needs no base Python installation. Install it with the command from its documentation, and accept the suggested settings when it asks:
+
+```{.bash}
+"${SHELL}" <(curl -L micro.mamba.pm)
+```
+
+Close and reopen the terminal, then tell it where to find packages. This one-time set-up uses the free conda-forge channel first and Bioconda second, as Bioconda recommends:
+
+```{.bash}
+micromamba config append channels conda-forge
+micromamba config append channels bioconda
+micromamba config set channel_priority strict
+```
+
+Then create an environment for a project:
+
+```{.bash}
+micromamba create -n qc fastqc samtools   # a new environment called qc, with two tools
+micromamba activate qc                    # use it (the prompt shows (qc))
+micromamba deactivate                     # leave it
+```
+
+To share an environment, or rebuild it later, export its list of packages to a file and create a new environment from that file:
+
+```{.bash}
+micromamba env export -n qc > qc.yml      # write the environment's packages and versions to qc.yml
+micromamba create -n qc2 -f qc.yml        # build an identical environment from the file
+```
+
+**Run a tool from another environment without switching.** When you're working in one environment and need a single tool from another, `micromamba run` runs one command inside the other environment and leaves your current one active. There's no need to deactivate, activate the other, run the tool, deactivate again and reactivate the first:
+
+```{.bash}
+micromamba run -n qc fastqc reads_1.fastq.gz   # run FastQC from the qc environment
+micromamba run -n qc samtools --version        # check a tool's version there
+```
+
+It's also handy in scripts, which can call tools from several environments in turn.
+
+::: {.callout-note appearance="simple"}
+## conda, mamba or micromamba?
+
+All three install the same packages from the same channels, and their commands match: swap `micromamba` for `conda` or `mamba` in every command here (`conda create`, `conda activate`, `conda run` and so on). If you already have one of them, keep it. Many people also add `alias mamba=micromamba` to their `~/.bashrc` so that instructions written for mamba work as they are.
+:::
+
+Keep one environment per project or pipeline rather than installing everything into one. Before adding a package to an existing environment, `micromamba install --dry-run` lists what it would change, including the version it would install. If it would downgrade or remove anything, or picks an old version of the tool you asked for, make a new environment instead.
+
+Pipelines build on the same idea: my [variant-calling pipeline](../../projects/wgs-variant-calling-pipeline/index.qmd) runs its tools from an environment with a single `nextflow run` command.
+
+## 5. Look at a data file without opening it
+
+Now some real work. Download the messy baseline table from the tutorials into a folder, and `cd` into it. You can download it from the terminal too:
+
+```{.bash}
+curl -O https://devonallies.co.za/tutorials/data/bal_baseline.csv
+```
+
+`curl -O` saves a web address to a file of the same name. Every command from here on runs in the folder holding `bal_baseline.csv`, and the output is what the file gives.
+
+::: {.callout-important appearance="simple"}
+## Simulated data
+
+`bal_baseline.csv` is **simulated**: 500 fictional participants with TB diagnosis, HIV status and BAL cell counts. No row describes a real person. [Tutorial 1](../../tutorials/01-import-data-in-r/import-data-in-r.qmd) reads the same file into R.
+:::
+
+### How big is it, and what's in it?
+
+```{bash}
+wc -l bal_baseline.csv
+```
+
+`wc -l` counts lines: 503, so one header row and 502 data rows. That's two more rows than the 500 participants, which is worth remembering. `head` shows the start of the file:
+
+```{bash}
+head -n 3 bal_baseline.csv
+```
+
+Wide files are hard to read like that. `head -n 1` takes just the header row, `tr` (translate) swaps each comma for a new line, and `nl` numbers the lines, giving a numbered list of the columns:
+
+```{bash}
+head -n 1 bal_baseline.csv | tr ',' '\n' | nl
+```
+
+The `|` is a **pipe**: it sends one command's output into the next command as its input. Pipes are what make the command line powerful. Each command does one small job, and you chain them to build exactly the question you want to ask.
+
+### Count the values in a column
+
+`cut` picks out columns: `-d ,` says the columns are separated by commas, and `-f 3` asks for the third. Then `sort` puts identical values next to each other, `uniq -c` counts each run of identical lines, and `sort -rn` puts the largest count first:
+
+```{bash}
+cut -d , -f 3 bal_baseline.csv | sort | uniq -c | sort -rn
+```
+
+The header, `tb_diagnosis`, is counted as a value too. `tail -n +2` (everything from line 2 onwards) skips it. Two columns at once count the combinations, here TB diagnosis by HIV status:
+
+```{bash}
+tail -n +2 bal_baseline.csv | cut -d , -f 3,4 | sort | uniq -c
+```
+
+::: {.callout-warning appearance="simple"}
+## `cut` doesn't understand quotes
+
+A CSV file can contain commas inside quoted values (`"Smith, J"`), and `cut` would split them in the wrong place. This file has no quotes (`grep -c '"' bal_baseline.csv` prints 0), so `cut` is safe here. For files that do, use R, Python or a CSV-aware tool such as the ones in @janssens2021.
+:::
+
+### Find duplicate IDs
+
+Those two extra rows: `uniq -d` prints only the lines that appear more than once (again after `sort`, because `uniq` only compares neighbouring lines):
+
+```{bash}
+tail -n +2 bal_baseline.csv | cut -d , -f 1 | sort | uniq -d
+```
+
+`grep` prints every line containing a pattern; `-E` allows `|` to mean "or":
+
+```{bash}
+grep -E "SP09573|SP22251" bal_baseline.csv
+```
+
+Each participant was entered twice, with identical rows. These are the same two duplicates [Tutorial 1](../../tutorials/01-import-data-in-r/import-data-in-r.qmd) finds in R, found here without starting R at all. `grep -c` counts matching lines instead of printing them:
+
+```{bash}
+grep -c "Active TB" bal_baseline.csv
+```
+
+`grep` searches the whole line, not one column, so a pattern can match somewhere you didn't intend. "Active TB" only appears in the diagnosis column, but a search for a name or a number might not be so tidy. Check with `cut` first when it matters.
+
+### Filter rows on a number
+
+`awk` can test a column's value. `-F ,` sets the separator, `$16` is the 16th column (`time_to_process_min`, from the numbered list above), and `NR > 1` skips the header. The command prints the ID and processing time of every row where the time is below zero:
+
+```{bash}
+awk -F , 'NR > 1 && $16 < 0 {print $1, $16}' bal_baseline.csv
+```
+
+A sample can't take −1 minutes to process, so these three are recording errors to query. [Tutorial 3](../../tutorials/03-clean-data-in-r/clean-data-in-r.qmd) deals with impossible measurements like this one when it cleans the data. The same pattern finds the slowest samples, sorting numerically (`-n`) on column 16:
+
+```{bash}
+tail -n +2 bal_baseline.csv | sort -t , -k 16,16 -n | tail -n 3 | cut -d , -f 1,16
+```
+
+## 6. Save what you find
+
+`>` sends a command's output into a file instead of the screen, and `>>` adds to the end of a file. Together they can build a smaller CSV with only the active TB participants: the header first, then the matching rows.
+
+```{bash}
+#| label: redirect
+head -n 1 bal_baseline.csv > active_tb.csv
+grep ",Active TB," bal_baseline.csv >> active_tb.csv
+wc -l active_tb.csv
+```
+
+```{bash}
+#| label: redirect-cleanup
+#| include: false
+rm active_tb.csv
+```
+
+`>` replaces the file if it already exists, without asking, so use `>>` when you mean to add. Searching for `,Active TB,` with the commas, rather than plain `Active TB`, matches the value only when it fills a whole column.
+
+Never write over your raw data: save results to a new file, as here, and keep the original untouched.
+
+## Quick reference
+
+```{r}
+#| label: tbl-reference
+#| tbl-cap: "The commands in this article"
+#| echo: false
+library(kableExtra)
+# Commands go in <code>; written as HTML because a markdown table can't hold the | of a pipe
+code <- function(x) gsub("`([^`]+)`", "<code>\\1</code>",
+                         gsub("<", "&lt;", gsub(">", "&gt;", gsub("&", "&amp;", x))))
+reference <- data.frame(
+  Task = c(
+    "Where am I? / What's here?",
+    "Change folder / go up / go home",
+    "Make a folder",
+    "Copy / copy a folder",
+    "Move or rename",
+    "Delete / delete a folder",
+    "Read a file",
+    "Install system software",
+    "Bioinformatics tools",
+    "Count lines",
+    "First or last lines",
+    "One column",
+    "Count values",
+    "Duplicates",
+    "Find lines",
+    "Filter on a number",
+    "Save output / add to a file",
+    "Help"),
+  Command = c(
+    "`pwd` / `ls -lh`",
+    "`cd folder` / `cd ..` / `cd`",
+    "`mkdir -p path/to/folder`",
+    "`cp from to` / `cp -r from to`",
+    "`mv from to`",
+    "`rm file` / `rm -r folder` (permanent)",
+    "`less file` (`q` to quit)",
+    "`sudo apt install name`",
+    "`micromamba create -n env tool`, `micromamba activate env`, `micromamba run -n env tool`",
+    "`wc -l file`",
+    "`head -n 5 file` / `tail -n 5 file`",
+    "`cut -d , -f 3 file`",
+    "`… | sort | uniq -c | sort -rn`",
+    "`… | sort | uniq -d`",
+    "`grep \"text\" file` / `grep -c` to count",
+    "`awk -F , '$16 < 0' file`",
+    "`> file` / `>> file`",
+    "`man command` or `command --help`")
+)
+reference$Command <- code(reference$Command)
+kbl(reference, escape = FALSE) |>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
+                full_width = FALSE, position = "left")
+```
+
+## Where next
+
+The [Resources](../../resources.qmd#command-line-and-linux) page lists free books and courses for going further. Three I'd start with:
+
+- **[The Unix Shell](https://swcarpentry.github.io/shell-novice/)** from Software Carpentry: a free, hands-on lesson that covers this ground step by step, with exercises.
+- **[Introduction to the Command Line for Genomics](https://datacarpentry.github.io/shell-genomics/)** from Data Carpentry: the same skills applied to sequencing files.
+- **[Data Science at the Command Line](https://jeroenjanssens.com/dsatcl/)** [@janssens2021]: a free book that takes these pipes much further, including tools that understand CSV and JSON properly.
+
+## References
+
+::: {#refs}
+:::

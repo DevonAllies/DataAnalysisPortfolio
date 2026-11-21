@@ -52,6 +52,7 @@ site_articles <- lapply(Sys.glob(here::here("writing", "*", "index.qmd")), \(f) 
   list(title = m$title, date = as.character(m$date), excerpt = m$description,
        url = paste0("writing/", basename(dirname(f)), "/index.qmd"), where = "On this site")
 })
+site_articles <- Filter(\(a) as.Date(a$date) <= Sys.Date(), site_articles)  # future date = draft
 medium_articles <- lapply(pubs$articles, \(a) modifyList(a, list(where = "Medium")))
 all_articles <- c(site_articles, medium_articles)
 latest_article <- all_articles[[which.max(vapply(all_articles, \(a) as.numeric(as.Date(a$date)), numeric(1)))]]

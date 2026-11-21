@@ -92,6 +92,8 @@ site_articles <- lapply(site_articles, \(f) {
   meta$href <- paste0("writing/", basename(dirname(f)), "/index.qmd")
   meta
 })
+# Articles dated in the future are drafts: leave them out until their date
+site_articles <- Filter(\(m) as.Date(m$date) <= Sys.Date(), site_articles)
 site_articles <- site_articles[order(vapply(site_articles, \(m) as.character(m$date), ""),
                                      decreasing = TRUE)]
 

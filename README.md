@@ -48,12 +48,13 @@ The cleaned data is in `tutorials/data/` too: `bal_metadata_clean.csv` (one row 
 
 ## Resources
 
-The [Resources page](https://devonallies.co.za/resources.html) collects free books (R for Data Science, the ggplot2 book, OpenIntro, APS 240, Python for Data Analysis, Modern Statistics for Modern Biology, Happy Git with R), the documentation for the packages the tutorials use, where to get the tools, and bioinformatics resources. Each book says which tutorial, article or project it goes with.
+The [Resources page](https://devonallies.co.za/resources.html) collects free books (R for Data Science, the ggplot2 book, OpenIntro, APS 240, Python for Data Analysis, Modern Statistics for Modern Biology, Happy Git with R), the documentation for the packages the tutorials use, where to get the tools, command-line and Linux learning resources, free courses (freeCodeCamp, Software Carpentry, Data Carpentry) and bioinformatics resources. Each book says which tutorial, article or project it goes with.
 
 ## Publications & Writing
 
 - **Peer-reviewed papers:** three papers in TB diagnostics, BAL research and a phase 2 vaccine trial (*Scientific Reports*, *BMC Infectious Diseases*, *The Lancet Infectious Diseases*), cited 100+ times. ORCID: [0000-0001-8928-4334](https://orcid.org/0000-0001-8928-4334)
 - **On this site:** [Choosing the right statistics for cytokine data](https://devonallies.co.za/writing/choosing-statistics-for-cytokine-data/), on values below the detection limit, skewed concentrations and multiple testing, worked through on simulated plasma data (`tutorials/data/bal_plasma_cytokines.xlsx`, built by `scripts/simulate_plasma_cytokines.py`). Source in [`writing/`](writing/).
+- **Series: Bioinformatics on the command line.** Starts with [The command line for biologists](https://devonallies.co.za/writing/command-line-for-biologists/): moving around, managing files, installing tools with micromamba and exploring a CSV file. Later parts (finding data, file formats, quality control, alignment) use public *M. tuberculosis* sequencing data. Each article's series box and previous/next links come from `assets/lua/series.lua`.
 - **Articles:** a series on [Medium](https://medium.com/@alliesdl) about reproducible research and scientific writing with Quarto.
 
 The papers and Medium articles come from `_data/publications.json`, which a script builds from ORCID, Crossref and the Medium RSS feed (see below).
