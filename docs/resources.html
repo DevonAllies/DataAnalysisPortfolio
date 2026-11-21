@@ -299,12 +299,12 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Tutorials</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./resources.html" aria-current="page"> 
-<span class="menu-text">Resources</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./publications.html"> 
 <span class="menu-text">Publications &amp; Writing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./resources.html" aria-current="page"> 
+<span class="menu-text">Resources</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
@@ -380,6 +380,10 @@ ul.task-list li input[type="checkbox"] {
 <p>Everything here is free to read or use online. Each entry says which of my <a href="./tutorials.html">tutorials</a>, articles or projects it goes with, so you can go deeper on the part you’re working on.</p>
 <section id="free-books" class="level2">
 <h2 class="anchored" data-anchor-id="free-books">Free books</h2>
+<details class="pub-group">
+<summary>
+R for Data Science, ggplot2, OpenIntro statistics, machine learning, SHAP and more
+</summary>
 <div class="grid resource-grid">
 <div class="g-col-12 g-col-md-6 pub-card">
 <p><span class="pub-year">R · tidyverse</span></p>
@@ -458,10 +462,15 @@ ul.task-list li input[type="checkbox"] {
 <p>Setting up Git and GitHub with RStudio, and the everyday version-control habits that keep an analysis reproducible.</p>
 </div>
 </div>
+</details>
 </section>
 <section id="package-documentation" class="level2">
 <h2 class="anchored" data-anchor-id="package-documentation">Package documentation</h2>
 <p>The official documentation for the packages used in the tutorials and projects. Each site has a getting-started guide and a page for every function.</p>
+<details class="pub-group">
+<summary>
+readr, dplyr, tidyr, ggplot2, pandas, scikit-learn, XGBoost, SHAP and more
+</summary>
 <section id="r" class="level3">
 <h3 class="anchored" data-anchor-id="r">R</h3>
 <div class="grid resource-grid">
@@ -523,10 +532,15 @@ ul.task-list li input[type="checkbox"] {
 <p>Explaining a model’s predictions feature by feature</p>
 </div>
 </div>
+</section></details>
 </section>
-</section>
+
 <section id="tools-and-setup" class="level2">
 <h2 class="anchored" data-anchor-id="tools-and-setup">Tools and setup</h2>
+<details class="pub-group">
+<summary>
+R, RStudio, Python, uv, renv, Quarto, micromamba and Miniforge
+</summary>
 <div class="grid resource-grid">
 <div class="g-col-12 g-col-sm-6 g-col-lg-4 resource-card">
 <p><span class="resource-title"><a href="https://cran.r-project.org/">R</a></span></p>
@@ -561,10 +575,15 @@ ul.task-list li input[type="checkbox"] {
 <p>Turns R and Python code and text into reports and websites; this site is built with it</p>
 </div>
 </div>
+</details>
 </section>
 <section id="command-line-and-linux" class="level2">
 <h2 class="anchored" data-anchor-id="command-line-and-linux">Command line and Linux</h2>
 <p>Getting comfortable in a terminal, from your first <code>cd</code> to building pipelines. Start with my article, <a href="./writing/command-line-for-biologists/index.html">The command line for biologists</a>, then go further with these.</p>
+<details class="pub-group">
+<summary>
+Books, lessons and practice for working in a terminal, and WSL for Windows
+</summary>
 <div class="grid resource-grid">
 <div class="g-col-12 g-col-md-6 pub-card">
 <p><span class="pub-year">Command line · book</span></p>
@@ -615,10 +634,15 @@ ul.task-list li input[type="checkbox"] {
 <p>Running Ubuntu inside Windows, from Microsoft’s install guide</p>
 </div>
 </div>
+</details>
 </section>
 <section id="free-courses" class="level2">
 <h2 class="anchored" data-anchor-id="free-courses">Free courses</h2>
 <p>Structured, self-paced courses that teach programming and data skills from scratch.</p>
+<details class="pub-group">
+<summary>
+freeCodeCamp, Software Carpentry and Data Carpentry
+</summary>
 <div class="grid resource-grid">
 <div class="g-col-12 g-col-sm-6 g-col-lg-4 resource-card">
 <p><span class="resource-title"><a href="https://www.freecodecamp.org/learn">freeCodeCamp</a></span></p>
@@ -633,9 +657,14 @@ ul.task-list li input[type="checkbox"] {
 <p>Data skills for researchers, with lesson sets for genomics and ecology</p>
 </div>
 </div>
+</details>
 </section>
 <section id="bioinformatics" class="level2">
 <h2 class="anchored" data-anchor-id="bioinformatics">Bioinformatics</h2>
+<details class="pub-group">
+<summary>
+Bioconductor, Nextflow, nf-core, Bioconda, GATK and Galaxy training
+</summary>
 <div class="grid resource-grid">
 <div class="g-col-12 g-col-sm-6 g-col-lg-4 resource-card">
 <p><span class="resource-title"><a href="https://bioconductor.org/">Bioconductor</a></span></p>
@@ -662,6 +691,25 @@ ul.task-list li input[type="checkbox"] {
 <p>Free hands-on tutorials across genomics and bioinformatics</p>
 </div>
 </div>
+</details>
+<script>
+// Open a group when "On this page" (or a link with #section) points into it
+function openGroupFor(hash) {
+  if (!hash) return;
+  const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+  if (!target) return;
+  const inside = target.closest("details.pub-group");
+  if (inside) { inside.open = true; return; }
+  const section = target.closest("section") || target;
+  section.querySelectorAll(":scope > details.pub-group").forEach(d => d.open = true);
+}
+window.addEventListener("hashchange", () => openGroupFor(location.hash));
+document.addEventListener("DOMContentLoaded", () => {
+  openGroupFor(location.hash);
+  document.querySelectorAll("#TOC a[href^='#']").forEach(a =>
+    a.addEventListener("click", () => openGroupFor(a.getAttribute("href"))));
+});
+</script>
 
 
 </section>

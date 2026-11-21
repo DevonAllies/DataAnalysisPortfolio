@@ -12,6 +12,9 @@ Everything here is free to read or use online. Each entry says which of my [tuto
 
 ## Free books
 
+<details class="pub-group">
+<summary>R for Data Science, ggplot2, OpenIntro statistics, machine learning, SHAP and more</summary>
+
 ::: {.grid .resource-grid}
 ::: {.g-col-12 .g-col-md-6 .pub-card}
 [R · tidyverse]{.pub-year}
@@ -145,9 +148,14 @@ Setting up Git and GitHub with RStudio, and the everyday version-control habits 
 
 :::
 
+</details>
+
 ## Package documentation
 
 The official documentation for the packages used in the tutorials and projects. Each site has a getting-started guide and a page for every function.
+
+<details class="pub-group">
+<summary>readr, dplyr, tidyr, ggplot2, pandas, scikit-learn, XGBoost, SHAP and more</summary>
 
 ### R
 
@@ -237,7 +245,12 @@ Explaining a model's predictions feature by feature
 
 :::
 
+</details>
+
 ## Tools and setup
+
+<details class="pub-group">
+<summary>R, RStudio, Python, uv, renv, Quarto, micromamba and Miniforge</summary>
 
 ::: {.grid .resource-grid}
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
@@ -290,9 +303,14 @@ Turns R and Python code and text into reports and websites; this site is built w
 
 :::
 
+</details>
+
 ## Command line and Linux
 
 Getting comfortable in a terminal, from your first `cd` to building pipelines. Start with my article, [The command line for biologists](writing/command-line-for-biologists/index.qmd), then go further with these.
+
+<details class="pub-group">
+<summary>Books, lessons and practice for working in a terminal, and WSL for Windows</summary>
 
 ::: {.grid .resource-grid}
 ::: {.g-col-12 .g-col-md-6 .pub-card}
@@ -372,9 +390,14 @@ Running Ubuntu inside Windows, from Microsoft's install guide
 
 :::
 
+</details>
+
 ## Free courses
 
 Structured, self-paced courses that teach programming and data skills from scratch.
+
+<details class="pub-group">
+<summary>freeCodeCamp, Software Carpentry and Data Carpentry</summary>
 
 ::: {.grid .resource-grid}
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
@@ -397,7 +420,12 @@ Data skills for researchers, with lesson sets for genomics and ecology
 
 :::
 
+</details>
+
 ## Bioinformatics
+
+<details class="pub-group">
+<summary>Bioconductor, Nextflow, nf-core, Bioconda, GATK and Galaxy training</summary>
 
 ::: {.grid .resource-grid}
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
@@ -437,3 +465,26 @@ Free hands-on tutorials across genomics and bioinformatics
 :::
 
 :::
+
+</details>
+
+```{=html}
+<script>
+// Open a group when "On this page" (or a link with #section) points into it
+function openGroupFor(hash) {
+  if (!hash) return;
+  const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+  if (!target) return;
+  const inside = target.closest("details.pub-group");
+  if (inside) { inside.open = true; return; }
+  const section = target.closest("section") || target;
+  section.querySelectorAll(":scope > details.pub-group").forEach(d => d.open = true);
+}
+window.addEventListener("hashchange", () => openGroupFor(location.hash));
+document.addEventListener("DOMContentLoaded", () => {
+  openGroupFor(location.hash);
+  document.querySelectorAll("#TOC a[href^='#']").forEach(a =>
+    a.addEventListener("click", () => openGroupFor(a.getAttribute("href"))));
+});
+</script>
+```

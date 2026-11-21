@@ -31,10 +31,10 @@ website:
         text: Projects
       - href: tutorials.qmd
         text: Tutorials
-      - href: resources.qmd
-        text: Resources
       - href: publications.qmd
         text: Publications & Writing
+      - href: resources.qmd
+        text: Resources
       - href: about.qmd
         text: About Me
       - href: contact.qmd
