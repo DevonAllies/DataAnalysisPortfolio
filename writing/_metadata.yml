@@ -1,0 +1,4 @@
+# Shared settings for every article in this folder.
+# Links to other websites open in a new tab, so readers keep the article open.
+# Links within this site still open in the same tab.
+link-external-newwindow: true

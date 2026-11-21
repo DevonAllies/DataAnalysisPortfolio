@@ -4,7 +4,10 @@ subtitle: "Peer-reviewed TB research, and articles on reproducible science"
 description: "Peer-reviewed TB research co-authored by Devon Allies in Scientific Reports, BMC Infectious Diseases and The Lancet Infectious Diseases, plus articles on reproducible science with Quarto."
 body-classes: hide-description   # description is for search/link previews only
 engine: knitr
-toc: false
+toc: true
+toc-depth: 3
+toc-location: left
+link-external-newwindow: true   # DOI, PubMed and Medium links open in a new tab
 execute:
   echo: false
   warning: false
@@ -17,6 +20,15 @@ library(jsonlite)
 pubs_data <- fromJSON(here::here("_data", "publications.json"), simplifyVector = FALSE)
 pubs <- pubs_data$publications
 total_cites <- sum(vapply(pubs, \(p) if (is.null(p$cited_by)) 0 else p$cited_by, numeric(1)))
+
+# Each group of cards sits in a collapsible <details> block, closed by default,
+# with a one-line summary. The markdown cards inside still render, because the
+# HTML tags are on their own lines with blank lines around them.
+group_open  <- function(summary) cat(sprintf('\n<details class="pub-group">\n<summary>%s</summary>\n\n', summary))
+group_close <- function() cat("\n</details>\n\n")
+
+# Series names, matching the SERIES table in assets/lua/series.lua
+series_names <- c("command-line" = "Bioinformatics on the command line")
 ```
 
 ## Peer-reviewed papers
@@ -45,6 +57,7 @@ format_authors <- function(authors) {
   out
 }
 
+group_open(sprintf("Latest: %s", pubs[[1]]$title))
 for (p in pubs) {
   ref <- paste0("*", p$journal, "*. ", p$year)
   if (!is.null(p$volume)) ref <- paste0(ref, ";", p$volume)
@@ -73,6 +86,7 @@ for (p in pubs) {
     sep = ""
   )
 }
+group_close()
 ```
 
 ## On this site
@@ -84,7 +98,8 @@ Longer articles published here, with the data and code to follow along.
 ```{r}
 #| label: site-articles
 #| output: asis
-# Every article in writing/<name>/index.qmd, newest first, from its own front matter
+# Every article in writing/<name>/index.qmd, from its own front matter, grouped
+# by series (in part order), then standalone articles (newest first)
 site_articles <- list.files(here::here("writing"), pattern = "^index\\.qmd$",
                             recursive = TRUE, full.names = TRUE)
 site_articles <- lapply(site_articles, \(f) {
@@ -94,14 +109,12 @@ site_articles <- lapply(site_articles, \(f) {
 })
 # Articles dated in the future are drafts: leave them out until their date
 site_articles <- Filter(\(m) as.Date(m$date) <= Sys.Date(), site_articles)
-site_articles <- site_articles[order(vapply(site_articles, \(m) as.character(m$date), ""),
-                                     decreasing = TRUE)]
 
-for (a in site_articles) {
+article_card <- function(a, label) {
   tags <- paste(sprintf("[%s]{.article-tag}", unlist(a$categories)), collapse = " ")
   cat(
     "::: {.pub-card .article-card}\n",
-    sprintf("[%s]{.pub-year}\n\n", format(as.Date(a$date), "%d %B %Y")),
+    sprintf("[%s]{.pub-year}\n\n", label),
     sprintf("[%s]{.pub-title}\n\n", a$title),
     sprintf("%s\n\n", a$subtitle),
     sprintf("%s\n\n", tags),
@@ -110,9 +123,32 @@ for (a in site_articles) {
     sep = ""
   )
 }
+fmt_date <- function(d) format(as.Date(d), "%d %B %Y")
+
+# One group per series
+in_series <- Filter(\(a) !is.null(a$series), site_articles)
+for (key in unique(vapply(in_series, \(a) a$series, ""))) {
+  parts <- Filter(\(a) a$series == key, in_series)
+  parts <- parts[order(vapply(parts, \(a) as.numeric(a[["series-part"]]), numeric(1)))]
+  name <- if (key %in% names(series_names)) series_names[[key]] else key
+  cat(sprintf("\n### %s {.pub-group-heading}\n\n", name))
+  group_open(sprintf("Latest: %s", parts[[length(parts)]]$title))
+  for (a in parts) article_card(a, sprintf("Part %s · %s", a[["series-part"]], fmt_date(a$date)))
+  group_close()
+}
+
+# Standalone articles, newest first
+standalone <- Filter(\(a) is.null(a$series), site_articles)
+standalone <- standalone[order(vapply(standalone, \(a) as.character(a$date), ""), decreasing = TRUE)]
+if (length(standalone) > 0) {
+  cat("\n### Standalone articles {.pub-group-heading}\n\n")
+  group_open(sprintf("Latest: %s", standalone[[1]]$title))
+  for (a in standalone) article_card(a, fmt_date(a$date))
+  group_close()
+}
 ```
 
-## Articles
+## On Medium
 
 ::: {.pub-intro}
 Plain-language writing on Medium about reproducible research, scientific writing with Quarto, and what sim racing and flight simulators taught me about checklists.
@@ -123,6 +159,7 @@ Plain-language writing on Medium about reproducible research, scientific writing
 ```{r}
 #| label: articles
 #| output: asis
+group_open(sprintf("Latest: %s", pubs_data$articles[[1]]$title))
 for (a in pubs_data$articles) {
   date_label <- format(as.Date(a$date), "%d %B %Y")
   tags <- paste(sprintf("[%s]{.article-tag}", unlist(a$tags)), collapse = " ")
@@ -137,4 +174,24 @@ for (a in pubs_data$articles) {
     sep = ""
   )
 }
+group_close()
+```
+
+```{=html}
+<script>
+// Open a group when "On this page" (or a link with #section) points into it
+function openGroupFor(hash) {
+  if (!hash) return;
+  const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+  if (!target) return;
+  const section = target.closest("section") || target;
+  section.querySelectorAll(":scope > details.pub-group, :scope > div > details.pub-group").forEach(d => d.open = true);
+}
+window.addEventListener("hashchange", () => openGroupFor(location.hash));
+document.addEventListener("DOMContentLoaded", () => {
+  openGroupFor(location.hash);
+  document.querySelectorAll("#TOC a[href^='#']").forEach(a =>
+    a.addEventListener("click", () => openGroupFor(a.getAttribute("href"))));
+});
+</script>
 ```

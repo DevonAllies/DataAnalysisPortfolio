@@ -448,3 +448,21 @@
   border-top: 1px solid var(--bs-border-color, #dee2e6);
 }
 .series-pager p { margin: 0; }
+
+/* Publications & Writing: collapsible groups of cards */
+details.pub-group {
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 0.5rem;
+  margin: 0.5rem 0 1.5rem;
+}
+details.pub-group > summary {
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: var(--bs-primary);
+  list-style-position: inside;
+}
+details.pub-group > summary:hover { background: var(--bs-tertiary-bg, rgba(0,0,0,.03)); }
+details.pub-group[open] > summary { border-bottom: 1px solid var(--bs-border-color, #dee2e6); }
+details.pub-group > :not(summary) { margin-left: 1rem; margin-right: 1rem; }
+details.pub-group > .pub-card:first-of-type { margin-top: 1rem; }
