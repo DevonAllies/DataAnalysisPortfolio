@@ -167,7 +167,7 @@ grep -o "PRJ[A-Z]*[0-9]*" paper.xml | sort | uniq -c | sort -rn
       3 PRJEB43283
 ```
 
-`grep -o` prints each match on its own line, and `sort | uniq -c` counts them, as in Part 1. Three projects are named. The paper's text explains them: PRJEB14199 and PRJEB35725 hold genomes published by earlier studies, and
+`grep -o` prints each match on its own line, and `sort | uniq -c` counts them, as in Part 1. Three projects are named. The paper's text explains them: PRJEB14199 and PRJEB35725 hold genomes published by earlier studies, and the next sentence names the third:
 
 > Newly published whole genome sequences of Mtb genomes are published under accession number PRJEB43283 on the European Nucleotide Archive.
 
