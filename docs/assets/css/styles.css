@@ -542,7 +542,7 @@ h3.resource-title, h4.resource-title {
 }
 
 /* "In this series" panel in the right-hand margin (series.lua + series-panel.js) */
-.series-panel { font-size: 0.85rem; padding-top: 0.25rem; }
+.series-panel { font-size: 0.85rem; padding-top: 0.25rem; position: relative; z-index: 2; }
 .series-panel-title {
   font-size: 0.9rem;
   font-weight: 600;
@@ -574,7 +574,6 @@ h3.resource-title, h4.resource-title {
 }
 .series-panel-list li.current .series-panel-num { background: var(--bs-primary); color: #fff; }
 .series-panel-pager { display: flex; justify-content: space-between; gap: 0.5rem; }
-body.series-panel-shown .series-box { display: none; }   /* the panel replaces the box */
 details.series-box {
   border: 1px solid var(--bs-border-color, #dee2e6);
   border-left: 4px solid var(--bs-primary);

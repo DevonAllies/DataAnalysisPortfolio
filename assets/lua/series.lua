@@ -8,10 +8,10 @@
 -- The filter finds every <dir>/*/*.qmd in the same series (dir comes from
 -- SERIES below) and adds three things:
 --   1. a collapsible box (<details class="series-box">) under the title listing
---      the parts (shown on narrow screens; hidden on wide ones, where the side
---      panel takes its place),
+--      the parts,
 --   2. a side panel, "In this series", that assets/js/series-panel.js moves into
---      the right-hand margin on wide screens, with previous/next links,
+--      the right-hand margin on wide screens as extra quick navigation, with
+--      previous/next links,
 --   3. previous/next links before the References heading.
 -- Parts dated in the future are drafts: they're listed as "coming soon"
 -- without a link, matching how the listings treat them.
@@ -94,7 +94,7 @@ function Pandoc(doc)
     if p.part == this_part then prev = parts[i - 1]; nxt = parts[i + 1] end
   end
 
-  -- 1. Box under the title (narrow screens): a collapsible <details>, built as
+  -- 1. Box under the title: a collapsible <details>, built as
   --    raw HTML so it doesn't depend on Quarto's callout processing
   local items = {}
   for _, p in ipairs(parts) do
