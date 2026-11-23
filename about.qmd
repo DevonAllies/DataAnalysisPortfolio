@@ -41,7 +41,7 @@ Key Highlights:
 - Developed an automated data-logging dashboard for clinical trial field operations.
 - 7+ years in ISO-accredited laboratories with flow cytometry, PBMC processing, and assay validation.
 
-I’m passionate about integrating bioinformatics and computational biology to drive scientific innovation and improve healthcare outcomes. Let’s connect!
+I’m passionate about integrating bioinformatics and computational biology to drive scientific innovation and improve healthcare outcomes. I’m open to research collaborations, where I take on the data side of a paper as a co-author, and to freelance bioinformatics and data work: see [Work with me](contact.qmd#work-with-me). Let’s connect!
 
 ## My journey
 

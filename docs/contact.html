@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Contact Devon Allies about bioinformatics and data science roles, collaborations, or questions about the R and Python tutorials.">
+<meta name="description" content="Contact Devon Allies about bioinformatics and data science roles, research collaborations, freelance bioinformatics and data analysis work, or questions about the tutorials.">
 
 <title>Contact – Devon Allies</title>
 <style>
@@ -83,13 +83,13 @@ ul.task-list li input[type="checkbox"] {
 
 <link rel="stylesheet" href="assets/css/styles.css">
 <meta property="og:title" content="Contact – Devon Allies">
-<meta property="og:description" content="Contact Devon Allies about bioinformatics and data science roles, collaborations, or questions about the R and Python tutorials.">
+<meta property="og:description" content="Contact Devon Allies about bioinformatics and data science roles, research collaborations, freelance bioinformatics and data analysis work, or questions about the tutorials.">
 <meta property="og:image" content="https://devonallies.co.za/assets/images/og-card.jpg">
 <meta property="og:site_name" content="Devon Allies">
 <meta property="og:image:height" content="628">
 <meta property="og:image:width" content="1200">
 <meta name="twitter:title" content="Contact – Devon Allies">
-<meta name="twitter:description" content="Contact Devon Allies about bioinformatics and data science roles, collaborations, or questions about the R and Python tutorials.">
+<meta name="twitter:description" content="Contact Devon Allies about bioinformatics and data science roles, research collaborations, freelance bioinformatics and data analysis work, or questions about the tutorials.">
 <meta name="twitter:image" content="https://devonallies.co.za/assets/images/og-card.jpg">
 <meta name="twitter:creator" content="@CompBioSeq">
 <meta name="twitter:site" content="@CompBioSeq">
@@ -345,7 +345,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div>
   <div class="description">
-    Contact Devon Allies about bioinformatics and data science roles, collaborations, or questions about the R and Python tutorials.
+    Contact Devon Allies about bioinformatics and data science roles, research collaborations, freelance bioinformatics and data analysis work, or questions about the tutorials.
   </div>
 </div>
 
@@ -362,9 +362,40 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="work-with-me" class="level2">
+<h2 class="anchored" data-anchor-id="work-with-me">Work with me</h2>
+<div class="work-with-me">
+<section id="research-collaboration" class="level4 work-card">
+<h4 class="anchored" data-anchor-id="research-collaboration"><i class="bi bi-people"></i> Research collaboration</h4>
+<p>For academic studies. You bring the data and the research question; I take on the data side of the paper as a collaborator and co-author:</p>
+<ul>
+<li>cleaning and checking the data</li>
+<li>choosing and running the right statistics</li>
+<li>figures and tables</li>
+<li>writing the methods and results</li>
+</ul>
+<p><a href="contact.html?topic=collaboration#send-me-a-message" class="btn btn-sm btn-primary">Ask about a collaboration</a></p>
+</section>
+<section id="freelance-work" class="level4 work-card">
+<h4 class="anchored" data-anchor-id="freelance-work"><i class="bi bi-briefcase"></i> Freelance work</h4>
+<p>Paid, clearly scoped projects:</p>
+<ul>
+<li>sequencing data analysis: quality control, alignment, variant calling, RNA-seq</li>
+<li>reproducible pipelines (Nextflow) and reports (Quarto)</li>
+<li>statistics for biomedical and clinical studies, including study design and power calculations</li>
+<li>cleaning and structuring messy study data</li>
+<li>training in R, Python or the command line</li>
+</ul>
+<p>Send a short description of the project and your timeline.</p>
+<p><a href="contact.html?topic=freelance#send-me-a-message" class="btn btn-sm btn-primary">Ask about freelance work</a></p>
+</section>
+</div>
+</section>
+<section id="send-me-a-message" class="level2">
+<h2 class="anchored" data-anchor-id="send-me-a-message">Send me a message</h2>
 <div class="contact-layout">
 <div class="contact-main">
-<p>Whether it’s a role, a collaboration, or a question about one of the tutorials, send me a message and I’ll get back to you by email.</p>
+<p>Whether it’s a role, a collaboration, freelance work, or a question about one of the tutorials, send me a message and I’ll get back to you by email.</p>
 <!--
   Contact form, delivered by FormSubmit (https://formsubmit.co) to the address in the action URL.
   The script below posts to the /ajax/ endpoint and shows an inline status. Without JavaScript the
@@ -390,9 +421,11 @@ ul.task-list li input[type="checkbox"] {
     <div class="col-12">
       <label for="cf-topic" class="form-label">What's it about?</label>
       <select class="form-select" id="cf-topic" name="topic">
-        <option>A job or collaboration</option>
-        <option>A question about a tutorial</option>
-        <option>Something else</option>
+        <option value="A job opportunity">A job opportunity</option>
+        <option value="A research collaboration">A research collaboration</option>
+        <option value="Freelance work">Freelance work</option>
+        <option value="A question about a tutorial">A question about a tutorial</option>
+        <option value="Something else">Something else</option>
       </select>
     </div>
     <div class="col-12">
@@ -423,9 +456,11 @@ ul.task-list li input[type="checkbox"] {
   // Back from FormSubmit's no-JavaScript fallback
   if (new URLSearchParams(location.search).get("sent") === "1") sent();
 
-  // ?topic=tutorial pre-selects a topic (used by links from other pages)
+  // ?topic=… pre-selects a topic (used by links from other pages and the cards above)
+  const topics = { tutorial: "A question about a tutorial", collaboration: "A research collaboration",
+                   freelance: "Freelance work", job: "A job opportunity" };
   const topic = new URLSearchParams(location.search).get("topic");
-  if (topic === "tutorial") form.topic.selectedIndex = 1;
+  if (topics[topic]) form.topic.value = topics[topic];
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -462,6 +497,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -71,10 +71,11 @@ shorten <- function(x, n = 22) {
 ```
 
 ::: {.home-intro}
-I'm a bioinformatician and computational biologist with over 15 years' experience in biomedical sciences, including 10 in tuberculosis research. I started at the lab bench, processing clinical samples and running flow cytometry, went on to coordinate multi-site clinical studies, and now build the pipelines and analyses that turn genomic and clinical data into results. I'm currently a Data Analyst at Stellenbosch University and completing an MSc in Computational Biology.
+I'm a bioinformatician and computational biologist with over 15 years' experience in biomedical sciences, including 10 in tuberculosis research. I started at the lab bench, processing clinical samples and running flow cytometry, went on to coordinate multi-site clinical studies, and now build the pipelines and analyses that turn genomic and clinical data into results. I'm currently a Data Analyst at Stellenbosch University and completing an MSc in Computational Biology. I'm open to research collaborations and freelance bioinformatics work.
 
 [View projects](projects.qmd){.btn .btn-primary}
 [About me](about.qmd){.btn .btn-outline-primary}
+[Work with me](contact.qmd#work-with-me){.btn .btn-outline-primary}
 :::
 
 ::: {.stats-strip}

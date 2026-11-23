@@ -1,15 +1,50 @@
 ---
 title: "Contact"
-description: "Contact Devon Allies about bioinformatics and data science roles, collaborations, or questions about the R and Python tutorials."
+description: "Contact Devon Allies about bioinformatics and data science roles, research collaborations, freelance bioinformatics and data analysis work, or questions about the tutorials."
 body-classes: hide-description   # description is for search/link previews only
 toc: false
 link-external-newwindow: true   # LinkedIn, GitHub, X and Discord buttons open in a new tab
 ---
 
+## Work with me {#work-with-me}
+
+::: {.work-with-me}
+::: {.work-card}
+#### <i class="bi bi-people"></i> Research collaboration
+
+For academic studies. You bring the data and the research question; I take on the data side of the paper as a collaborator and co-author:
+
+- cleaning and checking the data
+- choosing and running the right statistics
+- figures and tables
+- writing the methods and results
+
+[Ask about a collaboration](contact.html?topic=collaboration#send-me-a-message){.btn .btn-sm .btn-primary}
+:::
+
+::: {.work-card}
+#### <i class="bi bi-briefcase"></i> Freelance work
+
+Paid, clearly scoped projects:
+
+- sequencing data analysis: quality control, alignment, variant calling, RNA-seq
+- reproducible pipelines (Nextflow) and reports (Quarto)
+- statistics for biomedical and clinical studies, including study design and power calculations
+- cleaning and structuring messy study data
+- training in R, Python or the command line
+
+Send a short description of the project and your timeline.
+
+[Ask about freelance work](contact.html?topic=freelance#send-me-a-message){.btn .btn-sm .btn-primary}
+:::
+:::
+
+## Send me a message {#send-me-a-message}
+
 ::: {.contact-layout}
 
 ::: {.contact-main}
-Whether it's a role, a collaboration, or a question about one of the tutorials, send me a message and I'll get back to you by email.
+Whether it's a role, a collaboration, freelance work, or a question about one of the tutorials, send me a message and I'll get back to you by email.
 
 ```{=html}
 <!--
@@ -37,9 +72,11 @@ Whether it's a role, a collaboration, or a question about one of the tutorials, 
     <div class="col-12">
       <label for="cf-topic" class="form-label">What's it about?</label>
       <select class="form-select" id="cf-topic" name="topic">
-        <option>A job or collaboration</option>
-        <option>A question about a tutorial</option>
-        <option>Something else</option>
+        <option value="A job opportunity">A job opportunity</option>
+        <option value="A research collaboration">A research collaboration</option>
+        <option value="Freelance work">Freelance work</option>
+        <option value="A question about a tutorial">A question about a tutorial</option>
+        <option value="Something else">Something else</option>
       </select>
     </div>
     <div class="col-12">
@@ -70,9 +107,11 @@ Whether it's a role, a collaboration, or a question about one of the tutorials, 
   // Back from FormSubmit's no-JavaScript fallback
   if (new URLSearchParams(location.search).get("sent") === "1") sent();
 
-  // ?topic=tutorial pre-selects a topic (used by links from other pages)
+  // ?topic=… pre-selects a topic (used by links from other pages and the cards above)
+  const topics = { tutorial: "A question about a tutorial", collaboration: "A research collaboration",
+                   freelance: "Freelance work", job: "A job opportunity" };
   const topic = new URLSearchParams(location.search).get("topic");
-  if (topic === "tutorial") form.topic.selectedIndex = 1;
+  if (topics[topic]) form.topic.value = topics[topic];
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
