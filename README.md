@@ -7,7 +7,7 @@ The personal website and data portfolio of a bioinformatician and computational 
 The site has five sections:
 
 - **[Projects](https://devonallies.co.za/projects.html):** data analyses and pipelines in R and Python
-- **[Tutorials](https://devonallies.co.za/tutorials.html):** a practical series on a simulated TB dataset
+- **[Tutorials](https://devonallies.co.za/tutorials.html):** two tracks: bioinformatics on the command line with real public TB sequencing data, and data science in R and Python on a simulated TB dataset
 - **[Publications & Writing](https://devonallies.co.za/publications.html):** peer-reviewed papers and articles on reproducible science
 - **[About](https://devonallies.co.za/about.html):** background and skills
 - **[Contact](https://devonallies.co.za/contact.html):** a contact form, plus other ways to get in touch
@@ -29,7 +29,20 @@ On the site, the Projects page lists these newest first and can be filtered by t
 
 ## Tutorials
 
-A numbered, hands-on series built on one small extract of a simulated TB study (BAL participant metadata and cell counts per visit; every participant is fictional, and the raw files are deliberately messy like real study data). The [Tutorials page](https://devonallies.co.za/tutorials.html) introduces the series, offers the three data files for download, and lists what you need: R and RStudio, plus Python from Tutorial 2. The data is in [`tutorials/data/`](tutorials/data/).
+Two hands-on tracks, each a numbered series.
+
+### Bioinformatics on the command line
+
+Working in a Linux terminal with real, public *Mycobacterium tuberculosis* whole-genome sequencing data (ENA project PRJEB43283, a Western Cape study) and the H37Rv reference genome. Source in [`tutorials/command-line/`](tutorials/command-line/); each part's series box and previous/next links come from `assets/lua/series.lua`.
+
+1. [The command line for biologists](https://devonallies.co.za/tutorials/command-line/command-line-for-biologists/): moving around, managing files, installing tools with micromamba, and exploring a CSV file.
+2. [Finding and downloading public sequencing data](https://devonallies.co.za/tutorials/command-line/finding-and-downloading-public-data/): from a paper to verified FASTQ files with Entrez Direct, the ENA run table and `md5sum`.
+
+**Coming next:** file formats (FASTA, FASTQ, SAM/BAM, VCF and their indexes, with IGV), read quality control, aligning with a loop, variant calling, and annotating variants.
+
+### Data science (R and Python)
+
+Built on one small extract of a simulated TB study (BAL participant metadata and cell counts per visit; every participant is fictional, and the raw files are deliberately messy like real study data). The [Tutorials page](https://devonallies.co.za/tutorials.html) introduces the track, offers the three data files for download, and lists what you need: R and RStudio, plus Python from Tutorial 2. The data is in [`tutorials/data/`](tutorials/data/).
 
 1. [Importing data into RStudio with R](https://devonallies.co.za/tutorials/01-import-data-in-r/import-data-in-r.html): CSV and Excel files, multiple sheets, missing-value codes and numbers stored as text.
 2. [Using one dataset in both R and Python](https://devonallies.co.za/tutorials/02-r-and-python/r-and-python-dataframes.html): passing data frames between R and pandas with reticulate, and the conversions that quietly corrupt data.
@@ -54,7 +67,6 @@ The [Resources page](https://devonallies.co.za/resources.html) collects free boo
 
 - **Peer-reviewed papers:** three papers in TB diagnostics, BAL research and a phase 2 vaccine trial (*Scientific Reports*, *BMC Infectious Diseases*, *The Lancet Infectious Diseases*), cited 100+ times. ORCID: [0000-0001-8928-4334](https://orcid.org/0000-0001-8928-4334)
 - **On this site:** [Choosing the right statistics for cytokine data](https://devonallies.co.za/writing/choosing-statistics-for-cytokine-data/), on values below the detection limit, skewed concentrations and multiple testing, worked through on simulated plasma data (`tutorials/data/bal_plasma_cytokines.xlsx`, built by `scripts/simulate_plasma_cytokines.py`). Source in [`writing/`](writing/).
-- **Series: Bioinformatics on the command line.** Starts with [The command line for biologists](https://devonallies.co.za/writing/command-line-for-biologists/): moving around, managing files, installing tools with micromamba and exploring a CSV file. Later parts (finding data, file formats, quality control, alignment) use public *M. tuberculosis* sequencing data. Each article's series box and previous/next links come from `assets/lua/series.lua`.
 - **Articles:** a series on [Medium](https://medium.com/@alliesdl) about reproducible research and scientific writing with Quarto.
 
 The papers and Medium articles come from `_data/publications.json`, which a script builds from ORCID, Crossref and the Medium RSS feed (see below).

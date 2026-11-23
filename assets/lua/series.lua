@@ -1,17 +1,18 @@
--- Series navigation for articles in writing/.
+-- Series navigation for multi-part tutorials (and articles).
 --
 -- An article joins a series with two front-matter fields:
 --   series: command-line      (a key from SERIES below)
 --   series-part: 2            (its place in the series)
 -- and `filters: [../../assets/lua/series.lua]`.
 --
--- The filter finds every writing/*/index.qmd in the same series and adds
+-- The filter finds every <dir>/*/index.qmd in the same series (dir comes
+-- from SERIES below) and adds
 -- a box under the title listing the parts, plus previous/next links at the
 -- end. Parts dated in the future are drafts: they're listed as "coming
 -- soon" without a link, matching how the article listings treat them.
 
 local SERIES = {
-  ["command-line"] = "Bioinformatics on the command line",
+  ["command-line"] = { name = "Bioinformatics on the command line", dir = "tutorials/command-line" },
 }
 
 local function front_matter(path)
@@ -49,9 +50,9 @@ function Pandoc(doc)
   local key = doc.meta.series and pandoc.utils.stringify(doc.meta.series)
   local this_part = doc.meta["series-part"] and tonumber(pandoc.utils.stringify(doc.meta["series-part"]))
   if not key or not this_part then return doc end
-  local series_name = SERIES[key] or key
+  local series_name = SERIES[key] and SERIES[key].name or key
 
-  local writing = quarto.project.directory .. "/writing"
+  local writing = quarto.project.directory .. "/" .. (SERIES[key] and SERIES[key].dir or "writing")
   local today = os.date("%Y-%m-%d")
   local parts = {}
   for _, slug in ipairs(list_dir(writing)) do

@@ -29,8 +29,6 @@ total_cites <- sum(vapply(pubs, \(p) if (is.null(p$cited_by)) 0 else p$cited_by,
 group_open  <- function(summary) cat(sprintf('\n<details class="pub-group">\n<summary>%s</summary>\n\n', summary))
 group_close <- function() cat("\n</details>\n\n")
 
-# Series names, matching the SERIES table in assets/lua/series.lua
-series_names <- c("command-line" = "Bioinformatics on the command line")
 ```
 
 ## Peer-reviewed papers
@@ -91,17 +89,17 @@ for (p in pubs) {
 group_close()
 ```
 
-## On this site
+## Articles
 
 ::: {.pub-intro}
-Longer articles published here, with the data and code to follow along.
+Longer articles published on this site, with the data and code to follow along. Step-by-step tutorials are on the [Tutorials](tutorials.qmd) page.
 :::
 
 ```{r}
 #| label: site-articles
 #| output: asis
 # Every article in writing/<name>/index.qmd, from its own front matter, grouped
-# by series (in part order), then standalone articles (newest first)
+# newest first
 site_articles <- list.files(here::here("writing"), pattern = "^index\\.qmd$",
                             recursive = TRUE, full.names = TRUE)
 site_articles <- lapply(site_articles, \(f) {
@@ -112,12 +110,12 @@ site_articles <- lapply(site_articles, \(f) {
 # Articles dated in the future are drafts: leave them out until their date
 site_articles <- Filter(\(m) as.Date(m$date) <= Sys.Date(), site_articles)
 
-article_card <- function(a, label) {
+article_card <- function(a, label, level = "####") {
   tags <- paste(sprintf("[%s]{.article-tag}", unlist(a$categories)), collapse = " ")
   cat(
     "::: {.pub-card .article-card}\n",
     sprintf("[%s]{.pub-year}\n\n", label),
-    sprintf("#### %s {.pub-title}\n\n", a$title),
+    sprintf("%s %s {.pub-title}\n\n", level, a$title),
     sprintf("%s\n\n", a$subtitle),
     sprintf("%s\n\n", tags),
     sprintf("[Read the article](%s){.btn .btn-sm .btn-primary}\n", a$href),
@@ -127,25 +125,11 @@ article_card <- function(a, label) {
 }
 fmt_date <- function(d) format(as.Date(d), "%d %B %Y")
 
-# One group per series
-in_series <- Filter(\(a) !is.null(a$series), site_articles)
-for (key in unique(vapply(in_series, \(a) a$series, ""))) {
-  parts <- Filter(\(a) a$series == key, in_series)
-  parts <- parts[order(vapply(parts, \(a) as.numeric(a[["series-part"]]), numeric(1)))]
-  name <- if (key %in% names(series_names)) series_names[[key]] else key
-  cat(sprintf("\n### %s {.pub-group-heading}\n\n", name))
-  group_open(sprintf("Latest: %s", parts[[length(parts)]]$title))
-  for (a in parts) article_card(a, sprintf("Part %s · %s", a[["series-part"]], fmt_date(a$date)))
-  group_close()
-}
-
-# Standalone articles, newest first
-standalone <- Filter(\(a) is.null(a$series), site_articles)
-standalone <- standalone[order(vapply(standalone, \(a) as.character(a$date), ""), decreasing = TRUE)]
+# Newest first (multi-part tutorial series live under tutorials/, not here)
+standalone <- site_articles[order(vapply(site_articles, \(a) as.character(a$date), ""), decreasing = TRUE)]
 if (length(standalone) > 0) {
-  cat("\n### Standalone articles {.pub-group-heading}\n\n")
   group_open(sprintf("Latest: %s", standalone[[1]]$title))
-  for (a in standalone) article_card(a, fmt_date(a$date))
+  for (a in standalone) article_card(a, fmt_date(a$date), level = "###")
   group_close()
 }
 ```

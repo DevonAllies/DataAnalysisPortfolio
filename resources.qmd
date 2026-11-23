@@ -310,7 +310,7 @@ Turns R and Python code and text into reports and websites; this site is built w
 
 ## Command line and Linux
 
-Getting comfortable in a terminal, from your first `cd` to building pipelines. Start with my article, [The command line for biologists](writing/command-line-for-biologists/index.qmd), then go further with these.
+Getting comfortable in a terminal, from your first `cd` to building pipelines. Start with Part 1 of my bioinformatics tutorials, [The command line for biologists](tutorials/command-line/command-line-for-biologists/index.qmd), then go further with these.
 
 <details class="pub-group">
 <summary>Books, lessons and practice for working in a terminal, and WSL for Windows</summary>
@@ -325,7 +325,7 @@ Getting comfortable in a terminal, from your first `cd` to building pipelines. S
 
 Obtaining, cleaning, exploring and modelling data with command-line tools and pipes, including tools that understand CSV and JSON. Free to read online.
 
-Goes with: [The command line for biologists](writing/command-line-for-biologists/index.qmd)
+Goes with: [The command line for biologists](tutorials/command-line/command-line-for-biologists/index.qmd)
 :::
 
 ::: {.g-col-12 .g-col-md-6 .pub-card}
@@ -337,7 +337,7 @@ Goes with: [The command line for biologists](writing/command-line-for-biologists
 
 A complete beginner-to-advanced guide to the Linux shell, from navigating folders to writing shell scripts. The PDF is a free download.
 
-Goes with: [The command line for biologists](writing/command-line-for-biologists/index.qmd)
+Goes with: [The command line for biologists](tutorials/command-line/command-line-for-biologists/index.qmd)
 :::
 
 :::

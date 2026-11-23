@@ -2,16 +2,18 @@
 title: "The command line for biologists"
 subtitle: "Moving around, managing files, installing software and looking at data, with the commands I use every day on Ubuntu"
 author: "Devon Allies"
+aliases:
+  - "../../../writing/command-line-for-biologists/index.html"   # published here first (Nov 2026); Quarto leaves a redirect
 date: 2026-11-21
 description: "A practical introduction to the Linux command line for biologists and lab scientists: navigating folders, copying and moving files, installing software and environments with apt and micromamba, and exploring a CSV file with head, cut, sort, uniq, grep and awk. Works on Ubuntu, macOS and Windows through WSL."
 categories: [Command line, Linux, Bioinformatics]
 series: command-line
 series-part: 1
 bibliography: references.bib
-csl: ../../assets/csl/harvard-anglia-ruskin-university.csl
+csl: ../../../assets/csl/harvard-anglia-ruskin-university.csl
 engine: knitr
 filters:
-  - ../../assets/lua/series.lua
+  - ../../../assets/lua/series.lua
 toc: true
 toc-depth: 2
 toc-location: left
@@ -36,7 +38,7 @@ The command line looks unfriendly at first, but you need surprisingly little of 
 5. Looking at a data file without opening it
 6. Saving what you find
 
-The last two sections use the simulated BAL dataset from my [tutorial series](../../tutorials.qmd), so you can follow along and check your output against mine.
+The last two sections use the simulated BAL dataset from my [tutorial series](../../../tutorials.qmd), so you can follow along and check your output against mine.
 
 ::: {.callout-note appearance="simple"}
 ## How to read the commands
@@ -223,7 +225,7 @@ All three install the same packages from the same channels, and their commands m
 
 Keep one environment per project or pipeline rather than installing everything into one. Before adding a package to an existing environment, `micromamba install --dry-run` lists what it would change, including the version it would install. If it would downgrade or remove anything, or picks an old version of the tool you asked for, make a new environment instead.
 
-Pipelines build on the same idea: my [variant-calling pipeline](../../projects/wgs-variant-calling-pipeline/index.qmd) runs its tools from an environment with a single `nextflow run` command.
+Pipelines build on the same idea: my [variant-calling pipeline](../../../projects/wgs-variant-calling-pipeline/index.qmd) runs its tools from an environment with a single `nextflow run` command.
 
 ## 5. Look at a data file without opening it
 
@@ -238,7 +240,7 @@ curl -O https://devonallies.co.za/tutorials/data/bal_baseline.csv
 ::: {.callout-important appearance="simple"}
 ## Simulated data
 
-`bal_baseline.csv` is **simulated**: 500 fictional participants with TB diagnosis, HIV status and BAL cell counts. No row describes a real person. [Tutorial 1](../../tutorials/01-import-data-in-r/import-data-in-r.qmd) reads the same file into R.
+`bal_baseline.csv` is **simulated**: 500 fictional participants with TB diagnosis, HIV status and BAL cell counts. No row describes a real person. [Tutorial 1](../../../tutorials/01-import-data-in-r/import-data-in-r.qmd) reads the same file into R.
 :::
 
 ### How big is it, and what's in it?
@@ -295,7 +297,7 @@ tail -n +2 bal_baseline.csv | cut -d , -f 1 | sort | uniq -d
 grep -E "SP09573|SP22251" bal_baseline.csv
 ```
 
-Each participant was entered twice, with identical rows. These are the same two duplicates [Tutorial 1](../../tutorials/01-import-data-in-r/import-data-in-r.qmd) finds in R, found here without starting R at all. `grep -c` counts matching lines instead of printing them:
+Each participant was entered twice, with identical rows. These are the same two duplicates [Tutorial 1](../../../tutorials/01-import-data-in-r/import-data-in-r.qmd) finds in R, found here without starting R at all. `grep -c` counts matching lines instead of printing them:
 
 ```{bash}
 grep -c "Active TB" bal_baseline.csv
@@ -311,7 +313,7 @@ grep -c "Active TB" bal_baseline.csv
 awk -F , 'NR > 1 && $16 < 0 {print $1, $16}' bal_baseline.csv
 ```
 
-A sample can't take −1 minutes to process, so these three are recording errors to query. [Tutorial 3](../../tutorials/03-clean-data-in-r/clean-data-in-r.qmd) deals with impossible measurements like this one when it cleans the data. The same pattern finds the slowest samples, sorting numerically (`-n`) on column 16:
+A sample can't take −1 minutes to process, so these three are recording errors to query. [Tutorial 3](../../../tutorials/03-clean-data-in-r/clean-data-in-r.qmd) deals with impossible measurements like this one when it cleans the data. The same pattern finds the slowest samples, sorting numerically (`-n`) on column 16:
 
 ```{bash}
 tail -n +2 bal_baseline.csv | sort -t , -k 16,16 -n | tail -n 3 | cut -d , -f 1,16
@@ -396,7 +398,7 @@ kbl(reference, escape = FALSE) |>
 
 ## Where next
 
-The [Resources](../../resources.qmd#command-line-and-linux) page lists free books and courses for going further. Three I'd start with:
+The [Resources](../../../resources.qmd#command-line-and-linux) page lists free books and courses for going further. Three I'd start with:
 
 - **[The Unix Shell](https://swcarpentry.github.io/shell-novice/)** from Software Carpentry: a free, hands-on lesson that covers this ground step by step, with exercises.
 - **[Introduction to the Command Line for Genomics](https://datacarpentry.github.io/shell-genomics/)** from Data Carpentry: the same skills applied to sequencing files.

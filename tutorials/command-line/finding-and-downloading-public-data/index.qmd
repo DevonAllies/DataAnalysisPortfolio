@@ -2,15 +2,17 @@
 title: "Finding and downloading public sequencing data"
 subtitle: "From a paper to verified FASTQ files on your disk, with Entrez Direct, the European Nucleotide Archive and md5sum"
 author: "Devon Allies"
+aliases:
+  - "../../../writing/finding-and-downloading-public-data/index.html"   # published here first (Nov 2026); Quarto leaves a redirect
 date: 2026-11-23
 description: "How to find public sequencing data from the command line and download it safely: searching PubMed with Entrez Direct (esearch, efetch, xtract), finding a study's accession in the paper, getting the run table from the European Nucleotide Archive, choosing runs with awk and sort, downloading FASTQ files and a reference genome, and checking every file with md5sum."
 categories: [Command line, Bioinformatics, Tuberculosis]
 series: command-line
 series-part: 2
 bibliography: references.bib
-csl: ../../assets/csl/harvard-anglia-ruskin-university.csl
+csl: ../../../assets/csl/harvard-anglia-ruskin-university.csl
 filters:
-  - ../../assets/lua/series.lua
+  - ../../../assets/lua/series.lua
 toc: true
 toc-depth: 2
 toc-location: left

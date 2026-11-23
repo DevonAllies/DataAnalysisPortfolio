@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Devon Allies">
+<meta name="dcterms.date" content="2026-11-23">
+<meta name="description" content="How to find public sequencing data from the command line and download it safely: searching PubMed with Entrez Direct (esearch, efetch, xtract), finding a study’s accession in the paper, getting the run table from the European Nucleotide Archive, choosing runs with awk and sort, downloading FASTQ files and a reference genome, and checking every file with md5sum.">
+
+<title>Finding and downloading public sequencing data – Devon Allies</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-2d94387f3a51e8747af025d7859c5d10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-01ef6c89f23038e5ddcac1cb845945cd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-2d94387f3a51e8747af025d7859c5d10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../assets/css/styles.css">
+<meta property="og:title" content="Finding and downloading public sequencing data – Devon Allies">
+<meta property="og:description" content="How to find public sequencing data from the command line and download it safely: searching PubMed with Entrez Direct (esearch, efetch, xtract), finding a study’s accession in the paper, getting the run table from the European Nucleotide Archive, choosing runs with awk and sort, downloading FASTQ files and a reference genome, and checking every file with md5sum.">
+<meta property="og:image" content="https://devonallies.co.za/tutorials/images/command-line-series.jpg">
+<meta property="og:site_name" content="Devon Allies">
+<meta property="og:image:height" content="768">
+<meta property="og:image:width" content="1376">
+</head>
+
+<body class="floating nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      refreshSafariScrollbar();
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Devon Allies</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../tutorials.html"> 
+<span class="menu-text">Tutorials</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../publications.html"> 
+<span class="menu-text">Publications &amp; Writing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../resources.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../contact.html"> 
+<span class="menu-text">Contact</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
+</div>
+            <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Section">
+    <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#where-public-sequencing-data-lives" id="toc-where-public-sequencing-data-lives" class="nav-link active" data-scroll-target="#where-public-sequencing-data-lives">Where public sequencing data lives</a></li>
+  <li><a href="#search-pubmed-with-entrez-direct" id="toc-search-pubmed-with-entrez-direct" class="nav-link" data-scroll-target="#search-pubmed-with-entrez-direct">1. Search PubMed with Entrez Direct</a></li>
+  <li><a href="#find-the-data-in-the-paper" id="toc-find-the-data-in-the-paper" class="nav-link" data-scroll-target="#find-the-data-in-the-paper">2. Find the data in the paper</a></li>
+  <li><a href="#get-the-run-table" id="toc-get-the-run-table" class="nav-link" data-scroll-target="#get-the-run-table">3. Get the run table</a></li>
+  <li><a href="#download-the-files" id="toc-download-the-files" class="nav-link" data-scroll-target="#download-the-files">4. Download the files</a></li>
+  <li><a href="#check-the-files-arrived-intact" id="toc-check-the-files-arrived-intact" class="nav-link" data-scroll-target="#check-the-files-arrived-intact">5. Check the files arrived intact</a></li>
+  <li><a href="#record-what-you-downloaded" id="toc-record-what-you-downloaded" class="nav-link" data-scroll-target="#record-what-you-downloaded">6. Record what you downloaded</a></li>
+  <li><a href="#going-further" id="toc-going-further" class="nav-link" data-scroll-target="#going-further">Going further</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Finding and downloading public sequencing data</h1>
+<p class="subtitle lead">From a paper to verified FASTQ files on your disk, with Entrez Direct, the European Nucleotide Archive and md5sum</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Command line</div>
+    <div class="quarto-category">Bioinformatics</div>
+    <div class="quarto-category">Tuberculosis</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    How to find public sequencing data from the command line and download it safely: searching PubMed with Entrez Direct (esearch, efetch, xtract), finding a study’s accession in the paper, getting the run table from the European Nucleotide Archive, choosing runs with awk and sort, downloading FASTQ files and a reference genome, and checking every file with md5sum.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Devon Allies </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 23, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout-note series-nav" data-appearance="simple" data-collapse="true" title="Part 2 of the series: Bioinformatics on the command line">
+<ul>
+<li>Part 1: <a href="../../../tutorials/command-line/command-line-for-biologists/index.html">The command line for biologists</a></li>
+<li>Part 2: <strong>Finding and downloading public sequencing data</strong> (this article)</li>
+<li>Part 3: Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes <em>(coming soon)</em></li>
+<li>Part 4: Checking and cleaning sequencing reads: FastQC, MultiQC and fastp <em>(coming soon)</em></li>
+<li>Part 5: Aligning every FASTQ file in a folder with a loop <em>(coming soon)</em></li>
+</ul>
+</div>
+<p>Most published sequencing studies deposit their raw reads in a public archive, free for anyone to download and re-analyse. That makes them ideal for learning: real data, with a paper that explains how it was collected. The hard part for a beginner is getting from the paper to the right files, and knowing the files arrived intact.</p>
+<p>This article does that from the terminal, start to finish, for the data used in the rest of this series:</p>
+<ol type="1">
+<li>Search PubMed for the study with <strong>Entrez Direct</strong>.</li>
+<li>Find the study’s accession number in the paper.</li>
+<li>Get the list of sequencing runs from the <strong>European Nucleotide Archive</strong> (ENA).</li>
+<li>Choose runs and download them, with the reference genome.</li>
+<li>Check every file with <strong>md5sum</strong> and record what you downloaded.</li>
+</ol>
+<p>It uses the commands from <a href="../../../tutorials/command-line/command-line-for-biologists/index.html">Part 1</a>: pipes, <code>cut</code>, <code>sort</code>, <code>awk</code> and loops over lines.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>About the output
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Every output shown was saved from a real run on 20 November 2026, with Entrez Direct 26.0. Searches of live databases change over time, so yours may find more results than mine; the study and its files won’t change.</p>
+</div>
+</div>
+<section id="where-public-sequencing-data-lives" class="level2">
+<h2 class="anchored" data-anchor-id="where-public-sequencing-data-lives">Where public sequencing data lives</h2>
+<p>Three archives share the world’s raw sequencing data, mirroring each other daily as the International Nucleotide Sequence Database Collaboration: NCBI’s <strong>Sequence Read Archive</strong> (SRA) in the United States, the <strong>European Nucleotide Archive</strong> (ENA) in the UK, and the <strong>DNA Data Bank of Japan</strong>. A study submitted to any one appears in all three, under the same accession numbers:</p>
+<div id="tbl-accessions" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-accessions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Accession numbers in the sequence archives. The letters E, S and D show which archive received the submission.
+</figcaption>
+<div aria-describedby="tbl-accessions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Prefix</th>
+<th>Level</th>
+<th>Example</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PRJEB, PRJNA, PRJDB</td>
+<td>Project</td>
+<td>PRJEB43283</td>
+<td>A whole study: everything one paper deposited</td>
+</tr>
+<tr class="even">
+<td>ERS, SRS, SAMEA, SAMN</td>
+<td>Sample</td>
+<td>SAMEA11761213</td>
+<td>One biological sample, such as one bacterial isolate</td>
+</tr>
+<tr class="odd">
+<td>ERR, SRR, DRR</td>
+<td>Run</td>
+<td>ERR8025410</td>
+<td>One sequencing run of a sample: the FASTQ files</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Papers normally give the project accession; the files you download belong to runs.</p>
+</section>
+<section id="search-pubmed-with-entrez-direct" class="level2">
+<h2 class="anchored" data-anchor-id="search-pubmed-with-entrez-direct">1. Search PubMed with Entrez Direct</h2>
+<p><strong>Entrez Direct</strong> (EDirect) is NCBI’s set of command-line tools for searching its databases <span class="citation" data-cites="kans2013">(<a href="#ref-kans2013" role="doc-biblioref">Kans, 2013</a>)</span>: PubMed, the nucleotide database, SRA and dozens more. It’s on Bioconda, so with micromamba (see <a href="../../../tutorials/command-line/command-line-for-biologists/index.html#install-software-and-set-up-environments">Part 1</a>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> create <span class="at">-n</span> edirect entrez-direct</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> activate edirect</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>(Activate the environment rather than using <code>micromamba run</code>: the commands below are joined by pipes, and <code>micromamba run</code> only applies to the first command in a pipe. See the warning in <a href="../../../tutorials/command-line/command-line-for-biologists/index.html#install-software-and-set-up-environments">Part 1</a>.)</p>
+<p>Three commands do most of the work, joined by pipes:</p>
+<ul>
+<li><code>esearch</code> runs a search and remembers the results;</li>
+<li><code>efetch</code> downloads the records, in the format you ask for;</li>
+<li><code>xtract</code> pulls chosen fields out of the records into a table.</li>
+</ul>
+<p>Start with a search. PubMed’s usual search syntax works: quotes for exact phrases, <code>AND</code>, <code>OR</code> and brackets:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">esearch</span> <span class="at">-db</span> pubmed <span class="at">-query</span> <span class="st">'tuberculosis AND "Western Cape" AND "whole genome sequencing" AND (XDR OR "extensively drug")'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>&lt;ENTREZ_DIRECT&gt;
+  &lt;Db&gt;pubmed&lt;/Db&gt;
+  &lt;Query&gt;tuberculosis AND "Western Cape" AND "whole genome sequencing" AND (XDR OR "extensively drug")&lt;/Query&gt;
+  &lt;Count&gt;7&lt;/Count&gt;
+  &lt;Step&gt;1&lt;/Step&gt;
+  &lt;Elapsed&gt;11&lt;/Elapsed&gt;
+&lt;/ENTREZ_DIRECT&gt;</code></pre>
+<p>Seven papers match. On its own, <code>esearch</code> prints only this summary; the results wait on NCBI’s server for the next command. Pipe them into <code>efetch</code> for a short summary of each paper (<code>-format docsum</code>), and into <code>xtract</code> to keep four fields:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">esearch</span> <span class="at">-db</span> pubmed <span class="at">-query</span> <span class="st">'tuberculosis AND "Western Cape" AND "whole genome sequencing" AND (XDR OR "extensively drug")'</span> <span class="dt">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="ex">efetch</span> <span class="at">-format</span> docsum <span class="dt">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="ex">xtract</span> <span class="at">-pattern</span> DocumentSummary <span class="at">-element</span> Id PubDate Source Title</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>21110864    2010 Nov 26 BMC Genomics    The non-clonality of drug resistance in Beijing-genotype isolates of Mycobacterium tuberculosis from the Western Cape of South Africa.
+28109869    2017 Apr    Lancet Respir Med   Outcomes, infectiousness, and transmission dynamics of patients with extensively drug-resistant tuberculosis and home-discharged patients with programmatically incurable tuberculosis: a prospective cohort study.
+34780706    2022 Apr    Lancet Infect Dis   Assessment of epidemiological and genetic characteristics and clinical outcomes of resistance to bedaquiline in patients treated for rifampicin-resistant tuberculosis: a cross-sectional and longitudinal study.
+35471145    2022 Apr    Microb Genom    Transmission, distribution and drug resistance-conferring mutations of extensively drug-resistant tuberculosis in the Western Cape Province, South Africa.
+39338491    2024 Sep 2  Microorganisms  A Genome-Focused Investigation Reveals the Emergence of a Mycobacterium tuberculosis Strain Related to Multidrug-Resistant Tuberculosis in the Amazon Region of Brazil.
+40980012    2025    Front Cell Infect Microbiol Population structure and emergence of resistance to new and repurposed drugs in XDR-TB: insights from a 10-year genomic study in the Western Cape, South Africa review.
+41809859    2026 Mar    ERJ Open Res    Multicentre field evaluation of Xpert MTB/XDR in sub-Saharan Africa.</code></pre>
+<p><code>xtract -pattern DocumentSummary</code> starts a new row for each record, and <code>-element</code> lists the fields to keep, separated by tabs. The output is an ordinary table, so <code>sort</code>, <code>grep</code> and <code>cut</code> all work on it.</p>
+<p>The fourth paper is the one this series uses <span class="citation" data-cites="oostvogels2022">(<a href="#ref-oostvogels2022" role="doc-biblioref">Oostvogels et al., 2022</a>)</span>. Its first column is its <strong>PubMed ID</strong>, 35471145.</p>
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>If every EDirect command fails with “curl: (56)”
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>On recent Linux systems you may see this for every command:</p>
+<pre class="text"><code>curl: (56) OpenSSL SSL_read: OpenSSL/3.5.5: error:0A000126:SSL routines::unexpected eof while reading, errno 0
+ ERROR:  curl command failed ( … ) with: 56</code></pre>
+<p>EDirect 26.0 asks NCBI’s servers for an old style of connection (HTTP/1.0), which they close in a way that newer OpenSSL versions treat as an error, so EDirect throws away a reply that had arrived intact. A small OpenSSL setting tells it to accept that. Save these lines as <code>~/.openssl-eof.cnf</code>:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>~/.openssl-eof.cnf</strong></pre>
+</div>
+<pre class="text" data-filename="~/.openssl-eof.cnf"><code>openssl_conf = openssl_init
+[openssl_init]
+ssl_conf = ssl_sect
+[ssl_sect]
+system_default = system_default_sect
+[system_default_sect]
+Options = IgnoreUnexpectedEOF</code></pre>
+</div>
+<p>and point OpenSSL to it before running EDirect, in the same terminal:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">OPENSSL_CONF</span><span class="op">=</span>~/.openssl-eof.cnf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>It only affects the terminal you set it in, and only relaxes that one check.</p>
+</div>
+</div>
+</section>
+<section id="find-the-data-in-the-paper" class="level2">
+<h2 class="anchored" data-anchor-id="find-the-data-in-the-paper">2. Find the data in the paper</h2>
+<p>The paper’s details include its DOI and, because it’s open access, its PubMed Central (PMC) ID, which leads to the full text:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">efetch</span> <span class="at">-db</span> pubmed <span class="at">-id</span> 35471145 <span class="at">-format</span> xml <span class="dt">\</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="ex">xtract</span> <span class="at">-pattern</span> PubmedArticle <span class="at">-element</span> MedlineCitation/PMID <span class="dt">\</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">-block</span> ArticleId <span class="at">-if</span> @IdType <span class="at">-equals</span> doi <span class="at">-element</span> ArticleId</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>35471145    10.1099/mgen.0.000815   10.1126/science.313.5793.1554a  10.1371/journal.pmed.0040050    …</code></pre>
+<p>The paper’s own DOI comes first. The others belong to the papers it cites, which are in the same record; <code>xtract</code> found them all because they’re tagged the same way. Seeing more than you expected is a common first experience with <code>xtract</code>, and a reason to check results by eye.</p>
+<p>Studies state where their data is, usually in a “Data summary” or “Data availability” section. Download the full text from PubMed Central and search it for project accessions:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">efetch</span> <span class="at">-db</span> pmc <span class="at">-id</span> 9453078 <span class="at">-format</span> xml <span class="op">&gt;</span> paper.xml</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-o</span> <span class="st">"PRJ[A-Z]*[0-9]*"</span> paper.xml <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-rn</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>      4 PRJEB35725
+      4 PRJEB14199
+      3 PRJEB43283</code></pre>
+<p><code>grep -o</code> prints each match on its own line, and <code>sort | uniq -c</code> counts them, as in Part 1. Three projects are named. The paper’s text explains them: PRJEB14199 and PRJEB35725 hold genomes published by earlier studies, and</p>
+<blockquote class="blockquote">
+<p>Newly published whole genome sequences of Mtb genomes are published under accession number PRJEB43283 on the European Nucleotide Archive.</p>
+</blockquote>
+<p>So <strong>PRJEB43283</strong> is the new data.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Why read the paper?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>NCBI can link a paper to its data with <code>elink</code>, but only when the submitters connected the two, which many don’t. Here <code>elink</code> from the paper finds no data at all. The paper’s own data statement is the reliable source, and it also tells you which data is new and which is re-used.</p>
+</div>
+</div>
+</section>
+<section id="get-the-run-table" class="level2">
+<h2 class="anchored" data-anchor-id="get-the-run-table">3. Get the run table</h2>
+<p>Every project has a <strong>run table</strong>: one row per sequencing run, with its sample, instrument, size, download links and checksums. ENA serves it from a web address that <code>curl</code> can fetch directly, choosing the columns with <code>fields=</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> metadata</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> <span class="st">"https://www.ebi.ac.uk/ena/portal/api/filereport?accession=PRJEB43283&amp;result=read_run&amp;fields=run_accession,instrument_model,read_count,base_count,fastq_md5,fastq_ftp&amp;format=tsv"</span> <span class="dt">\</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> metadata/PRJEB43283_runs.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The address is in quotes because it contains <code>&amp;</code>, which the shell would otherwise treat as an instruction. Look at what arrived:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> metadata/PRJEB43283_runs.tsv</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 2 metadata/PRJEB43283_runs.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>361 metadata/PRJEB43283_runs.tsv
+run_accession   instrument_model    read_count  base_count  fastq_md5   fastq_ftp
+ERR8025410  Illumina NovaSeq 6000   2128470 321398970   21691a7fd0612f88485325cc79ea24d8;0f8c3c594a6613a6548f995e337f6ab6   ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_2.fastq.gz</code></pre>
+<p>A header plus 360 runs. Each paired run has two FASTQ files, so the last two columns hold two values separated by <code>;</code>: one checksum and one link per file. Count the instruments with the pattern from Part 1:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata/PRJEB43283_runs.tsv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>     40 Illumina HiSeq 2000
+    320 Illumina NovaSeq 6000</code></pre>
+<p>(<code>cut</code> splits on tabs by default, which is what this file uses.)</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Getting the table from NCBI instead
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>EDirect can fetch the equivalent table from SRA with <code>esearch -db sra -query PRJEB43283 | efetch -format runinfo</code>, as comma-separated values. ENA’s version is quicker for large projects, lets you choose the columns, and includes direct download links and checksums, which is why this article uses it.</p>
+</div>
+</div>
+<section id="choose-the-runs" class="level3">
+<h3 class="anchored" data-anchor-id="choose-the-runs">Choose the runs</h3>
+<p>For a tutorial, small is good. <code>awk</code> keeps only the NovaSeq runs (<code>$2</code> is the second column, <code>-F '\t'</code> says the columns are tab-separated), then <code>sort</code> orders them by read count (<code>-k 3,3n</code>: column 3, numerically) and <code>head</code> keeps the four smallest:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F</span> <span class="st">'\t'</span> <span class="st">'$2 == "Illumina NovaSeq 6000"'</span> metadata/PRJEB43283_runs.tsv <span class="dt">\</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-t</span> <span class="st">$'</span><span class="dt">\t</span><span class="st">'</span> <span class="at">-k</span> 3,3n <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 4 <span class="op">&gt;</span> metadata/chosen_runs.tsv</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 1-4 metadata/chosen_runs.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>ERR8025410  Illumina NovaSeq 6000   2128470 321398970
+ERR8025420  Illumina NovaSeq 6000   2276564 343761164
+ERR8025690  Illumina NovaSeq 6000   2321424 582677424
+ERR8025744  Illumina NovaSeq 6000   2547056 639311056</code></pre>
+<p><code>$'\t'</code> is how to write a tab character for <code>sort</code>. ENA’s <code>read_count</code> counts both reads of each pair, so ERR8025410 has 1,064,235 read pairs, half the number shown.</p>
+</section>
+</section>
+<section id="download-the-files" class="level2">
+<h2 class="anchored" data-anchor-id="download-the-files">4. Download the files</h2>
+<p>The download links are in column 6, two per run. <code>tr ';' '\n'</code> puts each on its own line, and a <code>while read</code> loop runs <code>curl</code> once per link. Before downloading anything, run the loop with <code>echo</code> in front of <code>curl</code> to check the commands:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 6 metadata/chosen_runs.tsv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">';'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">url</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> curl <span class="at">-sS</span> <span class="at">-o</span> <span class="st">"raw/</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$url</span><span class="st">"</span><span class="va">)</span><span class="st">"</span> <span class="st">"https://</span><span class="va">$url</span><span class="st">"</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>curl -sS -o raw/ERR8025410_1.fastq.gz https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_1.fastq.gz
+curl -sS -o raw/ERR8025410_2.fastq.gz https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_2.fastq.gz</code></pre>
+<p>The links say <code>ftp.sra.ebi.ac.uk</code> without a protocol; the same server answers on <code>https://</code>, which the loop adds. <code>-o</code> names the output file, <code>basename</code> takes the file name from the end of the link, <code>-sS</code> hides the progress bar but still shows errors, and <code>while read -r url</code> reads one line at a time into the variable <code>url</code>. Then remove the <code>echo</code> and download for real:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> raw</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 6 metadata/chosen_runs.tsv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">';'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">url</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">curl</span> <span class="at">-sS</span> <span class="at">-o</span> <span class="st">"raw/</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$url</span><span class="st">"</span><span class="va">)</span><span class="st">"</span> <span class="st">"https://</span><span class="va">$url</span><span class="st">"</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> raw/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>96M ERR8025410_1.fastq.gz
+97M ERR8025410_2.fastq.gz
+101M ERR8025420_1.fastq.gz
+103M ERR8025420_2.fastq.gz
+206M ERR8025690_1.fastq.gz
+222M ERR8025690_2.fastq.gz
+213M ERR8025744_1.fastq.gz
+232M ERR8025744_2.fastq.gz</code></pre>
+<p>(<code>ls -lh</code> prints more columns; only the size and name are shown here.) About 1.2 GB in all, a few minutes on a good connection.</p>
+<section id="the-reference-genome" class="level3">
+<h3 class="anchored" data-anchor-id="the-reference-genome">The reference genome</h3>
+<p>Analyses compare reads to a <strong>reference genome</strong>. For <em>M. tuberculosis</em> that’s H37Rv <span class="citation" data-cites="cole1998">(<a href="#ref-cole1998" role="doc-biblioref"><span class="nocase">Cole et al.</span>, 1998</a>)</span>, GenBank accession NC_000962.3, which <code>efetch</code> downloads from NCBI’s nucleotide database as FASTA:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> reference</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="ex">efetch</span> <span class="at">-db</span> nuccore <span class="at">-id</span> NC_000962.3 <span class="at">-format</span> fasta <span class="op">&gt;</span> reference/H37Rv.fasta</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 1 reference/H37Rv.fasta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>&gt;NC_000962.3 Mycobacterium tuberculosis H37Rv, complete genome</code></pre>
+</section>
+</section>
+<section id="check-the-files-arrived-intact" class="level2">
+<h2 class="anchored" data-anchor-id="check-the-files-arrived-intact">5. Check the files arrived intact</h2>
+<p>A download can stop partway without an obvious error, especially on large files. A <strong>checksum</strong> catches it: a short code computed from every byte of a file, so any change, even one byte, gives a different code. ENA lists the MD5 checksum of every file in column 5 of the run table. <code>md5sum -c</code> compares files against a list in the form <code>checksum  path</code>, which <code>paste</code> builds by putting the checksums and file names side by side:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span> <span class="op">&lt;(</span><span class="fu">cut</span> <span class="at">-f</span> 5 metadata/chosen_runs.tsv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">';'</span> <span class="st">'\n'</span><span class="op">)</span> <span class="dt">\</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>      <span class="op">&lt;(</span><span class="fu">cut</span> <span class="at">-f</span> 6 metadata/chosen_runs.tsv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">';'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="fu">xargs</span> <span class="at">-n</span> 1 basename<span class="op">)</span> <span class="dt">\</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s|\t|  raw/|'</span> <span class="op">&gt;</span> metadata/md5sums.txt</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 2 metadata/md5sums.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>21691a7fd0612f88485325cc79ea24d8  raw/ERR8025410_1.fastq.gz
+0f8c3c594a6613a6548f995e337f6ab6  raw/ERR8025410_2.fastq.gz</code></pre>
+<p><code>&lt;( )</code> hands a command’s output to another command as if it were a file, so <code>paste</code> can join two pipelines column by column. <code>xargs -n 1 basename</code> runs <code>basename</code> on each line, and <code>sed</code> swaps the tab for two spaces and the folder name. Now check:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">md5sum</span> <span class="at">-c</span> metadata/md5sums.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>raw/ERR8025410_1.fastq.gz: OK
+raw/ERR8025410_2.fastq.gz: OK
+raw/ERR8025420_1.fastq.gz: OK
+raw/ERR8025420_2.fastq.gz: OK
+raw/ERR8025690_1.fastq.gz: OK
+raw/ERR8025690_2.fastq.gz: OK
+raw/ERR8025744_1.fastq.gz: OK
+raw/ERR8025744_2.fastq.gz: OK</code></pre>
+<p>Every file matches. This is what a file cut short looks like, here a copy stopped after the first 50 MB:</p>
+<pre class="text"><code>raw/ERR8025410_1.fastq.gz: FAILED
+md5sum: WARNING: 1 computed checksum did NOT match</code></pre>
+<p>Delete it and download it again. (<code>gzip -t file.fastq.gz</code> tests a compressed file even without a checksum list, and reports <code>unexpected end of file</code> for this one, but a checksum also catches damage that leaves the file readable.)</p>
+</section>
+<section id="record-what-you-downloaded" class="level2">
+<h2 class="anchored" data-anchor-id="record-what-you-downloaded">6. Record what you downloaded</h2>
+<p>Months later, you or a reviewer will ask exactly which data went into an analysis. Keep the answer in the project folder:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span> <span class="at">-Iseconds</span> <span class="op">&gt;</span> metadata/downloaded_on.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>With the run table, the chosen runs and the checksums already in <code>metadata/</code>, the folder now records where every file came from, which runs were chosen and how, and that they arrived intact:</p>
+<pre class="text"><code>project/
+├── metadata/
+│   ├── PRJEB43283_runs.tsv   every run in the study, as ENA listed it
+│   ├── chosen_runs.tsv       the four runs used
+│   ├── md5sums.txt           checksums for the downloaded files
+│   └── downloaded_on.txt     when
+├── raw/                      the eight FASTQ files, never edited
+└── reference/
+    └── H37Rv.fasta</code></pre>
+<p>Treat <code>raw/</code> as read-only from now on: every later step writes new files elsewhere. <code>chmod a-w raw/*</code> removes write permission, so an accidental <code>&gt;</code> or <code>rm</code> fails instead of destroying the data.</p>
+</section>
+<section id="going-further" class="level2">
+<h2 class="anchored" data-anchor-id="going-further">Going further</h2>
+<ul>
+<li><strong>More PubMed fields:</strong> <code>efetch -format abstract</code> prints readable abstracts; <code>xtract</code> can pull authors, journals and dates from <code>-format xml</code> for a literature table.</li>
+<li><strong>Many projects at once:</strong> the run-table <code>curl</code> command works for any project accession, so a loop over a list of projects builds one combined table.</li>
+<li><strong>NCBI limits:</strong> NCBI restricts how many requests a computer can send per second. A free API key from your NCBI account raises the limit; EDirect uses it automatically when it’s saved as <code>export NCBI_API_KEY=your_key</code>.</li>
+<li><strong>SRA Toolkit:</strong> NCBI’s <code>prefetch</code> and <code>fasterq-dump</code> download runs from SRA in its own format and convert them to FASTQ. Downloading FASTQ from ENA, as here, avoids the conversion step.</li>
+</ul>
+<div class="series-pager">
+<p><a href="../../../tutorials/command-line/command-line-for-biologists/index.html">← Part 1: The command line for biologists</a></p>
+<p>Next: Part 3, Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes <em>(coming soon)</em></p>
+</div>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-cole1998" class="csl-entry" role="listitem">
+<span class="nocase">Cole, S.T., Brosch, R., Parkhill, J., Garnier, T., Churcher, C., Harris, D., Gordon, S.V., Eiglmeier, K., Gas, S., Barry, C.E. and others</span>, 1998. Deciphering the biology of <em>mycobacterium tuberculosis</em> from the complete genome sequence. <em>Nature</em>, 393(6685), pp.537–544. https://doi.org/<a href="https://doi.org/10.1038/31159">10.1038/31159</a>.
+</div>
+<div id="ref-kans2013" class="csl-entry" role="listitem">
+Kans, J., 2013. Entrez direct: <span>E</span>-utilities on the <span>UNIX</span> command line. In: <em>Entrez programming utilities help</em>. [online] Bethesda, MD: National Center for Biotechnology Information (US). Available at: &lt;<a href="https://www.ncbi.nlm.nih.gov/books/NBK179288/">https://www.ncbi.nlm.nih.gov/books/NBK179288/</a>&gt;.
+</div>
+<div id="ref-oostvogels2022" class="csl-entry" role="listitem">
+Oostvogels, S., Ley, S.D., Heupink, T.H., Dippenaar, A., Streicher, E.M., De Vos, E., Meehan, C.J., Dheda, K., Warren, R. and Van Rie, A., 2022. Transmission, distribution and drug resistance-conferring mutations of extensively drug-resistant tuberculosis in the <span>Western Cape Province, South Africa</span>. <em>Microbial Genomics</em>, 8(4), p.000815. https://doi.org/<a href="https://doi.org/10.1099/mgen.0.000815">10.1099/mgen.0.000815</a>.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/devonallies\.co\.za\/");
+      const newWindowLabel = "(opens in a new tab)";
+      const newWindowNoteId = "quarto-ext-newwindow-label";
+      // Links reference one hidden label through aria-describedby, so the
+      // announcement never changes their accessible name.
+      var describeNewWindow = (link) => {
+        if (!window.document.getElementById(newWindowNoteId)) {
+          var newWindowNote = window.document.createElement("span");
+          newWindowNote.id = newWindowNoteId;
+          newWindowNote.hidden = true;
+          newWindowNote.textContent = newWindowLabel;
+          window.document.body.appendChild(newWindowNote);
+        }
+        var describedBy = (link.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+        if (!describedBy.includes(newWindowNoteId)) {
+          describedBy.push(newWindowNoteId);
+          link.setAttribute("aria-describedby", describedBy.join(" "));
+        }
+      }
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            describeNewWindow(link);
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

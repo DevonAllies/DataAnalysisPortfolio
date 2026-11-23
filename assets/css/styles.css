@@ -497,3 +497,8 @@ h3.resource-title, h4.resource-title {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* Tutorials page: one column of tutorial cards per track */
+.tutorial-cards { margin: 1rem 0 1.5rem; }
+.tutorial-card .pub-title a { text-decoration: none; }
+.tutorial-card .pub-title a:hover { text-decoration: underline; }

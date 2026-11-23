@@ -1,0 +1,6 @@
+# Shared settings for the "Bioinformatics on the command line" tutorials
+# (on top of tutorials/_metadata.yml).
+# Links to other websites open in a new tab, so readers keep the tutorial open.
+link-external-newwindow: true
+# Link-preview image for every part (shared on LinkedIn, WhatsApp, etc.)
+image: ../images/command-line-series.jpg

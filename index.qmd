@@ -40,11 +40,15 @@ n_cites    <- sum(vapply(pubs$publications, \(p) if (is.null(p$cited_by)) 0 else
 n_projects <- length(Sys.glob(here::here("projects", "*", "index.qmd")))
 cites_label <- if (n_cites >= 10) paste0(floor(n_cites / 10) * 10, "+") else as.character(n_cites)
 
-# Newest tutorial (highest `order`)
-tut_files <- list.files(here::here("tutorials"), pattern = "\\.qmd$", recursive = TRUE, full.names = TRUE)
+# Newest tutorial from either track (by date; future-dated drafts left out)
+tut_files <- c(Sys.glob(here::here("tutorials", "0*", "*.qmd")),
+               Sys.glob(here::here("tutorials", "command-line", "*", "index.qmd")))
 tuts <- lapply(tut_files, \(f) c(rmarkdown::yaml_front_matter(f), path = f))
-latest_tut <- tuts[[which.max(vapply(tuts, \(t) as.numeric(t$order), numeric(1)))]]
+tuts <- Filter(\(t) as.Date(t$date) <= Sys.Date(), tuts)
+latest_tut <- tuts[[which.max(vapply(tuts, \(t) as.numeric(as.Date(t$date)), numeric(1)))]]
 latest_tut$href <- sub(paste0("^", here::here(), "/"), "", latest_tut$path)
+latest_tut$meta <- if (!is.null(latest_tut$order)) sprintf("Data science · Tutorial %s", latest_tut$order) else
+  sprintf("Bioinformatics on the command line · Part %s", latest_tut[["series-part"]])
 
 # Newest article, from this site's writing/ folder or from Medium
 site_articles <- lapply(Sys.glob(here::here("writing", "*", "index.qmd")), \(f) {
@@ -118,7 +122,7 @@ card <- function(kind, icon, title, href, meta, text) {
 }
 cat("::: {.grid .latest-grid}\n\n")
 card("Tutorial", "bi-mortarboard", latest_tut$title, latest_tut$href,
-     sprintf("Tutorial %s", latest_tut$order), shorten(latest_tut$description))
+     latest_tut$meta, shorten(latest_tut$description))
 card("Article", "bi-pencil-square", latest_article$title, latest_article$url,
      sprintf("%s · %s", latest_article$where, format(as.Date(latest_article$date), "%d %B %Y")),
      shorten(latest_article$excerpt))

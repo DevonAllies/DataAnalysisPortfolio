@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Devon Allies">
+<meta name="dcterms.date" content="2026-11-21">
+<meta name="description" content="A practical introduction to the Linux command line for biologists and lab scientists: navigating folders, copying and moving files, installing software and environments with apt and micromamba, and exploring a CSV file with head, cut, sort, uniq, grep and awk. Works on Ubuntu, macOS and Windows through WSL.">
+
+<title>The command line for biologists – Devon Allies</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-2d94387f3a51e8747af025d7859c5d10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-01ef6c89f23038e5ddcac1cb845945cd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-2d94387f3a51e8747af025d7859c5d10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="../../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../../../assets/css/styles.css">
+<meta property="og:title" content="The command line for biologists – Devon Allies">
+<meta property="og:description" content="A practical introduction to the Linux command line for biologists and lab scientists: navigating folders, copying and moving files, installing software and environments with apt and micromamba, and exploring a CSV file with head, cut, sort, uniq, grep and awk. Works on Ubuntu, macOS and Windows through WSL.">
+<meta property="og:image" content="https://devonallies.co.za/tutorials/images/command-line-series.jpg">
+<meta property="og:site_name" content="Devon Allies">
+<meta property="og:image:height" content="768">
+<meta property="og:image:width" content="1376">
+</head>
+
+<body class="floating nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      refreshSafariScrollbar();
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Devon Allies</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../tutorials.html"> 
+<span class="menu-text">Tutorials</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../publications.html"> 
+<span class="menu-text">Publications &amp; Writing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../resources.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../contact.html"> 
+<span class="menu-text">Contact</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
+</div>
+            <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Section">
+    <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#open-a-terminal" id="toc-open-a-terminal" class="nav-link active" data-scroll-target="#open-a-terminal">1. Open a terminal</a></li>
+  <li><a href="#move-around" id="toc-move-around" class="nav-link" data-scroll-target="#move-around">2. Move around</a></li>
+  <li><a href="#create-copy-move-and-delete" id="toc-create-copy-move-and-delete" class="nav-link" data-scroll-target="#create-copy-move-and-delete">3. Create, copy, move and delete</a></li>
+  <li><a href="#install-software-and-set-up-environments" id="toc-install-software-and-set-up-environments" class="nav-link" data-scroll-target="#install-software-and-set-up-environments">4. Install software and set up environments</a></li>
+  <li><a href="#look-at-a-data-file-without-opening-it" id="toc-look-at-a-data-file-without-opening-it" class="nav-link" data-scroll-target="#look-at-a-data-file-without-opening-it">5. Look at a data file without opening it</a></li>
+  <li><a href="#save-what-you-find" id="toc-save-what-you-find" class="nav-link" data-scroll-target="#save-what-you-find">6. Save what you find</a></li>
+  <li><a href="#quick-reference" id="toc-quick-reference" class="nav-link" data-scroll-target="#quick-reference">Quick reference</a></li>
+  <li><a href="#where-next" id="toc-where-next" class="nav-link" data-scroll-target="#where-next">Where next</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The command line for biologists</h1>
+<p class="subtitle lead">Moving around, managing files, installing software and looking at data, with the commands I use every day on Ubuntu</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Command line</div>
+    <div class="quarto-category">Linux</div>
+    <div class="quarto-category">Bioinformatics</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    A practical introduction to the Linux command line for biologists and lab scientists: navigating folders, copying and moving files, installing software and environments with apt and micromamba, and exploring a CSV file with head, cut, sort, uniq, grep and awk. Works on Ubuntu, macOS and Windows through WSL.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Devon Allies </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 21, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout-note series-nav" data-appearance="simple" data-collapse="true" title="Part 1 of the series: Bioinformatics on the command line">
+<ul>
+<li>Part 1: <strong>The command line for biologists</strong> (this article)</li>
+<li>Part 2: <a href="../../../tutorials/command-line/finding-and-downloading-public-data/index.html">Finding and downloading public sequencing data</a></li>
+<li>Part 3: Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes <em>(coming soon)</em></li>
+<li>Part 4: Checking and cleaning sequencing reads: FastQC, MultiQC and fastp <em>(coming soon)</em></li>
+<li>Part 5: Aligning every FASTQ file in a folder with a loop <em>(coming soon)</em></li>
+</ul>
+</div>
+<p>Most of my day happens in a terminal. Bioinformatics tools such as <a href="https://gatk.broadinstitute.org/hc/en-us">GATK</a> and <a href="https://www.nextflow.io/docs/latest/">Nextflow</a> have no buttons to click: you run them by typing commands. The same is true on a remote server or computing cluster, where the terminal is often the only way in. And even at my own desk, a few short commands answer “what’s in this file?” faster than opening it.</p>
+<p>The command line looks unfriendly at first, but you need surprisingly little of it to be useful. This article covers the commands I use every day on Ubuntu, in the order you’d need them:</p>
+<ol type="1">
+<li>Opening a terminal (including on Windows)</li>
+<li>Moving around folders</li>
+<li>Creating, copying, moving and deleting files</li>
+<li>Installing software and setting up project environments</li>
+<li>Looking at a data file without opening it</li>
+<li>Saving what you find</li>
+</ol>
+<p>The last two sections use the simulated BAL dataset from my <a href="../../../tutorials.html">tutorial series</a>, so you can follow along and check your output against mine.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>How to read the commands
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Each grey box is something you type at the prompt, then press <strong>Enter</strong>. Where a box is followed by a second box, the second one is what the command prints. Lines starting with <code>#</code> are comments: the shell ignores them, so you don’t need to type them.</p>
+</div>
+</div>
+<section id="open-a-terminal" class="level2">
+<h2 class="anchored" data-anchor-id="open-a-terminal">1. Open a terminal</h2>
+<p>The commands here are for <strong>Bash</strong>, the shell (command interpreter) on Ubuntu and most Linux systems.</p>
+<ul>
+<li><strong>Ubuntu and other Linux:</strong> press <strong>Ctrl + Alt + T</strong>, or search for “Terminal”.</li>
+<li><strong>macOS:</strong> open <strong>Terminal</strong> from Applications → Utilities. Its default shell is zsh rather than Bash, but every command in this article works the same in both.</li>
+<li><strong>Windows:</strong> install the <strong>Windows Subsystem for Linux (WSL)</strong>, which runs a real Linux system inside Windows. Open PowerShell as administrator (right-click → <em>Run as administrator</em>), run the command below, then restart <span class="citation" data-cites="microsoft2025wsl">(<a href="#ref-microsoft2025wsl" role="doc-biblioref">Microsoft, 2025</a>)</span>:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>wsl <span class="op">--</span>install</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>It installs Ubuntu by default. Afterwards, open <strong>Ubuntu</strong> from the Start menu and you have the same terminal I use, so everything below applies as written. Your Windows drives are inside it too: <code>C:\Users\you\Documents</code> is <code>/mnt/c/Users/you/Documents</code>.</p>
+<p>When the terminal opens you’ll see a <strong>prompt</strong> like <code>devon@laptop:~$</code>: your user name, the computer’s name, the folder you’re in (<code>~</code> means your home folder), and a <code>$</code> waiting for a command.</p>
+</section>
+<section id="move-around" class="level2">
+<h2 class="anchored" data-anchor-id="move-around">2. Move around</h2>
+<p>Your files live in a tree of folders (also called <em>directories</em>). The terminal is always “in” one of them, the <strong>working directory</strong>, and commands act on files there unless you say otherwise.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span>                 <span class="co"># print working directory: where am I?</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span>                  <span class="co"># list what's here</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span>              <span class="co"># long list: sizes (human-readable), dates, permissions</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-a</span>               <span class="co"># include hidden files (names starting with .)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To move, use <code>cd</code> (change directory):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> Documents        <span class="co"># into a folder inside the current one</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> Documents/bal    <span class="co"># several levels at once</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..               <span class="co"># up one level, to the parent folder</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~                <span class="co"># home folder (plain `cd` does the same)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="at">-</span>                <span class="co"># back to wherever you were before</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /mnt/c/Users     <span class="co"># an absolute path: starts from the root, /</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A path that starts with <code>/</code> is <strong>absolute</strong>: it means the same place wherever you are. Any other path is <strong>relative</strong> to the working directory. <code>.</code> means “here” and <code>..</code> means “the folder above”.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Let the shell type for you
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Press <strong>Tab</strong> while typing a file or folder name and the shell completes it; press it twice to see every match. It saves typing and catches typos, because it only completes names that exist. <strong>Up arrow</strong> brings back previous commands, and <strong>Ctrl + C</strong> stops a command that’s running (or abandons the line you’re typing).</p>
+</div>
+</div>
+</section>
+<section id="create-copy-move-and-delete" class="level2">
+<h2 class="anchored" data-anchor-id="create-copy-move-and-delete">3. Create, copy, move and delete</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> bal-analysis              <span class="co"># make a folder</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> bal-analysis/data/raw  <span class="co"># make a whole path, parents included</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> notes.txt                 <span class="co"># make an empty file (or update its date)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Copy</strong> with <code>cp</code>, giving the source first and the destination second:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> bal_baseline.csv backup.csv          <span class="co"># copy to a new name</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> bal_baseline.csv bal-analysis/data/  <span class="co"># copy into a folder, same name</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> bal-analysis bal-analysis-copy    <span class="co"># copy a folder and everything in it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Move or rename</strong> with <code>mv</code>. It’s the same command for both, because renaming is moving a file to a new name:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> notes.txt bal-analysis/             <span class="co"># move into a folder</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> backup.csv bal_baseline_backup.csv  <span class="co"># rename</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Delete</strong> with <code>rm</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> bal_baseline_backup.csv   <span class="co"># delete a file</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rmdir</span> empty-folder           <span class="co"># delete a folder, only if it's empty</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> bal-analysis-copy      <span class="co"># delete a folder and everything in it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>There is no recycle bin
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>rm</code> deletes immediately and permanently, and <code>cp</code> and <code>mv</code> silently overwrite a file that already has the destination name. Until it’s habit:</p>
+<ul>
+<li>add <code>-i</code> (<code>rm -i</code>, <code>cp -i</code>, <code>mv -i</code>) to be asked before anything is deleted or overwritten;</li>
+<li>run <code>ls</code> with the same name first (<code>ls bal-analysis-copy</code>) to see exactly what the command will touch;</li>
+<li>be most careful with <code>rm -r</code> and with <code>*</code>, which matches every name in a folder.</li>
+</ul>
+<p>Names with spaces need quotes (<code>cd "My Documents"</code>), which is one reason to name files with hyphens or underscores instead.</p>
+</div>
+</div>
+<p>To read a whole text file, <code>cat file.txt</code> prints it, and <code>less file.txt</code> opens it one screen at a time (arrow keys or <strong>Space</strong> to scroll, <code>/</code> to search, <code>q</code> to quit). <code>man ls</code> opens the manual for any command, and most commands also accept <code>--help</code>.</p>
+</section>
+<section id="install-software-and-set-up-environments" class="level2">
+<h2 class="anchored" data-anchor-id="install-software-and-set-up-environments">4. Install software and set up environments</h2>
+<section id="system-software-apt" class="level3">
+<h3 class="anchored" data-anchor-id="system-software-apt">System software: apt</h3>
+<p>On Ubuntu, most general software comes from the system’s package manager, <strong>apt</strong>. Installing for the whole system needs administrator rights, which is what <code>sudo</code> (“superuser do”) gives a single command; it asks for your password.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update                  <span class="co"># refresh the list of available packages</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt upgrade                 <span class="co"># install updates for everything installed</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install git curl tree   <span class="co"># install packages by name</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="project-environments" class="level3">
+<h3 class="anchored" data-anchor-id="project-environments">Project environments</h3>
+<p>An <strong>environment</strong> is a separate set of packages for one project, kept apart from the rest of the computer, with a file that lists exactly which versions it holds. Setting one up takes a few minutes and saves a lot of trouble later:</p>
+<ul>
+<li><strong>Projects don’t break each other.</strong> Different tools need different versions of the same packages. Install everything in one place and adding a tool for a new project can quietly upgrade, downgrade or remove something an older project relies on. Sometimes the installer avoids a clash without telling you: when I added SRA Toolkit to my existing bioinformatics environment, it installed cleanly, but as a version from 2019, the newest that fitted alongside everything else. Asking for the current version would have downgraded Perl and removed another tool I use (regenie). A separate environment can hold the current version without touching anything.</li>
+<li><strong>Your results can be reproduced.</strong> The environment’s file records the version of every package, so you, a colleague or a reviewer can rebuild the same set-up next year and get the same answer. A package update that changes a default can otherwise change your results without any error.</li>
+<li><strong>Sharing a project is simple.</strong> Send the code with the environment file, and one command installs everything it needs on another computer.</li>
+<li><strong>The system stays safe.</strong> Environments live in your own folders and need no <code>sudo</code>, so they can’t break the software Ubuntu itself depends on, and you can delete one and rebuild it if something goes wrong.</li>
+</ul>
+<p><strong>Bioinformatics tools with micromamba.</strong> Many command-line bioinformatics tools (samtools, bwa, FastQC and thousands more) are packaged by <strong>Bioconda</strong> <span class="citation" data-cites="gruning2018">(<a href="#ref-gruning2018" role="doc-biblioref">Grüning et al., 2018</a>)</span>, which installs through the <strong>conda</strong> family of package managers. I use <a href="https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html">micromamba</a>: a single small program that does the same job as conda, solves installs quickly, and needs no base Python installation. Install it with the command from its documentation, and accept the suggested settings when it asks:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="st">"</span><span class="va">${SHELL}</span><span class="st">"</span> <span class="op">&lt;(</span><span class="ex">curl</span> <span class="at">-L</span> micro.mamba.pm<span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Close and reopen the terminal, then tell it where to find packages. This one-time set-up uses the free conda-forge channel first and Bioconda second, as Bioconda recommends:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> config append channels conda-forge</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> config append channels bioconda</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> config set channel_priority strict</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then create an environment for a project:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> create <span class="at">-n</span> qc fastqc samtools   <span class="co"># a new environment called qc, with two tools</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> activate qc                    <span class="co"># use it (the prompt shows (qc))</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> deactivate                     <span class="co"># leave it</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To share an environment, or rebuild it later, export its list of packages to a file and create a new environment from that file:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> env export <span class="at">-n</span> qc <span class="op">&gt;</span> qc.yml      <span class="co"># write the environment's packages and versions to qc.yml</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> create <span class="at">-n</span> qc2 <span class="at">-f</span> qc.yml        <span class="co"># build an identical environment from the file</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Run a tool from another environment without switching.</strong> When you’re working in one environment and need a single tool from another, <code>micromamba run</code> runs one command inside the other environment and leaves your current one active. There’s no need to deactivate, activate the other, run the tool, deactivate again and reactivate the first:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> run <span class="at">-n</span> qc fastqc reads_1.fastq.gz   <span class="co"># run FastQC from the qc environment</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> run <span class="at">-n</span> qc samtools <span class="at">--version</span>        <span class="co"># check a tool's version there</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>It’s also handy in scripts, which can call tools from several environments in turn.</p>
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span><code>micromamba run</code> covers one command, not a whole pipe
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>micromamba run</code> applies to the command straight after it; everything after a <code>|</code> runs in your normal shell. So in this pipe, the second <code>samtools</code> isn’t found, because it’s only installed in the <code>qc</code> environment:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> run <span class="at">-n</span> qc samtools view <span class="at">-h</span> sample.bam <span class="kw">|</span> <span class="ex">samtools</span> view <span class="at">-c</span> <span class="at">-</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>Command 'samtools' not found, but can be installed with:
+…</code></pre>
+<p>Ubuntu suggests installing it with <code>apt</code>, but you don’t need to: it’s already in the environment, just not in the shell running that part of the pipe. For a pipe of tools from one environment, activate the environment first, or run the whole line inside it with <code>bash -c</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> run <span class="at">-n</span> qc bash <span class="at">-c</span> <span class="st">'samtools view -h sample.bam | samtools view -c -'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>conda, mamba or micromamba?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>All three install the same packages from the same channels, and their commands match: swap <code>micromamba</code> for <code>conda</code> or <code>mamba</code> in every command here (<code>conda create</code>, <code>conda activate</code>, <code>conda run</code> and so on). If you already have one of them, keep it. Many people also add <code>alias mamba=micromamba</code> to their <code>~/.bashrc</code> so that instructions written for mamba work as they are.</p>
+</div>
+</div>
+<p>Keep one environment per project or pipeline rather than installing everything into one. Before adding a package to an existing environment, <code>micromamba install --dry-run</code> lists what it would change, including the version it would install. If it would downgrade or remove anything, or picks an old version of the tool you asked for, make a new environment instead.</p>
+<p>Pipelines build on the same idea: my <a href="../../../projects/wgs-variant-calling-pipeline/index.html">variant-calling pipeline</a> runs its tools from an environment with a single <code>nextflow run</code> command.</p>
+</section>
+</section>
+<section id="look-at-a-data-file-without-opening-it" class="level2">
+<h2 class="anchored" data-anchor-id="look-at-a-data-file-without-opening-it">5. Look at a data file without opening it</h2>
+<p>Now some real work. Download the messy baseline table from the tutorials into a folder, and <code>cd</code> into it. You can download it from the terminal too:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-O</span> https://devonallies.co.za/tutorials/data/bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>curl -O</code> saves a web address to a file of the same name. Every command from here on runs in the folder holding <code>bal_baseline.csv</code>, and the output is what the file gives.</p>
+<div class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Simulated data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>bal_baseline.csv</code> is <strong>simulated</strong>: 500 fictional participants with TB diagnosis, HIV status and BAL cell counts. No row describes a real person. <a href="../../../tutorials/01-import-data-in-r/import-data-in-r.html">Tutorial 1</a> reads the same file into R.</p>
+</div>
+</div>
+<section id="how-big-is-it-and-whats-in-it" class="level3">
+<h3 class="anchored" data-anchor-id="how-big-is-it-and-whats-in-it">How big is it, and what’s in it?</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>503 bal_baseline.csv</code></pre>
+</div>
+</div>
+<p><code>wc -l</code> counts lines: 503, so one header row and 502 data rows. That’s two more rows than the 500 participants, which is worth remembering. <code>head</code> shows the start of the file:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 3 bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>pt_id,sex,tb_diagnosis,hiv_status,age_at_visit,bronc_date,dr_name,vol_pbs_in_ml,vol_pbs_out_ml,lobe,lab_tech,pellet_colour,live_cells,dead_cells,total_cells,time_to_process_min,diff_method
+SP34696,Female,LTBI,Negative,53,2018-07-01,Dr. Van Der Merwe,100,45.7,Left Lower,thandi,Bloody,5432000,1169209,6601209,183,Manual
+SP22845,Female,Control,Positive,30,2020-04-16,Dr. Naidoo,120,75.8,Left Upper,lize,Cream,3290000,1078335,4370000,124,Automated</code></pre>
+</div>
+</div>
+<p>Wide files are hard to read like that. <code>head -n 1</code> takes just the header row, <code>tr</code> (translate) swaps each comma for a new line, and <code>nl</code> numbers the lines, giving a numbered list of the columns:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 1 bal_baseline.csv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">','</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="fu">nl</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     1  pt_id
+     2  sex
+     3  tb_diagnosis
+     4  hiv_status
+     5  age_at_visit
+     6  bronc_date
+     7  dr_name
+     8  vol_pbs_in_ml
+     9  vol_pbs_out_ml
+    10  lobe
+    11  lab_tech
+    12  pellet_colour
+    13  live_cells
+    14  dead_cells
+    15  total_cells
+    16  time_to_process_min
+    17  diff_method</code></pre>
+</div>
+</div>
+<p>The <code>|</code> is a <strong>pipe</strong>: it sends one command’s output into the next command as its input. Pipes are what make the command line powerful. Each command does one small job, and you chain them to build exactly the question you want to ask.</p>
+</section>
+<section id="count-the-values-in-a-column" class="level3">
+<h3 class="anchored" data-anchor-id="count-the-values-in-a-column">Count the values in a column</h3>
+<p><code>cut</code> picks out columns: <code>-d ,</code> says the columns are separated by commas, and <code>-f 3</code> asks for the third. Then <code>sort</code> puts identical values next to each other, <code>uniq -c</code> counts each run of identical lines, and <code>sort -rn</code> puts the largest count first:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> , <span class="at">-f</span> 3 bal_baseline.csv <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-rn</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    166 Active TB
+    153 LTBI
+    109 Control
+     74 Indeterminate
+      1 tb_diagnosis</code></pre>
+</div>
+</div>
+<p>The header, <code>tb_diagnosis</code>, is counted as a value too. <code>tail -n +2</code> (everything from line 2 onwards) skips it. Two columns at once count the combinations, here TB diagnosis by HIV status:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 bal_baseline.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> , <span class="at">-f</span> 3,4 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    100 Active TB,Negative
+     66 Active TB,Positive
+     72 Control,Negative
+     37 Control,Positive
+     44 Indeterminate,Negative
+     30 Indeterminate,Positive
+     83 LTBI,Negative
+     70 LTBI,Positive</code></pre>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span><code>cut</code> doesn’t understand quotes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A CSV file can contain commas inside quoted values (<code>"Smith, J"</code>), and <code>cut</code> would split them in the wrong place. This file has no quotes (<code>grep -c '"' bal_baseline.csv</code> prints 0), so <code>cut</code> is safe here. For files that do, use R, Python or a CSV-aware tool such as the ones in <span class="citation" data-cites="janssens2021">Janssens (<a href="#ref-janssens2021" role="doc-biblioref">2021</a>)</span>.</p>
+</div>
+</div>
+</section>
+<section id="find-duplicate-ids" class="level3">
+<h3 class="anchored" data-anchor-id="find-duplicate-ids">Find duplicate IDs</h3>
+<p>Those two extra rows: <code>uniq -d</code> prints only the lines that appear more than once (again after <code>sort</code>, because <code>uniq</code> only compares neighbouring lines):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 bal_baseline.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> , <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-d</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SP09573
+SP22251</code></pre>
+</div>
+</div>
+<p><code>grep</code> prints every line containing a pattern; <code>-E</code> allows <code>|</code> to mean “or”:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-E</span> <span class="st">"SP09573|SP22251"</span> bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SP09573,Female,Active TB,Negative,49,2020-10-15,Dr. Jacobs,100,66.6,Right Lower,yolanda,Bloody,3950000,668697,4620000,111,Automated
+SP09573,Female,Active TB,Negative,49,2020-10-15,Dr. Jacobs,100,66.6,Right Lower,yolanda,Bloody,3950000,668697,4620000,111,Automated
+SP22251,Male,Active TB,Negative,55,2019-06-17,Prof. Malan,80,36.2,Right Upper,fatima,Cream,4730000,1070000,5810000,38,Both
+SP22251,Male,Active TB,Negative,55,2019-06-17,Prof. Malan,80,36.2,Right Upper,fatima,Cream,4730000,1070000,5810000,38,Both</code></pre>
+</div>
+</div>
+<p>Each participant was entered twice, with identical rows. These are the same two duplicates <a href="../../../tutorials/01-import-data-in-r/import-data-in-r.html">Tutorial 1</a> finds in R, found here without starting R at all. <code>grep -c</code> counts matching lines instead of printing them:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">"Active TB"</span> bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>166</code></pre>
+</div>
+</div>
+<p><code>grep</code> searches the whole line, not one column, so a pattern can match somewhere you didn’t intend. “Active TB” only appears in the diagnosis column, but a search for a name or a number might not be so tidy. Check with <code>cut</code> first when it matters.</p>
+</section>
+<section id="filter-rows-on-a-number" class="level3">
+<h3 class="anchored" data-anchor-id="filter-rows-on-a-number">Filter rows on a number</h3>
+<p><code>awk</code> can test a column’s value. <code>-F ,</code> sets the separator, <code>$16</code> is the 16th column (<code>time_to_process_min</code>, from the numbered list above), and <code>NR &gt; 1</code> skips the header. The command prints the ID and processing time of every row where the time is below zero:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F</span> , <span class="st">'NR &gt; 1 &amp;&amp; $16 &lt; 0 {print $1, $16}'</span> bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SP24965 -1
+SP30729 -1
+SP38602 -1</code></pre>
+</div>
+</div>
+<p>A sample can’t take −1 minutes to process, so these three are recording errors to query. <a href="../../../tutorials/03-clean-data-in-r/clean-data-in-r.html">Tutorial 3</a> deals with impossible measurements like this one when it cleans the data. The same pattern finds the slowest samples, sorting numerically (<code>-n</code>) on column 16:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 bal_baseline.csv <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-t</span> , <span class="at">-k</span> 16,16 <span class="at">-n</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 3 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> , <span class="at">-f</span> 1,16</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SP29084,218
+SP08512,248
+SP24791,259</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="save-what-you-find" class="level2">
+<h2 class="anchored" data-anchor-id="save-what-you-find">6. Save what you find</h2>
+<p><code>&gt;</code> sends a command’s output into a file instead of the screen, and <code>&gt;&gt;</code> adds to the end of a file. Together they can build a smaller CSV with only the active TB participants: the header first, then the matching rows.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 1 bal_baseline.csv <span class="op">&gt;</span> active_tb.csv</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">",Active TB,"</span> bal_baseline.csv <span class="op">&gt;&gt;</span> active_tb.csv</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> active_tb.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>167 active_tb.csv</code></pre>
+</div>
+</div>
+<p><code>&gt;</code> replaces the file if it already exists, without asking, so use <code>&gt;&gt;</code> when you mean to add. Searching for <code>,Active TB,</code> with the commas, rather than plain <code>Active TB</code>, matches the value only when it fills a whole column.</p>
+<p>Never write over your raw data: save results to a new file, as here, and keep the original untouched.</p>
+</section>
+<section id="quick-reference" class="level2">
+<h2 class="anchored" data-anchor-id="quick-reference">Quick reference</h2>
+<div class="cell">
+<div id="tbl-reference" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-reference-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: The commands in this article
+</figcaption>
+<div aria-describedby="tbl-reference-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed cell caption-top table-sm small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Task</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Where am I? / What's here?</td>
+<td style="text-align: left;"><code>pwd</code> / <code>ls -lh</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Change folder / go up / go home</td>
+<td style="text-align: left;"><code>cd folder</code> / <code>cd ..</code> / <code>cd</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Make a folder</td>
+<td style="text-align: left;"><code>mkdir -p path/to/folder</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Copy / copy a folder</td>
+<td style="text-align: left;"><code>cp from to</code> / <code>cp -r from to</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Move or rename</td>
+<td style="text-align: left;"><code>mv from to</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Delete / delete a folder</td>
+<td style="text-align: left;"><code>rm file</code> / <code>rm -r folder</code> (permanent)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Read a file</td>
+<td style="text-align: left;"><code>less file</code> (<code>q</code> to quit)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Install system software</td>
+<td style="text-align: left;"><code>sudo apt install name</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bioinformatics tools</td>
+<td style="text-align: left;"><code>micromamba create -n env tool</code>, <code>micromamba activate env</code>, <code>micromamba run -n env tool</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Count lines</td>
+<td style="text-align: left;"><code>wc -l file</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">First or last lines</td>
+<td style="text-align: left;"><code>head -n 5 file</code> / <code>tail -n 5 file</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">One column</td>
+<td style="text-align: left;"><code>cut -d , -f 3 file</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Count values</td>
+<td style="text-align: left;"><code>… | sort | uniq -c | sort -rn</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Duplicates</td>
+<td style="text-align: left;"><code>… | sort | uniq -d</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Find lines</td>
+<td style="text-align: left;"><code>grep "text" file</code> / <code>grep -c</code> to count</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Filter on a number</td>
+<td style="text-align: left;"><code>awk -F , '$16 &lt; 0' file</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Save output / add to a file</td>
+<td style="text-align: left;"><code>&gt; file</code> / <code>&gt;&gt; file</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Help</td>
+<td style="text-align: left;"><code>man command</code> or <code>command --help</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</section>
+<section id="where-next" class="level2">
+<h2 class="anchored" data-anchor-id="where-next">Where next</h2>
+<p>The <a href="../../../resources.html#command-line-and-linux">Resources</a> page lists free books and courses for going further. Three I’d start with:</p>
+<ul>
+<li><strong><a href="https://swcarpentry.github.io/shell-novice/">The Unix Shell</a></strong> from Software Carpentry: a free, hands-on lesson that covers this ground step by step, with exercises.</li>
+<li><strong><a href="https://datacarpentry.github.io/shell-genomics/">Introduction to the Command Line for Genomics</a></strong> from Data Carpentry: the same skills applied to sequencing files.</li>
+<li><strong><a href="https://jeroenjanssens.com/dsatcl/">Data Science at the Command Line</a></strong> <span class="citation" data-cites="janssens2021">(<a href="#ref-janssens2021" role="doc-biblioref">Janssens, 2021</a>)</span>: a free book that takes these pipes much further, including tools that understand CSV and JSON properly.</li>
+</ul>
+<div class="series-pager">
+<p><a href="../../../tutorials/command-line/finding-and-downloading-public-data/index.html">Part 2: Finding and downloading public sequencing data →</a></p>
+</div>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-gruning2018" class="csl-entry" role="listitem">
+Grüning, B., Dale, R., Sjödin, A., Chapman, B.A., Rowe, J., Tomkins-Tinch, C.H., Valieris, R., Köster, J. and The Bioconda Team, 2018. Bioconda: Sustainable and comprehensive software distribution for the life sciences. <em>Nature Methods</em>, 15(7), pp.475–476. https://doi.org/<a href="https://doi.org/10.1038/s41592-018-0046-7">10.1038/s41592-018-0046-7</a>.
+</div>
+<div id="ref-janssens2021" class="csl-entry" role="listitem">
+Janssens, J., 2021. <em>Data science at the command line</em>. 2nd ed. [online] O’Reilly Media. Available at: &lt;<a href="https://jeroenjanssens.com/dsatcl/">https://jeroenjanssens.com/dsatcl/</a>&gt;.
+</div>
+<div id="ref-microsoft2025wsl" class="csl-entry" role="listitem">
+Microsoft, 2025. <em>How to install <span>Linux</span> on <span>Windows</span> with <span>WSL</span></em>. Available at: &lt;<a href="https://learn.microsoft.com/en-us/windows/wsl/install">https://learn.microsoft.com/en-us/windows/wsl/install</a>&gt;.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/devonallies\.co\.za\/");
+      const newWindowLabel = "(opens in a new tab)";
+      const newWindowNoteId = "quarto-ext-newwindow-label";
+      // Links reference one hidden label through aria-describedby, so the
+      // announcement never changes their accessible name.
+      var describeNewWindow = (link) => {
+        if (!window.document.getElementById(newWindowNoteId)) {
+          var newWindowNote = window.document.createElement("span");
+          newWindowNote.id = newWindowNoteId;
+          newWindowNote.hidden = true;
+          newWindowNote.textContent = newWindowLabel;
+          window.document.body.appendChild(newWindowNote);
+        }
+        var describedBy = (link.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+        if (!describedBy.includes(newWindowNoteId)) {
+          describedBy.push(newWindowNoteId);
+          link.setAttribute("aria-describedby", describedBy.join(" "));
+        }
+      }
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            describeNewWindow(link);
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

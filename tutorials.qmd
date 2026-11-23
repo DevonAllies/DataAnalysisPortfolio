@@ -1,22 +1,114 @@
 ---
 title: "Tutorials"
-subtitle: "A hands-on series on one simulated TB study, from importing data to machine learning, in R and Python"
-description: "Practical R and Python tutorials using a simulated TB study dataset, from importing and cleaning data in RStudio to working with the same data in pandas."
+subtitle: "Two hands-on tracks: bioinformatics on the command line, and data science in R and Python"
+description: "Practical tutorials in two tracks: bioinformatics on the command line with real public tuberculosis sequencing data (finding data, file formats, quality control, alignment), and data science in R and Python on a simulated TB study (importing, cleaning, statistics, machine learning)."
 body-classes: hide-description   # description is for search/link previews only
 image: tutorials/images/tutorial-series.jpg   # link-preview image
-toc: false
-listing:
-  id: tutorial-series
-  contents: tutorials
-  type: default
-  sort: "order"
-  fields: [title, subtitle, description, categories]
+engine: knitr
+toc: true
+toc-depth: 2
+toc-location: left
+include-after-body:
+  text: '<script src="assets/js/toc-groups.js"></script>'   # tutorial entries in "On this page"
+execute:
+  echo: false
+  warning: false
+  message: false
 ---
+
+```{r}
+#| label: tutorials
+# Both tracks are built from each tutorial's own front matter. Anything dated
+# in the future is a draft: it's listed under "Coming next" without a link.
+read_track <- function(files, number_field) {
+  items <- lapply(files, \(f) {
+    m <- rmarkdown::yaml_front_matter(f)
+    m$href <- sub(paste0("^", here::here(), "/"), "", f)
+    m$number <- as.numeric(m[[number_field]])
+    m
+  })
+  items[order(vapply(items, \(m) m$number, numeric(1)))]
+}
+published <- function(items) Filter(\(m) as.Date(m$date) <= Sys.Date(), items)
+drafts    <- function(items) Filter(\(m) as.Date(m$date) >  Sys.Date(), items)
+
+capitalise <- function(x) paste0(toupper(substring(x, 1, 1)), substring(x, 2))
+
+tutorial_cards <- function(items, label) {
+  if (length(items) == 0) return(invisible())
+  cat(sprintf('\n<details class="pub-group">\n<summary>Latest: %s</summary>\n\n', items[[length(items)]]$title))
+  cat("::: {.tutorial-cards}\n\n")
+  for (m in items) {
+    tags <- paste(sprintf("[%s]{.article-tag}", unlist(m$categories)), collapse = " ")
+    cat(
+      "::: {.pub-card .tutorial-card}\n",
+      sprintf("[%s %s]{.pub-year}\n\n", label, m$number),
+      sprintf("### [%s](%s) {.pub-title}\n\n", m$title, m$href),
+      sprintf("%s\n\n", capitalise(sub("^Tutorial [0-9]+: ", "", m$subtitle))),
+      sprintf("%s\n\n", tags),
+      ":::\n\n", sep = ""
+    )
+  }
+  cat(":::\n\n</details>\n\n")
+}
+upcoming <- function(numbers, texts) {
+  cat("::: {.series-upcoming}\n")
+  for (i in seq_along(numbers)) {
+    cat("::: {.upcoming-item}\n",
+        sprintf("[%s]{.upcoming-number}\n", numbers[i]),
+        sprintf("[%s]{.upcoming-text}\n", texts[i]),
+        ":::\n\n", sep = "")
+  }
+  cat(":::\n")
+}
+
+r_track  <- read_track(Sys.glob(here::here("tutorials", "0*", "*.qmd")), "order")
+cli_track <- read_track(Sys.glob(here::here("tutorials", "command-line", "*", "index.qmd")), "series-part")
+```
+
+There are two tracks, and you can start either one. Each is a series: work through its parts in order, because each builds on the last.
+
+## Bioinformatics on the command line
+
+![](tutorials/images/command-line-series.jpg){.series-banner fig-alt="Illustration of a DNA double helix turning into a network of connected points, with circular genome plots in the background"}
+
+::: {.series-about}
+#### <i class="bi bi-info-circle"></i> About this track
+
+**What you'll learn:** working in a Linux terminal, finding and downloading public sequencing data, the file formats of genomics, read quality control and alignment, step by step.
+
+**The data:** real, public whole-genome sequencing of *Mycobacterium tuberculosis* from a study in the Western Cape (European Nucleotide Archive project [PRJEB43283](https://www.ebi.ac.uk/ena/browser/view/PRJEB43283)), and the H37Rv reference genome. Part 2 shows how to find and download it.
+
+**You'll need:** a terminal (Ubuntu or another Linux, macOS, or Windows with WSL) and micromamba to install the tools. Part 1 covers both.
+:::
+
+```{r}
+#| label: cli-track
+#| output: asis
+tutorial_cards(published(cli_track), "Part")
+```
+
+### Coming next
+
+```{r}
+#| label: cli-upcoming
+#| output: asis
+coming <- drafts(cli_track)
+upcoming(
+  c(vapply(coming, \(m) m$number, numeric(1)), 6, 7),
+  c(vapply(coming, \(m) sprintf("**%s**", m$title), ""),
+    "**Variant calling**: finding where each genome differs from the reference",
+    "**Annotating variants**: what each change does, using tools run in Docker"))
+```
+
+## Data science
 
 ![](tutorials/images/tutorial-series.jpg){.series-banner fig-alt="Illustration of CSV files flowing into an R cube and across to a Python cube"}
 
 ::: {.series-about}
-#### <i class="bi bi-info-circle"></i> About the series
+#### <i class="bi bi-info-circle"></i> About this track
+
+**What you'll learn:** data analysis and modelling in R and Python: importing and cleaning study data in RStudio, working with the same data in pandas, statistical tests, and later machine learning.
 
 **The dataset:** 500 fictional participants from a simulated bronchoalveolar lavage (BAL) study, with participant metadata and cell counts for each study visit. The raw files are deliberately messy, like real study data. No row describes a real person.
 
@@ -24,24 +116,23 @@ listing:
 [<i class="bi bi-download"></i> bal_cell_counts.xlsx](tutorials/data/bal_cell_counts.xlsx){.btn .btn-sm .btn-outline-primary}
 [<i class="bi bi-download"></i> bal_baseline.csv](tutorials/data/bal_baseline.csv){.btn .btn-sm .btn-outline-primary}
 
-**You'll need:** R and RStudio for every tutorial, plus Python from Tutorial 2 onwards. Work through them in order: each one builds on the last.
+**You'll need:** R and RStudio for every tutorial, plus Python from Tutorial 2 onwards.
 
 **Quick guide:** [<i class="bi bi-file-earmark-pdf"></i> Choosing the right statistical test](guides/choosing-a-statistical-test/choosing-a-statistical-test.pdf), a two-page PDF that goes with Tutorial 4.
 :::
 
-::: {#tutorial-series}
-:::
+```{r}
+#| label: r-track
+#| output: asis
+tutorial_cards(published(r_track), "Tutorial")
+```
 
-## Coming next
+### Coming next
 
-::: {.series-upcoming}
-::: {.upcoming-item}
-[5]{.upcoming-number}
-[**Specialised tests**: post hoc comparisons, multiple testing and regression, with an interactive app to run them]{.upcoming-text}
-:::
-
-::: {.upcoming-item}
-[6]{.upcoming-number}
-[**Machine learning**: building and evaluating a predictive model in Python]{.upcoming-text}
-:::
-:::
+```{r}
+#| label: r-upcoming
+#| output: asis
+upcoming(c(5, 6), c(
+  "**Specialised tests**: post hoc comparisons, multiple testing and regression, with an interactive app to run them",
+  "**Machine learning**: building and evaluating a predictive model in Python"))
+```
