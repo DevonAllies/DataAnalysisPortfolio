@@ -404,7 +404,10 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#check-the-read-counts" id="toc-check-the-read-counts" class="nav-link" data-scroll-target="#check-the-read-counts">Check the read counts</a></li>
   </ul></li>
-  <li><a href="#record-what-you-downloaded" id="toc-record-what-you-downloaded" class="nav-link" data-scroll-target="#record-what-you-downloaded">6. Record what you downloaded</a></li>
+  <li><a href="#record-what-you-downloaded" id="toc-record-what-you-downloaded" class="nav-link" data-scroll-target="#record-what-you-downloaded">6. Record what you downloaded</a>
+  <ul class="collapse">
+  <li><a href="#why-this-matters-for-reproducibility" id="toc-why-this-matters-for-reproducibility" class="nav-link" data-scroll-target="#why-this-matters-for-reproducibility">Why this matters for reproducibility</a></li>
+  </ul></li>
   <li><a href="#going-further" id="toc-going-further" class="nav-link" data-scroll-target="#going-further">Going further</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
@@ -819,10 +822,21 @@ md5sum: WARNING: 8 listed files could not be read</code></pre>
 </section>
 <section id="record-what-you-downloaded" class="level2">
 <h2 class="anchored" data-anchor-id="record-what-you-downloaded">6. Record what you downloaded</h2>
-<p>Months later, you or a reviewer will ask exactly which data went into an analysis. Keep the answer in the project folder:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span> <span class="at">-Iseconds</span> <span class="op">&gt;</span> metadata/downloaded_on.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>With the run table, the chosen runs and the checksums already in <code>metadata/</code>, the folder now records where every file came from, which runs were chosen and how, and that they arrived intact:</p>
-<pre class="text"><code>project/
+<p>Months later, you or a reviewer will ask exactly which data went into an analysis. Keep the answer in the project folder, starting with <strong>when</strong> you downloaded it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span> <span class="at">-Iseconds</span> <span class="op">&gt;</span> metadata/downloaded_on.txt</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> metadata/downloaded_on.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>2026-11-20T12:46:01+02:00</code></pre>
+<p><code>date</code> prints the current date and time, and <code>-I</code> asks for the international standard format (ISO 8601) to the precision given, here <code>seconds</code>. Read left to right: the date, year first, so it can’t be mistaken for an American month/day order; <code>T</code> separating date from time; the time; and the time zone (<code>+02:00</code>, two hours ahead of UTC, as in South Africa), which makes the moment unambiguous anywhere in the world. <code>&gt;</code> saves it to the file. (<code>-I</code> belongs to the Linux version of <code>date</code>. On macOS, <code>date +%Y-%m-%dT%H:%M:%S%z</code> gives nearly the same result.)</p>
+<section id="why-this-matters-for-reproducibility" class="level3">
+<h3 class="anchored" data-anchor-id="why-this-matters-for-reproducibility">Why this matters for reproducibility</h3>
+<p>A public archive isn’t frozen. A project can gain runs after its paper is published, and a file can be replaced by a reprocessed version. Someone repeating your analysis later, following the same steps, could download different data without knowing it. The files in <code>metadata/</code> together pin down exactly what you used:</p>
+<ul>
+<li><strong>The run table</strong> records what the project contained, and <strong><code>chosen_runs.tsv</code></strong> which runs you took and, with the command that made it, how they were chosen.</li>
+<li><strong>The checksums</strong> identify each file exactly. If anyone downloads the “same” files later, <code>md5sum -c metadata/md5sums.txt</code> shows at once whether they are byte-for-byte what you analysed.</li>
+<li><strong>The date</strong> says when, which explains a mismatch: if the checksums no longer match, the archive changed after that date, and the difference is in the data, not in the analysis.</li>
+</ul>
+<p>With the run table, the chosen runs, the checksums and the date in <code>metadata/</code>, the folder now records where every file came from, which runs were chosen and how, when, and that they arrived intact:</p>
+<pre class="text"><code>tb-project/
 ├── metadata/
 │   ├── PRJEB43283_runs.tsv   every run in the study, as ENA listed it
 │   ├── chosen_runs.tsv       the four runs used
@@ -832,6 +846,7 @@ md5sum: WARNING: 8 listed files could not be read</code></pre>
 └── reference/
     └── H37Rv.fasta</code></pre>
 <p>Treat <code>raw/</code> as read-only from now on: every later step writes new files elsewhere. <code>chmod a-w raw/*</code> removes write permission, so an accidental <code>&gt;</code> or <code>rm</code> fails instead of destroying the data.</p>
+</section>
 </section>
 <section id="going-further" class="level2">
 <h2 class="anchored" data-anchor-id="going-further">Going further</h2>

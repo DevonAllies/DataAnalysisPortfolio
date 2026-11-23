@@ -427,16 +427,31 @@ echo $(( $(zcat raw/ERR8025410_1.fastq.gz | wc -l) / 4 ))
 
 ## 6. Record what you downloaded
 
-Months later, you or a reviewer will ask exactly which data went into an analysis. Keep the answer in the project folder:
+Months later, you or a reviewer will ask exactly which data went into an analysis. Keep the answer in the project folder, starting with **when** you downloaded it:
 
 ```{.bash}
 date -Iseconds > metadata/downloaded_on.txt
+cat metadata/downloaded_on.txt
 ```
 
-With the run table, the chosen runs and the checksums already in `metadata/`, the folder now records where every file came from, which runs were chosen and how, and that they arrived intact:
+```{.text}
+2026-11-20T12:46:01+02:00
+```
+
+`date` prints the current date and time, and `-I` asks for the international standard format (ISO 8601) to the precision given, here `seconds`. Read left to right: the date, year first, so it can't be mistaken for an American month/day order; `T` separating date from time; the time; and the time zone (`+02:00`, two hours ahead of UTC, as in South Africa), which makes the moment unambiguous anywhere in the world. `>` saves it to the file. (`-I` belongs to the Linux version of `date`. On macOS, `date +%Y-%m-%dT%H:%M:%S%z` gives nearly the same result.)
+
+### Why this matters for reproducibility
+
+A public archive isn't frozen. A project can gain runs after its paper is published, and a file can be replaced by a reprocessed version. Someone repeating your analysis later, following the same steps, could download different data without knowing it. The files in `metadata/` together pin down exactly what you used:
+
+- **The run table** records what the project contained, and **`chosen_runs.tsv`** which runs you took and, with the command that made it, how they were chosen.
+- **The checksums** identify each file exactly. If anyone downloads the "same" files later, `md5sum -c metadata/md5sums.txt` shows at once whether they are byte-for-byte what you analysed.
+- **The date** says when, which explains a mismatch: if the checksums no longer match, the archive changed after that date, and the difference is in the data, not in the analysis.
+
+With the run table, the chosen runs, the checksums and the date in `metadata/`, the folder now records where every file came from, which runs were chosen and how, when, and that they arrived intact:
 
 ```{.text}
-project/
+tb-project/
 ├── metadata/
 │   ├── PRJEB43283_runs.tsv   every run in the study, as ENA listed it
 │   ├── chosen_runs.tsv       the four runs used
