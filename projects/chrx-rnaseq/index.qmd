@@ -5,7 +5,7 @@ aliases:
 description: "Sex-based differential expression on chromosome X from 12 paired-end RNA-seq samples, using a Nextflow pipeline with HISAT2 and StringTie, and Ballgown in R."
 author:
   - name: "Devon Allies"
-    email: "alliesdl@gmail.com"
+    email: "devon.lee.allies@gmail.com"
     degrees: "BSc Hons. Bioinformatics & Computational Biology"
 date: 2026-05-01
 categories: [Bioinformatics, Statistics, R]

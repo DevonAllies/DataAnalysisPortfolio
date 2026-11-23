@@ -7,7 +7,7 @@ date: 2026-10-01
 categories: [Clinical research, Statistics, R]
 author:
   - name: "Devon Allies"
-    email: "alliesdl@gmail.com"
+    email: "devon.lee.allies@gmail.com"
     affiliations: "Stellenbosch University"
 
 format:

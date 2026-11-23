@@ -16,7 +16,7 @@ about:
       href: https://github.com/DevonAllies
     - icon: envelope
       text: Email
-      href: mailto:alliesdl@gmail.com
+      href: mailto:devon.lee.allies@gmail.com
     - icon: discord
       text: "Discord: Devon Allies"
       href: https://discord.com/users/492592734805164044
