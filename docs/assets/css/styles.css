@@ -636,3 +636,7 @@ details.series-box > ul { margin: 0.6rem 0.85rem 0.7rem; padding-left: 1.1rem; }
 .work-card h4 .bi { margin-right: 0.35rem; color: var(--bs-primary); }
 .work-card ul { padding-left: 1.1rem; margin-bottom: 0.75rem; }
 .work-card li { margin-bottom: 0.2rem; }
+/* The two cards are the same height; push each "Ask about…" button to the
+   bottom so the buttons line up even when one card has more text. */
+.work-card { display: flex; flex-direction: column; }
+.work-card > p:last-child { margin-top: auto; margin-bottom: 0; padding-top: 0.5rem; }
