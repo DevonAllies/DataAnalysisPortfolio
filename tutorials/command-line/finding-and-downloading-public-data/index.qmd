@@ -14,7 +14,7 @@ csl: ../../../assets/csl/harvard-anglia-ruskin-university.csl
 filters:
   - ../../../assets/lua/series.lua
 toc: true
-toc-depth: 2
+toc-depth: 3   # show sub-steps such as "Set up a project folder"
 toc-location: left
 ---
 
@@ -29,6 +29,21 @@ This article does that from the terminal, start to finish, for the data used in 
 5. Check every file with **md5sum** and record what you downloaded.
 
 It uses the commands from [Part 1](../command-line-for-biologists/index.qmd): pipes, `cut`, `sort`, `awk` and loops over lines.
+
+::: {.callout-tip appearance="simple"}
+## Before you start
+
+- **First time:** open a terminal and work through the sections in order. Section 1 installs Entrez Direct, and section 3 makes the project folder, `~/tb-project`, that this and every later part works in.
+- **Coming back in a new terminal?** Go back into the project folder and switch the tools on again before running anything:
+
+```{.bash}
+cd ~/tb-project
+micromamba activate edirect
+export OPENSSL_CONF=~/.openssl-eof.cnf   # only if you needed the fix in section 1
+```
+
+Every command here uses paths relative to `~/tb-project` (`metadata/`, `raw/`), so run them from there. `pwd` shows where you are.
+:::
 
 ::: {.callout-note appearance="simple"}
 ## About the output
