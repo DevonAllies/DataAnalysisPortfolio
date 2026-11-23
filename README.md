@@ -93,7 +93,7 @@ projects/<name>/       one folder per project, all with the same layout:
     pipeline/            (WGS project only) the Nextflow pipeline code
 tutorials/             numbered tutorials, their dataset in tutorials/data/ and the series banner in tutorials/images/
 assets/                shared files: css/ (theme.scss, theme-dark.scss for dark mode, styles.css),
-                         images/ (me.jpeg About photo, og-card.jpg link-preview card), csl/ (citation style)
+                         images/ (headshot.jpg About photo, home-banner.jpg home banner, og-card.jpg link-preview card), csl/ (citation style)
 writing/               articles on this site, one folder each (index.qmd + references.bib); listed on Publications & Writing
 guides/                printable PDF guides (Quarto + Typst), e.g. choosing-a-statistical-test/; not website pages
 scripts/               helper scripts: refresh publications, rebuild tutorial data, build the cleaned tutorial data,

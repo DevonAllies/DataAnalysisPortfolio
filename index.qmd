@@ -7,7 +7,7 @@ image: assets/images/og-card.jpg          # link-preview image
 include-in-header:                 # Google Search Console ownership check
   text: '<meta name="google-site-verification" content="s5AWjJtQcNCZ2RpgMs8we9ohx_Ee-ymZb1QfG1iaeqI" />'
 page-layout: full
-title-block-banner: true
+title-block-banner: assets/images/home-banner.jpg   # dark teal DNA banner; title sits on the plain left side
 toc: false
 link-external-newwindow: true   # LinkedIn, GitHub, X and Discord buttons open in a new tab
 engine: knitr
