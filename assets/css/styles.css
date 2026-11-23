@@ -391,7 +391,9 @@
    the right margin. Quarto always puts listing categories in the margin
    sidebar, so projects.qmd sets toc-location: left (which reserves a left
    column) and body-classes: categories-left, and these rules move the margin
-   sidebar into that column on wide screens. */
+   sidebar into that column on wide screens. The About page uses the same
+   class: its about template ignores toc-location, so this moves its
+   "On this page" to the left like the other main pages. */
 @media (min-width: 992px) {
   .categories-left #quarto-sidebar { display: none; }
   .categories-left #quarto-margin-sidebar {
@@ -400,6 +402,16 @@
     justify-self: end;      /* sit next to the cards, not at the screen edge */
     padding-right: 2rem;
   }
+  .categories-left #TOC a { white-space: nowrap; }   /* "My journey" on one line */
+}
+
+/* About page: the about template centres its text; keep the Key Highlights
+   bullets next to their lines by centring the list as a block instead. */
+.categories-left #quarto-document-content > ul {
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
 }
 
 /* Contact page (contact.qmd): form posted to FormSubmit */

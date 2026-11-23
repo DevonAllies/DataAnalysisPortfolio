@@ -1,7 +1,7 @@
 ---
 title: "About Me"
 description: "About Devon Allies: bioinformatician and computational biologist with 15+ years in biomedical science, including 10 in TB immunology, now a Data Analyst at Stellenbosch University. Education, certifications and skills."
-body-classes: hide-description   # description is for search/link previews only
+body-classes: hide-description categories-left   # description is for search/link previews only; categories-left puts "On this page" on the left (see styles.css)
 about:
   template: jolla
   image: assets/images/headshot.jpg
@@ -36,6 +36,7 @@ In my current role as a Data Analyst at the Division of Molecular Biology and Hu
 I started my career at the bench, processing clinical samples and running flow cytometry for TB immunology trials, and later coordinated multi-site clinical research studies. That means I understand the data because I was there when it was created.
 
 Key Highlights:
+
 - Contributed to peer-reviewed TB diagnostics and vaccine immunogenicity research cited 100+ times.
 - Built Nextflow pipelines for WGS and RNA-seq, and medallion-architecture pipelines on Databricks with MLflow.
 - Developed an automated data-logging dashboard for clinical trial field operations.
@@ -260,9 +261,9 @@ Publication-quality figures · Reproducible reports · Dashboards
 ::: {.skill-body}
 [<i class="bi bi-eyedropper"></i> Laboratory]{.skill-title}
 
-Flow cytometry · ELISA · Tissue culture · BSL-2 and BSL-3 laboratories
+Flow cytometry · ELISA · Assay development and validation · Tissue culture · BSL-2 and BSL-3 laboratories
 
-[PBMC processing, whole-blood stimulation assays, FACSCanto II and FlowJo, assay validation, ISO-accredited QA and SOPs]{.skill-detail}
+[PBMC processing and antibody staining with 8–12-colour flow cytometry panels, whole-blood stimulation assays, acquisition on the BD FACSCanto II and analysis in FlowJo. Immunoassay development and validation for client clinical studies at Synexa Life Sciences. ISO-accredited QA and SOPs.]{.skill-detail}
 :::
 
 [See it in: [Publications](publications.qmd)]{.skill-proof}
