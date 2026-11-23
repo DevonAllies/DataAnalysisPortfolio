@@ -325,6 +325,27 @@
   margin-bottom: 0.35rem;
 }
 
+/* Each card spans two rows of the skills grid (the main text, then "See it
+   in") and shares them through a subgrid, so the dashed "See it in" dividers
+   of the two cards in a row sit on one line even when one card's text is
+   longer. */
+.skills-grid {
+  row-gap: 0;
+}
+.skill-card {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  margin-bottom: 1.5rem;
+}
+.skill-card > p {
+  align-self: start;
+}
+.skill-card > p:last-child {
+  margin-bottom: 0;
+}
+
 .skill-title {
   display: block;
   font-weight: 600;

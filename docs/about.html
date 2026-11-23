@@ -375,7 +375,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="edu-item">
 <p><span class="edu-years">November 2026</span></p>
 <p><span class="edu-title"><i class="bi bi-mortarboard"></i> Teaching</span></p>
-<p>A <a href="./tutorials.html">tutorial series</a> in R and Python, built on one simulated TB dataset</p>
+<p>Two <a href="./tutorials.html">tutorial tracks</a>: bioinformatics on the command line, with public TB sequencing data, and data science in R and Python, on a simulated TB study</p>
 </div>
 <div class="edu-item">
 <p><span class="edu-years">October 2026</span></p>
@@ -451,8 +451,9 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><strong>Databricks</strong> (2026): Fundamentals Accreditation; AI/BI for Data Analysts; SQL Analytics on Databricks</li>
 <li><strong>365 Data Science</strong> (2026): Data Scientist and Data Analyst career tracks</li>
-<li><strong>Coursera</strong> (2024): Google Project Management Specialization; Data Analyst with R</li>
+<li><strong>Coursera</strong> (2024): Data Analyst with R</li>
 <li><strong>FutureLearn</strong> (2024): Bioinformatics for Biologists, including Analysing and Interpreting Genomics Datasets</li>
+<li><strong>Google</strong> (Coursera Professional Certificates): <a href="https://coursera.org/verify/professional-cert/3VE8P5KGHX6C">Project Management</a> (2023); <a href="https://coursera.org/verify/professional-cert/EFE8X9E6KJEV">Data Analytics</a> (2022)</li>
 </ul>
 </div>
 </section>
@@ -461,39 +462,72 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-anchor-id="skills">Skills</h2>
 <div class="grid skills-grid">
 <div class="g-col-12 g-col-md-6 skill-card">
+<div class="skill-body">
 <p><span class="skill-title"><i class="bi bi-diagram-3"></i> Bioinformatics &amp; Genomics</span></p>
 <p>NGS pipelines · Variant calling · RNA-seq · pQTL mapping</p>
-<p><span class="skill-detail">Nextflow DSL2, BWA-MEM2, GATK, bcftools, samtools, HISAT2, StringTie, Ballgown; host genetics and multi-omics</span></p>
-<p><span class="skill-proof">See it in: <a href="./projects/wgs-variant-calling-pipeline/index.html">WGS variant-calling pipeline</a> · <a href="./projects/chrx-rnaseq/index.html">chrX RNA-seq</a></span></p>
+<p><span class="skill-detail">Pipelines with Nextflow DSL2, BWA-MEM2, GATK, bcftools, samtools, FastQC, fastp, Ensembl VEP, HISAT2, StringTie and Ballgown. pQTL mapping with PLINK and tensorQTL. Host genetics and multi-omics.</span></p>
+</div>
+<p><span class="skill-proof">See it in: <a href="./projects/wgs-variant-calling-pipeline/index.html">WGS variant-calling pipeline</a> · <a href="./projects/chrx-rnaseq/index.html">chrX RNA-seq</a> · <a href="./tutorials.html#bioinformatics-on-the-command-line">Bioinformatics tutorials</a></span></p>
 </div>
 <div class="g-col-12 g-col-md-6 skill-card">
-<p><span class="skill-title"><i class="bi bi-graph-up"></i> Statistics &amp; Machine Learning</span></p>
-<p>Regression · PCA · Random forest · SHAP</p>
-<p><span class="skill-detail">Association testing, Wilcoxon and FDR correction, cross-validation, ROC/AUC; scikit-learn</span></p>
-<p><span class="skill-proof">See it in: <a href="./projects/credit-risk-pipeline/index.html">Credit risk pipeline</a> · <a href="./projects/bal-databricks-pipeline/index.html">BAL Databricks pipeline</a></span></p>
+<div class="skill-body">
+<p><span class="skill-title"><i class="bi bi-table"></i> Data Analysis</span></p>
+<p>Cleaning messy data · Exploratory analysis · Statistical testing · Effect sizes</p>
+<p><span class="skill-detail">Clinical, study and survey data in R (tidyverse), pandas and SQL. Tests: t-tests, Wilcoxon, ANOVA, chi-square and correlation, with FDR correction. Structured data capture in Excel.</span></p>
+</div>
+<p><span class="skill-proof">See it in: <a href="./tutorials.html#data-science">Data science tutorials</a> · <a href="./writing/choosing-statistics-for-cytokine-data/index.html">Statistics for cytokine data</a></span></p>
 </div>
 <div class="g-col-12 g-col-md-6 skill-card">
+<div class="skill-body">
+<p><span class="skill-title"><i class="bi bi-graph-up"></i> Data Science &amp; Machine Learning</span></p>
+<p>Regression · Random forest · SHAP · Model evaluation</p>
+<p><span class="skill-detail">Classification and feature selection, cross-validation, ROC/AUC, PCA and genetic association testing, with scikit-learn.</span></p>
+</div>
+<p><span class="skill-proof">See it in: <a href="./projects/r-python-workflow/index.html">R and Python workflow</a> · <a href="./projects/credit-risk-pipeline/index.html">Credit risk pipeline</a></span></p>
+</div>
+<div class="g-col-12 g-col-md-6 skill-card">
+<div class="skill-body">
 <p><span class="skill-title"><i class="bi bi-database-check"></i> Data Engineering &amp; Data Quality</span></p>
 <p>Databricks · PySpark · Delta Lake · MLflow</p>
 <p><span class="skill-detail">Bronze/silver/gold pipelines, SQL, validation checks, unit-tested cleaning functions, PII removal</span></p>
+</div>
 <p><span class="skill-proof">See it in: <a href="./projects/credit-risk-pipeline/index.html">Credit risk pipeline</a> · <a href="./projects/bal-databricks-pipeline/index.html">BAL Databricks pipeline</a></span></p>
 </div>
 <div class="g-col-12 g-col-md-6 skill-card">
+<div class="skill-body">
 <p><span class="skill-title"><i class="bi bi-code-slash"></i> Programming &amp; Reproducibility</span></p>
-<p>Python · R · SQL · Bash</p>
-<p><span class="skill-detail">pandas, NumPy, tidyverse; Git, Docker / Singularity, mamba; Linux and HPC (PBS)</span></p>
+<p>Python · R · Bash · Groovy (Nextflow)</p>
+<p><span class="skill-detail"><strong>Libraries:</strong> pandas, NumPy, tidyverse<br>
+<strong>Tools:</strong> Git, Docker / Singularity, micromamba, renv, uv, Quarto<br>
+<strong>Platforms:</strong> Linux and HPC (PBS)</span></p>
+</div>
 <p><span class="skill-proof">See it in: <a href="./tutorials.html">Tutorials</a> · <a href="https://github.com/DevonAllies/DataAnalysisPortfolio">this site’s source</a></span></p>
 </div>
 <div class="g-col-12 g-col-md-6 skill-card">
+<div class="skill-body">
 <p><span class="skill-title"><i class="bi bi-bar-chart-line"></i> Visualisation &amp; Reporting</span></p>
-<p>ggplot2 · Power BI · Tableau · Quarto</p>
-<p><span class="skill-detail">matplotlib, seaborn, Databricks AI/BI dashboards, RMarkdown, LaTeX, Excel</span></p>
-<p><span class="skill-proof">See it in: <a href="./projects/tb-global-trends/index.html">Global TB trends</a> · <a href="./projects/covid19-blood-counts/index.html">COVID-19 blood counts</a></span></p>
+<p>Publication-quality figures · Reproducible reports · Dashboards</p>
+<p><span class="skill-detail"><strong>R:</strong> ggplot2<br>
+<strong>Python:</strong> matplotlib, seaborn<br>
+<strong>Dashboards:</strong> Databricks AI/BI, Power BI, Tableau<br>
+<strong>Reports:</strong> Quarto, R Markdown, LaTeX, Excel</span></p>
+</div>
+<p><span class="skill-proof">See it in: <a href="./projects/tb-global-trends/index.html">Global TB trends</a> · <a href="./projects/covid19-blood-counts/index.html">COVID-19 blood counts</a> · <a href="./writing/choosing-statistics-for-cytokine-data/index.html">Statistics for cytokine data</a></span></p>
 </div>
 <div class="g-col-12 g-col-md-6 skill-card">
-<p><span class="skill-title"><i class="bi bi-clipboard2-pulse"></i> Lab, Clinical &amp; Project Management</span></p>
-<p>Flow cytometry · PBMC processing · ISO-accredited QA</p>
-<p><span class="skill-detail">FACSCantoII, FlowJo, assay validation, clinical trial coordination, budgets and stakeholder management</span></p>
+<div class="skill-body">
+<p><span class="skill-title"><i class="bi bi-eyedropper"></i> Laboratory</span></p>
+<p>Flow cytometry · ELISA · Tissue culture · BSL-2 and BSL-3 laboratories</p>
+<p><span class="skill-detail">PBMC processing, whole-blood stimulation assays, FACSCanto II and FlowJo, assay validation, ISO-accredited QA and SOPs</span></p>
+</div>
+<p><span class="skill-proof">See it in: <a href="./publications.html">Publications</a></span></p>
+</div>
+<div class="g-col-12 g-col-md-6 skill-card">
+<div class="skill-body">
+<p><span class="skill-title"><i class="bi bi-kanban"></i> Clinical Research &amp; Project Management</span></p>
+<p>Clinical study coordination · REDCap · Project management</p>
+<p><span class="skill-detail">Multi-site studies end to end, budgets of R2–3 million, risk escalation and stakeholder communication, and clinical data capture in REDCap. Google Project Management certificate.</span></p>
+</div>
 <p><span class="skill-proof">See it in: <a href="./publications.html">Publications</a></span></p>
 </div>
 </div>

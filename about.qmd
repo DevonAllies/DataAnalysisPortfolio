@@ -54,7 +54,7 @@ From the diagnostic lab to data pipelines, most recent first: each step built on
 
 [<i class="bi bi-mortarboard"></i> Teaching]{.edu-title}
 
-A [tutorial series](tutorials.qmd) in R and Python, built on one simulated TB dataset
+Two [tutorial tracks](tutorials.qmd): bioinformatics on the command line, with public TB sequencing data, and data science in R and Python, on a simulated TB study
 :::
 
 ::: {.edu-item}
@@ -170,8 +170,9 @@ Cape Peninsula University of Technology
 ::: {.cert-list}
 - **Databricks** (2026): Fundamentals Accreditation; AI/BI for Data Analysts; SQL Analytics on Databricks
 - **365 Data Science** (2026): Data Scientist and Data Analyst career tracks
-- **Coursera** (2024): Google Project Management Specialization; Data Analyst with R
+- **Coursera** (2024): Data Analyst with R
 - **FutureLearn** (2024): Bioinformatics for Biologists, including Analysing and Interpreting Genomics Datasets
+- **Google** (Coursera Professional Certificates): [Project Management](https://coursera.org/verify/professional-cert/3VE8P5KGHX6C) (2023); [Data Analytics](https://coursera.org/verify/professional-cert/EFE8X9E6KJEV) (2022)
 :::
 
 ## Skills
@@ -179,61 +180,102 @@ Cape Peninsula University of Technology
 ::: {.grid .skills-grid}
 
 ::: {.g-col-12 .g-col-md-6 .skill-card}
+::: {.skill-body}
 [<i class="bi bi-diagram-3"></i> Bioinformatics & Genomics]{.skill-title}
 
 NGS pipelines · Variant calling · RNA-seq · pQTL mapping
 
-[Nextflow DSL2, BWA-MEM2, GATK, bcftools, samtools, HISAT2, StringTie, Ballgown; host genetics and multi-omics]{.skill-detail}
+[Pipelines with Nextflow DSL2, BWA-MEM2, GATK, bcftools, samtools, FastQC, fastp, Ensembl VEP, HISAT2, StringTie and Ballgown. pQTL mapping with PLINK and tensorQTL. Host genetics and multi-omics.]{.skill-detail}
+:::
 
-[See it in: [WGS variant-calling pipeline](projects/wgs-variant-calling-pipeline/index.qmd) · [chrX RNA-seq](projects/chrx-rnaseq/index.qmd)]{.skill-proof}
+[See it in: [WGS variant-calling pipeline](projects/wgs-variant-calling-pipeline/index.qmd) · [chrX RNA-seq](projects/chrx-rnaseq/index.qmd) · [Bioinformatics tutorials](tutorials.qmd#bioinformatics-on-the-command-line)]{.skill-proof}
 :::
 
 ::: {.g-col-12 .g-col-md-6 .skill-card}
-[<i class="bi bi-graph-up"></i> Statistics & Machine Learning]{.skill-title}
+::: {.skill-body}
+[<i class="bi bi-table"></i> Data Analysis]{.skill-title}
 
-Regression · PCA · Random forest · SHAP
+Cleaning messy data · Exploratory analysis · Statistical testing · Effect sizes
 
-[Association testing, Wilcoxon and FDR correction, cross-validation, ROC/AUC; scikit-learn]{.skill-detail}
+[Clinical, study and survey data in R (tidyverse), pandas and SQL. Tests: t-tests, Wilcoxon, ANOVA, chi-square and correlation, with FDR correction. Structured data capture in Excel.]{.skill-detail}
+:::
 
-[See it in: [Credit risk pipeline](projects/credit-risk-pipeline/index.qmd) · [BAL Databricks pipeline](projects/bal-databricks-pipeline/index.qmd)]{.skill-proof}
+[See it in: [Data science tutorials](tutorials.qmd#data-science) · [Statistics for cytokine data](writing/choosing-statistics-for-cytokine-data/index.qmd)]{.skill-proof}
 :::
 
 ::: {.g-col-12 .g-col-md-6 .skill-card}
+::: {.skill-body}
+[<i class="bi bi-graph-up"></i> Data Science & Machine Learning]{.skill-title}
+
+Regression · Random forest · SHAP · Model evaluation
+
+[Classification and feature selection, cross-validation, ROC/AUC, PCA and genetic association testing, with scikit-learn.]{.skill-detail}
+:::
+
+[See it in: [R and Python workflow](projects/r-python-workflow/index.qmd) · [Credit risk pipeline](projects/credit-risk-pipeline/index.qmd)]{.skill-proof}
+:::
+
+::: {.g-col-12 .g-col-md-6 .skill-card}
+::: {.skill-body}
 [<i class="bi bi-database-check"></i> Data Engineering & Data Quality]{.skill-title}
 
 Databricks · PySpark · Delta Lake · MLflow
 
 [Bronze/silver/gold pipelines, SQL, validation checks, unit-tested cleaning functions, PII removal]{.skill-detail}
+:::
 
 [See it in: [Credit risk pipeline](projects/credit-risk-pipeline/index.qmd) · [BAL Databricks pipeline](projects/bal-databricks-pipeline/index.qmd)]{.skill-proof}
 :::
 
 ::: {.g-col-12 .g-col-md-6 .skill-card}
+::: {.skill-body}
 [<i class="bi bi-code-slash"></i> Programming & Reproducibility]{.skill-title}
 
-Python · R · SQL · Bash
+Python · R · Bash · Groovy (Nextflow)
 
-[pandas, NumPy, tidyverse; Git, Docker / Singularity, mamba; Linux and HPC (PBS)]{.skill-detail}
+[**Libraries:** pandas, NumPy, tidyverse \
+**Tools:** Git, Docker / Singularity, micromamba, renv, uv, Quarto \
+**Platforms:** Linux and HPC (PBS)]{.skill-detail}
+:::
 
 [See it in: [Tutorials](tutorials.qmd) · [this site's source](https://github.com/DevonAllies/DataAnalysisPortfolio)]{.skill-proof}
 :::
 
 ::: {.g-col-12 .g-col-md-6 .skill-card}
+::: {.skill-body}
 [<i class="bi bi-bar-chart-line"></i> Visualisation & Reporting]{.skill-title}
 
-ggplot2 · Power BI · Tableau · Quarto
+Publication-quality figures · Reproducible reports · Dashboards
 
-[matplotlib, seaborn, Databricks AI/BI dashboards, RMarkdown, LaTeX, Excel]{.skill-detail}
+[**R:** ggplot2 \
+**Python:** matplotlib, seaborn \
+**Dashboards:** Databricks AI/BI, Power BI, Tableau \
+**Reports:** Quarto, R Markdown, LaTeX, Excel]{.skill-detail}
+:::
 
-[See it in: [Global TB trends](projects/tb-global-trends/index.qmd) · [COVID-19 blood counts](projects/covid19-blood-counts/index.qmd)]{.skill-proof}
+[See it in: [Global TB trends](projects/tb-global-trends/index.qmd) · [COVID-19 blood counts](projects/covid19-blood-counts/index.qmd) · [Statistics for cytokine data](writing/choosing-statistics-for-cytokine-data/index.qmd)]{.skill-proof}
 :::
 
 ::: {.g-col-12 .g-col-md-6 .skill-card}
-[<i class="bi bi-clipboard2-pulse"></i> Lab, Clinical & Project Management]{.skill-title}
+::: {.skill-body}
+[<i class="bi bi-eyedropper"></i> Laboratory]{.skill-title}
 
-Flow cytometry · PBMC processing · ISO-accredited QA
+Flow cytometry · ELISA · Tissue culture · BSL-2 and BSL-3 laboratories
 
-[FACSCantoII, FlowJo, assay validation, clinical trial coordination, budgets and stakeholder management]{.skill-detail}
+[PBMC processing, whole-blood stimulation assays, FACSCanto II and FlowJo, assay validation, ISO-accredited QA and SOPs]{.skill-detail}
+:::
+
+[See it in: [Publications](publications.qmd)]{.skill-proof}
+:::
+
+::: {.g-col-12 .g-col-md-6 .skill-card}
+::: {.skill-body}
+[<i class="bi bi-kanban"></i> Clinical Research & Project Management]{.skill-title}
+
+Clinical study coordination · REDCap · Project management
+
+[Multi-site studies end to end, budgets of R2–3 million, risk escalation and stakeholder communication, and clinical data capture in REDCap. Google Project Management certificate.]{.skill-detail}
+:::
 
 [See it in: [Publications](publications.qmd)]{.skill-proof}
 :::
