@@ -138,21 +138,23 @@ It only affects the terminal you set it in, and only relaxes that one check.
 
 ## 2. Find the data in the paper
 
-The paper's details include its DOI and, because it's open access, its PubMed Central (PMC) ID, which leads to the full text:
+The paper's record lists its identifiers: the DOI, and, because it's open access, a PubMed Central (PMC) ID, which leads to the full text. `xtract` can pull out both:
 
 ```{.bash}
 efetch -db pubmed -id 35471145 -format xml \
   | xtract -pattern PubmedArticle -element MedlineCitation/PMID \
-      -block ArticleId -if @IdType -equals doi -element ArticleId
+      -group PubmedData/ArticleIdList \
+      -block ArticleId -if @IdType -equals doi -element ArticleId \
+      -block ArticleId -if @IdType -equals pmc -element ArticleId
 ```
 
 ```{.text}
-35471145	10.1099/mgen.0.000815	10.1126/science.313.5793.1554a	10.1371/journal.pmed.0040050	…
+35471145	10.1099/mgen.0.000815	PMC9453078
 ```
 
-The paper's own DOI comes first. The others belong to the papers it cites, which are in the same record; `xtract` found them all because they're tagged the same way. Seeing more than you expected is a common first experience with `xtract`, and a reason to check results by eye.
+Three identifiers for one paper: the PubMed ID (35471145), the DOI (10.1099/mgen.0.000815) and the PMC ID (PMC9453078). The `-block … -if @IdType -equals doi` lines keep only the ID of the type asked for. `-group PubmedData/ArticleIdList` matters too: the record also contains the paper's reference list, with an ID for every paper it cites, and without that line `xtract` returns all of their DOIs as well. Seeing more than you expected is a common first experience with `xtract`, and a reason to check results by eye.
 
-Studies state where their data is, usually in a "Data summary" or "Data availability" section. Download the full text from PubMed Central and search it for project accessions:
+Studies state where their data is, usually in a "Data summary" or "Data availability" section. Download the full text from PubMed Central, using the PMC ID without its `PMC` prefix, and search it for project accessions:
 
 ```{.bash}
 efetch -db pmc -id 9453078 -format xml > paper.xml
