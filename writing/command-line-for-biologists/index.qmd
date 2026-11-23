@@ -194,6 +194,27 @@ micromamba run -n qc samtools --version        # check a tool's version there
 
 It's also handy in scripts, which can call tools from several environments in turn.
 
+::: {.callout-warning appearance="simple"}
+## `micromamba run` covers one command, not a whole pipe
+
+`micromamba run` applies to the command straight after it; everything after a `|` runs in your normal shell. So in this pipe, the second `samtools` isn't found, because it's only installed in the `qc` environment:
+
+```{.bash}
+micromamba run -n qc samtools view -h sample.bam | samtools view -c -
+```
+
+```{.text}
+Command 'samtools' not found, but can be installed with:
+…
+```
+
+Ubuntu suggests installing it with `apt`, but you don't need to: it's already in the environment, just not in the shell running that part of the pipe. For a pipe of tools from one environment, activate the environment first, or run the whole line inside it with `bash -c`:
+
+```{.bash}
+micromamba run -n qc bash -c 'samtools view -h sample.bam | samtools view -c -'
+```
+:::
+
 ::: {.callout-note appearance="simple"}
 ## conda, mamba or micromamba?
 

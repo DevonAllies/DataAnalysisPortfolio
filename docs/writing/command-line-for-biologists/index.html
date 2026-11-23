@@ -454,7 +454,7 @@ div.csl-indent {
 <div class="callout-note series-nav" data-appearance="simple" data-collapse="true" title="Part 1 of the series: Bioinformatics on the command line">
 <ul>
 <li>Part 1: <strong>The command line for biologists</strong> (this article)</li>
-<li>Part 2: Finding and downloading public sequencing data <em>(coming soon)</em></li>
+<li>Part 2: <a href="../../writing/finding-and-downloading-public-data/index.html">Finding and downloading public sequencing data</a></li>
 <li>Part 3: Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes <em>(coming soon)</em></li>
 <li>Part 4: Checking and cleaning sequencing reads: FastQC, MultiQC and fastp <em>(coming soon)</em></li>
 <li>Part 5: Aligning every FASTQ file in a folder with a loop <em>(coming soon)</em></li>
@@ -597,6 +597,24 @@ div.csl-indent {
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> run <span class="at">-n</span> qc fastqc reads_1.fastq.gz   <span class="co"># run FastQC from the qc environment</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> run <span class="at">-n</span> qc samtools <span class="at">--version</span>        <span class="co"># check a tool's version there</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>It’s also handy in scripts, which can call tools from several environments in turn.</p>
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span><code>micromamba run</code> covers one command, not a whole pipe
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>micromamba run</code> applies to the command straight after it; everything after a <code>|</code> runs in your normal shell. So in this pipe, the second <code>samtools</code> isn’t found, because it’s only installed in the <code>qc</code> environment:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> run <span class="at">-n</span> qc samtools view <span class="at">-h</span> sample.bam <span class="kw">|</span> <span class="ex">samtools</span> view <span class="at">-c</span> <span class="at">-</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>Command 'samtools' not found, but can be installed with:
+…</code></pre>
+<p>Ubuntu suggests installing it with <code>apt</code>, but you don’t need to: it’s already in the environment, just not in the shell running that part of the pipe. For a pipe of tools from one environment, activate the environment first, or run the whole line inside it with <code>bash -c</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> run <span class="at">-n</span> qc bash <span class="at">-c</span> <span class="st">'samtools view -h sample.bam | samtools view -c -'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -617,7 +635,7 @@ div.csl-indent {
 <section id="look-at-a-data-file-without-opening-it" class="level2">
 <h2 class="anchored" data-anchor-id="look-at-a-data-file-without-opening-it">5. Look at a data file without opening it</h2>
 <p>Now some real work. Download the messy baseline table from the tutorials into a folder, and <code>cd</code> into it. You can download it from the terminal too:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-O</span> https://devonallies.co.za/tutorials/data/bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-O</span> https://devonallies.co.za/tutorials/data/bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>curl -O</code> saves a web address to a file of the same name. Every command from here on runs in the folder holding <code>bal_baseline.csv</code>, and the output is what the file gives.</p>
 <div class="callout callout-style-simple callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -635,14 +653,14 @@ div.csl-indent {
 <section id="how-big-is-it-and-whats-in-it" class="level3">
 <h3 class="anchored" data-anchor-id="how-big-is-it-and-whats-in-it">How big is it, and what’s in it?</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>503 bal_baseline.csv</code></pre>
 </div>
 </div>
 <p><code>wc -l</code> counts lines: 503, so one header row and 502 data rows. That’s two more rows than the 500 participants, which is worth remembering. <code>head</code> shows the start of the file:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 3 bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 3 bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>pt_id,sex,tb_diagnosis,hiv_status,age_at_visit,bronc_date,dr_name,vol_pbs_in_ml,vol_pbs_out_ml,lobe,lab_tech,pellet_colour,live_cells,dead_cells,total_cells,time_to_process_min,diff_method
 SP34696,Female,LTBI,Negative,53,2018-07-01,Dr. Van Der Merwe,100,45.7,Left Lower,thandi,Bloody,5432000,1169209,6601209,183,Manual
@@ -651,7 +669,7 @@ SP22845,Female,Control,Positive,30,2020-04-16,Dr. Naidoo,120,75.8,Left Upper,liz
 </div>
 <p>Wide files are hard to read like that. <code>head -n 1</code> takes just the header row, <code>tr</code> (translate) swaps each comma for a new line, and <code>nl</code> numbers the lines, giving a numbered list of the columns:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 1 bal_baseline.csv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">','</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="fu">nl</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 1 bal_baseline.csv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">','</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="fu">nl</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     1  pt_id
      2  sex
@@ -678,7 +696,7 @@ SP22845,Female,Control,Positive,30,2020-04-16,Dr. Naidoo,120,75.8,Left Upper,liz
 <h3 class="anchored" data-anchor-id="count-the-values-in-a-column">Count the values in a column</h3>
 <p><code>cut</code> picks out columns: <code>-d ,</code> says the columns are separated by commas, and <code>-f 3</code> asks for the third. Then <code>sort</code> puts identical values next to each other, <code>uniq -c</code> counts each run of identical lines, and <code>sort -rn</code> puts the largest count first:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> , <span class="at">-f</span> 3 bal_baseline.csv <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-rn</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-d</span> , <span class="at">-f</span> 3 bal_baseline.csv <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-rn</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    166 Active TB
     153 LTBI
@@ -689,7 +707,7 @@ SP22845,Female,Control,Positive,30,2020-04-16,Dr. Naidoo,120,75.8,Left Upper,liz
 </div>
 <p>The header, <code>tb_diagnosis</code>, is counted as a value too. <code>tail -n +2</code> (everything from line 2 onwards) skips it. Two columns at once count the combinations, here TB diagnosis by HIV status:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 bal_baseline.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> , <span class="at">-f</span> 3,4 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 bal_baseline.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> , <span class="at">-f</span> 3,4 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    100 Active TB,Negative
      66 Active TB,Positive
@@ -719,7 +737,7 @@ SP22845,Female,Control,Positive,30,2020-04-16,Dr. Naidoo,120,75.8,Left Upper,liz
 <h3 class="anchored" data-anchor-id="find-duplicate-ids">Find duplicate IDs</h3>
 <p>Those two extra rows: <code>uniq -d</code> prints only the lines that appear more than once (again after <code>sort</code>, because <code>uniq</code> only compares neighbouring lines):</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 bal_baseline.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> , <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-d</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 bal_baseline.csv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> , <span class="at">-f</span> 1 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-d</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>SP09573
 SP22251</code></pre>
@@ -727,7 +745,7 @@ SP22251</code></pre>
 </div>
 <p><code>grep</code> prints every line containing a pattern; <code>-E</code> allows <code>|</code> to mean “or”:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-E</span> <span class="st">"SP09573|SP22251"</span> bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-E</span> <span class="st">"SP09573|SP22251"</span> bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>SP09573,Female,Active TB,Negative,49,2020-10-15,Dr. Jacobs,100,66.6,Right Lower,yolanda,Bloody,3950000,668697,4620000,111,Automated
 SP09573,Female,Active TB,Negative,49,2020-10-15,Dr. Jacobs,100,66.6,Right Lower,yolanda,Bloody,3950000,668697,4620000,111,Automated
@@ -737,7 +755,7 @@ SP22251,Male,Active TB,Negative,55,2019-06-17,Prof. Malan,80,36.2,Right Upper,fa
 </div>
 <p>Each participant was entered twice, with identical rows. These are the same two duplicates <a href="../../tutorials/01-import-data-in-r/import-data-in-r.html">Tutorial 1</a> finds in R, found here without starting R at all. <code>grep -c</code> counts matching lines instead of printing them:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">"Active TB"</span> bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">"Active TB"</span> bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>166</code></pre>
 </div>
@@ -748,7 +766,7 @@ SP22251,Male,Active TB,Negative,55,2019-06-17,Prof. Malan,80,36.2,Right Upper,fa
 <h3 class="anchored" data-anchor-id="filter-rows-on-a-number">Filter rows on a number</h3>
 <p><code>awk</code> can test a column’s value. <code>-F ,</code> sets the separator, <code>$16</code> is the 16th column (<code>time_to_process_min</code>, from the numbered list above), and <code>NR &gt; 1</code> skips the header. The command prints the ID and processing time of every row where the time is below zero:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F</span> , <span class="st">'NR &gt; 1 &amp;&amp; $16 &lt; 0 {print $1, $16}'</span> bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F</span> , <span class="st">'NR &gt; 1 &amp;&amp; $16 &lt; 0 {print $1, $16}'</span> bal_baseline.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>SP24965 -1
 SP30729 -1
@@ -757,7 +775,7 @@ SP38602 -1</code></pre>
 </div>
 <p>A sample can’t take −1 minutes to process, so these three are recording errors to query. <a href="../../tutorials/03-clean-data-in-r/clean-data-in-r.html">Tutorial 3</a> deals with impossible measurements like this one when it cleans the data. The same pattern finds the slowest samples, sorting numerically (<code>-n</code>) on column 16:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 bal_baseline.csv <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-t</span> , <span class="at">-k</span> 16,16 <span class="at">-n</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 3 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> , <span class="at">-f</span> 1,16</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 bal_baseline.csv <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-t</span> , <span class="at">-k</span> 16,16 <span class="at">-n</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-n</span> 3 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-d</span> , <span class="at">-f</span> 1,16</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>SP29084,218
 SP08512,248
@@ -770,9 +788,9 @@ SP24791,259</code></pre>
 <h2 class="anchored" data-anchor-id="save-what-you-find">6. Save what you find</h2>
 <p><code>&gt;</code> sends a command’s output into a file instead of the screen, and <code>&gt;&gt;</code> adds to the end of a file. Together they can build a smaller CSV with only the active TB participants: the header first, then the matching rows.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 1 bal_baseline.csv <span class="op">&gt;</span> active_tb.csv</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">",Active TB,"</span> bal_baseline.csv <span class="op">&gt;&gt;</span> active_tb.csv</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> active_tb.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 1 bal_baseline.csv <span class="op">&gt;</span> active_tb.csv</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">",Active TB,"</span> bal_baseline.csv <span class="op">&gt;&gt;</span> active_tb.csv</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> active_tb.csv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>167 active_tb.csv</code></pre>
 </div>
@@ -887,7 +905,7 @@ Table&nbsp;1: The commands in this article
 <li><strong><a href="https://jeroenjanssens.com/dsatcl/">Data Science at the Command Line</a></strong> <span class="citation" data-cites="janssens2021">(<a href="#ref-janssens2021" role="doc-biblioref">Janssens, 2021</a>)</span>: a free book that takes these pipes much further, including tools that understand CSV and JSON properly.</li>
 </ul>
 <div class="series-pager">
-<p>Next: Part 2, Finding and downloading public sequencing data <em>(coming soon)</em></p>
+<p><a href="../../writing/finding-and-downloading-public-data/index.html">Part 2: Finding and downloading public sequencing data →</a></p>
 </div>
 </section>
 <section id="references" class="level2">

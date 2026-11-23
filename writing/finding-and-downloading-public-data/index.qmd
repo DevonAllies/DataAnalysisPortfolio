@@ -1,0 +1,367 @@
+---
+title: "Finding and downloading public sequencing data"
+subtitle: "From a paper to verified FASTQ files on your disk, with Entrez Direct, the European Nucleotide Archive and md5sum"
+author: "Devon Allies"
+date: 2026-11-23
+description: "How to find public sequencing data from the command line and download it safely: searching PubMed with Entrez Direct (esearch, efetch, xtract), finding a study's accession in the paper, getting the run table from the European Nucleotide Archive, choosing runs with awk and sort, downloading FASTQ files and a reference genome, and checking every file with md5sum."
+categories: [Command line, Bioinformatics, Tuberculosis]
+series: command-line
+series-part: 2
+bibliography: references.bib
+csl: ../../assets/csl/harvard-anglia-ruskin-university.csl
+filters:
+  - ../../assets/lua/series.lua
+toc: true
+toc-depth: 2
+toc-location: left
+---
+
+Most published sequencing studies deposit their raw reads in a public archive, free for anyone to download and re-analyse. That makes them ideal for learning: real data, with a paper that explains how it was collected. The hard part for a beginner is getting from the paper to the right files, and knowing the files arrived intact.
+
+This article does that from the terminal, start to finish, for the data used in the rest of this series:
+
+1. Search PubMed for the study with **Entrez Direct**.
+2. Find the study's accession number in the paper.
+3. Get the list of sequencing runs from the **European Nucleotide Archive** (ENA).
+4. Choose runs and download them, with the reference genome.
+5. Check every file with **md5sum** and record what you downloaded.
+
+It uses the commands from [Part 1](../command-line-for-biologists/index.qmd): pipes, `cut`, `sort`, `awk` and loops over lines.
+
+::: {.callout-note appearance="simple"}
+## About the output
+
+Every output shown was saved from a real run on 20 November 2026, with Entrez Direct 26.0. Searches of live databases change over time, so yours may find more results than mine; the study and its files won't change.
+:::
+
+## Where public sequencing data lives
+
+Three archives share the world's raw sequencing data, mirroring each other daily as the International Nucleotide Sequence Database Collaboration: NCBI's **Sequence Read Archive** (SRA) in the United States, the **European Nucleotide Archive** (ENA) in the UK, and the **DNA Data Bank of Japan**. A study submitted to any one appears in all three, under the same accession numbers:
+
+| Prefix | Level | Example | What it is |
+|---|---|---|---|
+| PRJEB, PRJNA, PRJDB | Project | PRJEB43283 | A whole study: everything one paper deposited |
+| ERS, SRS, SAMEA, SAMN | Sample | SAMEA11761213 | One biological sample, such as one bacterial isolate |
+| ERR, SRR, DRR | Run | ERR8025410 | One sequencing run of a sample: the FASTQ files |
+
+: Accession numbers in the sequence archives. The letters E, S and D show which archive received the submission. {#tbl-accessions}
+
+Papers normally give the project accession; the files you download belong to runs.
+
+## 1. Search PubMed with Entrez Direct
+
+**Entrez Direct** (EDirect) is NCBI's set of command-line tools for searching its databases [@kans2013]: PubMed, the nucleotide database, SRA and dozens more. It's on Bioconda, so with micromamba (see [Part 1](../command-line-for-biologists/index.qmd#install-software-and-set-up-environments)):
+
+```{.bash}
+micromamba create -n edirect entrez-direct
+micromamba activate edirect
+```
+
+(Activate the environment rather than using `micromamba run`: the commands below are joined by pipes, and `micromamba run` only applies to the first command in a pipe. See the warning in [Part 1](../command-line-for-biologists/index.qmd#install-software-and-set-up-environments).)
+
+Three commands do most of the work, joined by pipes:
+
+- `esearch` runs a search and remembers the results;
+- `efetch` downloads the records, in the format you ask for;
+- `xtract` pulls chosen fields out of the records into a table.
+
+Start with a search. PubMed's usual search syntax works: quotes for exact phrases, `AND`, `OR` and brackets:
+
+```{.bash}
+esearch -db pubmed -query 'tuberculosis AND "Western Cape" AND "whole genome sequencing" AND (XDR OR "extensively drug")'
+```
+
+```{.text}
+<ENTREZ_DIRECT>
+  <Db>pubmed</Db>
+  <Query>tuberculosis AND "Western Cape" AND "whole genome sequencing" AND (XDR OR "extensively drug")</Query>
+  <Count>7</Count>
+  <Step>1</Step>
+  <Elapsed>11</Elapsed>
+</ENTREZ_DIRECT>
+```
+
+Seven papers match. On its own, `esearch` prints only this summary; the results wait on NCBI's server for the next command. Pipe them into `efetch` for a short summary of each paper (`-format docsum`), and into `xtract` to keep four fields:
+
+```{.bash}
+esearch -db pubmed -query 'tuberculosis AND "Western Cape" AND "whole genome sequencing" AND (XDR OR "extensively drug")' \
+  | efetch -format docsum \
+  | xtract -pattern DocumentSummary -element Id PubDate Source Title
+```
+
+```{.text}
+21110864	2010 Nov 26	BMC Genomics	The non-clonality of drug resistance in Beijing-genotype isolates of Mycobacterium tuberculosis from the Western Cape of South Africa.
+28109869	2017 Apr	Lancet Respir Med	Outcomes, infectiousness, and transmission dynamics of patients with extensively drug-resistant tuberculosis and home-discharged patients with programmatically incurable tuberculosis: a prospective cohort study.
+34780706	2022 Apr	Lancet Infect Dis	Assessment of epidemiological and genetic characteristics and clinical outcomes of resistance to bedaquiline in patients treated for rifampicin-resistant tuberculosis: a cross-sectional and longitudinal study.
+35471145	2022 Apr	Microb Genom	Transmission, distribution and drug resistance-conferring mutations of extensively drug-resistant tuberculosis in the Western Cape Province, South Africa.
+39338491	2024 Sep 2	Microorganisms	A Genome-Focused Investigation Reveals the Emergence of a Mycobacterium tuberculosis Strain Related to Multidrug-Resistant Tuberculosis in the Amazon Region of Brazil.
+40980012	2025	Front Cell Infect Microbiol	Population structure and emergence of resistance to new and repurposed drugs in XDR-TB: insights from a 10-year genomic study in the Western Cape, South Africa review.
+41809859	2026 Mar	ERJ Open Res	Multicentre field evaluation of Xpert MTB/XDR in sub-Saharan Africa.
+```
+
+`xtract -pattern DocumentSummary` starts a new row for each record, and `-element` lists the fields to keep, separated by tabs. The output is an ordinary table, so `sort`, `grep` and `cut` all work on it.
+
+The fourth paper is the one this series uses [@oostvogels2022]. Its first column is its **PubMed ID**, 35471145.
+
+::: {.callout-warning appearance="simple"}
+## If every EDirect command fails with "curl: (56)"
+
+On recent Linux systems you may see this for every command:
+
+```{.text}
+curl: (56) OpenSSL SSL_read: OpenSSL/3.5.5: error:0A000126:SSL routines::unexpected eof while reading, errno 0
+ ERROR:  curl command failed ( … ) with: 56
+```
+
+EDirect 26.0 asks NCBI's servers for an old style of connection (HTTP/1.0), which they close in a way that newer OpenSSL versions treat as an error, so EDirect throws away a reply that had arrived intact. A small OpenSSL setting tells it to accept that. Save these lines as `~/.openssl-eof.cnf`:
+
+```{.text filename="~/.openssl-eof.cnf"}
+openssl_conf = openssl_init
+[openssl_init]
+ssl_conf = ssl_sect
+[ssl_sect]
+system_default = system_default_sect
+[system_default_sect]
+Options = IgnoreUnexpectedEOF
+```
+
+and point OpenSSL to it before running EDirect, in the same terminal:
+
+```{.bash}
+export OPENSSL_CONF=~/.openssl-eof.cnf
+```
+
+It only affects the terminal you set it in, and only relaxes that one check.
+:::
+
+## 2. Find the data in the paper
+
+The paper's details include its DOI and, because it's open access, its PubMed Central (PMC) ID, which leads to the full text:
+
+```{.bash}
+efetch -db pubmed -id 35471145 -format xml \
+  | xtract -pattern PubmedArticle -element MedlineCitation/PMID \
+      -block ArticleId -if @IdType -equals doi -element ArticleId
+```
+
+```{.text}
+35471145	10.1099/mgen.0.000815	10.1126/science.313.5793.1554a	10.1371/journal.pmed.0040050	…
+```
+
+The paper's own DOI comes first. The others belong to the papers it cites, which are in the same record; `xtract` found them all because they're tagged the same way. Seeing more than you expected is a common first experience with `xtract`, and a reason to check results by eye.
+
+Studies state where their data is, usually in a "Data summary" or "Data availability" section. Download the full text from PubMed Central and search it for project accessions:
+
+```{.bash}
+efetch -db pmc -id 9453078 -format xml > paper.xml
+grep -o "PRJ[A-Z]*[0-9]*" paper.xml | sort | uniq -c | sort -rn
+```
+
+```{.text}
+      4 PRJEB35725
+      4 PRJEB14199
+      3 PRJEB43283
+```
+
+`grep -o` prints each match on its own line, and `sort | uniq -c` counts them, as in Part 1. Three projects are named. The paper's text explains them: PRJEB14199 and PRJEB35725 hold genomes published by earlier studies, and
+
+> Newly published whole genome sequences of Mtb genomes are published under accession number PRJEB43283 on the European Nucleotide Archive.
+
+So **PRJEB43283** is the new data.
+
+::: {.callout-tip appearance="simple"}
+## Why read the paper?
+
+NCBI can link a paper to its data with `elink`, but only when the submitters connected the two, which many don't. Here `elink` from the paper finds no data at all. The paper's own data statement is the reliable source, and it also tells you which data is new and which is re-used.
+:::
+
+## 3. Get the run table
+
+Every project has a **run table**: one row per sequencing run, with its sample, instrument, size, download links and checksums. ENA serves it from a web address that `curl` can fetch directly, choosing the columns with `fields=`:
+
+```{.bash}
+mkdir -p metadata
+curl -s "https://www.ebi.ac.uk/ena/portal/api/filereport?accession=PRJEB43283&result=read_run&fields=run_accession,instrument_model,read_count,base_count,fastq_md5,fastq_ftp&format=tsv" \
+  -o metadata/PRJEB43283_runs.tsv
+```
+
+The address is in quotes because it contains `&`, which the shell would otherwise treat as an instruction. Look at what arrived:
+
+```{.bash}
+wc -l metadata/PRJEB43283_runs.tsv
+head -n 2 metadata/PRJEB43283_runs.tsv
+```
+
+```{.text}
+361 metadata/PRJEB43283_runs.tsv
+run_accession	instrument_model	read_count	base_count	fastq_md5	fastq_ftp
+ERR8025410	Illumina NovaSeq 6000	2128470	321398970	21691a7fd0612f88485325cc79ea24d8;0f8c3c594a6613a6548f995e337f6ab6	ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_2.fastq.gz
+```
+
+A header plus 360 runs. Each paired run has two FASTQ files, so the last two columns hold two values separated by `;`: one checksum and one link per file. Count the instruments with the pattern from Part 1:
+
+```{.bash}
+tail -n +2 metadata/PRJEB43283_runs.tsv | cut -f 2 | sort | uniq -c
+```
+
+```{.text}
+     40 Illumina HiSeq 2000
+    320 Illumina NovaSeq 6000
+```
+
+(`cut` splits on tabs by default, which is what this file uses.)
+
+::: {.callout-note appearance="simple"}
+## Getting the table from NCBI instead
+
+EDirect can fetch the equivalent table from SRA with `esearch -db sra -query PRJEB43283 | efetch -format runinfo`, as comma-separated values. ENA's version is quicker for large projects, lets you choose the columns, and includes direct download links and checksums, which is why this article uses it.
+:::
+
+### Choose the runs
+
+For a tutorial, small is good. `awk` keeps only the NovaSeq runs (`$2` is the second column, `-F '\t'` says the columns are tab-separated), then `sort` orders them by read count (`-k 3,3n`: column 3, numerically) and `head` keeps the four smallest:
+
+```{.bash}
+awk -F '\t' '$2 == "Illumina NovaSeq 6000"' metadata/PRJEB43283_runs.tsv \
+  | sort -t $'\t' -k 3,3n | head -n 4 > metadata/chosen_runs.tsv
+cut -f 1-4 metadata/chosen_runs.tsv
+```
+
+```{.text}
+ERR8025410	Illumina NovaSeq 6000	2128470	321398970
+ERR8025420	Illumina NovaSeq 6000	2276564	343761164
+ERR8025690	Illumina NovaSeq 6000	2321424	582677424
+ERR8025744	Illumina NovaSeq 6000	2547056	639311056
+```
+
+`$'\t'` is how to write a tab character for `sort`. ENA's `read_count` counts both reads of each pair, so ERR8025410 has 1,064,235 read pairs, half the number shown.
+
+## 4. Download the files
+
+The download links are in column 6, two per run. `tr ';' '\n'` puts each on its own line, and a `while read` loop runs `curl` once per link. Before downloading anything, run the loop with `echo` in front of `curl` to check the commands:
+
+```{.bash}
+cut -f 6 metadata/chosen_runs.tsv | tr ';' '\n' | while read -r url; do
+  echo curl -sS -o "raw/$(basename "$url")" "https://$url"
+done | head -n 2
+```
+
+```{.text}
+curl -sS -o raw/ERR8025410_1.fastq.gz https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_1.fastq.gz
+curl -sS -o raw/ERR8025410_2.fastq.gz https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_2.fastq.gz
+```
+
+The links say `ftp.sra.ebi.ac.uk` without a protocol; the same server answers on `https://`, which the loop adds. `-o` names the output file, `basename` takes the file name from the end of the link, `-sS` hides the progress bar but still shows errors, and `while read -r url` reads one line at a time into the variable `url`. Then remove the `echo` and download for real:
+
+```{.bash}
+mkdir -p raw
+cut -f 6 metadata/chosen_runs.tsv | tr ';' '\n' | while read -r url; do
+  curl -sS -o "raw/$(basename "$url")" "https://$url"
+done
+ls -lh raw/
+```
+
+```{.text}
+96M ERR8025410_1.fastq.gz
+97M ERR8025410_2.fastq.gz
+101M ERR8025420_1.fastq.gz
+103M ERR8025420_2.fastq.gz
+206M ERR8025690_1.fastq.gz
+222M ERR8025690_2.fastq.gz
+213M ERR8025744_1.fastq.gz
+232M ERR8025744_2.fastq.gz
+```
+
+(`ls -lh` prints more columns; only the size and name are shown here.) About 1.2 GB in all, a few minutes on a good connection.
+
+### The reference genome
+
+Analyses compare reads to a **reference genome**. For *M. tuberculosis* that's H37Rv [@cole1998], GenBank accession NC_000962.3, which `efetch` downloads from NCBI's nucleotide database as FASTA:
+
+```{.bash}
+mkdir -p reference
+efetch -db nuccore -id NC_000962.3 -format fasta > reference/H37Rv.fasta
+head -n 1 reference/H37Rv.fasta
+```
+
+```{.text}
+>NC_000962.3 Mycobacterium tuberculosis H37Rv, complete genome
+```
+
+## 5. Check the files arrived intact
+
+A download can stop partway without an obvious error, especially on large files. A **checksum** catches it: a short code computed from every byte of a file, so any change, even one byte, gives a different code. ENA lists the MD5 checksum of every file in column 5 of the run table. `md5sum -c` compares files against a list in the form `checksum  path`, which `paste` builds by putting the checksums and file names side by side:
+
+```{.bash}
+paste <(cut -f 5 metadata/chosen_runs.tsv | tr ';' '\n') \
+      <(cut -f 6 metadata/chosen_runs.tsv | tr ';' '\n' | xargs -n 1 basename) \
+  | sed 's|\t|  raw/|' > metadata/md5sums.txt
+head -n 2 metadata/md5sums.txt
+```
+
+```{.text}
+21691a7fd0612f88485325cc79ea24d8  raw/ERR8025410_1.fastq.gz
+0f8c3c594a6613a6548f995e337f6ab6  raw/ERR8025410_2.fastq.gz
+```
+
+`<( )` hands a command's output to another command as if it were a file, so `paste` can join two pipelines column by column. `xargs -n 1 basename` runs `basename` on each line, and `sed` swaps the tab for two spaces and the folder name. Now check:
+
+```{.bash}
+md5sum -c metadata/md5sums.txt
+```
+
+```{.text}
+raw/ERR8025410_1.fastq.gz: OK
+raw/ERR8025410_2.fastq.gz: OK
+raw/ERR8025420_1.fastq.gz: OK
+raw/ERR8025420_2.fastq.gz: OK
+raw/ERR8025690_1.fastq.gz: OK
+raw/ERR8025690_2.fastq.gz: OK
+raw/ERR8025744_1.fastq.gz: OK
+raw/ERR8025744_2.fastq.gz: OK
+```
+
+Every file matches. This is what a file cut short looks like, here a copy stopped after the first 50 MB:
+
+```{.text}
+raw/ERR8025410_1.fastq.gz: FAILED
+md5sum: WARNING: 1 computed checksum did NOT match
+```
+
+Delete it and download it again. (`gzip -t file.fastq.gz` tests a compressed file even without a checksum list, and reports `unexpected end of file` for this one, but a checksum also catches damage that leaves the file readable.)
+
+## 6. Record what you downloaded
+
+Months later, you or a reviewer will ask exactly which data went into an analysis. Keep the answer in the project folder:
+
+```{.bash}
+date -Iseconds > metadata/downloaded_on.txt
+```
+
+With the run table, the chosen runs and the checksums already in `metadata/`, the folder now records where every file came from, which runs were chosen and how, and that they arrived intact:
+
+```{.text}
+project/
+├── metadata/
+│   ├── PRJEB43283_runs.tsv   every run in the study, as ENA listed it
+│   ├── chosen_runs.tsv       the four runs used
+│   ├── md5sums.txt           checksums for the downloaded files
+│   └── downloaded_on.txt     when
+├── raw/                      the eight FASTQ files, never edited
+└── reference/
+    └── H37Rv.fasta
+```
+
+Treat `raw/` as read-only from now on: every later step writes new files elsewhere. `chmod a-w raw/*` removes write permission, so an accidental `>` or `rm` fails instead of destroying the data.
+
+## Going further
+
+- **More PubMed fields:** `efetch -format abstract` prints readable abstracts; `xtract` can pull authors, journals and dates from `-format xml` for a literature table.
+- **Many projects at once:** the run-table `curl` command works for any project accession, so a loop over a list of projects builds one combined table.
+- **NCBI limits:** NCBI restricts how many requests a computer can send per second. A free API key from your NCBI account raises the limit; EDirect uses it automatically when it's saved as `export NCBI_API_KEY=your_key`.
+- **SRA Toolkit:** NCBI's `prefetch` and `fasterq-dump` download runs from SRA in its own format and convert them to FASTQ. Downloading FASTQ from ENA, as here, avoids the conversion step.
+
+## References
+
+::: {#refs}
+:::
