@@ -24,6 +24,10 @@ website:
   site-url: "https://devonallies.co.za/"
   image: assets/images/og-card.jpg   # default link-preview card (1200x628); pages with their own image use that
   open-graph: true
+  twitter-card:                      # link previews on X (needs its own tags)
+    card-style: summary_large_image
+    site: "@CompBioSeq"
+    creator: "@CompBioSeq"
   navbar:
     left:
       - href: index.qmd

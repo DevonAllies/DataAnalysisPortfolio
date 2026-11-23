@@ -30,7 +30,7 @@ Prefer rendering pages one at a time over a bare `quarto render`: `chrx-rnaseq` 
 
 ## Structure
 
-- `_quarto.yml` — site config: `output-dir: docs`, cosmo + brand theme, `grid.body-width: 960px`, navbar (Home / Projects / Tutorials / Publications & Writing / Resources / About Me / Contact), site-wide `acronyms` filter, `site-url` (sitemap) and `open-graph` (link previews; Twitter cards deliberately off).
+- `_quarto.yml` — site config: `output-dir: docs`, cosmo + brand theme, `grid.body-width: 960px`, navbar (Home / Projects / Tutorials / Publications & Writing / Resources / About Me / Contact), site-wide `acronyms` filter, `site-url` (sitemap) and `open-graph` and `twitter-card` (link previews; X needs its own `twitter:card` tags, `summary_large_image`, `@CompBioSeq`).
 - `projects/<name>/` — one folder per project, all with the same layout: `index.qmd` (URL `/projects/<name>/`), `references.bib`, `images/` (thumbnail + figures), `data/` (inputs). Chunks run from the page's folder, so code reads `data/...` relative paths. Every project uses the shared citation style `../../assets/csl/harvard-anglia-ruskin-university.csl`. Each page lists its pre-2026-11-13 address under `aliases:`, which makes Quarto write a redirect page there; keep these so old links and Google's index keep working.
 - Project data: only `covid19-blood-counts/data/` and `tb-global-trends/data/` are committed (explicit `!` exceptions in `.gitignore`); every other `data/` is local-only. `chrx-rnaseq` and `tb-bal-cytokines` need their local data to render.
 - `index.qmd` — home page. Its "Featured projects" grid lists specific project files by hand (`listing.contents`). It also carries the Google Search Console verification meta tag (`include-in-header`); don't remove it.
