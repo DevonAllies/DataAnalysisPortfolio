@@ -4,6 +4,10 @@ subtitle: "Tutorial 3: consistent categories, dates, impossible values and a rec
 author: "Devon Allies"
 date: 2026-11-16
 order: 3
+series: data-science
+series-part: 3
+filters:
+  - ../../assets/lua/series.lua
 description: "Clean the imported BAL study metadata in R: fix IDs and duplicates, make category spellings consistent, parse mixed date formats, deal with impossible measurements, check that columns agree with each other, and keep a record of every decision."
 categories: [R, Data cleaning]
 ---

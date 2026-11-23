@@ -95,7 +95,7 @@
     "href": "tutorials/03-clean-data-in-r/clean-data-in-r.html",
     "title": "Cleaning data in R",
     "section": "",
-    "text": "NoteWhat you’ll learn\n\n\n\n\nAudit a dataset to find what needs cleaning\nMake category spellings consistent with tolower() and case_when()\nSpot missing-value codes that are really an answer\nParse dates entered in mixed formats with lubridate\nReplace impossible measurements without guessing\nCheck that columns agree with each other, and flag rows for review instead of silently changing them\nKeep a record of every cleaning decision"
+    "text": "Tutorial 3 of the series: Data scienceTutorial 1: Importing data into RStudio with RTutorial 2: Using one dataset in both R and PythonTutorial 3: Cleaning data in R (this one)Tutorial 4: Choosing and running statistical tests in R"
   },
   {
     "objectID": "tutorials/03-clean-data-in-r/clean-data-in-r.html#start-where-tutorial-1-ended",
@@ -179,14 +179,14 @@
     "href": "tutorials/03-clean-data-in-r/clean-data-in-r.html#next",
     "title": "Cleaning data in R",
     "section": "Next",
-    "text": "Next\nThe cleaned metadata is ready for analysis. In Tutorial 4 you’ll choose and run statistical tests on it, starting from the cleaned files.\n← Back to Tutorial 2: Using one dataset in both R and Python"
+    "text": "Next\nThe cleaned metadata is ready for analysis. In Tutorial 4 you’ll choose and run statistical tests on it, starting from the cleaned files.\n← Back to Tutorial 2: Using one dataset in both R and Python\n\n\n\n← Tutorial 2: Using one dataset in both R and Python\nTutorial 4: Choosing and running statistical tests in R →"
   },
   {
     "objectID": "tutorials/01-import-data-in-r/import-data-in-r.html",
     "href": "tutorials/01-import-data-in-r/import-data-in-r.html",
     "title": "Importing data into RStudio with R",
     "section": "",
-    "text": "NoteWhat you’ll learn\n\n\n\n\nOrganise files in an RStudio Project and build paths with here()\nRead CSV files with read.csv() and readr::read_csv(), and see why they differ\nRead Excel files with readxl, including choosing sheets and handling missing-value codes\nCombine several sheets (one per study visit) into one table\nCheck an import with glimpse(), count() and get_dupes()"
+    "text": "Tutorial 1 of the series: Data scienceTutorial 1: Importing data into RStudio with R (this one)Tutorial 2: Using one dataset in both R and PythonTutorial 3: Cleaning data in RTutorial 4: Choosing and running statistical tests in R"
   },
   {
     "objectID": "tutorials/01-import-data-in-r/import-data-in-r.html#set-up-an-rstudio-project",
@@ -242,7 +242,7 @@
     "href": "tutorials/01-import-data-in-r/import-data-in-r.html#next",
     "title": "Importing data into RStudio with R",
     "section": "Next",
-    "text": "Next\nYou now have metadata, cell_counts and baseline loaded in R. In Tutorial 2 you’ll pass the same data to Python as a pandas DataFrame, so you can use R and Python in one analysis."
+    "text": "Next\nYou now have metadata, cell_counts and baseline loaded in R. In Tutorial 2 you’ll pass the same data to Python as a pandas DataFrame, so you can use R and Python in one analysis.\n\n\n\nTutorial 2: Using one dataset in both R and Python →"
   },
   {
     "objectID": "resources.html",
@@ -753,7 +753,7 @@
     "href": "tutorials/02-r-and-python/r-and-python-dataframes.html",
     "title": "Using one dataset in both R and Python",
     "section": "",
-    "text": "NoteWhat you’ll learn\n\n\n\n\nConnect R to a Python environment with reticulate\nSend an R data frame to Python as a pandas DataFrame (r. in Python)\nBring a pandas DataFrame back to R (py$ in R)\nKnow which column types change on the way, and the two conversions that quietly corrupt data"
+    "text": "Tutorial 2 of the series: Data scienceTutorial 1: Importing data into RStudio with RTutorial 2: Using one dataset in both R and Python (this one)Tutorial 3: Cleaning data in RTutorial 4: Choosing and running statistical tests in R"
   },
   {
     "objectID": "tutorials/02-r-and-python/r-and-python-dataframes.html#why-use-both",
@@ -816,14 +816,14 @@
     "href": "tutorials/02-r-and-python/r-and-python-dataframes.html#next",
     "title": "Using one dataset in both R and Python",
     "section": "Next",
-    "text": "Next\nThe imported data still has inconsistent spellings, mixed date formats and impossible values. In Tutorial 3 you’ll clean it in R, ready for analysis.\n← Back to Tutorial 1: Importing data into RStudio with R"
+    "text": "Next\nThe imported data still has inconsistent spellings, mixed date formats and impossible values. In Tutorial 3 you’ll clean it in R, ready for analysis.\n← Back to Tutorial 1: Importing data into RStudio with R\n\n\n\n← Tutorial 1: Importing data into RStudio with R\nTutorial 3: Cleaning data in R →"
   },
   {
     "objectID": "tutorials/04-statistical-tests-in-r/statistical-tests-in-r.html",
     "href": "tutorials/04-statistical-tests-in-r/statistical-tests-in-r.html",
     "title": "Choosing and running statistical tests in R",
     "section": "",
-    "text": "NoteWhat you’ll learn\n\n\n\n\nChoose a test from three questions: what kind of data, how many groups, and whether the measurements are paired\nCheck the assumptions a test relies on, with plots and the Shapiro-Wilk test\nWhat each common test does, when to use it, and how to run it in R\nRead the output: the test statistic, the p-value and the confidence interval\nMeasure how big a difference is (effect size), and check whether a study could have detected it (power)\nReport a result in one clear sentence"
+    "text": "Tutorial 4 of the series: Data scienceTutorial 1: Importing data into RStudio with RTutorial 2: Using one dataset in both R and PythonTutorial 3: Cleaning data in RTutorial 4: Choosing and running statistical tests in R (this one)"
   },
   {
     "objectID": "tutorials/04-statistical-tests-in-r/statistical-tests-in-r.html#set-up",
@@ -907,7 +907,7 @@
     "href": "tutorials/04-statistical-tests-in-r/statistical-tests-in-r.html#common-pitfalls",
     "title": "Choosing and running statistical tests in R",
     "section": "Common pitfalls",
-    "text": "Common pitfalls\n\n\n\n\n\n\n\n\nProblem\nSymptom\nFix\n\n\n\n\nChoosing the test after seeing the results\nTrying tests until one gives p &lt; 0.05\nChoose the test from the data type and design, before testing\n\n\nMany pairwise t-tests\nFalse positives across lots of comparisons\nTest all groups at once (ANOVA, Kruskal-Wallis); post hoc tests in Tutorial 5\n\n\nUnpaired test on paired data\nReal changes look non-significant\nUse a paired test whenever the same people are measured twice\n\n\nChi-square with small counts\nR warns “approximation may be incorrect”\nCheck expected counts; use Fisher’s exact test\n\n\nLeftover factor levels\nt.test() complains about more than two groups\ndroplevels() after filtering\n\n\n“Not significant” read as “no difference”\nClaiming groups are the same\nSay “no evidence of a difference” and look at the confidence interval\n\n\nOnly reporting p-values\nReaders can’t judge how big the difference is\nReport the effect size with its confidence interval, plus the statistic and group sizes\n\n\nSignificant read as important\nA tiny difference reported as a finding\nJudge the effect size, not the p-value\n\n\nSmall study, no power\nReal differences come out non-significant\nPlan the sample size with power.t.test() before collecting data"
+    "text": "Common pitfalls\n\n\n\n\n\n\n\n\nProblem\nSymptom\nFix\n\n\n\n\nChoosing the test after seeing the results\nTrying tests until one gives p &lt; 0.05\nChoose the test from the data type and design, before testing\n\n\nMany pairwise t-tests\nFalse positives across lots of comparisons\nTest all groups at once (ANOVA, Kruskal-Wallis); post hoc tests in Tutorial 5\n\n\nUnpaired test on paired data\nReal changes look non-significant\nUse a paired test whenever the same people are measured twice\n\n\nChi-square with small counts\nR warns “approximation may be incorrect”\nCheck expected counts; use Fisher’s exact test\n\n\nLeftover factor levels\nt.test() complains about more than two groups\ndroplevels() after filtering\n\n\n“Not significant” read as “no difference”\nClaiming groups are the same\nSay “no evidence of a difference” and look at the confidence interval\n\n\nOnly reporting p-values\nReaders can’t judge how big the difference is\nReport the effect size with its confidence interval, plus the statistic and group sizes\n\n\nSignificant read as important\nA tiny difference reported as a finding\nJudge the effect size, not the p-value\n\n\nSmall study, no power\nReal differences come out non-significant\nPlan the sample size with power.t.test() before collecting data\n\n\n\n\n← Tutorial 3: Cleaning data in R"
   },
   {
     "objectID": "tutorials/04-statistical-tests-in-r/statistical-tests-in-r.html#references",
@@ -970,7 +970,7 @@
     "href": "tutorials/command-line/command-line-for-biologists/index.html",
     "title": "The command line for biologists",
     "section": "",
-    "text": "Part 1: The command line for biologists (this article)\nPart 2: Finding and downloading public sequencing data\nPart 3: Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes (coming soon)\nPart 4: Checking and cleaning sequencing reads: FastQC, MultiQC and fastp (coming soon)\nPart 5: Aligning every FASTQ file in a folder with a loop (coming soon)\nMost of my day happens in a terminal. Bioinformatics tools such as GATK and Nextflow have no buttons to click: you run them by typing commands. The same is true on a remote server or computing cluster, where the terminal is often the only way in. And even at my own desk, a few short commands answer “what’s in this file?” faster than opening it.\nThe command line looks unfriendly at first, but you need surprisingly little of it to be useful. This article covers the commands I use every day on Ubuntu, in the order you’d need them:\nThe last two sections use the simulated BAL dataset from my tutorial series, so you can follow along and check your output against mine."
+    "text": "Part 1 of the series: Bioinformatics on the command linePart 1: The command line for biologists (this one)Part 2: Finding and downloading public sequencing dataPart 3: Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes (coming soon)Part 4: Checking and cleaning sequencing reads: FastQC, MultiQC and fastp (coming soon)Part 5: Aligning every FASTQ file in a folder with a loop (coming soon)\nMost of my day happens in a terminal. Bioinformatics tools such as GATK and Nextflow have no buttons to click: you run them by typing commands. The same is true on a remote server or computing cluster, where the terminal is often the only way in. And even at my own desk, a few short commands answer “what’s in this file?” faster than opening it.\nThe command line looks unfriendly at first, but you need surprisingly little of it to be useful. This article covers the commands I use every day on Ubuntu, in the order you’d need them:\nThe last two sections use the simulated BAL dataset from my tutorial series, so you can follow along and check your output against mine."
   },
   {
     "objectID": "tutorials/command-line/command-line-for-biologists/index.html#open-a-terminal",
@@ -1040,7 +1040,7 @@
     "href": "tutorials/command-line/finding-and-downloading-public-data/index.html",
     "title": "Finding and downloading public sequencing data",
     "section": "",
-    "text": "Part 1: The command line for biologists\nPart 2: Finding and downloading public sequencing data (this article)\nPart 3: Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes (coming soon)\nPart 4: Checking and cleaning sequencing reads: FastQC, MultiQC and fastp (coming soon)\nPart 5: Aligning every FASTQ file in a folder with a loop (coming soon)\nMost published sequencing studies deposit their raw reads in a public archive, free for anyone to download and re-analyse. That makes them ideal for learning: real data, with a paper that explains how it was collected. The hard part for a beginner is getting from the paper to the right files, and knowing the files arrived intact.\nThis article does that from the terminal, start to finish, for the data used in the rest of this series:\nIt uses the commands from Part 1: pipes, cut, sort, awk and loops over lines."
+    "text": "Part 2 of the series: Bioinformatics on the command linePart 1: The command line for biologistsPart 2: Finding and downloading public sequencing data (this one)Part 3: Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes (coming soon)Part 4: Checking and cleaning sequencing reads: FastQC, MultiQC and fastp (coming soon)Part 5: Aligning every FASTQ file in a folder with a loop (coming soon)\nMost published sequencing studies deposit their raw reads in a public archive, free for anyone to download and re-analyse. That makes them ideal for learning: real data, with a paper that explains how it was collected. The hard part for a beginner is getting from the paper to the right files, and knowing the files arrived intact.\nThis article does that from the terminal, start to finish, for the data used in the rest of this series:\nIt uses the commands from Part 1: pipes, cut, sort, awk and loops over lines."
   },
   {
     "objectID": "tutorials/command-line/finding-and-downloading-public-data/index.html#where-public-sequencing-data-lives",

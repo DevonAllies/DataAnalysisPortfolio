@@ -4,6 +4,10 @@ subtitle: "Tutorial 1: CSV and Excel files, multiple sheets, and checking what y
 author: "Devon Allies"
 date: 2026-11-12
 order: 1
+series: data-science
+series-part: 1
+filters:
+  - ../../assets/lua/series.lua
 description: "Load CSV and Excel files into R with readr and readxl, combine one sheet per study visit into a single table, and check the import before you analyse anything."
 categories: [R, Data import]
 ---

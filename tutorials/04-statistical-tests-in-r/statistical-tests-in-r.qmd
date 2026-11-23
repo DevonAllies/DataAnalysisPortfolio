@@ -4,6 +4,10 @@ subtitle: "Tutorial 4: what each common test does, when to use it, and how to ru
 author: "Devon Allies"
 date: 2026-11-19
 order: 4
+series: data-science
+series-part: 4
+filters:
+  - ../../assets/lua/series.lua
 description: "Learn what the common statistical tests do and when to use each one, then run them in R on the cleaned BAL study data: t-tests, Wilcoxon tests, ANOVA, Kruskal-Wallis, paired tests, chi-square, Fisher's exact test and correlation."
 categories: [R, Statistics]
 bibliography: references.bib

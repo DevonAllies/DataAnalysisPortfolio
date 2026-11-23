@@ -2,6 +2,7 @@
 # Links to other websites open in a new tab, so readers keep the article open.
 # Links within this site still open in the same tab.
 link-external-newwindow: true
-# Share buttons (Email, X, WhatsApp, LinkedIn, Copy link) under the title and at the end
+# Share buttons under the title and at the end (share.js), and the "In this series"
+# side panel for multi-part tutorials (series-panel.js)
 include-after-body:
-  text: '<script src="/assets/js/share.js"></script>'
+  text: '<script src="/assets/js/share.js"></script><script src="/assets/js/series-panel.js"></script>'

@@ -4,6 +4,10 @@ subtitle: "Tutorial 2: pass an R data frame to pandas and back with reticulate"
 author: "Devon Allies"
 date: 2026-11-12
 order: 2
+series: data-science
+series-part: 2
+filters:
+  - ../../assets/lua/series.lua
 description: "Use reticulate to turn an R data frame into a pandas DataFrame and back, so R and Python can work on the same data in one document, and learn what changes when the data crosses over."
 categories: [R, Python, Interoperability]
 ---
