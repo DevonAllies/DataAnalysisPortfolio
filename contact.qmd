@@ -3,6 +3,7 @@ title: "Contact"
 description: "Contact Devon Allies about bioinformatics and data science roles, collaborations, or questions about the R and Python tutorials."
 body-classes: hide-description   # description is for search/link previews only
 toc: false
+link-external-newwindow: true   # LinkedIn, GitHub, X and Discord buttons open in a new tab
 ---
 
 ::: {.contact-layout}
@@ -107,6 +108,7 @@ Whether it's a role, a collaboration, or a question about one of the tutorials, 
 
 [<i class="bi bi-linkedin"></i> LinkedIn](https://www.linkedin.com/in/devonallies/){.btn .btn-outline-primary}
 [<i class="bi bi-github"></i> GitHub](https://github.com/DevonAllies){.btn .btn-outline-primary}
+[<i class="bi bi-twitter-x"></i> X](https://x.com/CompBioSeq){.btn .btn-outline-primary}
 [<i class="bi bi-envelope"></i> Email](mailto:devon.lee.allies@gmail.com){.btn .btn-outline-primary}
 [<i class="bi bi-discord"></i> Discord](https://discord.com/users/492592734805164044){.btn .btn-outline-primary}
 [<i class="bi bi-journal-text"></i> ORCID](https://orcid.org/0000-0001-8928-4334){.btn .btn-outline-primary}

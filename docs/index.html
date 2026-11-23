@@ -574,7 +574,7 @@ Differential Expression Analysis of Chromosome X RNA-seq Data
 <h2 class="anchored" data-anchor-id="get-in-touch">Get in touch</h2>
 <div class="contact-strip">
 <p>I’m always happy to talk about bioinformatics, data science and TB research.</p>
-<p><a href="./contact.html" class="btn btn-primary"><i class="bi bi-send"></i> Send me a message</a> <a href="https://www.linkedin.com/in/devonallies/" class="btn btn-outline-primary"><i class="bi bi-linkedin"></i> LinkedIn</a> <a href="https://github.com/DevonAllies" class="btn btn-outline-primary"><i class="bi bi-github"></i> GitHub</a> <a href="mailto:devon.lee.allies@gmail.com" class="btn btn-outline-primary"><i class="bi bi-envelope"></i> Email</a> <a href="https://discord.com/users/492592734805164044" class="btn btn-outline-primary"><i class="bi bi-discord"></i> Discord</a></p>
+<p><a href="./contact.html" class="btn btn-primary"><i class="bi bi-send"></i> Send me a message</a> <a href="https://www.linkedin.com/in/devonallies/" class="btn btn-outline-primary"><i class="bi bi-linkedin"></i> LinkedIn</a> <a href="https://github.com/DevonAllies" class="btn btn-outline-primary"><i class="bi bi-github"></i> GitHub</a> <a href="https://x.com/CompBioSeq" class="btn btn-outline-primary"><i class="bi bi-twitter-x"></i> X</a> <a href="mailto:devon.lee.allies@gmail.com" class="btn btn-outline-primary"><i class="bi bi-envelope"></i> Email</a> <a href="https://discord.com/users/492592734805164044" class="btn btn-outline-primary"><i class="bi bi-discord"></i> Discord</a></p>
 </div>
 
 
@@ -704,6 +704,24 @@ Differential Expression Analysis of Chromosome X RNA-seq Data
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
         var filterRegex = new RegExp("https:\/\/devonallies\.co\.za\/");
+      const newWindowLabel = "(opens in a new tab)";
+      const newWindowNoteId = "quarto-ext-newwindow-label";
+      // Links reference one hidden label through aria-describedby, so the
+      // announcement never changes their accessible name.
+      var describeNewWindow = (link) => {
+        if (!window.document.getElementById(newWindowNoteId)) {
+          var newWindowNote = window.document.createElement("span");
+          newWindowNote.id = newWindowNoteId;
+          newWindowNote.hidden = true;
+          newWindowNote.textContent = newWindowLabel;
+          window.document.body.appendChild(newWindowNote);
+        }
+        var describedBy = (link.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+        if (!describedBy.includes(newWindowNoteId)) {
+          describedBy.push(newWindowNoteId);
+          link.setAttribute("aria-describedby", describedBy.join(" "));
+        }
+      }
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -718,6 +736,12 @@ Differential Expression Analysis of Chromosome X RNA-seq Data
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            describeNewWindow(link);
           if (!link.classList.contains('no-external-icon')) {
           }
         }

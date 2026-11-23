@@ -450,7 +450,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <section id="other-ways-to-reach-me" class="level4 contact-side">
 <h4 class="anchored" data-anchor-id="other-ways-to-reach-me">Other ways to reach me</h4>
-<p><a href="https://www.linkedin.com/in/devonallies/" class="btn btn-outline-primary"><i class="bi bi-linkedin"></i> LinkedIn</a> <a href="https://github.com/DevonAllies" class="btn btn-outline-primary"><i class="bi bi-github"></i> GitHub</a> <a href="mailto:devon.lee.allies@gmail.com" class="btn btn-outline-primary"><i class="bi bi-envelope"></i> Email</a> <a href="https://discord.com/users/492592734805164044" class="btn btn-outline-primary"><i class="bi bi-discord"></i> Discord</a> <a href="https://orcid.org/0000-0001-8928-4334" class="btn btn-outline-primary"><i class="bi bi-journal-text"></i> ORCID</a></p>
+<p><a href="https://www.linkedin.com/in/devonallies/" class="btn btn-outline-primary"><i class="bi bi-linkedin"></i> LinkedIn</a> <a href="https://github.com/DevonAllies" class="btn btn-outline-primary"><i class="bi bi-github"></i> GitHub</a> <a href="https://x.com/CompBioSeq" class="btn btn-outline-primary"><i class="bi bi-twitter-x"></i> X</a> <a href="mailto:devon.lee.allies@gmail.com" class="btn btn-outline-primary"><i class="bi bi-envelope"></i> Email</a> <a href="https://discord.com/users/492592734805164044" class="btn btn-outline-primary"><i class="bi bi-discord"></i> Discord</a> <a href="https://orcid.org/0000-0001-8928-4334" class="btn btn-outline-primary"><i class="bi bi-journal-text"></i> ORCID</a></p>
 <p>Based in Cape Town, South Africa.</p>
 </section>
 </div>
@@ -580,6 +580,24 @@ ul.task-list li input[type="checkbox"] {
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
         var filterRegex = new RegExp("https:\/\/devonallies\.co\.za\/");
+      const newWindowLabel = "(opens in a new tab)";
+      const newWindowNoteId = "quarto-ext-newwindow-label";
+      // Links reference one hidden label through aria-describedby, so the
+      // announcement never changes their accessible name.
+      var describeNewWindow = (link) => {
+        if (!window.document.getElementById(newWindowNoteId)) {
+          var newWindowNote = window.document.createElement("span");
+          newWindowNote.id = newWindowNoteId;
+          newWindowNote.hidden = true;
+          newWindowNote.textContent = newWindowLabel;
+          window.document.body.appendChild(newWindowNote);
+        }
+        var describedBy = (link.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+        if (!describedBy.includes(newWindowNoteId)) {
+          describedBy.push(newWindowNoteId);
+          link.setAttribute("aria-describedby", describedBy.join(" "));
+        }
+      }
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -594,6 +612,12 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            describeNewWindow(link);
           if (!link.classList.contains('no-external-icon')) {
           }
         }

@@ -9,6 +9,7 @@ include-in-header:                 # Google Search Console ownership check
 page-layout: full
 title-block-banner: true
 toc: false
+link-external-newwindow: true   # LinkedIn, GitHub, X and Discord buttons open in a new tab
 engine: knitr
 execute:
   echo: false
@@ -141,6 +142,7 @@ I'm always happy to talk about bioinformatics, data science and TB research.
 [<i class="bi bi-send"></i> Send me a message](contact.qmd){.btn .btn-primary}
 [<i class="bi bi-linkedin"></i> LinkedIn](https://www.linkedin.com/in/devonallies/){.btn .btn-outline-primary}
 [<i class="bi bi-github"></i> GitHub](https://github.com/DevonAllies){.btn .btn-outline-primary}
+[<i class="bi bi-twitter-x"></i> X](https://x.com/CompBioSeq){.btn .btn-outline-primary}
 [<i class="bi bi-envelope"></i> Email](mailto:devon.lee.allies@gmail.com){.btn .btn-outline-primary}
 [<i class="bi bi-discord"></i> Discord](https://discord.com/users/492592734805164044){.btn .btn-outline-primary}
 :::

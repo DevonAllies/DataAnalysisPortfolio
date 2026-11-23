@@ -11,15 +11,22 @@ about:
     - icon: linkedin
       text: LinkedIn
       url: https://www.linkedin.com/in/devonallies/
+      target: _blank
     - icon: github
       text: GitHub
       href: https://github.com/DevonAllies
+      target: _blank
+    - icon: twitter-x
+      text: "X: @CompBioSeq"
+      href: https://x.com/CompBioSeq
+      target: _blank
     - icon: envelope
       text: Email
       href: mailto:devon.lee.allies@gmail.com
     - icon: discord
       text: "Discord: Devon Allies"
       href: https://discord.com/users/492592734805164044
+      target: _blank
 ---
 
 I'm a bioinformatician and computational biologist with over 15 years of experience in biomedical science, including 10 years in immunology and tuberculosis research. I specialise in clinical genomics and building the data pipelines that turn raw biological data into publication-ready results.
