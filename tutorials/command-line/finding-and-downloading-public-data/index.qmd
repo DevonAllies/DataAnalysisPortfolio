@@ -242,7 +242,19 @@ ERR8025744	Illumina NovaSeq 6000	2547056	639311056
 
 ## 4. Download the files
 
-The download links are in column 6, two per run. `tr ';' '\n'` puts each on its own line, and a `while read` loop runs `curl` once per link. Before downloading anything, run the loop with `echo` in front of `curl` to check the commands:
+The download links are in column 6, two per run, separated by `;`. First, look at them on their own: `cut` takes column 6, and `tr ';' '\n'` swaps each `;` for a new line, so every link gets a line of its own:
+
+```{.bash}
+cut -f 6 metadata/chosen_runs.tsv | tr ';' '\n' | head -n 3
+```
+
+```{.text}
+ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_1.fastq.gz
+ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_2.fastq.gz
+ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025420/ERR8025420_1.fastq.gz
+```
+
+Eight lines in all, one per file. To download them, send those lines into a loop that runs `curl` once per line:
 
 ```{.bash}
 cut -f 6 metadata/chosen_runs.tsv | tr ';' '\n' | while read -r url; do
@@ -255,7 +267,15 @@ curl -sS -o raw/ERR8025410_1.fastq.gz https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR80
 curl -sS -o raw/ERR8025410_2.fastq.gz https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_2.fastq.gz
 ```
 
-The links say `ftp.sra.ebi.ac.uk` without a protocol; the same server answers on `https://`, which the loop adds. `-o` names the output file, `basename` takes the file name from the end of the link, `-sS` hides the progress bar but still shows errors, and `while read -r url` reads one line at a time into the variable `url`. Then remove the `echo` and download for real:
+How the loop works:
+
+- **`while read -r url`** creates the variable `url`. Each time round the loop, `read` takes the next line coming through the pipe, one of the links above, and stores it in `url`; when there are no lines left, the loop ends. So you don't set `url` yourself: the first time round it holds the first link, the second time the second, and so on. (`-r` keeps any backslashes in the line as they are.)
+- **`$url`** then means "the link for this time round". `basename "$url"` keeps just the file name from its end (`ERR8025410_1.fastq.gz`), and `-o "raw/…"` saves the download under that name in `raw/`.
+- **`"https://$url"`** adds the protocol: the links say `ftp.sra.ebi.ac.uk` without one, and the same server answers on `https://`.
+- **`-sS`** hides `curl`'s progress bar but still shows errors.
+- **`echo`** in front of `curl` prints each command instead of running it, so you can check them first: a "dry run".
+
+When the commands look right, remove the `echo` and download for real:
 
 ```{.bash}
 mkdir -p raw
