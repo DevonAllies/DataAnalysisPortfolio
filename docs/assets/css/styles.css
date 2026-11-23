@@ -502,3 +502,41 @@ h3.resource-title, h4.resource-title {
 .tutorial-cards { margin: 1rem 0 1.5rem; }
 .tutorial-card .pub-title a { text-decoration: none; }
 .tutorial-card .pub-title a:hover { text-decoration: underline; }
+
+/* Share bar on articles and tutorials (assets/js/share.js) */
+.share-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 1rem 0 0.5rem;
+  font-size: 0.85rem;
+}
+.share-bar-end {
+  margin: 2.5rem 0 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--bs-border-color, #dee2e6);
+}
+.share-lead { color: var(--bs-secondary-color, #6c757d); margin-right: 0.2rem; }
+.share-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--bs-body-color);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+}
+.share-button:hover, .share-button:focus-visible {
+  border-color: var(--bs-primary);
+  color: var(--bs-primary);
+}
+@media (max-width: 575px) {
+  .share-bar-top .share-label { display: none; }   /* icons only under the title on phones */
+  .share-bar-top .share-button { padding: 0.35rem 0.55rem; }
+}

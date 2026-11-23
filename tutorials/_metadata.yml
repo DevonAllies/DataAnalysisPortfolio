@@ -10,3 +10,6 @@ format:
 execute:
   warning: false
   message: false
+# Share buttons (Email, X, WhatsApp, LinkedIn, Copy link) under the title and at the end
+include-after-body:
+  text: '<script src="/assets/js/share.js"></script>'
