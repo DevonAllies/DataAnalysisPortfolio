@@ -17,7 +17,7 @@ A Quarto website (Devon Allies' personal site and data portfolio) published via 
 
 ```bash
 quarto render projects/<name>/index.qmd   # render one page (preferred; see below)
-quarto preview --no-render                # serve docs/ locally with live reload
+python3 -m http.server 4322 -d docs        # serve docs/ locally as plain files (see caveat below)
 uv run python scripts/fetch_publications.py   # refresh _data/publications.json
 uv run python scripts/build_tutorial_data.py  # rebuild tutorials/data/ from local full data
 uv run python scripts/simulate_plasma_cytokines.py  # rebuild tutorials/data/bal_plasma_cytokines.xlsx
@@ -52,6 +52,7 @@ Prefer rendering pages one at a time over a bare `quarto render`: `chrx-rnaseq` 
 - The navbar and stylesheet links are baked into every page's HTML, so changing `website:` or `format:` in `_quarto.yml` means re-rendering every page. For a navbar-only change (adding or reordering items), it's safer to render one simple page (e.g. `contact.qmd`) and apply the identical `<li class="nav-item">` change to the other `docs/**/*.html` files with a script, then check every page's menu order; that avoids re-running analyses whose outputs shift (see below).
 - Each render with changed theme/layout settings writes a new hashed `docs/site_libs/bootstrap/bootstrap-*.min.css`; delete ones no `docs/**/*.html` references.
 - Every page should have a `description`. On the main pages it's hidden visually via `body-classes: hide-description` (CSS in `assets/css/styles.css`) and used only for search and previews.
+- **Don't preview with `quarto preview`.** Even with `--no-render`, it re-renders a page when it's opened in the browser, using an out-of-date cached copy of the source, and overwrites the fresh render in `docs/` (this published stale pages twice). Serve `docs/` as plain files instead (`python3 -m http.server 4322 -d docs`; the embedded IGV viewer needs a server with HTTP range requests). Before committing, check that the rendered HTML contains the change.
 - **Full-site renders re-run every page.** `tb-global-trends` fits an unseeded model, so a re-render changes its printed results and figures, and Tutorial 4's jittered figures change too. After a full render (e.g. for a navbar change), restore those outputs from git and keep only the navbar change, so published results don't shift.
 - **Older projects show progression on purpose.** The February 2026 projects (`covid19-blood-counts`, `tb-global-trends`, `r-python-workflow`) are kept as originally written, so the site shows how the user's work has grown. Each has a "Looking back (November 2026)" callout at the top (`.looking-back`) noting what they'd do differently. Don't polish their analysis, code or writing style; only fix things that look broken (typos, mislabelled elements). `tb-bal-cytokines` is unfinished and carries a "Work in progress" callout (`.in-progress`); remove it when the classifier is added. The About page's "My journey" timeline links each stage to its project; add new projects there too, at the top. Both About timelines (My journey and Education) are ordered most recent first; keep them consistent.
 - Most projects have no `date` field and `chrx-rnaseq` uses `date: today`, so the `date desc` sort on the projects listing is unreliable.

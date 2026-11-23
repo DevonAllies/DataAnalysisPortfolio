@@ -181,6 +181,26 @@ NCBI can link a paper to its data with `elink`, but only when the submitters con
 
 ## 3. Get the run table
 
+### Set up a project folder
+
+From here on, the commands save files: the run table, the reads, the reference genome. Make one folder for the whole project, move into it, and check where you are:
+
+```{.bash}
+mkdir -p ~/tb-project
+cd ~/tb-project
+pwd
+```
+
+```{.text}
+/home/you/tb-project
+```
+
+**Run every command in the rest of this article, and in the parts after it, from this folder.** The commands use relative paths such as `metadata/` and `raw/`, which mean "inside the folder I'm in now" (see [paths in Part 1](../command-line-for-biologists/index.qmd#move-around)). Run them from somewhere else and the files are created there instead, or can't be found.
+
+If a command later says `No such file or directory`, run `pwd` first. If you're not in `~/tb-project`, `cd ~/tb-project` takes you back.
+
+### Download the run table
+
 Every project has a **run table**: one row per sequencing run, with its sample, instrument, size, download links and checksums. ENA serves it from a web address that `curl` can fetch directly, choosing the columns with `fields=`:
 
 ```{.bash}
@@ -238,7 +258,7 @@ ERR8025690	Illumina NovaSeq 6000	2321424	582677424
 ERR8025744	Illumina NovaSeq 6000	2547056	639311056
 ```
 
-`$'\t'` is how to write a tab character for `sort`. ENA's `read_count` counts both reads of each pair, so ERR8025410 has 1,064,235 read pairs, half the number shown.
+`$'\t'` is how to write a tab character for `sort`. ENA's `read_count` here counts both reads of each pair, so ERR8025410's 2,128,470 reads are 1,064,235 pairs. Section 5 checks this after downloading.
 
 ## 4. Download the files
 
@@ -353,6 +373,42 @@ md5sum: WARNING: 1 computed checksum did NOT match
 ```
 
 Delete it and download it again. (`gzip -t file.fastq.gz` tests a compressed file even without a checksum list, and reports `unexpected end of file` for this one, but a checksum also catches damage that leaves the file readable.)
+
+::: {.callout-warning appearance="simple"}
+## Run the check from the project folder
+
+The paths in `md5sums.txt` start with `raw/`, so they only work from `~/tb-project`. From inside `raw/`, every file looks missing, even though nothing is wrong with them:
+
+```{.bash}
+cd raw
+md5sum -c ../metadata/md5sums.txt
+```
+
+```{.text}
+md5sum: raw/ERR8025410_1.fastq.gz: No such file or directory
+raw/ERR8025410_1.fastq.gz: FAILED open or read
+…
+md5sum: WARNING: 8 listed files could not be read
+```
+
+`../metadata/md5sums.txt` finds the list (`..` is the folder above), but each path inside it is then looked for as `raw/raw/…`. `cd ..` back to the project folder and run it again.
+:::
+
+### Check the read counts
+
+The run table said ERR8025410 has 2,128,470 reads. Count them in the downloaded file to see what that means. Every read in a FASTQ file takes exactly four lines (Part 3 of this series shows them), so the number of reads is the number of lines divided by four:
+
+```{.bash}
+zcat raw/ERR8025410_1.fastq.gz | wc -l
+echo $(( $(zcat raw/ERR8025410_1.fastq.gz | wc -l) / 4 ))
+```
+
+```{.text}
+4256940
+1064235
+```
+
+`zcat` decompresses a `.gz` file to the screen without changing it, `wc -l` counts the lines, and `$(( ))` does arithmetic in the shell. The `_1` file holds 1,064,235 reads, and the `_2` file holds the same number: their partners. So the run has 1,064,235 read pairs, and ENA's 2,128,470 counted both reads of every pair. A count that matches the run table is a second sign the download is complete.
 
 ## 6. Record what you downloaded
 

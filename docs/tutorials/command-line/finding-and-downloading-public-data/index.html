@@ -634,18 +634,30 @@ Options = IgnoreUnexpectedEOF</code></pre>
 </section>
 <section id="get-the-run-table" class="level2">
 <h2 class="anchored" data-anchor-id="get-the-run-table">3. Get the run table</h2>
+<section id="set-up-a-project-folder" class="level3">
+<h3 class="anchored" data-anchor-id="set-up-a-project-folder">Set up a project folder</h3>
+<p>From here on, the commands save files: the run table, the reads, the reference genome. Make one folder for the whole project, move into it, and check where you are:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/tb-project</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/tb-project</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>/home/you/tb-project</code></pre>
+<p><strong>Run every command in the rest of this article, and in the parts after it, from this folder.</strong> The commands use relative paths such as <code>metadata/</code> and <code>raw/</code>, which mean “inside the folder I’m in now” (see <a href="../../../tutorials/command-line/command-line-for-biologists/index.html#move-around">paths in Part 1</a>). Run them from somewhere else and the files are created there instead, or can’t be found.</p>
+<p>If a command later says <code>No such file or directory</code>, run <code>pwd</code> first. If you’re not in <code>~/tb-project</code>, <code>cd ~/tb-project</code> takes you back.</p>
+</section>
+<section id="download-the-run-table" class="level3">
+<h3 class="anchored" data-anchor-id="download-the-run-table">Download the run table</h3>
 <p>Every project has a <strong>run table</strong>: one row per sequencing run, with its sample, instrument, size, download links and checksums. ENA serves it from a web address that <code>curl</code> can fetch directly, choosing the columns with <code>fields=</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> metadata</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> <span class="st">"https://www.ebi.ac.uk/ena/portal/api/filereport?accession=PRJEB43283&amp;result=read_run&amp;fields=run_accession,instrument_model,read_count,base_count,fastq_md5,fastq_ftp&amp;format=tsv"</span> <span class="dt">\</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> metadata/PRJEB43283_runs.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> metadata</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> <span class="st">"https://www.ebi.ac.uk/ena/portal/api/filereport?accession=PRJEB43283&amp;result=read_run&amp;fields=run_accession,instrument_model,read_count,base_count,fastq_md5,fastq_ftp&amp;format=tsv"</span> <span class="dt">\</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> metadata/PRJEB43283_runs.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The address is in quotes because it contains <code>&amp;</code>, which the shell would otherwise treat as an instruction. Look at what arrived:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> metadata/PRJEB43283_runs.tsv</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 2 metadata/PRJEB43283_runs.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> metadata/PRJEB43283_runs.tsv</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 2 metadata/PRJEB43283_runs.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>361 metadata/PRJEB43283_runs.tsv
 run_accession   instrument_model    read_count  base_count  fastq_md5   fastq_ftp
 ERR8025410  Illumina NovaSeq 6000   2128470 321398970   21691a7fd0612f88485325cc79ea24d8;0f8c3c594a6613a6548f995e337f6ab6   ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_2.fastq.gz</code></pre>
 <p>A header plus 360 runs. Each paired run has two FASTQ files, so the last two columns hold two values separated by <code>;</code>: one checksum and one link per file. Count the instruments with the pattern from Part 1:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata/PRJEB43283_runs.tsv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> +2 metadata/PRJEB43283_runs.tsv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 2 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>     40 Illumina HiSeq 2000
     320 Illumina NovaSeq 6000</code></pre>
 <p>(<code>cut</code> splits on tabs by default, which is what this file uses.)</p>
@@ -662,30 +674,31 @@ ERR8025410  Illumina NovaSeq 6000   2128470 321398970   21691a7fd0612f88485325cc
 <p>EDirect can fetch the equivalent table from SRA with <code>esearch -db sra -query PRJEB43283 | efetch -format runinfo</code>, as comma-separated values. ENA’s version is quicker for large projects, lets you choose the columns, and includes direct download links and checksums, which is why this article uses it.</p>
 </div>
 </div>
+</section>
 <section id="choose-the-runs" class="level3">
 <h3 class="anchored" data-anchor-id="choose-the-runs">Choose the runs</h3>
 <p>For a tutorial, small is good. <code>awk</code> keeps only the NovaSeq runs (<code>$2</code> is the second column, <code>-F '\t'</code> says the columns are tab-separated), then <code>sort</code> orders them by read count (<code>-k 3,3n</code>: column 3, numerically) and <code>head</code> keeps the four smallest:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F</span> <span class="st">'\t'</span> <span class="st">'$2 == "Illumina NovaSeq 6000"'</span> metadata/PRJEB43283_runs.tsv <span class="dt">\</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-t</span> <span class="st">$'</span><span class="dt">\t</span><span class="st">'</span> <span class="at">-k</span> 3,3n <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 4 <span class="op">&gt;</span> metadata/chosen_runs.tsv</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 1-4 metadata/chosen_runs.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F</span> <span class="st">'\t'</span> <span class="st">'$2 == "Illumina NovaSeq 6000"'</span> metadata/PRJEB43283_runs.tsv <span class="dt">\</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">sort</span> <span class="at">-t</span> <span class="st">$'</span><span class="dt">\t</span><span class="st">'</span> <span class="at">-k</span> 3,3n <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 4 <span class="op">&gt;</span> metadata/chosen_runs.tsv</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 1-4 metadata/chosen_runs.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>ERR8025410  Illumina NovaSeq 6000   2128470 321398970
 ERR8025420  Illumina NovaSeq 6000   2276564 343761164
 ERR8025690  Illumina NovaSeq 6000   2321424 582677424
 ERR8025744  Illumina NovaSeq 6000   2547056 639311056</code></pre>
-<p><code>$'\t'</code> is how to write a tab character for <code>sort</code>. ENA’s <code>read_count</code> counts both reads of each pair, so ERR8025410 has 1,064,235 read pairs, half the number shown.</p>
+<p><code>$'\t'</code> is how to write a tab character for <code>sort</code>. ENA’s <code>read_count</code> here counts both reads of each pair, so ERR8025410’s 2,128,470 reads are 1,064,235 pairs. Section 5 checks this after downloading.</p>
 </section>
 </section>
 <section id="download-the-files" class="level2">
 <h2 class="anchored" data-anchor-id="download-the-files">4. Download the files</h2>
 <p>The download links are in column 6, two per run, separated by <code>;</code>. First, look at them on their own: <code>cut</code> takes column 6, and <code>tr ';' '\n'</code> swaps each <code>;</code> for a new line, so every link gets a line of its own:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 6 metadata/chosen_runs.tsv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">';'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 6 metadata/chosen_runs.tsv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">';'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_1.fastq.gz
 ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_2.fastq.gz
 ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025420/ERR8025420_1.fastq.gz</code></pre>
 <p>Eight lines in all, one per file. To download them, send those lines into a loop that runs <code>curl</code> once per line:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 6 metadata/chosen_runs.tsv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">';'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">url</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> curl <span class="at">-sS</span> <span class="at">-o</span> <span class="st">"raw/</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$url</span><span class="st">"</span><span class="va">)</span><span class="st">"</span> <span class="st">"https://</span><span class="va">$url</span><span class="st">"</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 6 metadata/chosen_runs.tsv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">';'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">url</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> curl <span class="at">-sS</span> <span class="at">-o</span> <span class="st">"raw/</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$url</span><span class="st">"</span><span class="va">)</span><span class="st">"</span> <span class="st">"https://</span><span class="va">$url</span><span class="st">"</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>curl -sS -o raw/ERR8025410_1.fastq.gz https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_1.fastq.gz
 curl -sS -o raw/ERR8025410_2.fastq.gz https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR802/000/ERR8025410/ERR8025410_2.fastq.gz</code></pre>
 <p>How the loop works:</p>
@@ -697,11 +710,11 @@ curl -sS -o raw/ERR8025410_2.fastq.gz https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR80
 <li><strong><code>echo</code></strong> in front of <code>curl</code> prints each command instead of running it, so you can check them first: a “dry run”.</li>
 </ul>
 <p>When the commands look right, remove the <code>echo</code> and download for real:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> raw</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 6 metadata/chosen_runs.tsv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">';'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">url</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">curl</span> <span class="at">-sS</span> <span class="at">-o</span> <span class="st">"raw/</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$url</span><span class="st">"</span><span class="va">)</span><span class="st">"</span> <span class="st">"https://</span><span class="va">$url</span><span class="st">"</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> raw/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> raw</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cut</span> <span class="at">-f</span> 6 metadata/chosen_runs.tsv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">';'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="cf">while</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">url</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">curl</span> <span class="at">-sS</span> <span class="at">-o</span> <span class="st">"raw/</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$url</span><span class="st">"</span><span class="va">)</span><span class="st">"</span> <span class="st">"https://</span><span class="va">$url</span><span class="st">"</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> raw/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>96M ERR8025410_1.fastq.gz
 97M ERR8025410_2.fastq.gz
 101M ERR8025420_1.fastq.gz
@@ -714,23 +727,23 @@ curl -sS -o raw/ERR8025410_2.fastq.gz https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR80
 <section id="the-reference-genome" class="level3">
 <h3 class="anchored" data-anchor-id="the-reference-genome">The reference genome</h3>
 <p>Analyses compare reads to a <strong>reference genome</strong>. For <em>M. tuberculosis</em> that’s H37Rv <span class="citation" data-cites="cole1998">(<a href="#ref-cole1998" role="doc-biblioref"><span class="nocase">Cole et al.</span>, 1998</a>)</span>, GenBank accession NC_000962.3, which <code>efetch</code> downloads from NCBI’s nucleotide database as FASTA:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> reference</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="ex">efetch</span> <span class="at">-db</span> nuccore <span class="at">-id</span> NC_000962.3 <span class="at">-format</span> fasta <span class="op">&gt;</span> reference/H37Rv.fasta</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 1 reference/H37Rv.fasta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> reference</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="ex">efetch</span> <span class="at">-db</span> nuccore <span class="at">-id</span> NC_000962.3 <span class="at">-format</span> fasta <span class="op">&gt;</span> reference/H37Rv.fasta</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 1 reference/H37Rv.fasta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>&gt;NC_000962.3 Mycobacterium tuberculosis H37Rv, complete genome</code></pre>
 </section>
 </section>
 <section id="check-the-files-arrived-intact" class="level2">
 <h2 class="anchored" data-anchor-id="check-the-files-arrived-intact">5. Check the files arrived intact</h2>
 <p>A download can stop partway without an obvious error, especially on large files. A <strong>checksum</strong> catches it: a short code computed from every byte of a file, so any change, even one byte, gives a different code. ENA lists the MD5 checksum of every file in column 5 of the run table. <code>md5sum -c</code> compares files against a list in the form <code>checksum  path</code>, which <code>paste</code> builds by putting the checksums and file names side by side:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span> <span class="op">&lt;(</span><span class="fu">cut</span> <span class="at">-f</span> 5 metadata/chosen_runs.tsv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">';'</span> <span class="st">'\n'</span><span class="op">)</span> <span class="dt">\</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>      <span class="op">&lt;(</span><span class="fu">cut</span> <span class="at">-f</span> 6 metadata/chosen_runs.tsv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">';'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="fu">xargs</span> <span class="at">-n</span> 1 basename<span class="op">)</span> <span class="dt">\</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s|\t|  raw/|'</span> <span class="op">&gt;</span> metadata/md5sums.txt</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 2 metadata/md5sums.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">paste</span> <span class="op">&lt;(</span><span class="fu">cut</span> <span class="at">-f</span> 5 metadata/chosen_runs.tsv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">';'</span> <span class="st">'\n'</span><span class="op">)</span> <span class="dt">\</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>      <span class="op">&lt;(</span><span class="fu">cut</span> <span class="at">-f</span> 6 metadata/chosen_runs.tsv <span class="kw">|</span> <span class="fu">tr</span> <span class="st">';'</span> <span class="st">'\n'</span> <span class="kw">|</span> <span class="fu">xargs</span> <span class="at">-n</span> 1 basename<span class="op">)</span> <span class="dt">\</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s|\t|  raw/|'</span> <span class="op">&gt;</span> metadata/md5sums.txt</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 2 metadata/md5sums.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>21691a7fd0612f88485325cc79ea24d8  raw/ERR8025410_1.fastq.gz
 0f8c3c594a6613a6548f995e337f6ab6  raw/ERR8025410_2.fastq.gz</code></pre>
 <p><code>&lt;( )</code> hands a command’s output to another command as if it were a file, so <code>paste</code> can join two pipelines column by column. <code>xargs -n 1 basename</code> runs <code>basename</code> on each line, and <code>sed</code> swaps the tab for two spaces and the folder name. Now check:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">md5sum</span> <span class="at">-c</span> metadata/md5sums.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">md5sum</span> <span class="at">-c</span> metadata/md5sums.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>raw/ERR8025410_1.fastq.gz: OK
 raw/ERR8025410_2.fastq.gz: OK
 raw/ERR8025420_1.fastq.gz: OK
@@ -743,11 +756,40 @@ raw/ERR8025744_2.fastq.gz: OK</code></pre>
 <pre class="text"><code>raw/ERR8025410_1.fastq.gz: FAILED
 md5sum: WARNING: 1 computed checksum did NOT match</code></pre>
 <p>Delete it and download it again. (<code>gzip -t file.fastq.gz</code> tests a compressed file even without a checksum list, and reports <code>unexpected end of file</code> for this one, but a checksum also catches damage that leaves the file readable.)</p>
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Run the check from the project folder
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The paths in <code>md5sums.txt</code> start with <code>raw/</code>, so they only work from <code>~/tb-project</code>. From inside <code>raw/</code>, every file looks missing, even though nothing is wrong with them:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> raw</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">md5sum</span> <span class="at">-c</span> ../metadata/md5sums.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>md5sum: raw/ERR8025410_1.fastq.gz: No such file or directory
+raw/ERR8025410_1.fastq.gz: FAILED open or read
+…
+md5sum: WARNING: 8 listed files could not be read</code></pre>
+<p><code>../metadata/md5sums.txt</code> finds the list (<code>..</code> is the folder above), but each path inside it is then looked for as <code>raw/raw/…</code>. <code>cd ..</code> back to the project folder and run it again.</p>
+</div>
+</div>
+<section id="check-the-read-counts" class="level3">
+<h3 class="anchored" data-anchor-id="check-the-read-counts">Check the read counts</h3>
+<p>The run table said ERR8025410 has 2,128,470 reads. Count them in the downloaded file to see what that means. Every read in a FASTQ file takes exactly four lines (Part 3 of this series shows them), so the number of reads is the number of lines divided by four:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> raw/ERR8025410_1.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$((</span> <span class="va">$(</span><span class="fu">zcat</span> raw/ERR8025410_1.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span><span class="va">)</span> <span class="op">/</span> <span class="dv">4</span> <span class="va">))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>4256940
+1064235</code></pre>
+<p><code>zcat</code> decompresses a <code>.gz</code> file to the screen without changing it, <code>wc -l</code> counts the lines, and <code>$(( ))</code> does arithmetic in the shell. The <code>_1</code> file holds 1,064,235 reads, and the <code>_2</code> file holds the same number: their partners. So the run has 1,064,235 read pairs, and ENA’s 2,128,470 counted both reads of every pair. A count that matches the run table is a second sign the download is complete.</p>
+</section>
 </section>
 <section id="record-what-you-downloaded" class="level2">
 <h2 class="anchored" data-anchor-id="record-what-you-downloaded">6. Record what you downloaded</h2>
 <p>Months later, you or a reviewer will ask exactly which data went into an analysis. Keep the answer in the project folder:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span> <span class="at">-Iseconds</span> <span class="op">&gt;</span> metadata/downloaded_on.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span> <span class="at">-Iseconds</span> <span class="op">&gt;</span> metadata/downloaded_on.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>With the run table, the chosen runs and the checksums already in <code>metadata/</code>, the folder now records where every file came from, which runs were chosen and how, and that they arrived intact:</p>
 <pre class="text"><code>project/
 ├── metadata/
