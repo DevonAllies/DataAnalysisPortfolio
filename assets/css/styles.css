@@ -461,6 +461,14 @@
 /* Resources page: cards in a grid */
 .resource-grid { margin-bottom: 1.5rem; }
 .resource-grid .pub-card { margin-bottom: 0; height: 100%; }
+/* Book cards stack their lines in a column and push the last one ("Goes
+   with ...") to the bottom, so in each row those lines start level.
+   Quarto wraps the title and the lines after it in a <section>, which fills
+   the rest of the card. */
+.resource-grid .pub-card,
+.resource-grid .pub-card > section { display: flex; flex-direction: column; }
+.resource-grid .pub-card > section { flex: 1; }
+.resource-grid .pub-card > section > p:last-child { margin-top: auto; margin-bottom: 0; padding-top: 0.4rem; }
 .resource-card {
   border: 1px solid var(--bs-border-color, #dee2e6);
   border-radius: 0.5rem;

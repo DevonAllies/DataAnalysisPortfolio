@@ -270,7 +270,7 @@
     "href": "resources.html#tools-and-setup",
     "title": "Resources",
     "section": "Tools and setup",
-    "text": "Tools and setup\n\n\nR, RStudio, Python, uv, renv, Quarto, micromamba and Miniforge\n\n\n\nR\nThe R language, from CRAN\n\n\nRStudio Desktop\nThe editor the tutorials use\n\n\nPython\nThe Python language, from python.org\n\n\nuv\nInstalls Python and its packages for a project\n\n\nrenv\nRecords the R package versions a project uses\n\n\nmicromamba\nA small, fast conda-compatible package manager for Bioconda tools and project environments\n\n\nMiniforge\nInstalls conda, set up for the free conda-forge channel\n\n\nQuarto\nTurns R and Python code and text into reports and websites; this site is built with it"
+    "text": "Tools and setup\n\n\nR, RStudio, Python, uv, renv, Quarto, micromamba, Miniforge, and jamovi and JASP for statistics without code\n\n\n\nR\nThe R language, from CRAN\n\n\nRStudio Desktop\nThe editor the tutorials use\n\n\nPython\nThe Python language, from python.org\n\n\nuv\nInstalls Python and its packages for a project\n\n\nrenv\nRecords the R package versions a project uses\n\n\nmicromamba\nA small, fast conda-compatible package manager for Bioconda tools and project environments\n\n\nMiniforge\nInstalls conda, set up for the free conda-forge channel\n\n\nQuarto\nTurns R and Python code and text into reports and websites; this site is built with it\n\n\njamovi\nFree point-and-click statistics, built on R, that can show the R code behind each analysis. See If you don’t code\n\n\nJASP\nFree, open-source point-and-click statistics from the University of Amsterdam. See If you don’t code"
   },
   {
     "objectID": "resources.html#bioinformatics",

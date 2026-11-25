@@ -253,7 +253,7 @@ Explaining a model's predictions feature by feature
 ## Tools and setup
 
 <details class="pub-group">
-<summary>R, RStudio, Python, uv, renv, Quarto, micromamba and Miniforge</summary>
+<summary>R, RStudio, Python, uv, renv, Quarto, micromamba, Miniforge, and jamovi and JASP for statistics without code</summary>
 
 ::: {.grid .resource-grid}
 ::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
@@ -302,6 +302,18 @@ Installs conda, set up for the free conda-forge channel
 ### [Quarto](https://quarto.org/docs/get-started/) {.resource-title}
 
 Turns R and Python code and text into reports and websites; this site is built with it
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+### [jamovi](https://www.jamovi.org/) {.resource-title}
+
+Free point-and-click statistics, built on R, that can show the R code behind each analysis. See [If you don't code](writing/excel-for-data-capture/index.qmd#if-you-dont-code)
+:::
+
+::: {.g-col-12 .g-col-sm-6 .g-col-lg-4 .resource-card}
+### [JASP](https://jasp-stats.org/) {.resource-title}
+
+Free, open-source point-and-click statistics from the University of Amsterdam. See [If you don't code](writing/excel-for-data-capture/index.qmd#if-you-dont-code)
 :::
 
 :::
