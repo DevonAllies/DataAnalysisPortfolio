@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Devon Allies">
+<meta name="dcterms.date" content="2026-11-25">
+<meta name="description" content="A beginner’s guide to the common bioinformatics file formats, using real Mycobacterium tuberculosis sequencing data: FASTA reference genomes, FASTQ reads and quality scores, gzip and bgzip compression, SAM and BAM alignments, FLAG and CIGAR fields, VCF variants, and the .fai, .bai and .tbi index files.">
+
+<title>Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes – Devon Allies</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-2d94387f3a51e8747af025d7859c5d10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-01ef6c89f23038e5ddcac1cb845945cd.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-2d94387f3a51e8747af025d7859c5d10.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../../assets/css/styles.css">
+<meta property="og:title" content="Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes – Devon Allies">
+<meta property="og:description" content="A beginner’s guide to the common bioinformatics file formats, using real Mycobacterium tuberculosis sequencing data: FASTA reference genomes, FASTQ reads and quality scores, gzip and bgzip compression, SAM and BAM alignments, FLAG and CIGAR fields, VCF variants, and the .fai, .bai and .tbi index files.">
+<meta property="og:image" content="https://devonallies.co.za/tutorials/images/command-line-series.jpg">
+<meta property="og:site_name" content="Devon Allies">
+<meta property="og:image:height" content="768">
+<meta property="og:image:width" content="1376">
+<meta name="twitter:title" content="Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes – Devon Allies">
+<meta name="twitter:description" content="A beginner’s guide to the common bioinformatics file formats, using real Mycobacterium tuberculosis sequencing data: FASTA reference genomes, FASTQ reads and quality scores, gzip and bgzip compression, SAM and BAM alignments, FLAG and CIGAR fields, VCF variants, and the .fai, .bai and .tbi index files.">
+<meta name="twitter:image" content="https://devonallies.co.za/tutorials/images/command-line-series.jpg">
+<meta name="twitter:creator" content="@CompBioSeq">
+<meta name="twitter:site" content="@CompBioSeq">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="floating nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const queryPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkModeDefault = queryPrefersDark.matches;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    queryPrefersDark.addEventListener("change", e => {
+      if(window.localStorage.getItem("quarto-color-scheme") !== null)
+        return;
+      const alternate = e.matches
+      toggleColorMode(alternate);
+      refreshSafariScrollbar();
+      localAlternateSentinel = e.matches ? 'alternate' : 'default'; // this is used alongside local storage!
+      toggleGiscusIfUsed(alternate, darkModeDefault);
+    });
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Devon Allies</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../projects.html"> 
+<span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../tutorials.html"> 
+<span class="menu-text">Tutorials</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../publications.html"> 
+<span class="menu-text">Publications &amp; Writing</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../resources.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../about.html"> 
+<span class="menu-text">About Me</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../contact.html"> 
+<span class="menu-text">Contact</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
+</div>
+            <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto" aria-label="Section">
+    <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#at-a-glance" id="toc-at-a-glance" class="nav-link active" data-scroll-target="#at-a-glance">At a glance</a></li>
+  <li><a href="#fasta-sequences" id="toc-fasta-sequences" class="nav-link" data-scroll-target="#fasta-sequences">1. FASTA: sequences</a></li>
+  <li><a href="#fastq-reads-with-quality-scores" id="toc-fastq-reads-with-quality-scores" class="nav-link" data-scroll-target="#fastq-reads-with-quality-scores">2. FASTQ: reads with quality scores</a></li>
+  <li><a href="#gz-compressed-files" id="toc-gz-compressed-files" class="nav-link" data-scroll-target="#gz-compressed-files">3. .gz: compressed files</a></li>
+  <li><a href="#sam-and-bam-aligned-reads" id="toc-sam-and-bam-aligned-reads" class="nav-link" data-scroll-target="#sam-and-bam-aligned-reads">4. SAM and BAM: aligned reads</a></li>
+  <li><a href="#vcf-and-the-.tbi-index" id="toc-vcf-and-the-.tbi-index" class="nav-link" data-scroll-target="#vcf-and-the-.tbi-index">5. VCF and the .tbi index</a></li>
+  <li><a href="#see-it-igv" id="toc-see-it-igv" class="nav-link" data-scroll-target="#see-it-igv">6. See it: IGV</a></li>
+  <li><a href="#common-mistakes" id="toc-common-mistakes" class="nav-link" data-scroll-target="#common-mistakes">Common mistakes</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes</h1>
+<p class="subtitle lead">What’s inside the files you’ll meet first, how to look at them from the terminal, and what the .gz, .fai, .bai and .tbi files beside them are for</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Command line</div>
+    <div class="quarto-category">Bioinformatics</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    A beginner’s guide to the common bioinformatics file formats, using real Mycobacterium tuberculosis sequencing data: FASTA reference genomes, FASTQ reads and quality scores, gzip and bgzip compression, SAM and BAM alignments, FLAG and CIGAR fields, VCF variants, and the .fai, .bai and .tbi index files.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Devon Allies </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 25, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<details class="series-box"><summary>Part 3 of the series: Bioinformatics on the command line</summary><ul><li>Part 1: <a href="../../../tutorials/command-line/command-line-for-biologists/index.html">The command line for biologists</a></li><li>Part 2: <a href="../../../tutorials/command-line/finding-and-downloading-public-data/index.html">Finding and downloading public sequencing data</a></li><li>Part 3: <strong>Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes</strong> (this one)</li><li>Part 4: Checking and cleaning sequencing reads: FastQC, MultiQC and fastp <em>(coming soon)</em></li><li>Part 5: Aligning every FASTQ file in a folder with a loop <em>(coming soon)</em></li></ul></details>
+<nav class="series-panel" aria-label="In this series" hidden=""><p class="series-panel-title">In this series</p><p class="series-panel-name">Bioinformatics on the command line</p><ol class="series-panel-list"><li><a href="../../../tutorials/command-line/command-line-for-biologists/index.html"><span class="series-panel-num">1</span><span>The command line for biologists</span></a></li><li><a href="../../../tutorials/command-line/finding-and-downloading-public-data/index.html"><span class="series-panel-num">2</span><span>Finding and downloading public sequencing data</span></a></li><li class="current" aria-current="page"><span class="series-panel-num">3</span><span>Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes</span></li><li class="upcoming"><span class="series-panel-num">4</span><span>Checking and cleaning sequencing reads: FastQC, MultiQC and fastp <em>(coming soon)</em></span></li><li class="upcoming"><span class="series-panel-num">5</span><span>Aligning every FASTQ file in a folder with a loop <em>(coming soon)</em></span></li></ol><div class="series-panel-pager"><a class="series-panel-prev" href="../../../tutorials/command-line/finding-and-downloading-public-data/index.html">← Previous</a></div></nav>
+<p>Sequencing data comes as a handful of file types, each with its own layout and its own name ending: <code>.fasta</code>, <code>.fastq.gz</code>, <code>.bam</code>, <code>.vcf.gz</code>, plus small companion files ending in <code>.fai</code>, <code>.bai</code> or <code>.tbi</code>. Every tool expects a particular one, and most error messages in a first pipeline are about a file being in the wrong format, compressed the wrong way or missing its index.</p>
+<p>This article opens each format from the terminal, line by line, so you know what’s inside before any tool touches it. It uses the commands from <a href="../../../tutorials/command-line/command-line-for-biologists/index.html">The command line for biologists</a> (<code>head</code>, <code>wc</code>, <code>grep</code>, pipes) and a few from two standard toolkits: <strong>samtools</strong> for reads and alignments <span class="citation" data-cites="danecek2021">(<a href="#ref-danecek2021" role="doc-biblioref">Danecek et al., 2021</a>)</span> and <strong>seqkit</strong> for sequence files <span class="citation" data-cites="shen2016">(<a href="#ref-shen2016" role="doc-biblioref">Shen et al., 2016</a>)</span>.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Before you start
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Open a terminal, go into the project folder from <a href="../../../tutorials/command-line/finding-and-downloading-public-data/index.html#set-up-a-project-folder">Part 2</a>, and activate this part’s tools:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/tb-project</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">micromamba</span> activate formats</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The first time, create the environment with <code>micromamba create -n formats samtools seqkit bcftools htslib</code> (<code>htslib</code> provides <code>tabix</code> and <code>bgzip</code>). You’ll need the reads and reference genome downloaded in Part 2, and the example files below. Every command below runs from <code>~/tb-project</code>; <code>pwd</code> shows where you are.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>The data, and the output
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The examples use the files downloaded in <a href="../../../tutorials/command-line/finding-and-downloading-public-data/index.html">Part 2</a>: whole-genome sequencing of <em>Mycobacterium tuberculosis</em> from a Western Cape study <span class="citation" data-cites="oostvogels2022">(<a href="#ref-oostvogels2022" role="doc-biblioref">Oostvogels et al., 2022</a>)</span> (run <a href="https://www.ebi.ac.uk/ena/browser/view/ERR8025410">ERR8025410</a>) and the H37Rv reference genome <span class="citation" data-cites="cole1998">(<a href="#ref-cole1998" role="doc-biblioref"><span class="nocase">Cole et al.</span>, 1998</a>)</span>. Run the commands from the <code>~/tb-project</code> folder set up in Part 2.</p>
+<p>The alignment (BAM) and variant (VCF) files come from steps later in the series, so download a small ready-made set to follow along now. It holds one sample’s alignments and variants for one gene, <em>rpoB</em>, with their index files, and unzips into <code>aligned/</code> and <code>variants/</code> folders:</p>
+<p><a href="formats-example-files.zip" class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i> Download the example files (110 KB)</a></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> formats-example-files.zip</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Every output shown was saved from a real run on 20 November 2026 with samtools 1.24 and bcftools 1.25.</p>
+</div>
+</div>
+<section id="at-a-glance" class="level2">
+<h2 class="anchored" data-anchor-id="at-a-glance">At a glance</h2>
+<div id="tbl-formats" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-formats-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: The formats in this article
+</figcaption>
+<div aria-describedby="tbl-formats-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Ending</th>
+<th>Format</th>
+<th>Holds</th>
+<th>Text or binary</th>
+<th>Look inside with</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>.fasta</code>, <code>.fa</code>, <code>.fna</code></td>
+<td>FASTA</td>
+<td>Sequences: a reference genome, genes, contigs</td>
+<td>Text</td>
+<td><code>head</code>, <code>less</code>, <code>seqkit</code></td>
+</tr>
+<tr class="even">
+<td><code>.fastq</code>, <code>.fq</code></td>
+<td>FASTQ</td>
+<td>Sequencing reads, with a quality score for every base</td>
+<td>Text</td>
+<td><code>head</code>, <code>seqkit</code></td>
+</tr>
+<tr class="odd">
+<td><code>.gz</code></td>
+<td>gzip</td>
+<td>Any file, compressed</td>
+<td>Binary</td>
+<td><code>zcat</code>, <code>zless</code></td>
+</tr>
+<tr class="even">
+<td><code>.sam</code></td>
+<td>SAM</td>
+<td>Reads aligned to a reference</td>
+<td>Text</td>
+<td><code>head</code>, <code>samtools view</code></td>
+</tr>
+<tr class="odd">
+<td><code>.bam</code></td>
+<td>BAM</td>
+<td>The same as SAM, compressed</td>
+<td>Binary</td>
+<td><code>samtools view</code></td>
+</tr>
+<tr class="even">
+<td><code>.vcf</code>, <code>.vcf.gz</code></td>
+<td>VCF</td>
+<td>Variants: where a sample differs from the reference</td>
+<td>Text (often bgzipped)</td>
+<td><code>zcat</code>, <code>bcftools view</code></td>
+</tr>
+<tr class="odd">
+<td><code>.fai</code></td>
+<td>FASTA index</td>
+<td>Where each sequence starts in a FASTA file</td>
+<td>Text</td>
+<td><code>cat</code></td>
+</tr>
+<tr class="even">
+<td><code>.bai</code></td>
+<td>BAM index</td>
+<td>Where each region of the genome is in a BAM file</td>
+<td>Binary</td>
+<td>used by tools</td>
+</tr>
+<tr class="odd">
+<td><code>.tbi</code></td>
+<td>Tabix index</td>
+<td>Where each region is in a bgzipped VCF or other table</td>
+<td>Binary</td>
+<td>used by tools</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="fasta-sequences" class="level2">
+<h2 class="anchored" data-anchor-id="fasta-sequences">1. FASTA: sequences</h2>
+<p>A FASTA file holds one or more sequences. Each starts with a <strong>header line</strong> beginning with <code>&gt;</code>, followed by the sequence itself, usually wrapped over many lines. The reference genome is a FASTA file:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-n</span> 3 reference/H37Rv.fasta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>&gt;NC_000962.3 Mycobacterium tuberculosis H37Rv, complete genome
+TTGACCGATGACCCCGGTTCAGGCTTCACCACAGTGTGGAACGCGGTCGTCTCCGAACTTAACGGCGACC
+CTAAGGTTGACGACGGACCCAGCAGTGATGCTAATCTCAGCGCTCCGCTGACCCCTCAGCAAAGGGCTTG</code></pre>
+<p>The header’s first word, <code>NC_000962.3</code>, is the sequence’s <strong>name</strong> (here its GenBank accession), and the rest is a free-text description. Tools refer to the sequence by that first word, so you’ll see <code>NC_000962.3</code> again in every alignment and variant below.</p>
+<p>Counting the <code>&gt;</code> lines counts the sequences. <em>M. tuberculosis</em> has a single circular chromosome, so there’s one:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-c</span> <span class="st">"&gt;"</span> reference/H37Rv.fasta</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>1</code></pre>
+<div class="callout callout-style-simple callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Quote the <code>&gt;</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Always write <code>grep -c "&gt;"</code> with the quotes. Without them, the shell reads <code>&gt;</code> as redirection and <em>overwrites</em> the file named after it with grep’s output.</p>
+</div>
+</div>
+<section id="the-.fai-index" class="level3">
+<h3 class="anchored" data-anchor-id="the-.fai-index">The .fai index</h3>
+<p>To pull out one region, tools would have to read the file from the top to find it. A <strong>FASTA index</strong> (<code>.fai</code>) records where each sequence starts, so they can jump straight there. <code>samtools faidx</code> builds it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> faidx reference/H37Rv.fasta</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> reference/H37Rv.fasta.fai</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>NC_000962.3 4411532 63  70  71</code></pre>
+<p>One line per sequence: the name, its length (4,411,532 bases), the byte where the sequence starts, the bases per line (70) and the bytes per line (71, counting the newline). With the index in place, <code>samtools faidx</code> extracts any region by name and position:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> faidx reference/H37Rv.fasta NC_000962.3:1-120</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>&gt;NC_000962.3:1-120
+TTGACCGATGACCCCGGTTCAGGCTTCACCACAGTGTGGAACGCGGTCGTCTCCGAACTTAACGGCGACC
+CTAAGGTTGACGACGGACCCAGCAGTGATGCTAATCTCAGCGCTCCGCTG</code></pre>
+<p>Positions count from 1, and both ends are included.</p>
+</section>
+</section>
+<section id="fastq-reads-with-quality-scores" class="level2">
+<h2 class="anchored" data-anchor-id="fastq-reads-with-quality-scores">2. FASTQ: reads with quality scores</h2>
+<p>The sequencer’s output is FASTQ. Each read takes exactly <strong>four lines</strong>:</p>
+<ol type="1">
+<li><code>@</code> and the read’s name</li>
+<li>the bases</li>
+<li><code>+</code> (sometimes followed by the name again)</li>
+<li>a quality score for every base, one character each</li>
+</ol>
+<p>The files are almost always compressed (<code>.fastq.gz</code>), so read them with <code>zcat</code>, which decompresses to the screen without changing the file:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> raw/ERR8025410_1.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 8</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>@ERR8025410.1 NS500500:19:HFFWJAFXX:1:11101:10004:7212/1
+ACCGATGTGTGCCAGGTCCCACACCAGCGGGCTCATCAACGGGTCATACTGGCAGCAAAGCTCGGCATCGTCGAAGTCGACCAGCCGCAACGTCCGCGCCCGCGCCCGCGCCAGATGACAAGCCAGCTGCTCGGGTGAAGTCACGACGCCC
++
+AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE&lt;AAEEEEEEAEA&lt;AAEEAAEAEEEEEAEAAEEEEEEEEEEE&lt;&lt;AAEEEEEEEEEEEEEEAEEEEAEEA6
+@ERR8025410.2 NS500500:19:HFFWJAFXX:1:11101:10016:19744/1
+AGCCAATCGTGGTGGCCGGGATCGGTGTGCCCCTGGAGATCGAGCCCATCCCCCTGGATGCGATTTCGTTGAGTGAGTCGATTCCTATCCGCATACCTGTTGATATTCCGGCCTCGGTCATCGATGGGATTTCAATGTCGGAAGTGGTGCC
++
+AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEEE&lt;EEA6EEEEEEEEEAEEEEEEEEEAEEE&lt;EEAEEAEEEE/EEEE&lt;EEEEEEEEAEEEEEEEEEEAEAEEEA</code></pre>
+<p>Because every read is four lines, the number of reads is the number of lines divided by four:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$((</span> <span class="va">$(</span><span class="fu">zcat</span> raw/ERR8025410_1.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span><span class="va">)</span> <span class="op">/</span> <span class="dv">4</span> <span class="va">))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>1064235</code></pre>
+<p><code>$(( ))</code> does arithmetic in the shell. <code>seqkit stats</code> gives the same count with lengths too:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">seqkit</span> stats raw/ERR8025410_1.fastq.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>file                       format  type   num_seqs      sum_len  min_len  avg_len  max_len
+raw/ERR8025410_1.fastq.gz  FASTQ   DNA   1,064,235  160,699,485      151      151      151</code></pre>
+<section id="quality-scores" class="level3">
+<h3 class="anchored" data-anchor-id="quality-scores">Quality scores</h3>
+<p>Each character on the fourth line encodes the sequencer’s confidence in the base above it, as a <strong>Phred quality score</strong> (Q). The score is the character’s position in the ASCII table minus 33, and it converts to the chance that the base is wrong:</p>
+<div id="tbl-phred" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-phred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Quality characters from the reads above
+</figcaption>
+<div aria-describedby="tbl-phred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Character</th>
+<th>ASCII code</th>
+<th>Q (code − 33)</th>
+<th>Chance the base is wrong</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>E</code></td>
+<td>69</td>
+<td>36</td>
+<td>about 1 in 4,000</td>
+</tr>
+<tr class="even">
+<td><code>A</code></td>
+<td>65</td>
+<td>32</td>
+<td>about 1 in 1,600</td>
+</tr>
+<tr class="odd">
+<td><code>&lt;</code></td>
+<td>60</td>
+<td>27</td>
+<td>about 1 in 500</td>
+</tr>
+<tr class="even">
+<td><code>6</code></td>
+<td>54</td>
+<td>21</td>
+<td>about 1 in 130</td>
+</tr>
+<tr class="odd">
+<td><code>/</code></td>
+<td>47</td>
+<td>14</td>
+<td>about 1 in 25</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Q is 10 × log₁₀ of 1 / error rate, so every 10 points means ten times fewer errors: Q20 is 1 error in 100, Q30 is 1 in 1,000. The reads above are mostly <code>E</code>, with lower scores scattered through and near the ends, which is typical for Illumina data. Part 4 of this series uses these scores to filter and trim reads.</p>
+</section>
+<section id="paired-files" class="level3">
+<h3 class="anchored" data-anchor-id="paired-files">Paired files</h3>
+<p>Paired-end sequencing reads each DNA fragment from both ends, into two files: <code>_1</code> (or <code>R1</code>) and <code>_2</code> (<code>R2</code>). They must stay in the same order, because the first read in one file pairs with the first read in the other. The names show it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> raw/ERR8025410_2.fastq.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>@ERR8025410.1 NS500500:19:HFFWJAFXX:1:11101:10004:7212/2</code></pre>
+<p>The same name as the first read in <code>_1</code>, ending <code>/2</code> instead of <code>/1</code>. Never sort, filter or edit one file of a pair on its own: the pairs would no longer line up, usually without any error message.</p>
+</section>
+</section>
+<section id="gz-compressed-files" class="level2">
+<h2 class="anchored" data-anchor-id="gz-compressed-files">3. .gz: compressed files</h2>
+<p>A <code>.gz</code> ending means the file is compressed with gzip. Sequencing files compress well because they use so few different characters:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> raw/ERR8025410_1.fastq.gz</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> raw/ERR8025410_1.fastq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-c</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>-rw-rw-r-- 1 devon devon 96M Nov 20 12:38 raw/ERR8025410_1.fastq.gz
+391779421</code></pre>
+<p>96 MB on disk, 392 MB of text inside: four times smaller. Most bioinformatics tools read <code>.gz</code> files directly, so there’s rarely a reason to decompress them. When you do want to look inside:</p>
+<div id="tbl-gzip" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-gzip-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Working with gzip files
+</figcaption>
+<div aria-describedby="tbl-gzip-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Task</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Print it</td>
+<td><code>zcat file.gz</code></td>
+</tr>
+<tr class="even">
+<td>Page through it</td>
+<td><code>zless file.gz</code></td>
+</tr>
+<tr class="odd">
+<td>Search it</td>
+<td><code>zgrep "pattern" file.gz</code></td>
+</tr>
+<tr class="even">
+<td>Compress / decompress</td>
+<td><code>gzip file</code> / <code>gunzip file.gz</code> (replaces the original)</td>
+</tr>
+<tr class="odd">
+<td>Keep the original too</td>
+<td><code>gzip -k file</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<section id="gzip-and-bgzip" class="level3">
+<h3 class="anchored" data-anchor-id="gzip-and-bgzip">gzip and bgzip</h3>
+<p>There are two kinds of <code>.gz</code> file, and the difference matters. <strong>bgzip</strong> (block gzip, from the htslib tools) compresses a file in small independent blocks. The result is still a valid gzip file, so <code>zcat</code> and every gzip tool read it, but because each block can be decompressed on its own, an index can point straight to the block holding a given region. Plain gzip compresses the whole file as one stream, which can only be read from the start.</p>
+<p>That’s why indexed formats need bgzip. Compress a VCF with plain gzip and try to index it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gzip</span> variants.vcf</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> <span class="at">-p</span> vcf variants.vcf.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>[tabix] the compression of 'variants.vcf.gz' is not BGZF</code></pre>
+<p>BGZF is the bgzip format. The fix is to decompress (<code>gunzip</code>) and compress again with <code>bgzip variants.vcf</code>. BAM files are bgzip-compressed internally, which is what makes them indexable too.</p>
+</section>
+</section>
+<section id="sam-and-bam-aligned-reads" class="level2">
+<h2 class="anchored" data-anchor-id="sam-and-bam-aligned-reads">4. SAM and BAM: aligned reads</h2>
+<p>Aligning reads to a reference (<a href="../../../tutorials/command-line/aligning-fastq-files-with-a-loop/index.html">Part 5</a>) produces a <strong>SAM</strong> file (Sequence Alignment/Map) <span class="citation" data-cites="li2009sam">(<a href="#ref-li2009sam" role="doc-biblioref">Li et al., 2009</a>)</span>: the reads again, now with where each one aligned and how well. <strong>BAM</strong> is the same content, compressed with bgzip. In practice you’ll almost always keep BAM, because it’s much smaller:</p>
+<div id="tbl-sam-bam" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sam-bam-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: One sample’s alignments as BAM and as SAM. The download holds only the reads for one gene, so it’s much smaller.
+</figcaption>
+<div aria-describedby="tbl-sam-bam-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>File</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ERR8025410.bam</code> (all reads)</td>
+<td>131 MB</td>
+</tr>
+<tr class="even">
+<td>The same alignments as SAM text</td>
+<td>929 MB</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>BAM is binary, so <code>head</code> and <code>less</code> show gibberish. <code>samtools view</code> turns it back into SAM text as it reads.</p>
+<section id="the-header" class="level3">
+<h3 class="anchored" data-anchor-id="the-header">The header</h3>
+<p><code>samtools view -H</code> prints only the header, the lines starting with <code>@</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-H</span> aligned/ERR8025410.rpoB.bam</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>@HD VN:1.5  SO:coordinate
+@SQ SN:NC_000962.3  LN:4411532
+@RG ID:ERR8025410   SM:ERR8025410   PL:ILLUMINA
+@PG ID:bwa  PN:bwa  VN:0.7.19-r1273 CL:bwa mem -t 8 -R @RG\tID:ERR8025410\tSM:ERR8025410\tPL:ILLUMINA reference/...
+@PG ID:samtools PN:samtools PP:bwa  VN:1.24 CL:samtools sort -@ 2 -o aligned/ERR8025410.bam -
+@PG ID:samtools.1   PN:samtools PP:samtools VN:1.24 CL:samtools view -b -o aligned/ERR8025410.rpoB.bam aligned/ERR8025410.bam NC_000962.3:759807-763325
+@PG ID:samtools.2   PN:samtools PP:samtools.1   VN:1.24 CL:samtools view -H aligned/ERR8025410.rpoB.bam</code></pre>
+<p>(The <code>bwa</code> line is cut short here; in the file it holds the whole command.)</p>
+<ul>
+<li><code>@HD</code>: the format version, and <code>SO:coordinate</code>, meaning the reads are sorted by position.</li>
+<li><code>@SQ</code>: each reference sequence and its length, matching the FASTA.</li>
+<li><code>@RG</code>: the <strong>read group</strong>, recording which sample the reads came from.</li>
+<li><code>@PG</code>: every program that has touched the file, with its version and full command. It’s a record of how the file was made, written into the file itself. Here you can read the file’s history: bwa aligned the reads, samtools sorted them, then <code>samtools view</code> cut out the <em>rpoB</em> region to make the download. Even <code>samtools view -H</code> adds a line for itself to the header it prints (the last line).</li>
+</ul>
+</section>
+<section id="the-records" class="level3">
+<h3 class="anchored" data-anchor-id="the-records">The records</h3>
+<p>After the header, every line is one read: 11 columns separated by tabs, plus optional extra tags. Here are the first nine columns of one read:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view aligned/ERR8025410.rpoB.bam NC_000962.3:761100-761200 <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 1 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1-9</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>ERR8025410.1001718  83  NC_000962.3 760953  60  151M    =   760388  -716</code></pre>
+<div id="tbl-sam-columns" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sam-columns-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: The 11 columns of a SAM record
+</figcaption>
+<div aria-describedby="tbl-sam-columns-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Name</th>
+<th>Here</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>QNAME</td>
+<td><code>ERR8025410.1001718</code></td>
+<td>The read’s name, from the FASTQ</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>FLAG</td>
+<td><code>83</code></td>
+<td>Facts about the read, packed into one number (below)</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>RNAME</td>
+<td><code>NC_000962.3</code></td>
+<td>The reference sequence it aligned to</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>POS</td>
+<td><code>760953</code></td>
+<td>The position of its first aligned base</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>MAPQ</td>
+<td><code>60</code></td>
+<td>Mapping quality: how sure the aligner is that this is the right place (60 is bwa’s highest)</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>CIGAR</td>
+<td><code>151M</code></td>
+<td>How the read lines up with the reference (below)</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>RNEXT</td>
+<td><code>=</code></td>
+<td>Where its mate aligned: <code>=</code> means the same sequence</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>PNEXT</td>
+<td><code>760388</code></td>
+<td>The mate’s position</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>TLEN</td>
+<td><code>-716</code></td>
+<td>The fragment length, negative because this is the right-hand read of the pair</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>SEQ</td>
+<td></td>
+<td>The bases</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>QUAL</td>
+<td></td>
+<td>The quality scores, as in the FASTQ</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The <strong>FLAG</strong> adds together yes-or-no facts, each worth a power of two (1 = paired, 2 = properly paired, 4 = unmapped, 16 = reverse strand, 64 = first read of the pair, and so on). <code>samtools flags</code> decodes it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> flags 83</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>0x53    83  PAIRED,PROPER_PAIR,REVERSE,READ1</code></pre>
+<p>So this is the first read of a properly aligned pair, on the reverse strand (83 = 1 + 2 + 16 + 64). Flags are how you filter reads: <code>samtools view -f 4</code> keeps unmapped reads (flag 4 set) and <code>-F 4</code> drops them, which a later part on removing human reads relies on.</p>
+<p>The <strong>CIGAR</strong> string describes the alignment as counts and letters. <code>151M</code> means all 151 bases aligned (M, for match or mismatch, since CIGAR doesn’t distinguish). Others you’ll see: <code>I</code> (bases inserted in the read), <code>D</code> (bases deleted from the read), and <code>S</code> (soft-clipped: bases kept in the read but not aligned, such as adapter sequence). <code>65S86M</code> would mean the first 65 bases are clipped and the next 86 align.</p>
+</section>
+<section id="the-.bai-index" class="level3">
+<h3 class="anchored" data-anchor-id="the-.bai-index">The .bai index</h3>
+<p>A sorted BAM can be indexed with <code>samtools index</code>, which writes a <code>.bai</code> file (the download already includes it; running the command again simply rebuilds it). With it, tools fetch the reads in any region without reading the whole file. This counts the reads overlapping the <em>rpoB</em> gene (positions 759,807 to 763,325 in the reference annotation):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index aligned/ERR8025410.rpoB.bam</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-c</span> aligned/ERR8025410.rpoB.bam NC_000962.3:759807-763325</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>1704</code></pre>
+<p>Without the index, the same command fails:</p>
+<pre class="text"><code>samtools view: Random alignment retrieval only works for indexed SAM.gz, BAM or CRAM files.</code></pre>
+<p>Indexing needs the BAM sorted by position (<code>samtools sort</code>), and the index must be rebuilt whenever the BAM changes. Keep the two together: tools look for <code>name.bam.bai</code> next to <code>name.bam</code>.</p>
+</section>
+</section>
+<section id="vcf-and-the-.tbi-index" class="level2">
+<h2 class="anchored" data-anchor-id="vcf-and-the-.tbi-index">5. VCF and the .tbi index</h2>
+<p>Comparing the aligned reads to the reference finds <strong>variants</strong>: positions where the sample differs. They’re stored in VCF (Variant Call Format) <span class="citation" data-cites="danecek2011">(<a href="#ref-danecek2011" role="doc-biblioref">Danecek et al., 2011</a>)</span>. The VCF in the download was made from the full alignment with bcftools, calling variants in the <em>rpoB</em> region and writing a bgzipped VCF (<code>-Oz</code>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> mpileup <span class="at">-f</span> reference/H37Rv.fasta <span class="at">-r</span> NC_000962.3:759807-763325 aligned/ERR8025410.bam <span class="dt">\</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="ex">bcftools</span> call <span class="at">-mv</span> <span class="at">--ploidy</span> 1 <span class="at">-Oz</span> <span class="at">-o</span> variants/ERR8025410.rpoB.vcf.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>(<code>--ploidy 1</code> because bacteria carry one copy of their chromosome, and <code>-v</code> keeps only the variant positions. Part 6 covers variant calling properly.)</p>
+<p>A VCF is a header of <code>##</code> lines describing the file, a <code>#CHROM</code> line naming the columns, then one line per variant:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> variants/ERR8025410.rpoB.vcf.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">"^##"</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1-6,9,10</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>#CHROM  POS ID  REF ALT QUAL    FORMAT  ERR8025410
+NC_000962.3 761155  .   C   T   225.417 GT:PL:AD    1:255,0:0,37
+NC_000962.3 763031  .   T   C   225.417 GT:PL:AD    1:255,0:0,65</code></pre>
+<p>Each line gives the sequence and position, the reference base (<code>REF</code>) and the base in the sample (<code>ALT</code>), a quality score, and a column per sample. The <code>FORMAT</code> column says how to read that sample’s column: <code>GT</code> (genotype: <code>1</code> means the sample carries the ALT base) and <code>AD</code> (allele depth: 0 reads support the reference, 37 the alternative). Here every read covering both positions agrees.</p>
+<section id="the-.tbi-index" class="level3">
+<h3 class="anchored" data-anchor-id="the-.tbi-index">The .tbi index</h3>
+<p><code>tabix</code> indexes a bgzipped, position-sorted table, writing a <code>.tbi</code> file, so tools can fetch the lines for any region:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> <span class="at">-p</span> vcf variants/ERR8025410.rpoB.vcf.gz</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> variants/ERR8025410.rpoB.vcf.gz NC_000962.3:761000-761200 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1-5</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>NC_000962.3 761155  .   C   T</code></pre>
+<p>This file has two variants, so the index saves nothing. A whole-genome VCF with thousands of samples can be many gigabytes, and the index is what makes looking up one gene instant. <code>-p vcf</code> says the file is a VCF; tabix also indexes other tab-separated position files, such as BED and GFF, when they’re bgzipped and sorted.</p>
+</section>
+</section>
+<section id="see-it-igv" class="level2">
+<h2 class="anchored" data-anchor-id="see-it-igv">6. See it: IGV</h2>
+<p>Text shows you exactly what’s in a file, but a picture shows what it <em>means</em>. The <strong>Integrative Genomics Viewer</strong> (IGV) <span class="citation" data-cites="robinson2011">(<a href="#ref-robinson2011" role="doc-biblioref">Robinson et al., 2011</a>)</span> draws the reference, the reads stacked where they aligned, and the variants, all at once. Below is the <em>rpoB</em> region from the example files, in igv.js, the version of IGV that runs in a web page <span class="citation" data-cites="robinson2023">(<a href="#ref-robinson2023" role="doc-biblioref">Robinson et al., 2023</a>)</span>:</p>
+<div id="igv-rpoB" style="border:1px solid var(--bs-border-color); border-radius:.375rem; min-height:420px; background:#fff;"></div>
+<script src="https://cdn.jsdelivr.net/npm/igv@3.8.10/dist/igv.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  igv.createBrowser(document.getElementById("igv-rpoB"), {
+    reference: {
+      id: "H37Rv",
+      name: "M. tuberculosis H37Rv (NC_000962.3)",
+      fastaURL: "igv/H37Rv.fasta.gz",
+      indexURL: "igv/H37Rv.fasta.gz.fai",
+      compressedIndexURL: "igv/H37Rv.fasta.gz.gzi"
+    },
+    locus: "NC_000962.3:761,100-761,210",
+    tracks: [
+      { name: "Genes", type: "annotation", format: "bed", url: "igv/genes.bed",
+        displayMode: "EXPANDED", height: 50, searchable: true },
+      { name: "Variants (VCF)", type: "variant", format: "vcf",
+        url: "igv/ERR8025410.rpoB.vcf.gz", indexURL: "igv/ERR8025410.rpoB.vcf.gz.tbi" },
+      { name: "ERR8025410 reads (BAM)", type: "alignment", format: "bam",
+        url: "igv/ERR8025410.rpoB.bam", indexURL: "igv/ERR8025410.rpoB.bam.bai",
+        height: 300 }
+    ]
+  });
+});
+</script>
+<p>From the top down:</p>
+<ul>
+<li><strong>The ruler and sequence:</strong> positions on the genome, and the reference bases when you zoom in far enough.</li>
+<li><strong>Genes:</strong> the gene annotation for this part of the genome; the view sits inside <em>rpoB</em>.</li>
+<li><strong>Variants:</strong> a mark at each position in the VCF. Click it for the VCF fields from section 5.</li>
+<li><strong>Reads:</strong> each grey bar is a read, placed where it aligned. A base that differs from the reference is drawn in colour, so the variant at 761,155 shows as a coloured column through every read that covers it: the <code>AD</code> value of 0 reference reads and 37 alternative reads, made visible. The bar chart above the reads is the coverage (depth) at each position.</li>
+</ul>
+<p>Drag to move along the genome, use the + and − buttons to zoom, and click any read for its SAM fields: name, FLAG, position, MAPQ and CIGAR. Type <code>rpoB</code> or a position such as <code>NC_000962.3:763,000-763,080</code> into the box at the top to jump there (the second variant, at 763,031). This viewer only holds reads for <em>rpoB</em>, so the rest of the genome is empty.</p>
+<section id="on-your-own-computer" class="level3">
+<h3 class="anchored" data-anchor-id="on-your-own-computer">On your own computer</h3>
+<p>To use IGV with your own files, either:</p>
+<ul>
+<li>open <strong><a href="https://igv.org/app/">IGV-Web</a></strong> in a browser: nothing to install, and your files stay on your computer; or</li>
+<li>install <strong>IGV desktop</strong> from <a href="https://igv.org/download/">igv.org</a>, or with micromamba: <code>micromamba create -n igv igv</code>, then run <code>igv</code>.</li>
+</ul>
+<p>Either way, load the reference first (<em>Genomes → Load Genome from File</em>, choosing <code>reference/H37Rv.fasta</code>), then the data (<em>File → Load from File</em>, choosing <code>aligned/ERR8025410.rpoB.bam</code> and <code>variants/ERR8025410.rpoB.vcf.gz</code>). IGV finds the <code>.fai</code>, <code>.bai</code> and <code>.tbi</code> index files automatically, as long as each sits beside its file with the matching name: one more reason indexes matter.</p>
+</section>
+</section>
+<section id="common-mistakes" class="level2">
+<h2 class="anchored" data-anchor-id="common-mistakes">Common mistakes</h2>
+<div id="tbl-mistakes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mistakes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6: Format-related errors and their usual causes
+</figcaption>
+<div aria-describedby="tbl-mistakes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>not BGZF</code> from tabix or bcftools</td>
+<td>Compressed with gzip, not bgzip</td>
+<td><code>gunzip</code>, then <code>bgzip</code></td>
+</tr>
+<tr class="even">
+<td><code>Could not retrieve index file</code> / <code>Random alignment retrieval only works for indexed…</code></td>
+<td>No <code>.bai</code> or <code>.tbi</code> beside the file</td>
+<td><code>samtools index</code> or <code>tabix -p vcf</code></td>
+</tr>
+<tr class="odd">
+<td>Index errors after editing a file</td>
+<td>The index is older than the file</td>
+<td>Rebuild the index</td>
+</tr>
+<tr class="even">
+<td><code>samtools index</code> fails</td>
+<td>The BAM isn’t sorted by position</td>
+<td><code>samtools sort</code> first</td>
+</tr>
+<tr class="odd">
+<td>Reads paired wrongly, or a tool complains the files differ</td>
+<td>The two FASTQ files of a pair went out of step</td>
+<td>Never filter or sort one file of a pair alone</td>
+</tr>
+<tr class="even">
+<td>A FASTA file emptied</td>
+<td><code>grep &gt;</code> without quotes redirected over it</td>
+<td>Always quote <code>"&gt;"</code></td>
+</tr>
+<tr class="odd">
+<td>“Sequence not found” or no reads in a region</td>
+<td>The name doesn’t match: <code>chr1</code> vs <code>1</code>, or a different reference version</td>
+<td>Use the names in the <code>@SQ</code> lines or the <code>.fai</code> file</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="series-pager">
+<p><a href="../../../tutorials/command-line/finding-and-downloading-public-data/index.html">← Part 2: Finding and downloading public sequencing data</a></p>
+<p>Next: Part 4, Checking and cleaning sequencing reads: FastQC, MultiQC and fastp <em>(coming soon)</em></p>
+</div>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-cole1998" class="csl-entry" role="listitem">
+<span class="nocase">Cole, S.T., Brosch, R., Parkhill, J., Garnier, T., Churcher, C., Harris, D., Gordon, S.V., Eiglmeier, K., Gas, S., Barry, C.E. and others</span>, 1998. Deciphering the biology of <em>mycobacterium tuberculosis</em> from the complete genome sequence. <em>Nature</em>, 393(6685), pp.537–544. https://doi.org/<a href="https://doi.org/10.1038/31159">10.1038/31159</a>.
+</div>
+<div id="ref-danecek2011" class="csl-entry" role="listitem">
+Danecek, P., Auton, A., Abecasis, G., Albers, C.A., Banks, E., DePristo, M.A., Handsaker, R.E., Lunter, G., Marth, G.T., Sherry, S.T., McVean, G., Durbin, R. and 1000 Genomes Project Analysis Group, 2011. The variant call format and <span>VCFtools</span>. <em>Bioinformatics</em>, 27(15), pp.2156–2158. https://doi.org/<a href="https://doi.org/10.1093/bioinformatics/btr330">10.1093/bioinformatics/btr330</a>.
+</div>
+<div id="ref-danecek2021" class="csl-entry" role="listitem">
+Danecek, P., Bonfield, J.K., Liddle, J., Marshall, J., Ohan, V., Pollard, M.O., Whitwham, A., Keane, T., McCarthy, S.A., Davies, R.M. and Li, H., 2021. Twelve years of <span>SAMtools</span> and <span>BCFtools</span>. <em>GigaScience</em>, 10(2), p.giab008. https://doi.org/<a href="https://doi.org/10.1093/gigascience/giab008">10.1093/gigascience/giab008</a>.
+</div>
+<div id="ref-li2009sam" class="csl-entry" role="listitem">
+Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. and 1000 Genome Project Data Processing Subgroup, 2009. The <span>Sequence Alignment/Map</span> format and <span>SAMtools</span>. <em>Bioinformatics</em>, 25(16), pp.2078–2079. https://doi.org/<a href="https://doi.org/10.1093/bioinformatics/btp352">10.1093/bioinformatics/btp352</a>.
+</div>
+<div id="ref-oostvogels2022" class="csl-entry" role="listitem">
+Oostvogels, S., Ley, S.D., Heupink, T.H., Dippenaar, A., Streicher, E.M., De Vos, E., Meehan, C.J., Dheda, K., Warren, R. and Van Rie, A., 2022. Transmission, distribution and drug resistance-conferring mutations of extensively drug-resistant tuberculosis in the <span>Western Cape Province, South Africa</span>. <em>Microbial Genomics</em>, 8(4), p.000815. https://doi.org/<a href="https://doi.org/10.1099/mgen.0.000815">10.1099/mgen.0.000815</a>.
+</div>
+<div id="ref-robinson2023" class="csl-entry" role="listitem">
+Robinson, J.T., Thorvaldsdottir, H., Turner, D. and Mesirov, J.P., 2023. Igv.js: An embeddable <span>JavaScript</span> implementation of the <span>Integrative Genomics Viewer (IGV)</span>. <em>Bioinformatics</em>, 39(1), p.btac830. https://doi.org/<a href="https://doi.org/10.1093/bioinformatics/btac830">10.1093/bioinformatics/btac830</a>.
+</div>
+<div id="ref-robinson2011" class="csl-entry" role="listitem">
+Robinson, J.T., Thorvaldsdóttir, H., Winckler, W., Guttman, M., Lander, E.S., Getz, G. and Mesirov, J.P., 2011. Integrative genomics viewer. <em>Nature Biotechnology</em>, 29(1), pp.24–26. https://doi.org/<a href="https://doi.org/10.1038/nbt.1754">10.1038/nbt.1754</a>.
+</div>
+<div id="ref-shen2016" class="csl-entry" role="listitem">
+Shen, W., Le, S., Li, Y. and Hu, F., 2016. <span>SeqKit</span>: A cross-platform and ultrafast toolkit for <span>FASTA/Q</span> file manipulation. <em>PLOS ONE</em>, 11(10), p.e0163962. https://doi.org/<a href="https://doi.org/10.1371/journal.pone.0163962">10.1371/journal.pone.0163962</a>.
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/devonallies\.co\.za\/");
+      const newWindowLabel = "(opens in a new tab)";
+      const newWindowNoteId = "quarto-ext-newwindow-label";
+      // Links reference one hidden label through aria-describedby, so the
+      // announcement never changes their accessible name.
+      var describeNewWindow = (link) => {
+        if (!window.document.getElementById(newWindowNoteId)) {
+          var newWindowNote = window.document.createElement("span");
+          newWindowNote.id = newWindowNoteId;
+          newWindowNote.hidden = true;
+          newWindowNote.textContent = newWindowLabel;
+          window.document.body.appendChild(newWindowNote);
+        }
+        var describedBy = (link.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+        if (!describedBy.includes(newWindowNoteId)) {
+          describedBy.push(newWindowNoteId);
+          link.setAttribute("aria-describedby", describedBy.join(" "));
+        }
+      }
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+            describeNewWindow(link);
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+</div> <!-- /content -->
+<script src="../../../assets/js/share.js"></script><script src="../../../assets/js/series-panel.js"></script>
+
+
+
+
+</body></html>

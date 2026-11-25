@@ -1,0 +1,458 @@
+---
+title: "Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes"
+subtitle: "What's inside the files you'll meet first, how to look at them from the terminal, and what the .gz, .fai, .bai and .tbi files beside them are for"
+author: "Devon Allies"
+date: 2026-11-25
+description: "A beginner's guide to the common bioinformatics file formats, using real Mycobacterium tuberculosis sequencing data: FASTA reference genomes, FASTQ reads and quality scores, gzip and bgzip compression, SAM and BAM alignments, FLAG and CIGAR fields, VCF variants, and the .fai, .bai and .tbi index files."
+categories: [Command line, Bioinformatics]
+series: command-line
+series-part: 3
+bibliography: references.bib
+csl: ../../../assets/csl/harvard-anglia-ruskin-university.csl
+filters:
+  - ../../../assets/lua/series.lua
+toc: true
+toc-depth: 2
+toc-location: left
+resources:
+  - formats-example-files.zip
+  - igv/*   # files for the embedded IGV viewer
+---
+
+Sequencing data comes as a handful of file types, each with its own layout and its own name ending: `.fasta`, `.fastq.gz`, `.bam`, `.vcf.gz`, plus small companion files ending in `.fai`, `.bai` or `.tbi`. Every tool expects a particular one, and most error messages in a first pipeline are about a file being in the wrong format, compressed the wrong way or missing its index.
+
+This article opens each format from the terminal, line by line, so you know what's inside before any tool touches it. It uses the commands from [The command line for biologists](../command-line-for-biologists/index.qmd) (`head`, `wc`, `grep`, pipes) and a few from two standard toolkits: **samtools** for reads and alignments [@danecek2021] and **seqkit** for sequence files [@shen2016].
+
+::: {.callout-tip appearance="simple"}
+## Before you start
+
+Open a terminal, go into the project folder from [Part 2](../finding-and-downloading-public-data/index.qmd#set-up-a-project-folder), and activate this part's tools:
+
+```{.bash}
+cd ~/tb-project
+micromamba activate formats
+```
+
+The first time, create the environment with `micromamba create -n formats samtools seqkit bcftools htslib` (`htslib` provides `tabix` and `bgzip`). You'll need the reads and reference genome downloaded in Part 2, and the example files below. Every command below runs from `~/tb-project`; `pwd` shows where you are.
+:::
+
+::: {.callout-note appearance="simple"}
+## The data, and the output
+
+The examples use the files downloaded in [Part 2](../finding-and-downloading-public-data/index.qmd): whole-genome sequencing of *Mycobacterium tuberculosis* from a Western Cape study [@oostvogels2022] (run [ERR8025410](https://www.ebi.ac.uk/ena/browser/view/ERR8025410)) and the H37Rv reference genome [@cole1998]. Run the commands from the `~/tb-project` folder set up in Part 2.
+
+The alignment (BAM) and variant (VCF) files come from steps later in the series, so download a small ready-made set to follow along now. It holds one sample's alignments and variants for one gene, *rpoB*, with their index files, and unzips into `aligned/` and `variants/` folders:
+
+[<i class="bi bi-download"></i> Download the example files (110 KB)](formats-example-files.zip){.btn .btn-sm .btn-outline-primary}
+
+```{.bash}
+unzip formats-example-files.zip
+```
+
+Every output shown was saved from a real run on 20 November 2026 with samtools 1.24 and bcftools 1.25.
+:::
+
+## At a glance
+
+| Ending | Format | Holds | Text or binary | Look inside with |
+|---|---|---|---|---|
+| `.fasta`, `.fa`, `.fna` | FASTA | Sequences: a reference genome, genes, contigs | Text | `head`, `less`, `seqkit` |
+| `.fastq`, `.fq` | FASTQ | Sequencing reads, with a quality score for every base | Text | `head`, `seqkit` |
+| `.gz` | gzip | Any file, compressed | Binary | `zcat`, `zless` |
+| `.sam` | SAM | Reads aligned to a reference | Text | `head`, `samtools view` |
+| `.bam` | BAM | The same as SAM, compressed | Binary | `samtools view` |
+| `.vcf`, `.vcf.gz` | VCF | Variants: where a sample differs from the reference | Text (often bgzipped) | `zcat`, `bcftools view` |
+| `.fai` | FASTA index | Where each sequence starts in a FASTA file | Text | `cat` |
+| `.bai` | BAM index | Where each region of the genome is in a BAM file | Binary | used by tools |
+| `.tbi` | Tabix index | Where each region is in a bgzipped VCF or other table | Binary | used by tools |
+
+: The formats in this article {#tbl-formats}
+
+## 1. FASTA: sequences
+
+A FASTA file holds one or more sequences. Each starts with a **header line** beginning with `>`, followed by the sequence itself, usually wrapped over many lines. The reference genome is a FASTA file:
+
+```{.bash}
+head -n 3 reference/H37Rv.fasta
+```
+
+```{.text}
+>NC_000962.3 Mycobacterium tuberculosis H37Rv, complete genome
+TTGACCGATGACCCCGGTTCAGGCTTCACCACAGTGTGGAACGCGGTCGTCTCCGAACTTAACGGCGACC
+CTAAGGTTGACGACGGACCCAGCAGTGATGCTAATCTCAGCGCTCCGCTGACCCCTCAGCAAAGGGCTTG
+```
+
+The header's first word, `NC_000962.3`, is the sequence's **name** (here its GenBank accession), and the rest is a free-text description. Tools refer to the sequence by that first word, so you'll see `NC_000962.3` again in every alignment and variant below.
+
+Counting the `>` lines counts the sequences. *M. tuberculosis* has a single circular chromosome, so there's one:
+
+```{.bash}
+grep -c ">" reference/H37Rv.fasta
+```
+
+```{.text}
+1
+```
+
+::: {.callout-warning appearance="simple"}
+## Quote the `>`
+
+Always write `grep -c ">"` with the quotes. Without them, the shell reads `>` as redirection and *overwrites* the file named after it with grep's output.
+:::
+
+### The .fai index
+
+To pull out one region, tools would have to read the file from the top to find it. A **FASTA index** (`.fai`) records where each sequence starts, so they can jump straight there. `samtools faidx` builds it:
+
+```{.bash}
+samtools faidx reference/H37Rv.fasta
+cat reference/H37Rv.fasta.fai
+```
+
+```{.text}
+NC_000962.3	4411532	63	70	71
+```
+
+One line per sequence: the name, its length (4,411,532 bases), the byte where the sequence starts, the bases per line (70) and the bytes per line (71, counting the newline). With the index in place, `samtools faidx` extracts any region by name and position:
+
+```{.bash}
+samtools faidx reference/H37Rv.fasta NC_000962.3:1-120
+```
+
+```{.text}
+>NC_000962.3:1-120
+TTGACCGATGACCCCGGTTCAGGCTTCACCACAGTGTGGAACGCGGTCGTCTCCGAACTTAACGGCGACC
+CTAAGGTTGACGACGGACCCAGCAGTGATGCTAATCTCAGCGCTCCGCTG
+```
+
+Positions count from 1, and both ends are included.
+
+## 2. FASTQ: reads with quality scores
+
+The sequencer's output is FASTQ. Each read takes exactly **four lines**:
+
+1. `@` and the read's name
+2. the bases
+3. `+` (sometimes followed by the name again)
+4. a quality score for every base, one character each
+
+The files are almost always compressed (`.fastq.gz`), so read them with `zcat`, which decompresses to the screen without changing the file:
+
+```{.bash}
+zcat raw/ERR8025410_1.fastq.gz | head -n 8
+```
+
+```{.text}
+@ERR8025410.1 NS500500:19:HFFWJAFXX:1:11101:10004:7212/1
+ACCGATGTGTGCCAGGTCCCACACCAGCGGGCTCATCAACGGGTCATACTGGCAGCAAAGCTCGGCATCGTCGAAGTCGACCAGCCGCAACGTCCGCGCCCGCGCCCGCGCCAGATGACAAGCCAGCTGCTCGGGTGAAGTCACGACGCCC
++
+AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE<AAEEEEEEAEA<AAEEAAEAEEEEEAEAAEEEEEEEEEEE<<AAEEEEEEEEEEEEEEAEEEEAEEA6
+@ERR8025410.2 NS500500:19:HFFWJAFXX:1:11101:10016:19744/1
+AGCCAATCGTGGTGGCCGGGATCGGTGTGCCCCTGGAGATCGAGCCCATCCCCCTGGATGCGATTTCGTTGAGTGAGTCGATTCCTATCCGCATACCTGTTGATATTCCGGCCTCGGTCATCGATGGGATTTCAATGTCGGAAGTGGTGCC
++
+AAAAAEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEEEEEEEEE<EEA6EEEEEEEEEAEEEEEEEEEAEEE<EEAEEAEEEE/EEEE<EEEEEEEEAEEEEEEEEEEAEAEEEA
+```
+
+Because every read is four lines, the number of reads is the number of lines divided by four:
+
+```{.bash}
+echo $(( $(zcat raw/ERR8025410_1.fastq.gz | wc -l) / 4 ))
+```
+
+```{.text}
+1064235
+```
+
+`$(( ))` does arithmetic in the shell. `seqkit stats` gives the same count with lengths too:
+
+```{.bash}
+seqkit stats raw/ERR8025410_1.fastq.gz
+```
+
+```{.text}
+file                       format  type   num_seqs      sum_len  min_len  avg_len  max_len
+raw/ERR8025410_1.fastq.gz  FASTQ   DNA   1,064,235  160,699,485      151      151      151
+```
+
+### Quality scores
+
+Each character on the fourth line encodes the sequencer's confidence in the base above it, as a **Phred quality score** (Q). The score is the character's position in the ASCII table minus 33, and it converts to the chance that the base is wrong:
+
+| Character | ASCII code | Q (code − 33) | Chance the base is wrong |
+|---|---|---|---|
+| `E` | 69 | 36 | about 1 in 4,000 |
+| `A` | 65 | 32 | about 1 in 1,600 |
+| `<` | 60 | 27 | about 1 in 500 |
+| `6` | 54 | 21 | about 1 in 130 |
+| `/` | 47 | 14 | about 1 in 25 |
+
+: Quality characters from the reads above {#tbl-phred}
+
+Q is 10 × log₁₀ of 1 / error rate, so every 10 points means ten times fewer errors: Q20 is 1 error in 100, Q30 is 1 in 1,000. The reads above are mostly `E`, with lower scores scattered through and near the ends, which is typical for Illumina data. Part 4 of this series uses these scores to filter and trim reads.
+
+### Paired files
+
+Paired-end sequencing reads each DNA fragment from both ends, into two files: `_1` (or `R1`) and `_2` (`R2`). They must stay in the same order, because the first read in one file pairs with the first read in the other. The names show it:
+
+```{.bash}
+zcat raw/ERR8025410_2.fastq.gz | head -n 1
+```
+
+```{.text}
+@ERR8025410.1 NS500500:19:HFFWJAFXX:1:11101:10004:7212/2
+```
+
+The same name as the first read in `_1`, ending `/2` instead of `/1`. Never sort, filter or edit one file of a pair on its own: the pairs would no longer line up, usually without any error message.
+
+## 3. .gz: compressed files
+
+A `.gz` ending means the file is compressed with gzip. Sequencing files compress well because they use so few different characters:
+
+```{.bash}
+ls -lh raw/ERR8025410_1.fastq.gz
+zcat raw/ERR8025410_1.fastq.gz | wc -c
+```
+
+```{.text}
+-rw-rw-r-- 1 devon devon 96M Nov 20 12:38 raw/ERR8025410_1.fastq.gz
+391779421
+```
+
+96 MB on disk, 392 MB of text inside: four times smaller. Most bioinformatics tools read `.gz` files directly, so there's rarely a reason to decompress them. When you do want to look inside:
+
+| Task | Command |
+|---|---|
+| Print it | `zcat file.gz` |
+| Page through it | `zless file.gz` |
+| Search it | `zgrep "pattern" file.gz` |
+| Compress / decompress | `gzip file` / `gunzip file.gz` (replaces the original) |
+| Keep the original too | `gzip -k file` |
+
+: Working with gzip files {#tbl-gzip}
+
+### gzip and bgzip
+
+There are two kinds of `.gz` file, and the difference matters. **bgzip** (block gzip, from the htslib tools) compresses a file in small independent blocks. The result is still a valid gzip file, so `zcat` and every gzip tool read it, but because each block can be decompressed on its own, an index can point straight to the block holding a given region. Plain gzip compresses the whole file as one stream, which can only be read from the start.
+
+That's why indexed formats need bgzip. Compress a VCF with plain gzip and try to index it:
+
+```{.bash}
+gzip variants.vcf
+tabix -p vcf variants.vcf.gz
+```
+
+```{.text}
+[tabix] the compression of 'variants.vcf.gz' is not BGZF
+```
+
+BGZF is the bgzip format. The fix is to decompress (`gunzip`) and compress again with `bgzip variants.vcf`. BAM files are bgzip-compressed internally, which is what makes them indexable too.
+
+## 4. SAM and BAM: aligned reads
+
+Aligning reads to a reference ([Part 5](../aligning-fastq-files-with-a-loop/index.qmd)) produces a **SAM** file (Sequence Alignment/Map) [@li2009sam]: the reads again, now with where each one aligned and how well. **BAM** is the same content, compressed with bgzip. In practice you'll almost always keep BAM, because it's much smaller:
+
+| File | Size |
+|---|---|
+| `ERR8025410.bam` (all reads) | 131 MB |
+| The same alignments as SAM text | 929 MB |
+
+: One sample's alignments as BAM and as SAM. The download holds only the reads for one gene, so it's much smaller. {#tbl-sam-bam}
+
+BAM is binary, so `head` and `less` show gibberish. `samtools view` turns it back into SAM text as it reads.
+
+### The header
+
+`samtools view -H` prints only the header, the lines starting with `@`:
+
+```{.bash}
+samtools view -H aligned/ERR8025410.rpoB.bam
+```
+
+```{.text}
+@HD	VN:1.5	SO:coordinate
+@SQ	SN:NC_000962.3	LN:4411532
+@RG	ID:ERR8025410	SM:ERR8025410	PL:ILLUMINA
+@PG	ID:bwa	PN:bwa	VN:0.7.19-r1273	CL:bwa mem -t 8 -R @RG\tID:ERR8025410\tSM:ERR8025410\tPL:ILLUMINA reference/...
+@PG	ID:samtools	PN:samtools	PP:bwa	VN:1.24	CL:samtools sort -@ 2 -o aligned/ERR8025410.bam -
+@PG	ID:samtools.1	PN:samtools	PP:samtools	VN:1.24	CL:samtools view -b -o aligned/ERR8025410.rpoB.bam aligned/ERR8025410.bam NC_000962.3:759807-763325
+@PG	ID:samtools.2	PN:samtools	PP:samtools.1	VN:1.24	CL:samtools view -H aligned/ERR8025410.rpoB.bam
+```
+
+(The `bwa` line is cut short here; in the file it holds the whole command.)
+
+- `@HD`: the format version, and `SO:coordinate`, meaning the reads are sorted by position.
+- `@SQ`: each reference sequence and its length, matching the FASTA.
+- `@RG`: the **read group**, recording which sample the reads came from.
+- `@PG`: every program that has touched the file, with its version and full command. It's a record of how the file was made, written into the file itself. Here you can read the file's history: bwa aligned the reads, samtools sorted them, then `samtools view` cut out the *rpoB* region to make the download. Even `samtools view -H` adds a line for itself to the header it prints (the last line).
+
+### The records
+
+After the header, every line is one read: 11 columns separated by tabs, plus optional extra tags. Here are the first nine columns of one read:
+
+```{.bash}
+samtools view aligned/ERR8025410.rpoB.bam NC_000962.3:761100-761200 | head -n 1 | cut -f 1-9
+```
+
+```{.text}
+ERR8025410.1001718	83	NC_000962.3	760953	60	151M	=	760388	-716
+```
+
+| Column | Name | Here | Meaning |
+|---|---|---|---|
+| 1 | QNAME | `ERR8025410.1001718` | The read's name, from the FASTQ |
+| 2 | FLAG | `83` | Facts about the read, packed into one number (below) |
+| 3 | RNAME | `NC_000962.3` | The reference sequence it aligned to |
+| 4 | POS | `760953` | The position of its first aligned base |
+| 5 | MAPQ | `60` | Mapping quality: how sure the aligner is that this is the right place (60 is bwa's highest) |
+| 6 | CIGAR | `151M` | How the read lines up with the reference (below) |
+| 7 | RNEXT | `=` | Where its mate aligned: `=` means the same sequence |
+| 8 | PNEXT | `760388` | The mate's position |
+| 9 | TLEN | `-716` | The fragment length, negative because this is the right-hand read of the pair |
+| 10 | SEQ | | The bases |
+| 11 | QUAL | | The quality scores, as in the FASTQ |
+
+: The 11 columns of a SAM record {#tbl-sam-columns}
+
+The **FLAG** adds together yes-or-no facts, each worth a power of two (1 = paired, 2 = properly paired, 4 = unmapped, 16 = reverse strand, 64 = first read of the pair, and so on). `samtools flags` decodes it:
+
+```{.bash}
+samtools flags 83
+```
+
+```{.text}
+0x53	83	PAIRED,PROPER_PAIR,REVERSE,READ1
+```
+
+So this is the first read of a properly aligned pair, on the reverse strand (83 = 1 + 2 + 16 + 64). Flags are how you filter reads: `samtools view -f 4` keeps unmapped reads (flag 4 set) and `-F 4` drops them, which a later part on removing human reads relies on.
+
+The **CIGAR** string describes the alignment as counts and letters. `151M` means all 151 bases aligned (M, for match or mismatch, since CIGAR doesn't distinguish). Others you'll see: `I` (bases inserted in the read), `D` (bases deleted from the read), and `S` (soft-clipped: bases kept in the read but not aligned, such as adapter sequence). `65S86M` would mean the first 65 bases are clipped and the next 86 align.
+
+### The .bai index
+
+A sorted BAM can be indexed with `samtools index`, which writes a `.bai` file (the download already includes it; running the command again simply rebuilds it). With it, tools fetch the reads in any region without reading the whole file. This counts the reads overlapping the *rpoB* gene (positions 759,807 to 763,325 in the reference annotation):
+
+```{.bash}
+samtools index aligned/ERR8025410.rpoB.bam
+samtools view -c aligned/ERR8025410.rpoB.bam NC_000962.3:759807-763325
+```
+
+```{.text}
+1704
+```
+
+Without the index, the same command fails:
+
+```{.text}
+samtools view: Random alignment retrieval only works for indexed SAM.gz, BAM or CRAM files.
+```
+
+Indexing needs the BAM sorted by position (`samtools sort`), and the index must be rebuilt whenever the BAM changes. Keep the two together: tools look for `name.bam.bai` next to `name.bam`.
+
+## 5. VCF and the .tbi index
+
+Comparing the aligned reads to the reference finds **variants**: positions where the sample differs. They're stored in VCF (Variant Call Format) [@danecek2011]. The VCF in the download was made from the full alignment with bcftools, calling variants in the *rpoB* region and writing a bgzipped VCF (`-Oz`):
+
+```{.bash}
+bcftools mpileup -f reference/H37Rv.fasta -r NC_000962.3:759807-763325 aligned/ERR8025410.bam \
+  | bcftools call -mv --ploidy 1 -Oz -o variants/ERR8025410.rpoB.vcf.gz
+```
+
+(`--ploidy 1` because bacteria carry one copy of their chromosome, and `-v` keeps only the variant positions. Part 6 covers variant calling properly.)
+
+A VCF is a header of `##` lines describing the file, a `#CHROM` line naming the columns, then one line per variant:
+
+```{.bash}
+zcat variants/ERR8025410.rpoB.vcf.gz | grep -v "^##" | cut -f 1-6,9,10
+```
+
+```{.text}
+#CHROM	POS	ID	REF	ALT	QUAL	FORMAT	ERR8025410
+NC_000962.3	761155	.	C	T	225.417	GT:PL:AD	1:255,0:0,37
+NC_000962.3	763031	.	T	C	225.417	GT:PL:AD	1:255,0:0,65
+```
+
+Each line gives the sequence and position, the reference base (`REF`) and the base in the sample (`ALT`), a quality score, and a column per sample. The `FORMAT` column says how to read that sample's column: `GT` (genotype: `1` means the sample carries the ALT base) and `AD` (allele depth: 0 reads support the reference, 37 the alternative). Here every read covering both positions agrees.
+
+### The .tbi index
+
+`tabix` indexes a bgzipped, position-sorted table, writing a `.tbi` file, so tools can fetch the lines for any region:
+
+```{.bash}
+tabix -p vcf variants/ERR8025410.rpoB.vcf.gz
+tabix variants/ERR8025410.rpoB.vcf.gz NC_000962.3:761000-761200 | cut -f 1-5
+```
+
+```{.text}
+NC_000962.3	761155	.	C	T
+```
+
+This file has two variants, so the index saves nothing. A whole-genome VCF with thousands of samples can be many gigabytes, and the index is what makes looking up one gene instant. `-p vcf` says the file is a VCF; tabix also indexes other tab-separated position files, such as BED and GFF, when they're bgzipped and sorted.
+
+## 6. See it: IGV
+
+Text shows you exactly what's in a file, but a picture shows what it *means*. The **Integrative Genomics Viewer** (IGV) [@robinson2011] draws the reference, the reads stacked where they aligned, and the variants, all at once. Below is the *rpoB* region from the example files, in igv.js, the version of IGV that runs in a web page [@robinson2023]:
+
+```{=html}
+<div id="igv-rpoB" style="border:1px solid var(--bs-border-color); border-radius:.375rem; min-height:420px; background:#fff;"></div>
+<script src="https://cdn.jsdelivr.net/npm/igv@3.8.10/dist/igv.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  igv.createBrowser(document.getElementById("igv-rpoB"), {
+    reference: {
+      id: "H37Rv",
+      name: "M. tuberculosis H37Rv (NC_000962.3)",
+      fastaURL: "igv/H37Rv.fasta.gz",
+      indexURL: "igv/H37Rv.fasta.gz.fai",
+      compressedIndexURL: "igv/H37Rv.fasta.gz.gzi"
+    },
+    locus: "NC_000962.3:761,100-761,210",
+    tracks: [
+      { name: "Genes", type: "annotation", format: "bed", url: "igv/genes.bed",
+        displayMode: "EXPANDED", height: 50, searchable: true },
+      { name: "Variants (VCF)", type: "variant", format: "vcf",
+        url: "igv/ERR8025410.rpoB.vcf.gz", indexURL: "igv/ERR8025410.rpoB.vcf.gz.tbi" },
+      { name: "ERR8025410 reads (BAM)", type: "alignment", format: "bam",
+        url: "igv/ERR8025410.rpoB.bam", indexURL: "igv/ERR8025410.rpoB.bam.bai",
+        height: 300 }
+    ]
+  });
+});
+</script>
+```
+
+From the top down:
+
+- **The ruler and sequence:** positions on the genome, and the reference bases when you zoom in far enough.
+- **Genes:** the gene annotation for this part of the genome; the view sits inside *rpoB*.
+- **Variants:** a mark at each position in the VCF. Click it for the VCF fields from section 5.
+- **Reads:** each grey bar is a read, placed where it aligned. A base that differs from the reference is drawn in colour, so the variant at 761,155 shows as a coloured column through every read that covers it: the `AD` value of 0 reference reads and 37 alternative reads, made visible. The bar chart above the reads is the coverage (depth) at each position.
+
+Drag to move along the genome, use the + and − buttons to zoom, and click any read for its SAM fields: name, FLAG, position, MAPQ and CIGAR. Type `rpoB` or a position such as `NC_000962.3:763,000-763,080` into the box at the top to jump there (the second variant, at 763,031). This viewer only holds reads for *rpoB*, so the rest of the genome is empty.
+
+### On your own computer
+
+To use IGV with your own files, either:
+
+- open **[IGV-Web](https://igv.org/app/)** in a browser: nothing to install, and your files stay on your computer; or
+- install **IGV desktop** from [igv.org](https://igv.org/download/), or with micromamba: `micromamba create -n igv igv`, then run `igv`.
+
+Either way, load the reference first (*Genomes → Load Genome from File*, choosing `reference/H37Rv.fasta`), then the data (*File → Load from File*, choosing `aligned/ERR8025410.rpoB.bam` and `variants/ERR8025410.rpoB.vcf.gz`). IGV finds the `.fai`, `.bai` and `.tbi` index files automatically, as long as each sits beside its file with the matching name: one more reason indexes matter.
+
+## Common mistakes
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| `not BGZF` from tabix or bcftools | Compressed with gzip, not bgzip | `gunzip`, then `bgzip` |
+| `Could not retrieve index file` / `Random alignment retrieval only works for indexed…` | No `.bai` or `.tbi` beside the file | `samtools index` or `tabix -p vcf` |
+| Index errors after editing a file | The index is older than the file | Rebuild the index |
+| `samtools index` fails | The BAM isn't sorted by position | `samtools sort` first |
+| Reads paired wrongly, or a tool complains the files differ | The two FASTQ files of a pair went out of step | Never filter or sort one file of a pair alone |
+| A FASTA file emptied | `grep >` without quotes redirected over it | Always quote `">"` |
+| "Sequence not found" or no reads in a region | The name doesn't match: `chr1` vs `1`, or a different reference version | Use the names in the `@SQ` lines or the `.fai` file |
+
+: Format-related errors and their usual causes {#tbl-mistakes}
+
+## References
+
+::: {#refs}
+:::
