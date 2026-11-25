@@ -412,8 +412,11 @@ document.addEventListener("DOMContentLoaded", function () {
       { name: "Variants (VCF)", type: "variant", format: "vcf",
         url: "igv/ERR8025410.rpoB.vcf.gz", indexURL: "igv/ERR8025410.rpoB.vcf.gz.tbi" },
       { name: "ERR8025410 reads (BAM)", type: "alignment", format: "bam",
-        url: "igv/ERR8025410.rpoB.bam", indexURL: "igv/ERR8025410.rpoB.bam.bai",
+        url: "igv/ERR8025410.rpoB.bam", indexed: false,
         height: 300 }
+      // The BAM loads whole (indexed: false): it's only 108 KB, and GitHub Pages
+      // compresses .bam files in transit, which breaks the byte-range reads an
+      // index would use. Large BAMs need a host that serves them uncompressed.
     ]
   });
 });
