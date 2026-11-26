@@ -41,7 +41,7 @@ The first time, create the environment with `micromamba create -n formats samtoo
 
 The examples use the files downloaded in [Part 2](../finding-and-downloading-public-data/index.qmd): whole-genome sequencing of *Mycobacterium tuberculosis* from a Western Cape study [@oostvogels2022] (run [ERR8025410](https://www.ebi.ac.uk/ena/browser/view/ERR8025410)) and the H37Rv reference genome [@cole1998]. Run the commands from the `~/tb-project` folder set up in Part 2.
 
-The alignment (BAM) and variant (VCF) files come from steps later in the series, so download a small ready-made set to follow along now. It holds one sample's alignments and variants for one gene, *rpoB*, with their index files, and unzips into `aligned/` and `variants/` folders:
+The alignment (BAM) and variant (VCF) files come from steps later in the series, so download a small ready-made set to follow along now. The BAM was cut from a full alignment of ERR8025410, the kind you'll make yourself in [Part 5](../aligning-fastq-files-with-a-loop/index.qmd), which also shows how to cut out a region like this. It holds one sample's alignments and variants for one gene, *rpoB*, with their index files, and unzips into `aligned/` and `variants/` folders:
 
 [<i class="bi bi-download"></i> Download the example files (110 KB)](formats-example-files.zip){.btn .btn-sm .btn-outline-primary}
 
