@@ -8,7 +8,7 @@
 
 <meta name="author" content="Devon Allies">
 <meta name="dcterms.date" content="2026-11-25">
-<meta name="description" content="A beginner’s guide to the common bioinformatics file formats, using real Mycobacterium tuberculosis sequencing data: FASTA reference genomes, FASTQ reads and quality scores, gzip and bgzip compression, SAM and BAM alignments, FLAG and CIGAR fields, VCF variants, and the .fai, .bai and .tbi index files.">
+<meta name="description" content="A beginner’s guide to the common bioinformatics file formats, using real Mycobacterium tuberculosis sequencing data: FASTA reference genomes, FASTQ reads and quality scores, gzip and bgzip compression, SAM, BAM and CRAM alignments, FLAG and CIGAR fields, VCF variants, and the .fai, .bai and .tbi index files.">
 
 <title>Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes – Devon Allies</title>
 <style>
@@ -139,13 +139,13 @@ div.csl-indent {
 
 <link rel="stylesheet" href="../../../assets/css/styles.css">
 <meta property="og:title" content="Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes – Devon Allies">
-<meta property="og:description" content="A beginner’s guide to the common bioinformatics file formats, using real Mycobacterium tuberculosis sequencing data: FASTA reference genomes, FASTQ reads and quality scores, gzip and bgzip compression, SAM and BAM alignments, FLAG and CIGAR fields, VCF variants, and the .fai, .bai and .tbi index files.">
+<meta property="og:description" content="A beginner’s guide to the common bioinformatics file formats, using real Mycobacterium tuberculosis sequencing data: FASTA reference genomes, FASTQ reads and quality scores, gzip and bgzip compression, SAM, BAM and CRAM alignments, FLAG and CIGAR fields, VCF variants, and the .fai, .bai and .tbi index files.">
 <meta property="og:image" content="https://devonallies.co.za/tutorials/images/command-line-series.jpg">
 <meta property="og:site_name" content="Devon Allies">
 <meta property="og:image:height" content="768">
 <meta property="og:image:width" content="1376">
 <meta name="twitter:title" content="Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes – Devon Allies">
-<meta name="twitter:description" content="A beginner’s guide to the common bioinformatics file formats, using real Mycobacterium tuberculosis sequencing data: FASTA reference genomes, FASTQ reads and quality scores, gzip and bgzip compression, SAM and BAM alignments, FLAG and CIGAR fields, VCF variants, and the .fai, .bai and .tbi index files.">
+<meta name="twitter:description" content="A beginner’s guide to the common bioinformatics file formats, using real Mycobacterium tuberculosis sequencing data: FASTA reference genomes, FASTQ reads and quality scores, gzip and bgzip compression, SAM, BAM and CRAM alignments, FLAG and CIGAR fields, VCF variants, and the .fai, .bai and .tbi index files.">
 <meta name="twitter:image" content="https://devonallies.co.za/tutorials/images/command-line-series.jpg">
 <meta name="twitter:creator" content="@CompBioSeq">
 <meta name="twitter:site" content="@CompBioSeq">
@@ -416,7 +416,7 @@ div.csl-indent {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Bioinformatics file formats: FASTA, FASTQ, SAM, BAM and their indexes</h1>
-<p class="subtitle lead">What’s inside the files you’ll meet first, how to look at them from the terminal, and what the .gz, .fai, .bai and .tbi files beside them are for</p>
+<p class="subtitle lead">What’s inside the files you’ll meet first, how to look at them from the terminal, and what the .gz, .fai, .bai, .crai and .tbi files beside them are for</p>
   <div class="quarto-categories">
     <div class="quarto-category">Command line</div>
     <div class="quarto-category">Bioinformatics</div>
@@ -425,7 +425,7 @@ div.csl-indent {
 
 <div>
   <div class="description">
-    A beginner’s guide to the common bioinformatics file formats, using real Mycobacterium tuberculosis sequencing data: FASTA reference genomes, FASTQ reads and quality scores, gzip and bgzip compression, SAM and BAM alignments, FLAG and CIGAR fields, VCF variants, and the .fai, .bai and .tbi index files.
+    A beginner’s guide to the common bioinformatics file formats, using real Mycobacterium tuberculosis sequencing data: FASTA reference genomes, FASTQ reads and quality scores, gzip and bgzip compression, SAM, BAM and CRAM alignments, FLAG and CIGAR fields, VCF variants, and the .fai, .bai and .tbi index files.
   </div>
 </div>
 
@@ -488,7 +488,7 @@ div.csl-indent {
 <p>The alignment (BAM) and variant (VCF) files come from steps later in the series, so download a small ready-made set to follow along now. It holds one sample’s alignments and variants for one gene, <em>rpoB</em>, with their index files, and unzips into <code>aligned/</code> and <code>variants/</code> folders:</p>
 <p><a href="formats-example-files.zip" class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i> Download the example files (110 KB)</a></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> formats-example-files.zip</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Every output shown was saved from a real run on 20 November 2026 with samtools 1.24 and bcftools 1.25.</p>
+<p>Every output shown was saved from a real run on 20 November 2026 with samtools 1.24 and bcftools 1.25 (the CRAM outputs on 25 November 2026, with the same samtools).</p>
 </div>
 </div>
 <section id="at-a-glance" class="level2">
@@ -553,24 +553,38 @@ Table&nbsp;1: The formats in this article
 <td><code>samtools view</code></td>
 </tr>
 <tr class="even">
+<td><code>.cram</code></td>
+<td>CRAM</td>
+<td>The same as BAM, stored as differences from the reference, so smaller</td>
+<td>Binary</td>
+<td><code>samtools view</code> (needs the reference)</td>
+</tr>
+<tr class="odd">
 <td><code>.vcf</code>, <code>.vcf.gz</code></td>
 <td>VCF</td>
 <td>Variants: where a sample differs from the reference</td>
 <td>Text (often bgzipped)</td>
 <td><code>zcat</code>, <code>bcftools view</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>.fai</code></td>
 <td>FASTA index</td>
 <td>Where each sequence starts in a FASTA file</td>
 <td>Text</td>
 <td><code>cat</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>.bai</code></td>
 <td>BAM index</td>
 <td>Where each region of the genome is in a BAM file</td>
 <td>Binary</td>
+<td>used by tools</td>
+</tr>
+<tr class="even">
+<td><code>.crai</code></td>
+<td>CRAM index</td>
+<td>The same, for a CRAM file</td>
+<td>Binary (gzipped text)</td>
 <td>used by tools</td>
 </tr>
 <tr class="odd">
@@ -939,15 +953,56 @@ Table&nbsp;5: The 11 columns of a SAM record
 <pre class="text"><code>samtools view: Random alignment retrieval only works for indexed SAM.gz, BAM or CRAM files.</code></pre>
 <p>Indexing needs the BAM sorted by position (<code>samtools sort</code>), and the index must be rebuilt whenever the BAM changes. Keep the two together: tools look for <code>name.bam.bai</code> next to <code>name.bam</code>.</p>
 </section>
+<section id="cram-the-same-alignments-smaller" class="level3">
+<h3 class="anchored" data-anchor-id="cram-the-same-alignments-smaller">CRAM: the same alignments, smaller</h3>
+<p><strong>CRAM</strong> is a third way to store the same alignments <span class="citation" data-cites="hsiyangfritz2011">(<a href="#ref-hsiyangfritz2011" role="doc-biblioref">Hsi-Yang Fritz et al., 2011</a>)</span>. BAM compresses every read in full; CRAM stores mostly where each read <em>differs from the reference genome</em>, which for most reads is very little. Nothing is lost by default: the reads, qualities and tags all come back exactly. For the full alignment of ERR8025410:</p>
+<div id="tbl-bam-cram" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bam-cram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6: The same alignments as BAM and as CRAM
+</figcaption>
+<div aria-describedby="tbl-bam-cram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>File</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ERR8025410.bam</code></td>
+<td>131 MB</td>
+</tr>
+<tr class="even">
+<td><code>ERR8025410.cram</code></td>
+<td>58 MB</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Converting takes the reference (<code>-T</code>) and <code>-C</code> for CRAM output. The index is a <code>.crai</code> file, and region queries work just as with BAM:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-C</span> <span class="at">-T</span> reference/H37Rv.fasta <span class="at">-o</span> aligned/ERR8025410.rpoB.cram aligned/ERR8025410.rpoB.bam</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> index aligned/ERR8025410.rpoB.cram</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="ex">samtools</span> view <span class="at">-c</span> aligned/ERR8025410.rpoB.cram NC_000962.3:759807-763325</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre class="text"><code>1704</code></pre>
+<p>The same 1,704 reads as the BAM. The catch is that <strong>a CRAM can only be read with the exact reference it was made against.</strong> samtools records that reference’s location in the header (the <code>UR</code> field of the <code>@SQ</code> line) and a checksum of its sequence (<code>M5</code>). If the reference is later moved, renamed or deleted, printing the reads fails:</p>
+<pre class="text"><code>[E::refs_load_fai] Failed to open reference file '/home/you/tb-project/reference/H37Rv.fasta'
+[W::cram_get_ref] Failed to populate reference "NC_000962.3"</code></pre>
+<p>Point samtools at the reference again with <code>-T reference/H37Rv.fasta</code>. A <em>different</em> reference, even one with a single base changed, is refused with an <code>MD5 checksum reference mismatch</code> error rather than giving wrong reads. (samtools can also look the reference up in a local cache of sequences by their checksum; the <a href="https://www.htslib.org/doc/reference_seqs.html">htslib documentation</a> explains the search order.)</p>
+<p>So BAM stays the everyday working format, because it needs nothing else to read it. CRAM is worth it when storage matters, such as keeping many samples for a long time, as long as the reference is kept with them.</p>
+</section>
 </section>
 <section id="vcf-and-the-.tbi-index" class="level2">
 <h2 class="anchored" data-anchor-id="vcf-and-the-.tbi-index">5. VCF and the .tbi index</h2>
 <p>Comparing the aligned reads to the reference finds <strong>variants</strong>: positions where the sample differs. They’re stored in VCF (Variant Call Format) <span class="citation" data-cites="danecek2011">(<a href="#ref-danecek2011" role="doc-biblioref">Danecek et al., 2011</a>)</span>. The VCF in the download was made from the full alignment with bcftools, calling variants in the <em>rpoB</em> region and writing a bgzipped VCF (<code>-Oz</code>):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> mpileup <span class="at">-f</span> reference/H37Rv.fasta <span class="at">-r</span> NC_000962.3:759807-763325 aligned/ERR8025410.bam <span class="dt">\</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="ex">bcftools</span> call <span class="at">-mv</span> <span class="at">--ploidy</span> 1 <span class="at">-Oz</span> <span class="at">-o</span> variants/ERR8025410.rpoB.vcf.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bcftools</span> mpileup <span class="at">-f</span> reference/H37Rv.fasta <span class="at">-r</span> NC_000962.3:759807-763325 aligned/ERR8025410.bam <span class="dt">\</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="ex">bcftools</span> call <span class="at">-mv</span> <span class="at">--ploidy</span> 1 <span class="at">-Oz</span> <span class="at">-o</span> variants/ERR8025410.rpoB.vcf.gz</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>(<code>--ploidy 1</code> because bacteria carry one copy of their chromosome, and <code>-v</code> keeps only the variant positions. Part 6 covers variant calling properly.)</p>
 <p>A VCF is a header of <code>##</code> lines describing the file, a <code>#CHROM</code> line naming the columns, then one line per variant:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> variants/ERR8025410.rpoB.vcf.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">"^##"</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1-6,9,10</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> variants/ERR8025410.rpoB.vcf.gz <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">"^##"</span> <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1-6,9,10</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>#CHROM  POS ID  REF ALT QUAL    FORMAT  ERR8025410
 NC_000962.3 761155  .   C   T   225.417 GT:PL:AD    1:255,0:0,37
 NC_000962.3 763031  .   T   C   225.417 GT:PL:AD    1:255,0:0,65</code></pre>
@@ -955,8 +1010,8 @@ NC_000962.3 763031  .   T   C   225.417 GT:PL:AD    1:255,0:0,65</code></pre>
 <section id="the-.tbi-index" class="level3">
 <h3 class="anchored" data-anchor-id="the-.tbi-index">The .tbi index</h3>
 <p><code>tabix</code> indexes a bgzipped, position-sorted table, writing a <code>.tbi</code> file, so tools can fetch the lines for any region:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> <span class="at">-p</span> vcf variants/ERR8025410.rpoB.vcf.gz</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> variants/ERR8025410.rpoB.vcf.gz NC_000962.3:761000-761200 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1-5</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> <span class="at">-p</span> vcf variants/ERR8025410.rpoB.vcf.gz</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="ex">tabix</span> variants/ERR8025410.rpoB.vcf.gz NC_000962.3:761000-761200 <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 1-5</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <pre class="text"><code>NC_000962.3 761155  .   C   T</code></pre>
 <p>This file has two variants, so the index saves nothing. A whole-genome VCF with thousands of samples can be many gigabytes, and the index is what makes looking up one gene instant. <code>-p vcf</code> says the file is a VCF; tabix also indexes other tab-separated position files, such as BED and GFF, when they’re bgzipped and sorted.</p>
 </section>
@@ -1015,7 +1070,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <div id="tbl-mistakes" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mistakes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;6: Format-related errors and their usual causes
+Table&nbsp;7: Format-related errors and their usual causes
 </figcaption>
 <div aria-describedby="tbl-mistakes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -1053,6 +1108,16 @@ Table&nbsp;6: Format-related errors and their usual causes
 <td><code>samtools sort</code> first</td>
 </tr>
 <tr class="odd">
+<td><code>Failed to populate reference</code> when reading a CRAM</td>
+<td>The reference it was made with has moved or been deleted</td>
+<td>Give it again with <code>-T reference/H37Rv.fasta</code></td>
+</tr>
+<tr class="even">
+<td><code>MD5 checksum reference mismatch</code></td>
+<td>A CRAM read with a different reference from the one it was made with</td>
+<td>Use the exact reference it was made against</td>
+</tr>
+<tr class="odd">
 <td>Reads paired wrongly, or a tool complains the files differ</td>
 <td>The two FASTQ files of a pair went out of step</td>
 <td>Never filter or sort one file of a pair alone</td>
@@ -1088,6 +1153,9 @@ Danecek, P., Auton, A., Abecasis, G., Albers, C.A., Banks, E., DePristo, M.A., H
 </div>
 <div id="ref-danecek2021" class="csl-entry" role="listitem">
 Danecek, P., Bonfield, J.K., Liddle, J., Marshall, J., Ohan, V., Pollard, M.O., Whitwham, A., Keane, T., McCarthy, S.A., Davies, R.M. and Li, H., 2021. Twelve years of <span>SAMtools</span> and <span>BCFtools</span>. <em>GigaScience</em>, 10(2), p.giab008. https://doi.org/<a href="https://doi.org/10.1093/gigascience/giab008">10.1093/gigascience/giab008</a>.
+</div>
+<div id="ref-hsiyangfritz2011" class="csl-entry" role="listitem">
+Hsi-Yang Fritz, M., Leinonen, R., Cochrane, G. and Birney, E., 2011. Efficient storage of high throughput <span>DNA</span> sequencing data using reference-based compression. <em>Genome Research</em>, 21(5), pp.734–740. https://doi.org/<a href="https://doi.org/10.1101/gr.114819.110">10.1101/gr.114819.110</a>.
 </div>
 <div id="ref-li2009sam" class="csl-entry" role="listitem">
 Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. and 1000 Genome Project Data Processing Subgroup, 2009. The <span>Sequence Alignment/Map</span> format and <span>SAMtools</span>. <em>Bioinformatics</em>, 25(16), pp.2078–2079. https://doi.org/<a href="https://doi.org/10.1093/bioinformatics/btp352">10.1093/bioinformatics/btp352</a>.
